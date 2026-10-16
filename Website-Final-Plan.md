@@ -62,7 +62,7 @@ Each concept must show a desktop and mobile homepage hero, a seven-product shop 
 
 Prototype prices, reports and facts must be visibly identified as placeholders where missing. Do not invent reviews, sales numbers, certifications or finished-product clinical results.
 
-Select one coherent direction before expanding all pages. Claude can provide a bounded critique of hierarchy, voice and missing states; Codex maintains the local source and verifies implementation. This remains a browser coordination workflow without automatic shared files or memory.
+Update, 16 October 2026: the user requested expansion of both directions with clearly labelled preview data. Both now share the complete local application. See `IMPLEMENTATION-STATUS.md` for delivered features and remaining production requirements. Claude can provide a bounded critique of hierarchy, voice and missing states; Codex maintains the local source and verifies implementation. This remains a browser coordination workflow without automatic shared files or memory.
 
 ## 4. Public website structure
 
