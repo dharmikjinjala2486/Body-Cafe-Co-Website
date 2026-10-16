@@ -104,6 +104,7 @@ function onCap(hex) {
 }
 const capStyle = (p) => `--cap:${p.color};--on-cap:${onCap(p.color)}`;
 async function api(path, data) {
+  if (window.BCCStaticPreview) return window.BCCStaticPreview.api(path, data);
   const res = await fetch("/api" + path, {
     method: data === undefined ? "GET" : "POST",
     headers: data === undefined ? {} : { "Content-Type": "application/json", "X-CSRF-Token": state.csrf },
@@ -223,7 +224,7 @@ function shell(content) {
     ["/reports", "Lot reports"],
   ];
   const current = (href) => (path === href || path.startsWith(href + "/") ? ' aria-current="page"' : "");
-  return `<div class="preview-bar"><p>Preview store. Prices are samples and no payment is taken.</p><nav class="design-switch" aria-label="Choose design concept">${designLinks()}</nav><a href="/ops">Operations preview</a></div><header class="site-header"><a class="logo" href="${designHome()}" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a><nav class="main-nav" aria-label="Main">${nav.map(([h, l]) => `<a href="${h}"${current(h)}>${l}</a>`).join("")}</nav><div class="header-tools"><button class="icon-button" data-action="search" aria-label="Search">${icon("search")}</button><a class="icon-button" href="/account" aria-label="Your account">${icon("user")}</a><a class="bag-link" href="/cart" aria-label="Bag, ${count()} items">${icon("bag")}<span data-cart-count ${count() ? "" : "data-empty"}>${count()}</span></a><button class="menu-button" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header><nav id="mobile-nav" hidden aria-label="Mobile"><div class="mobile-nav-links">${[
+  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Shared design preview. Ordering and sign-in are unavailable." : "Preview store. Prices are samples and no payment is taken."}</p><nav class="design-switch" aria-label="Choose design concept">${designLinks()}</nav><a href="/ops">Operations preview</a></div><header class="site-header"><a class="logo" href="${designHome()}" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a><nav class="main-nav" aria-label="Main">${nav.map(([h, l]) => `<a href="${h}"${current(h)}>${l}</a>`).join("")}</nav><div class="header-tools"><button class="icon-button" data-action="search" aria-label="Search">${icon("search")}</button><a class="icon-button" href="/account" aria-label="Your account">${icon("user")}</a><a class="bag-link" href="/cart" aria-label="Bag, ${count()} items">${icon("bag")}<span data-cart-count ${count() ? "" : "data-empty"}>${count()}</span></a><button class="menu-button" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header><nav id="mobile-nav" hidden aria-label="Mobile"><div class="mobile-nav-links">${[
     ["/shop", "Shop all seven"],
     ["/bundles", "The edits"],
     ["/standards", "Standards"],
@@ -948,7 +949,9 @@ async function render(scroll = true) {
     if (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/")) state.account = await api("/account");
     if (path.startsWith("/ops") && ["admin", "viewer"].includes(state.user.role)) state.ops = await api("/admin");
     if (version !== renderVersion) return;
-    if (path === "/") content = home();
+    if (window.BCCStaticPreview && /^\/(checkout|account|orders|payment|ops|contact)(\/|$)/.test(path))
+      content = `<section class="section article">${heading("Shared design preview", "Explore the design", "You can browse all four designs, inspect product details and try the sample bag and lot lookup. Ordering, sign-in and support submissions are not enabled on this shared preview.")}${link("Continue shopping", "/shop")}</section>`;
+    else if (path === "/") content = home();
     else if (path === "/shop") content = shop();
     else if (path.startsWith("/products/")) content = detail(product(path.split("/")[2]));
     else if (path.startsWith("/bundles")) content = bundles(path.split("/")[2]);
@@ -1321,5 +1324,5 @@ try {
   await render(false);
 } catch (e) {
   $("#app").innerHTML =
-    `<div class="boot"><p class="boot-title">The store didn't load</p><p>${escape(e.message)}</p><p>Start the local Python preview server, then reload.</p></div>`;
+    `<div class="boot"><p class="boot-title">The store didn't load</p><p>${escape(e.message)}</p><p>${window.BCCStaticPreview ? "Reload the preview. If this continues, check the latest deployment build." : "Start the local Python preview server, then reload."}</p></div>`;
 }

@@ -1,0 +1,4 @@
+[build]
+  command = "python3 -B deploy/build_netlify.py"
+  publish = "dist"
+

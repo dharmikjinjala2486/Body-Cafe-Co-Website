@@ -61,3 +61,8 @@ gunzip -k assets/source/blender/BCC_Final_Varient_1_Garden_SpotUV_Corrected.blen
 ```
 
 Repository: [Body-Cafe-Co-Website](https://github.com/dharmikjinjala2486/Body-Cafe-Co-Website), branch `design/concepts`.
+
+
+## Netlify deployment
+
+See [NETLIFY.md](NETLIFY.md). The committed configuration builds `dist/` with a root entry page, SPA fallback and a seeded, read-only design-preview adapter. All four designs and product pages work without the local Python API. Account, ordering, support submissions and operations require a hosted backend and show an explicit unavailable state on this export. Local functionality is unchanged.

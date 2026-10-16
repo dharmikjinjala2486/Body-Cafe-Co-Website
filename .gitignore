@@ -8,3 +8,4 @@ assets/source/blender/*.blend
 __pycache__/
 *.pyc
 web/qa/
+dist/
