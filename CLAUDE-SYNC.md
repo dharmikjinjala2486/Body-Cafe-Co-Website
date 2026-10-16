@@ -79,3 +79,18 @@ The new D uses a neutral porcelain stage, numbered product index, shelf collecti
 Local verification: all 24 backend tests pass; JavaScript syntax and diff checks pass. D layouts inspected at 320, 390, 768, 1100 and 1440px with one primary heading, seven labels, no page overflow or clipped audited headings. Mobile sections visually inspected through the footer; no broken loaded images or captured console errors. All seven manual selections update the name/link and leave one tabbable bottle; Home, Down and End keyboard navigation checked. Shelf add-to-bag and sample lot lookup passed, and the original bag quantity was restored. Shared report/FAQ accordions work. A/B/C mobile isolation checks passed. Local screenshots are under ignored `web/qa/still-life/`.
 
 This replaces the earlier D design, which remains recoverable in Git history. Production integrations and approved content inputs remain as documented.
+
+
+## Four product-page themes — 16 October 2026
+
+Imported `body-cafe-co-four-pdp-themes.zip` from the existing Claude conversation, built against fresh `919c8f8`. SHA-256 `1e6f61b162a6ce4f88076347321aa84733afdebc2075c50acccdeb47adea211f`. Paths and source changes were inspected. Imported nine source files plus `PDP-THEMES.md`; optional external browser QA scripts and supplied screenshots remain in the ignored import folder and were not executed.
+
+New shared `web/pdp.js` and `web/pdp.css` plus four scoped theme stylesheets provide A editorial, B expressive, C cap/menu and D Still life product pages for all seven SKUs. Shared app/index and standalone concept links implement A/B/C/D routing, same-product theme switching, tab persistence and matching return-home links. Backend, catalogue data and homepage styles/templates are unchanged. Pincode validation now checks format without an invented delivery estimate.
+
+Codex integration correction: related-product and C cap-rail hrefs explicitly carry their theme, preserving it when copied or opened in another tab as well as through normal in-app navigation. This is the only source adjustment to the imported package.
+
+Local independent verification: 24 backend tests pass; all five JS modules pass syntax checks; diff check passes. The 28 product/theme pairs were inspected at 1440, 768, 390 and 320px (112 page states), with one h1, no measured page overflow, clipped audited headings or broken loaded images. Eight additional isolated states confirmed disabled purchase controls for unpublished/out-of-stock products in every theme. No captured console errors. Fixtures were confined to `/tmp/bcc-pdp-sync-20261016.sqlite3`; regular preview data was preserved.
+
+Targeted flows passed: entry from each homepage; same-product A/B/C/D switching; back/forward and reload; A related destination and return-home; selected-quantity adds in all themes; C keyboard detail tabs; invalid/valid pincode responses; product-linked sample-lot match; D mobile purchase bar hidden at top, shown after the main control, using selected quantity and hidden at the footer. All four homepage layouts passed mobile/desktop isolation checks. Desktop and mobile hero screenshots were visually inspected; local evidence is under ignored `web/qa/pdp-sync/`.
+
+Claude's original independent QA/content-gap report is preserved in `PDP-THEMES.md`; its reported coverage is separate from Codex's local checks. Approved rear labels, commercial data, genuine gallery/review material, policies and lot documents are still required. No doses, benefits, reviews or certifications were invented.

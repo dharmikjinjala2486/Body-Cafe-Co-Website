@@ -9,7 +9,7 @@ The user initially requested both A and B, using clearly labelled preview data. 
 | Requirement | Implemented behaviour | Production boundary |
 |---|---|---|
 | Current design system | Claude “pick a cap” redesign; interactive product caps, transparent bottle assets, locally hosted brand fonts, colour transitions and responsive layouts. Earlier A/B concepts remain in `concepts/` and Git history. | Final visual/content sign-off still required |
-| Seven-product catalogue | All seven supplied mockups, format filters, search, product detail templates, ingredient guides, related products | Final formula, quantities, pack facts, warnings, claims, prices and rear labels are missing |
+| Seven-product catalogue | All seven supplied mockups, format filters, search, four themed product detail compositions with explicit theme routing, ingredient guides and related products | Final formula, quantities, pack facts, warnings, claims, prices and rear labels are missing |
 | Bundles | Two illustrative combinations, itemised sample totals, all components checked before adding | Approved combinations, rules and savings are pending; no therapeutic combination recommendation |
 | Brand and education | Homepage, Standards, Story, learning hub, three guides, seven ingredient pages | Draft copy; no fabricated founder history or certification claims |
 | Lot lookup | Product-plus-lot matching; loading, sample match, no-match, unpublished, withdrawn and outage states | No uploaded evidence, signed documents, report-version management or unit authentication |
@@ -78,3 +78,8 @@ See `QA-Review-and-Next-Steps.md` for the current scope, verified fixes and prod
 ## Variant 4 redesign sync
 
 The user requested a distinct modern premium D rather than the earlier synthesis. Claude's “Still life” replacement is imported and locally verified. It changes the D homepage layout and styling, retains existing copy/content and functions, and preserves A/B/C. See `DIRECTION-D-STILL-LIFE.md` and the latest `CLAUDE-SYNC.md` entry for provenance and targeted validation.
+
+
+## Four product-page themes
+
+Claude's four-theme PDP package built on `919c8f8` is imported. A/B/C/D product pages share catalogue/commerce data and present distinct compositions matching each homepage. Added detail structure covers formula and label gaps, use/care, evidence and lot lookup, service links, customer-experience empty states, FAQs and learning. Theme URLs, same-product switching, related links and A/B return-home navigation are implemented. Missing approved facts remain explicit, and pincode results promise no delivery date. Codex independently checked all 28 product/theme combinations at four widths and targeted flows; see `CLAUDE-SYNC.md`.

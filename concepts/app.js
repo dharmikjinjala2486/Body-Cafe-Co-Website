@@ -11,7 +11,7 @@ const products = [
 const grid=document.querySelector('#product-grid');
 products.forEach((p,i)=>{
   const article=document.createElement('article'); article.className='product-card'; article.style.setProperty('--sku',p.color);
-  article.innerHTML=`<a class="product-photo" href="${storefront}products/${p.slug}" aria-label="Explore ${p.name}"><img src="media/${p.slug}.webp" alt="${p.name} bottle mockup" width="1196" height="1315" loading="lazy"><span class="product-number">0${i+1}</span><span class="product-arrow" aria-hidden="true">↗</span></a><div class="product-meta"><span class="sku-line"></span><h3><a href="${storefront}products/${p.slug}">${p.name}</a></h3><p>${p.sub}</p></div>`;
+  article.innerHTML=`<a class="product-photo" data-product-link href="${storefront}products/${p.slug}" aria-label="Explore ${p.name}"><img src="media/${p.slug}.webp" alt="${p.name} bottle mockup" width="1196" height="1315" loading="lazy"><span class="product-number">0${i+1}</span><span class="product-arrow" aria-hidden="true">↗</span></a><div class="product-meta"><span class="sku-line"></span><h3><a data-product-link href="${storefront}products/${p.slug}">${p.name}</a></h3><p>${p.sub}</p></div>`;
   grid.append(article);
   const option=document.createElement('option');option.value=p.slug;option.textContent=p.name;document.querySelector('#report-product').append(option);
 });
@@ -29,6 +29,9 @@ function setConcept(concept){
   document.querySelector('#collection-title').innerHTML=b?'Seven essentials.<br><em>Which is your thing?</em>':'Find your<br><em>everyday thing.</em>';
   document.querySelector('.studio-label span').textContent=b?'DESIGN STUDY / 02':'DESIGN STUDY / 01';
   const url=new URL(location.href);url.searchParams.set('concept',b?'b':'a');history.replaceState(null,'',url);
+  // Product pages open in the matching direction: the link carries ?design= and this tab remembers it.
+  document.querySelectorAll('[data-product-link]').forEach(a=>{const u=new URL(a.href);u.searchParams.set('design',b?'b':'a');a.href=u.href;});
+  try{sessionStorage.setItem('bcc-design',b?'b':'a');}catch{}
   document.title=`Body Café Co. — ${b?'Expressive everyday':'Warm editorial'} concept`;
 }
 document.querySelectorAll('[data-switch]').forEach(button=>button.addEventListener('click',()=>setConcept(button.dataset.switch)));

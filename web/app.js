@@ -1,13 +1,21 @@
 /* Body Café Co. — storefront preview.
    View layer: templates + interaction. Data, cart, checkout, account and ops logic live further down. */
-const requestedDesign = new URL(location.href).searchParams.get("design");
+/* Design direction. A/B homepages are the standalone concepts; C/D homepages and all four product pages live here.
+   Precedence: ?design= in the URL, then this tab's sessionStorage (also written by the A/B concept pages), then C. */
+const DESIGNS = ["a", "b", "c", "d"];
 let activeDesign = "c";
-try {
-  activeDesign = requestedDesign === "d" || requestedDesign === "c" ? requestedDesign : sessionStorage.getItem("bcc-design") || "c";
-  if (!["c", "d"].includes(activeDesign)) activeDesign = "c";
-  sessionStorage.setItem("bcc-design", activeDesign);
-} catch { activeDesign = requestedDesign === "d" ? "d" : "c"; }
-document.body.dataset.design = activeDesign;
+function syncDesign() {
+  const requested = new URL(location.href).searchParams.get("design");
+  let stored = null;
+  try { stored = sessionStorage.getItem("bcc-design"); } catch {}
+  activeDesign = DESIGNS.includes(requested) ? requested : DESIGNS.includes(stored) ? stored : DESIGNS.includes(activeDesign) ? activeDesign : "c";
+  try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
+  document.body.dataset.design = activeDesign;
+}
+syncDesign();
+/* Where "home" is for the active direction: A/B return to their concept homepage. */
+const conceptHome = (d) => `/concepts/index.html?concept=${d}`;
+const designHome = () => (activeDesign === "a" || activeDesign === "b" ? conceptHome(activeDesign) : "/");
 const $ = (s) => document.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const escape = (value) =>
@@ -188,6 +196,22 @@ function card(p) {
 function grid(products = state.catalog) {
   return `<div class="tile-grid">${products.map(card).join("")}</div>`;
 }
+/* The four-option selector. On a product page every option keeps the same product (handled in-app);
+   elsewhere A/B open their concept homepage and C/D open their storefront homepage. */
+function designLinks() {
+  const pid = location.pathname.startsWith("/products/") && product(location.pathname.split("/")[2]) ? location.pathname.split("/")[2] : "";
+  return [
+    ["a", "Warm editorial"],
+    ["b", "Expressive everyday"],
+    ["c", "Claude design"],
+    ["d", "Still life"],
+  ]
+    .map(([d, label]) => {
+      const href = pid ? `/products/${pid}?design=${d}` : d === "a" || d === "b" ? conceptHome(d) : `/?design=${d}`;
+      return `<a ${pid ? "data-design-switch" : "data-design-link"} href="${href}"${activeDesign === d ? ' aria-current="page"' : ""}>${d.toUpperCase()} <span>${label}</span></a>`;
+    })
+    .join("");
+}
 function shell(content) {
   const mobile = state.user?.mobile;
   const path = location.pathname;
@@ -199,7 +223,7 @@ function shell(content) {
     ["/reports", "Lot reports"],
   ];
   const current = (href) => (path === href || path.startsWith(href + "/") ? ' aria-current="page"' : "");
-  return `<div class="preview-bar"><p>Preview store. Prices are samples and no payment is taken.</p><nav class="design-switch" aria-label="Choose design concept"><a data-design-link href="/concepts/index.html?concept=a">A <span>Warm editorial</span></a><a data-design-link href="/concepts/index.html?concept=b">B <span>Expressive everyday</span></a><a data-design-link href="/?design=c"${activeDesign === "c" ? ' aria-current="page"' : ""}>C <span>Claude design</span></a><a data-design-link href="/?design=d"${activeDesign === "d" ? ' aria-current="page"' : ""}>D <span>Still life</span></a></nav><a href="/ops">Operations preview</a></div><header class="site-header"><a class="logo" href="/" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a><nav class="main-nav" aria-label="Main">${nav.map(([h, l]) => `<a href="${h}"${current(h)}>${l}</a>`).join("")}</nav><div class="header-tools"><button class="icon-button" data-action="search" aria-label="Search">${icon("search")}</button><a class="icon-button" href="/account" aria-label="Your account">${icon("user")}</a><a class="bag-link" href="/cart" aria-label="Bag, ${count()} items">${icon("bag")}<span data-cart-count ${count() ? "" : "data-empty"}>${count()}</span></a><button class="menu-button" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header><nav id="mobile-nav" hidden aria-label="Mobile"><div class="mobile-nav-links">${[
+  return `<div class="preview-bar"><p>Preview store. Prices are samples and no payment is taken.</p><nav class="design-switch" aria-label="Choose design concept">${designLinks()}</nav><a href="/ops">Operations preview</a></div><header class="site-header"><a class="logo" href="${designHome()}" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a><nav class="main-nav" aria-label="Main">${nav.map(([h, l]) => `<a href="${h}"${current(h)}>${l}</a>`).join("")}</nav><div class="header-tools"><button class="icon-button" data-action="search" aria-label="Search">${icon("search")}</button><a class="icon-button" href="/account" aria-label="Your account">${icon("user")}</a><a class="bag-link" href="/cart" aria-label="Bag, ${count()} items">${icon("bag")}<span data-cart-count ${count() ? "" : "data-empty"}>${count()}</span></a><button class="menu-button" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header><nav id="mobile-nav" hidden aria-label="Mobile"><div class="mobile-nav-links">${[
     ["/shop", "Shop all seven"],
     ["/bundles", "The edits"],
     ["/standards", "Standards"],
@@ -282,12 +306,31 @@ function shop() {
   return `<section class="section shop">${heading("", "Shop all seven", "Capsules, softgels and chews. Every product page has the ingredient, the format and a link to its lot reports.")}<div class="shop-tools"><nav class="filter-tabs" aria-label="Filter by format">${["all", "Capsules", "Softgels", "Chewable tablets"].map((f) => `<a ${f === selected ? 'aria-current="page"' : ""} href="/shop${f === "all" ? "" : "?format=" + encodeURIComponent(f)}">${f === "all" ? "All" : f}</a>`).join("")}</nav><span class="count">${list.length} product${list.length === 1 ? "" : "s"}</span></div>${list.length ? grid(list) : empty("Nothing in that format yet.", "Try another format or see the full range.", "Show all products", "/shop")}<p class="note-line">Sample prices. Full quantities, claims and rear-label information are reviewed before launch.</p></section>`;
 }
 
-/* ---------- Product ---------- */
+/* ---------- Product ----------
+   Layout and visual language come from web/pdp.js (one template per design direction).
+   Product data, quantity limits, add-to-bag, pincode and lot lookup stay in this file. */
 function detail(p) {
   if (!p) return notFound();
   event("product_view");
-  const unavailable = !p.stock || !p.published;
-  return `<section class="pdp" style="${capStyle(p)}"><div class="pdp-stage"><span class="pdp-ghost" aria-hidden="true">${escape(shortName[p.id] || p.name)}</span>${image(p, "pdp-bottle", true)}<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/shop">Shop</a><span aria-hidden="true">/</span><span>${escape(p.name)}</span></nav></div><div class="pdp-info"><p class="pdp-format">${format[p.id]} · ${escape(p.category)}</p><h1 class="display pdp-title">${escape(p.name)}</h1><p class="pdp-sub">${escape(p.subtitle)}</p><div class="pdp-price">${price(p)}</div><p class="pdp-desc">Read what's inside, how the format works, and the record for your lot, before you decide.</p><div class="buy-row"><div class="qty-select"><label for="product-quantity">Qty</label><select id="product-quantity">${[1, 2, 3, 4, 5].map((n) => `<option value="${n}">${n}</option>`).join("")}</select></div><button class="button cap-button" data-action="add-product" data-id="${p.id}" ${unavailable ? "disabled" : ""}><span>${unavailable ? "Unavailable" : "Add to bag"}</span>${icon("plus")}</button></div><p class="micro">Preview order only. No payment or dispatch.</p><dl class="fact-lines"><div><dt>Format</dt><dd>${format[p.id]}</dd></div><div><dt>Purchase</dt><dd>One-time</dd></div><div><dt>Serving and pack</dt><dd>Awaiting approved label</dd></div></dl><form id="pincode-form" class="pincode-form"><label for="pincode">Check delivery to your pincode</label><div><input id="pincode" name="pincode" inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6" placeholder="6-digit pincode" required><button type="submit">Check</button></div><p id="pincode-result" class="micro" role="status"></p></form><a class="lot-callout" href="/reports?product=${p.id}"><span>Have this bottle already?</span><strong>Find your lot report</strong>${icon("arrow")}</a><div class="accordion"><details open><summary><span>What's inside</span>${icon("plus")}</summary><p>${escape(p.ingredients)}.</p><p>Full ingredients, amounts per serving, allergens and nutrition facts will come from the approved rear label.</p></details><details><summary><span>How to use</span>${icon("plus")}</summary><p>Directions and storage are waiting on approved label data. The preview doesn't suggest a dose.</p></details><details><summary><span>Before you choose</span>${icon("plus")}</summary><p>Cautions and warnings will be added from reviewed material. Nothing here is a diagnosis or personal health advice.</p></details><details><summary><span>Testing and evidence</span>${icon("plus")}</summary><p>A report describes the sample tested from a specific lot. It doesn't prove an individual pack is authentic.</p><a class="text-link" href="/reports?product=${p.id}">Look up a lot</a></details><details><summary><span>Delivery and returns</span>${icon("plus")}</summary><p>See the working shipping and returns policies. Fees and eligibility aren't final yet.</p><a class="text-link" href="/policies/returns">Returns policy</a></details></div></div></section><section class="section reviews-section"><h2 class="display">Reviews</h2><p>Reviews appear only after a verified delivery and moderation. We won't fill this space with made-up ones.</p><a href="/account" class="text-link">Leave a review for a delivered order</a></section><section class="section related"><div class="section-head"><h2 class="display">Also on the menu</h2></div>${grid(state.catalog.filter((x) => x.published && x.id !== p.id).slice(0, 3))}</section>`;
+  if (!window.BCCProductPage) return notFound();
+  return window.BCCProductPage({
+    p,
+    design: activeDesign,
+    catalog: state.catalog,
+    flags: state.flags,
+    image,
+    cap,
+    capStyle,
+    escape,
+    money,
+    format,
+    shortName,
+    icon,
+    faqs,
+    learning,
+    homeHref: designHome(),
+    collectionHref: activeDesign === "a" || activeDesign === "b" ? conceptHome(activeDesign) + "#shop" : "/shop",
+  });
 }
 
 /* ---------- Bundles ---------- */
@@ -550,6 +593,7 @@ function enhance() {
   counter.paused = false;
   counter.mount($("[data-counter]"));
   menuPeek($(".menu"));
+  window.BCCProductPage?.enhance?.();
   headerState();
   document.body.classList.remove("menu-open");
   if (!$("[data-counter]")) document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#e4e9ef");
@@ -889,7 +933,16 @@ function focusKey(el) {
 }
 async function render(scroll = true) {
   const version = ++renderVersion;
+  syncDesign();
   const path = location.pathname;
+  // A/B homepages are the standalone concepts: going "home" in those directions returns there.
+  if (path === "/" && (activeDesign === "a" || activeDesign === "b")) return location.replace(conceptHome(activeDesign));
+  // Product pages carry their direction in the URL so reload, back/forward and shared links reopen the same design.
+  if (path.startsWith("/products/") && new URL(location.href).searchParams.get("design") !== activeDesign) {
+    const u = new URL(location.href);
+    u.searchParams.set("design", activeDesign);
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+  }
   try {
     let content;
     if (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/")) state.account = await api("/account");
@@ -936,8 +989,10 @@ async function render(scroll = true) {
       await document.startViewTransition(paint).updateCallbackDone;
     } else paint();
     booted = true;
-    document.title =
-      (path === "/"
+    const shown = path.startsWith("/products/") ? product(path.split("/")[2]) : null;
+    document.title = shown
+      ? `${shown.name} — Body Café Co.`
+      : (path === "/"
         ? "Seven everyday essentials"
         : path
             .split("/")
@@ -992,6 +1047,7 @@ document.addEventListener("click", async (e) => {
     anchor &&
     !anchor.hasAttribute("data-design-link") &&
     anchor.origin === location.origin &&
+    !anchor.pathname.startsWith("/concepts/") &&
     !anchor.getAttribute("href").startsWith("#") &&
     !e.metaKey &&
     !e.ctrlKey &&
@@ -1149,9 +1205,18 @@ document.addEventListener("submit", async (e) => {
       navigate("/search?q=" + encodeURIComponent(data.q || ""));
     } else if (form.id === "home-lot") {
       navigate("/reports?product=" + encodeURIComponent(data.product) + "&lot=" + encodeURIComponent(data.lot), "#2d2926");
-    } else if (form.id === "pincode-form")
-      $("#pincode-result").textContent = "Sample estimate: 3 to 7 business days. Live dates need courier setup.";
-    else if (form.id === "checkout-form") {
+    } else if (form.id === "pdp-lot") {
+      navigate("/reports?product=" + encodeURIComponent(data.product) + "&lot=" + encodeURIComponent(data.lot.trim()), "#2d2926");
+    } else if (form.id === "pincode-form") {
+      // No serviceability data is connected, so the preview checks the format only and promises no date.
+      const pin = String(data.pincode || "").trim();
+      const valid = /^[1-9][0-9]{5}$/.test(pin);
+      form.elements.pincode.setAttribute("aria-invalid", String(!valid));
+      $("#pincode-result").textContent = valid
+        ? `${pin} is a valid pincode format. Delivery availability, charges and dates for it will be confirmed once courier serviceability is set up; the preview doesn't promise a delivery date.`
+        : "Enter a 6-digit Indian pincode that doesn't start with 0.";
+      if (!valid) form.elements.pincode.focus();
+    } else if (form.id === "checkout-form") {
       const o = await api("/orders", {
         ...data,
         contact: Object.fromEntries(["name", "mobile", "email", "pincode", "address", "city", "state"].map((k) => [k, data[k] || ""])),
