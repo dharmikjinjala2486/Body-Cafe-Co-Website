@@ -206,7 +206,7 @@ function home() {
   const list = state.catalog.filter((p) => p.published);
   const first = product("vitamin-d3-k2") || list[0];
   if (!first) return notFound();
-  return `<section class="counter" data-counter style="${capStyle(first)}" aria-labelledby="counter-title"><div class="counter-ghost" aria-hidden="true"><span data-counter-ghost>${escape(shortName[first.id] || first.name)}</span></div><div class="counter-copy"><h1 id="counter-title" class="display">Seven everyday essentials. Pick a cap.</h1><p class="counter-lede">Every Body Café Co. supplement comes with a clear label, plain-language ingredient notes and a record for the lot you're holding.</p><div class="counter-actions">${link("Shop all seven", "/shop", "button on-cap")}${link("Find your lot report", "/reports", "text-link")}</div></div><div class="counter-stage"><div class="counter-bottles">${list
+  return `<section class="counter" data-counter style="${capStyle(first)}" aria-labelledby="counter-title"><div class="counter-ghost" aria-hidden="true"><span data-counter-ghost>${escape(shortName[first.id] || first.name)}</span></div><div class="counter-copy"><h1 id="counter-title" class="display">Seven everyday essentials. Pick a cap.</h1><p class="counter-lede">Seven supplements. A closer look at ingredients, formats and the details behind your choice. Explore the collection while final labels and evidence are prepared.</p><div class="counter-actions">${link("Shop all seven", "/shop", "button on-cap")}${link("Explore our standards", "/standards", "text-link")}</div></div><div class="counter-stage"><div class="counter-bottles">${list
     .map(
       (p) =>
         `<a class="counter-bottle ${p.id === first.id ? "is-active" : ""}" data-counter-bottle="${p.id}" href="/products/${p.id}" tabindex="${p.id === first.id ? 0 : -1}" aria-hidden="${p.id === first.id ? "false" : "true"}">${image(p, "", p.id === first.id)}</a>`,
@@ -218,20 +218,20 @@ function home() {
       (p) =>
         `<button class="counter-cap" data-counter-pick="${p.id}" data-color="${p.color}" aria-pressed="${p.id === first.id}" aria-label="${escape(p.name)}">${cap(p)}<span class="cap-label">${escape(shortName[p.id] || p.name)}</span></button>`,
     )
-    .join("")}</div></section>${menuBoard(list)}${homeLot()}${homeSteps()}<section class="section edits-home"><div class="section-head"><h2 class="display">The edits</h2><p>Two products that sit well on the same shelf. Each is priced on its own; there's no bundle discount in the preview.</p></div>${bundleGrid()}</section><section class="section faq-home"><div class="section-head"><h2 class="display">Before you ask</h2></div><div class="faq">${faqList()}</div></section>`;
+    .join("")}</div></section>${window.BCCHome.strip()}${menuBoard(list)}${window.BCCHome.evidence()}${window.BCCHome.voices()}${homeLot()}${window.BCCHome.story()}${window.BCCHome.learn()}${window.BCCHome.care()}`;
 }
 function menuBoard(list) {
   return `<section class="section menu" aria-labelledby="menu-title"><div class="section-head"><h2 id="menu-title" class="display">Today's menu</h2><p>The full collection on one board. Open a line for the details, or add it straight to your bag.</p></div><ul class="menu-board">${list
     .map(
       (p) =>
-        `<li class="menu-row" style="${capStyle(p)}" data-peek="${p.id}"><a href="/products/${p.id}" class="menu-link">${cap(p, "menu-cap")}<span class="menu-name">${escape(p.name)}</span><span class="menu-format">${format[p.id]}</span><span class="menu-leader" aria-hidden="true"></span><span class="menu-price">${money(p.price)}</span></a><button class="menu-add" data-add="${p.id}" aria-label="Add ${escape(p.name)} to bag" ${!p.stock || !p.published ? "disabled" : ""}>${icon("plus")}</button></li>`,
+        `<li class="menu-row" style="${capStyle(p)}" data-peek="${p.id}"><a href="/products/${p.id}" class="menu-link">${cap(p, "menu-cap")}<span class="hc-menu-name"><span class="menu-name">${escape(p.name)}</span><span class="menu-summary">${escape(p.subtitle)}</span></span><span class="menu-format">${format[p.id]}</span><span class="menu-leader" aria-hidden="true"></span><span class="menu-price">${money(p.price)}</span></a><button class="menu-add" data-add="${p.id}" aria-label="Add ${escape(p.name)} to bag" ${!p.stock || !p.published ? "disabled" : ""}>${icon("plus")}</button></li>`,
     )
     .join(
       "",
-    )}</ul><p class="menu-note">All prices are samples. Final prices, GST and delivery are confirmed before launch.</p><div class="menu-peek" aria-hidden="true">${list.map((p) => `<img src="/web/media/${p.id}.webp" alt="" data-peek-img="${p.id}" width="${bottleWidth[p.id]}" height="1000" loading="lazy">`).join("")}</div></section>`;
+    )}</ul><p class="menu-note">All prices are samples. Pack sizes, serving quantities, directions and approved product purposes are awaiting final labels. Final prices, GST and delivery are confirmed before launch.</p><div class="menu-peek" aria-hidden="true">${list.map((p) => `<img src="/web/media/${p.id}.webp" alt="" data-peek-img="${p.id}" width="${bottleWidth[p.id]}" height="1000" loading="lazy">`).join("")}</div></section>`;
 }
 function homeLot() {
-  return `<section class="lot-band" aria-labelledby="lot-title"><div class="lot-inner"><div class="lot-copy"><h2 id="lot-title" class="display">Turn the bottle over.</h2><p>Every pack carries a lot number. Enter it to see the record for the batch in your hands.</p></div><form id="home-lot" class="lot-form"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">${state.catalog.map((p, i) => `<option value="${p.id}" data-sample="DEMO-${String(i + 1).padStart(2, "0")}-01">${escape(p.name)}</option>`).join("")}</select><label for="home-lot-number">Lot number</label><div class="lot-input"><input id="home-lot-number" name="lot" placeholder="DEMO-01-01" maxlength="60" required autocomplete="off"><button class="button on-dark" type="submit">Look up</button></div><p class="micro">Try <button type="button" class="link-button" data-fill-lot>the sample lot</button> for the product you picked.</p></form></div></section>`;
+  return `<section id="home-report" class="lot-band" aria-labelledby="lot-title"><div class="lot-inner"><div class="lot-copy"><h2 id="lot-title" class="display">Turn the bottle over.</h2><p>Understand the evidence before you choose. Already have a bottle? Its lot number connects a pack to the corresponding batch record.</p>${window.BCCHome.example()}</div><form id="home-lot" class="lot-form"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">${state.catalog.map((p, i) => `<option value="${p.id}" data-sample="DEMO-${String(i + 1).padStart(2, "0")}-01">${escape(p.name)}</option>`).join("")}</select><label for="home-lot-number">Lot number</label><div class="lot-input"><input id="home-lot-number" name="lot" placeholder="DEMO-01-01" maxlength="60" required autocomplete="off"><button class="button on-dark" type="submit">Look up</button></div><p class="micro">Demonstration only. Try <button type="button" class="link-button" data-fill-lot>the sample lot</button> for the product you picked. No real laboratory document is connected.</p></form></div></section>`;
 }
 function homeSteps() {
   const steps = [
@@ -253,7 +253,7 @@ const faqs = [
   ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, shipping rules and offers are still being approved."],
   [
     "How do returns work?",
-    "Unopened items can be returned within seven days. Opened products are reviewed case by case. Final timings are still being confirmed.",
+    "Final return eligibility, timing and remedies are still being approved. See the working returns policy; this preview does not promise a return window.",
   ],
   [
     "Who do I contact about a product issue?",
@@ -433,7 +433,7 @@ const counter = {
       e.preventDefault();
     });
     tilt(root.querySelector(".counter-stage"), root);
-    this.start();
+    this.paused = true;
   },
 };
 

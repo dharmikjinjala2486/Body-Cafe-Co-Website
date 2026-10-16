@@ -10,22 +10,16 @@ const products = [
 const grid=document.querySelector('#product-grid');
 products.forEach((p,i)=>{
   const article=document.createElement('article'); article.className='product-card'; article.style.setProperty('--sku',p.color);
-  article.innerHTML=`<a class="product-photo" href="#product" data-product="${p.slug}" aria-label="Explore ${p.name}"><img src="media/${p.slug}.webp" alt="${p.name} bottle mockup" width="1196" height="1315" loading="lazy"><span class="product-number">0${i+1}</span><span class="product-arrow" aria-hidden="true">↗</span></a><div class="product-meta"><span class="sku-line"></span><h3><a href="#product" data-product="${p.slug}">${p.name}</a></h3><p>${p.sub}</p></div>`;
+  article.innerHTML=`<a class="product-photo" href="http://127.0.0.1:4174/products/${p.slug}" aria-label="Explore ${p.name}"><img src="media/${p.slug}.webp" alt="${p.name} bottle mockup" width="1196" height="1315" loading="lazy"><span class="product-number">0${i+1}</span><span class="product-arrow" aria-hidden="true">↗</span></a><div class="product-meta"><span class="sku-line"></span><h3><a href="http://127.0.0.1:4174/products/${p.slug}">${p.name}</a></h3><p>${p.sub}</p></div>`;
   grid.append(article);
   const option=document.createElement('option');option.value=p.slug;option.textContent=p.name;document.querySelector('#report-product').append(option);
 });
-const reportTile=document.createElement('a'); reportTile.href='#report'; reportTile.className='collection-report'; reportTile.innerHTML='<span class="eyebrow">A LITTLE CURIOSITY</span><strong>Start with<br>the details.</strong><p>Have a bottle? Find the report for your lot.</p><span class="report-tile-link">Find your lot report ↗</span>'; grid.append(reportTile);
 document.querySelector('#report-product').value='vitamin-d3-k2';
-document.querySelectorAll('[data-product]').forEach(link=>link.addEventListener('click',()=>{
-  const p=products.find(p=>p.slug===link.dataset.product);const i=products.indexOf(p);
-  const image=document.querySelector('#detail-image');image.src=`media/${p.slug}.webp`;image.alt=`${p.name} product mockup`;
-  document.querySelector('#detail-title').textContent=p.name;
-  document.querySelector('#detail-subtitle').textContent=p.sub;
-  document.querySelector('#detail-category').textContent=`THE EVERYDAY COLLECTION / 0${i+1}`;
-  document.querySelector('#ingredients-copy').textContent=p.slug==='vitamin-d3-k2'?'Vitamin D3, Vitamin K2 and Omega-3 as triglycerides. Full formulation and amounts per serving will be added from the approved label.':'The full formulation, ingredient forms and amounts per serving will appear here from the approved label.';
-  document.querySelector('#report-product').value=p.slug;
-  document.querySelector('#report-result').replaceChildren();
-}));
+const storefront='http://127.0.0.1:4174/';
+document.querySelector('#home-trust-strip').innerHTML=window.BCCHome.strip();
+document.querySelector('#home-evidence-modules').innerHTML=window.BCCHome.evidence(storefront)+window.BCCHome.voices();
+document.querySelector('#home-report-example').innerHTML=window.BCCHome.example();
+document.querySelector('#home-lower-modules').innerHTML=window.BCCHome.story(storefront)+window.BCCHome.learn(storefront)+window.BCCHome.care(storefront);
 function setConcept(concept){
   const b=concept==='b';document.body.dataset.concept=b?'b':'a';
   document.querySelectorAll('[data-switch]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.switch===(b?'b':'a'))));
