@@ -430,3 +430,10 @@ body[data-design="c"] .hc-faq details p { margin: 0 0 22px; max-width: 60ch; }
   body[data-concept="b"] .hc-guides > a, body[data-design="c"] .hc-guides > a { transition: none !important; }
   body[data-concept="b"] .hc-guides > a:hover, body[data-concept="b"] .hc-section a:hover { transform: none !important; }
 }
+
+/* QA: narrow screens must not expand the story grid for a long heading. */
+.hc-story>div,.hc-split>div,.hc-care>div{min-width:0}
+.hc-section h2{overflow-wrap:anywhere}
+.hc-faq details>summary,.hc-report-example>summary{padding-inline-end:8px}
+body[data-design="c"] .hc-story h2{font-size:clamp(30px,4vw,60px);overflow-wrap:anywhere}
+body[data-design="c"] .hc-faq details>summary{padding-inline-end:10px}

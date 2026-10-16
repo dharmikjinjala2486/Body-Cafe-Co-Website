@@ -39,6 +39,15 @@ class HttpTests(unittest.TestCase):
         self.assertEqual(self.request('POST',f'/api/orders/{oid}/pay',{'outcome':'failure'})[0],200)
         self.assertEqual(self.request('POST',f'/api/orders/{oid}/pay',{'outcome':'success'})[0],200)
         result=json.loads(self.request('POST',f'/api/orders/{oid}/pay',{'outcome':'success'})[2]);self.assertTrue(result['idempotent'])
+    def test_checkout_rejects_malformed_nested_values(self):
+        payload={'adult':True,'items':[{'id':'iron-bisglycinate','quantity':1}], 'contact':{'name':'Preview Customer','mobile':'9876543210','address':'123 Sample Street','city':'Surat','state':'Gujarat','pincode':'395001'}}
+        for contact in [None, [], 'invalid']:
+            with self.subTest(contact=contact):
+                self.assertEqual(self.request('POST','/api/orders',{**payload,'contact':contact})[0],400)
+        for item in [None, [], 'invalid', {'id':['iron-bisglycinate'],'quantity':1}, {'id':'iron-bisglycinate','quantity':True}]:
+            with self.subTest(item=item):
+                self.assertEqual(self.request('POST','/api/orders',{**payload,'items':[item]})[0],400)
+
     def test_reports_include_distinct_states(self):
         for lot,expected in [('DEMO-03-01','sample_match'),('UNKNOWN','not_found'),('DEMO-UNPUBLISHED','unpublished'),('DEMO-WITHDRAWN','withdrawn')]:
             result=json.loads(self.request('GET','/api/reports?product=vitamin-d3-k2&lot='+lot)[2]);self.assertEqual(result['state'],expected);self.assertIsNone(result['document'])

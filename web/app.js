@@ -165,11 +165,11 @@ function link(label, url, cls = "button") {
 function heading(kicker, title, description = "") {
   return `<header class="page-heading">${kicker ? `<p class="kicker">${kicker}</p>` : ""}<h1 class="display">${title}</h1>${description ? `<p class="lede">${description}</p>` : ""}</header>`;
 }
-function empty(title, text, cta = "Shop all seven", href = "/shop") {
+function empty(title, text, cta = "Shop all seven", href = "/shop", headingTag = "h2") {
   return `<div class="empty"><div class="empty-caps" aria-hidden="true">${state.catalog
     .slice(0, 7)
     .map((p) => `<span style="--cap:${p.color}"></span>`)
-    .join("")}</div><h2>${title}</h2><p>${text}</p>${link(cta, href)}</div>`;
+    .join("")}</div><${headingTag}>${title}</${headingTag}><p>${text}</p>${link(cta, href)}</div>`;
 }
 function price(p) {
   return `<span class="price">${money(p.price)}</span><span class="sample-price">Sample price</span>`;
@@ -589,7 +589,7 @@ function addressFields(prefix = "", v = {}) {
 }
 function checkout() {
   if (!state.cart.length)
-    return `<section class="section-wrap">${empty("Your bag is empty", "Add a product before checking out.")}</section>`;
+    return `<section class="section-wrap">${empty("Your bag is empty", "Add a product before checking out.", "Shop all seven", "/shop", "h1")}</section>`;
   event("checkout_start");
   return `<section class="section-wrap">${heading("", "Checkout", "Check out as a guest. Use sample details: no payment is taken and no messages are sent.")}<div class="checkout-layout"><form id="checkout-form" class="checkout-form"><div class="form-section"><p class="kicker">1. Delivery</p>${addressFields("", { mobile: state.user?.mobile || "" })}<details><summary><span>Need a GST invoice?</span>${icon("plus")}</summary><label for="gstin">GSTIN (optional)</label><input id="gstin" name="gstin" maxlength="15"><label for="legal-name">Legal name</label><input id="legal-name" name="legal_name" maxlength="200"></details></div><div class="form-section"><p class="kicker">2. Payment</p><label class="payment-choice"><input type="radio" checked name="method" value="prepaid"><span><strong>Prepaid · preview payment</strong><small>UPI, cards, wallets and net banking are planned with Razorpay.</small></span></label><div class="disabled-option"><span>Cash on delivery</span>${badge("Policy pending")}<p>The ₹150 collection method and courier COD charge need confirmation before activation.</p></div></div><div class="form-section"><p class="kicker">3. Confirm</p><label class="check"><input type="checkbox" name="adult" required><span>I confirm the purchaser is 18 or older.</span></label><label class="check"><input type="checkbox" name="email_consent"><span>I’d like optional email updates. (Optional)</span></label><label class="check"><input type="checkbox" name="whatsapp_consent"><span>I’d like optional WhatsApp updates. (Optional)</span></label><p class="micro">Marketing choices are separate and unchecked. See <a href="/policies/privacy">privacy</a> and the <a href="/policies/terms">working terms</a>.</p><div class="form-error" role="alert"></div><button class="button full" type="submit">Create preview order</button><p class="micro">A 15-minute preview stock reservation starts when this order is created.</p></div></form><aside class="order-summary checkout-summary"><p class="kicker">In your bag (${count()})</p>${state.cart
     .map((i) => {
@@ -635,6 +635,7 @@ function orderDetail(o) {
     return `<section class="section-wrap">${empty("Order not found.", "Sign in to the customer session that owns this order.", "Your account", "/account")}</section>`;
   const customer = state.user.role === "customer";
   const canCancel = customer && ["pending", "paid"].includes(o.state);
+  const reviewItems = o.items.filter(i => !(state.account?.reviews || []).some(r => r.order_id === o.id && r.product === i.id));
   return `<section class="section-wrap">${heading("Order", o.id, `Created ${date(o.created)} · Preview transaction only.`)}<div class="order-detail-layout"><div><div class="tracking-card"><div class="section-heading"><h2>${o.state === "delivered" ? "At your door." : o.state === "shipped" ? "On its way." : o.state === "paid" ? "We have your order." : "Your order status."}</h2>${badge(o.state)}</div><div class="timeline">${[
     "pending",
     "paid",
@@ -647,7 +648,7 @@ function orderDetail(o) {
     })
     .join(
       "",
-    )}</div>${o.provider ? `<p>${escape(o.provider)} · ${escape(o.tracking)} <small>Simulated tracking; no shipment booked.</small></p>` : ""}${o.refund !== "none" ? `<p>Refund: ${badge(o.refund)}</p>` : ""}</div><div class="order-items">${o.items.map((i) => `<div>${image(product(i.id))}<span><strong>${i.name}</strong><small>Quantity ${i.quantity}</small></span><strong>${money(i.quantity * i.unit_price)}</strong></div>`).join("")}</div><div class="order-actions">${o.state === "pending" ? link("Continue preview payment", "/payment/" + o.id) : ""}${canCancel ? `<button class="button outline" data-cancel="${o.id}">Cancel preview order</button>` : ""}<button class="button outline" data-reorder="${o.id}">Reorder items</button>${link("Get help with this order", "/contact?order=" + o.id, "text-link")}</div>${customer && o.state === "delivered" ? `<form id="review-form" class="form-panel"><p class="kicker">Verified delivery</p><h2>Review your order</h2><input type="hidden" name="order_id" value="${o.id}"><label for="review-product">Product</label><select id="review-product" name="product">${o.items.map((i) => `<option value="${i.id}">${i.name}</option>`).join("")}</select><label for="rating">Rating</label><select id="rating" name="rating">${[5, 4, 3, 2, 1].map((n) => `<option value="${n}">${n} stars</option>`).join("")}</select><label for="review-text">Your review</label><textarea id="review-text" name="text" minlength="10" maxlength="1000" required></textarea><div class="form-error" role="alert"></div><button class="button">Submit for preview moderation</button></form>` : ""}</div><aside class="order-summary"><p class="kicker">Order summary</p><div><span>Sample subtotal</span><span>${money(o.subtotal)}</span></div><div><span>Sample discount</span><span>−${money(o.discount)}</span></div><div><span>Sample delivery</span><span>${money(o.shipping)}</span></div><div class="summary-total"><strong>Total</strong><strong>${money(o.total)}</strong></div><h3>Delivery address</h3><p>${escape(o.contact.name)}<br>${escape(o.contact.address)}<br>${escape(o.contact.city)}, ${escape(o.contact.state)}<br>${escape(o.contact.pincode)}</p><p class="micro">Policy snapshot: ${o.policy_version}</p></aside></div></section>`;
+    )}</div>${o.provider ? `<p>${escape(o.provider)} · ${escape(o.tracking)} <small>Simulated tracking; no shipment booked.</small></p>` : ""}${o.refund !== "none" ? `<p>Refund: ${badge(o.refund)}</p>` : ""}</div><div class="order-items">${o.items.map((i) => `<div>${image(product(i.id))}<span><strong>${i.name}</strong><small>Quantity ${i.quantity}</small></span><strong>${money(i.quantity * i.unit_price)}</strong></div>`).join("")}</div><div class="order-actions">${o.state === "pending" ? link("Continue preview payment", "/payment/" + o.id) : ""}${canCancel ? `<button class="button outline" data-cancel="${o.id}">Cancel preview order</button>` : ""}<button class="button outline" data-reorder="${o.id}">Reorder items</button>${link("Get help with this order", "/contact?order=" + o.id, "text-link")}</div>${customer && o.state === "delivered" ? reviewItems.length ? `<form id="review-form" class="form-panel"><p class="kicker">Verified delivery</p><h2>Review your order</h2><input type="hidden" name="order_id" value="${o.id}"><label for="review-product">Product</label><select id="review-product" name="product">${reviewItems.map((i) => `<option value="${i.id}">${escape(i.name)}</option>`).join("")}</select><label for="rating">Rating</label><select id="rating" name="rating">${[5, 4, 3, 2, 1].map((n) => `<option value="${n}">${n} stars</option>`).join("")}</select><label for="review-text">Your review</label><textarea id="review-text" name="text" minlength="10" maxlength="1000" required></textarea><div class="form-error" role="alert"></div><button class="button">Submit for preview moderation</button></form>` : `<div class="form-panel" role="status"><h2>Review submitted</h2><p>Your review is awaiting preview moderation.</p></div>` : ""}</div><aside class="order-summary"><p class="kicker">Order summary</p><div><span>Sample subtotal</span><span>${money(o.subtotal)}</span></div><div><span>Sample discount</span><span>−${money(o.discount)}</span></div><div><span>Sample delivery</span><span>${money(o.shipping)}</span></div><div class="summary-total"><strong>Total</strong><strong>${money(o.total)}</strong></div><h3>Delivery address</h3><p>${escape(o.contact.name)}<br>${escape(o.contact.address)}<br>${escape(o.contact.city)}, ${escape(o.contact.state)}<br>${escape(o.contact.pincode)}</p><p class="micro">Policy snapshot: ${o.policy_version}</p></aside></div></section>`;
 }
 
 function help() {
@@ -866,7 +867,7 @@ function ops(tab = "overview") {
   return `<div class="ops-layout"><aside class="ops-sidebar"><p class="kicker">Body Café Co. operations</p><h2>Operations</h2><p>${escape(state.user.name)} ${badge(state.user.role)}</p><nav aria-label="Operations sections">${opsTabs.map(([id, l]) => `<a class="${id === tab ? "active" : ""}" href="/ops${id === "overview" ? "" : "/" + id}">${l}</a>`).join("")}</nav><button class="small-button" data-action="logout">Leave operations</button></aside><section class="ops-content"><div class="ops-heading"><div><p class="kicker">${viewer ? "Read-only" : "Admin"} view</p><h1>${opsTabs.find((x) => x[0] === tab)[1]}</h1></div><button class="small-button" data-action="refresh">Refresh</button></div>${content}</section></div>`;
 }
 function notFound() {
-  return `<section class="section-wrap">${empty("Page not found", "That link doesn't lead anywhere. Head back to the shop.", "Shop all seven", "/shop")}</section>`;
+  return `<section class="section-wrap">${empty("Page not found", "That link doesn't lead anywhere. Head back to the shop.", "Shop all seven", "/shop", "h1")}</section>`;
 }
 
 let renderVersion = 0;
@@ -1187,8 +1188,8 @@ document.addEventListener("submit", async (e) => {
       toast("Preview address saved.");
     } else if (form.id === "review-form") {
       await api("/reviews", { ...data, rating: Number(data.rating) });
+      await render(false);
       toast("Review submitted for preview moderation.");
-      form.reset();
     } else if (form.id === "preferences-form") {
       const pref = Object.fromEntries(["email", "whatsapp", "analytics"].map((k) => [k, form.elements[k].checked]));
       localStorage.setItem("bcc-preferences", JSON.stringify(pref));

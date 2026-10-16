@@ -158,6 +158,7 @@ class Store:
         if s['role']!='customer':raise Error('Use a customer session to place a preview order.',403)
         if data.get('adult') is not True:raise Error('Confirm that the purchaser is 18 or older.')
         contact=data.get('contact',{})
+        if not isinstance(contact,dict):raise Error('Complete your delivery address.')
         if not re.fullmatch(r'[6-9][0-9]{9}',str(contact.get('mobile',''))):raise Error('Enter a valid mobile number.')
         if not re.fullmatch(r'[1-9][0-9]{5}',str(contact.get('pincode',''))):raise Error('Enter a valid six-digit pincode.')
         for key in ['name','address','city','state']:
@@ -170,7 +171,9 @@ class Store:
         if not isinstance(raw,list) or not 1<=len(raw)<=30:raise Error('Your bag is empty or invalid.')
         merged={}
         for item in raw:
+            if not isinstance(item,dict):raise Error('Your bag contains an invalid item.')
             qty=item.get('quantity');pid=item.get('id')
+            if not isinstance(pid,str) or not 1<=len(pid)<=100:raise Error('Choose a valid product.')
             if type(qty)!=int or not 1<=qty<=10:raise Error('Choose a quantity between 1 and 10.')
             merged[pid]=merged.get(pid,0)+qty
             if merged[pid]>10:raise Error('Maximum preview quantity is 10 per product.')

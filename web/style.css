@@ -846,12 +846,12 @@ dialog::backdrop { background: rgb(45 41 38 / 0.5); backdrop-filter: blur(4px); 
   .menu-format { display: none; }
   .menu-link { grid-template-columns: auto minmax(0, max-content) 1fr auto; }
   .lot-inner, .standards-hero, .faq-home, .footer-top, .bundle-detail { grid-template-columns: 1fr; }
-  .pdp { grid-template-columns: 1fr; }
+  .pdp { grid-template-columns: minmax(0, 1fr); }
   .pdp-stage { position: relative; top: 0; height: clamp(420px, 90vw, 640px); min-height: 0; }
   .pdp-info { max-width: 760px; }
   .step-list.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .step-list.four li:nth-child(3) { border-left: 0; padding-left: 0; }
-  .cart-layout, .checkout-layout, .order-detail-layout, .payment-layout, .report-layout, .contact-layout, .account-welcome { grid-template-columns: 1fr; }
+  .cart-layout, .checkout-layout, .order-detail-layout, .payment-layout, .report-layout, .contact-layout, .account-welcome { grid-template-columns: minmax(0, 1fr); }
   .order-summary, .report-page .form-panel { position: static; }
   .help-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -936,3 +936,13 @@ dialog::backdrop { background: rgb(45 41 38 / 0.5); backdrop-filter: blur(4px); 
 .preview-bar .design-switch a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 @media(max-width:1100px){.preview-bar{flex-wrap:wrap;justify-content:center;gap:7px}.preview-bar>p{width:100%;text-align:center}.preview-bar>a{display:none}}
 @media(max-width:480px){.preview-bar{padding:8px 12px}.preview-bar>p{font-size:10px}.preview-bar .design-switch{width:100%;gap:3px}.preview-bar .design-switch a{flex:1;justify-content:center;gap:4px;padding:8px 5px;font-size:10px}}
+
+/* Full QA: keep long policy titles and accordion icons inside their columns. */
+.article .page-heading h1{font-size:clamp(36px,6vw,88px);overflow-wrap:anywhere}
+summary svg{flex-shrink:0;margin-inline-end:5px}
+.empty h1{font-family:var(--display);text-transform:uppercase;font-size:clamp(30px,4vw,52px);margin-bottom:12px}
+@media(max-width:360px){.menu-name{font-size:18px;overflow-wrap:anywhere}.counter-card{padding:12px}.counter-name{overflow-wrap:anywhere}}
+.payment-page .button{white-space:normal;line-height:1.4;text-align:center}
+
+.pdp-info{min-width:0}.pdp-title{overflow-wrap:anywhere}
+@media(max-width:360px){.pdp-title{font-size:36px}}

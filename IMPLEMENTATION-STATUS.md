@@ -2,7 +2,7 @@
 
 16 October 2026
 
-The user initially requested both A and B, using clearly labelled preview data. After requesting a redesign in Claude, the user asked Codex to sync those changes back. The latest storefront now uses Claude’s single “pick a cap” direction across the public pages and connected local commerce/support workflows. This delivery is a functional local preview and an operational foundation. The complete production v1 in the working plan is not yet launch-ready.
+The user initially requested both A and B, using clearly labelled preview data. After requesting a redesign in Claude, the user asked Codex to sync those changes back. Four visual options are available: A/B standalone concepts and C/D connected storefront homepages. C is “Pick a cap”; D is “The morning counter.” They share reviewed homepage content priorities while retaining distinct visual treatments. This delivery is a functional local preview and an operational foundation. The complete production v1 in the working plan is not yet launch-ready.
 
 ## Working locally
 
@@ -68,4 +68,8 @@ WCAG conformance, field Core Web Vitals, production security, load/availability,
 
 ## Claude redesign sync
 
-Imported and verified on 16 October 2026. See `CLAUDE-SYNC.md`. The backend remains unchanged and all production boundaries listed above still apply. The new frontend removes the full-site A/B switch.
+Imported and verified on 16 October 2026. See `CLAUDE-SYNC.md`. The backend remains unchanged and all production boundaries listed above still apply. The comparison selector preserves A/B/C/D; C/D share the connected application.
+
+## Full preview QA pass — 16 October 2026
+
+See `QA-Review-and-Next-Steps.md` for the current scope, verified fixes and production sequence. The backend suite now contains 22 passing tests, including malformed nested checkout validation. The public route sweep covered 46 route states at desktop and phone sizes, plus all four homepages at four widths and ten operations routes at two widths. Customer/order/support/approval workflows were exercised on an isolated QA database. Corrections address text/icon layout, small-screen grid sizing, primary headings, review-submission state and comparison-link origins. Claude's independent review is the next gate.

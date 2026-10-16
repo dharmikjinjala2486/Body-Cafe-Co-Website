@@ -1,3 +1,4 @@
+const storefront = location.port === '4173' ? 'http://127.0.0.1:4174/' : location.origin + '/';
 const products = [
   {slug:'iron-bisglycinate',name:'Iron Bisglycinate',sub:'A closer look at iron.',color:'#aa472e'},
   {slug:'l-theanine',name:'L-Theanine',sub:'Get to know the ingredient.',color:'#777d51'},
@@ -10,12 +11,12 @@ const products = [
 const grid=document.querySelector('#product-grid');
 products.forEach((p,i)=>{
   const article=document.createElement('article'); article.className='product-card'; article.style.setProperty('--sku',p.color);
-  article.innerHTML=`<a class="product-photo" href="http://127.0.0.1:4174/products/${p.slug}" aria-label="Explore ${p.name}"><img src="media/${p.slug}.webp" alt="${p.name} bottle mockup" width="1196" height="1315" loading="lazy"><span class="product-number">0${i+1}</span><span class="product-arrow" aria-hidden="true">↗</span></a><div class="product-meta"><span class="sku-line"></span><h3><a href="http://127.0.0.1:4174/products/${p.slug}">${p.name}</a></h3><p>${p.sub}</p></div>`;
+  article.innerHTML=`<a class="product-photo" href="${storefront}products/${p.slug}" aria-label="Explore ${p.name}"><img src="media/${p.slug}.webp" alt="${p.name} bottle mockup" width="1196" height="1315" loading="lazy"><span class="product-number">0${i+1}</span><span class="product-arrow" aria-hidden="true">↗</span></a><div class="product-meta"><span class="sku-line"></span><h3><a href="${storefront}products/${p.slug}">${p.name}</a></h3><p>${p.sub}</p></div>`;
   grid.append(article);
   const option=document.createElement('option');option.value=p.slug;option.textContent=p.name;document.querySelector('#report-product').append(option);
 });
 document.querySelector('#report-product').value='vitamin-d3-k2';
-const storefront='http://127.0.0.1:4174/';
+document.querySelectorAll('.claude-design-link').forEach(a => { a.href = new URL(a.getAttribute('href'), storefront).href; });
 document.querySelector('#home-trust-strip').innerHTML=window.BCCHome.strip();
 document.querySelector('#home-evidence-modules').innerHTML=window.BCCHome.evidence(storefront)+window.BCCHome.voices();
 document.querySelector('#home-report-example').innerHTML=window.BCCHome.example();
