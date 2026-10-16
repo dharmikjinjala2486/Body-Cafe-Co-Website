@@ -29,3 +29,7 @@ The archive's frontend files were imported without code edits. Documentation was
 - Preview: http://127.0.0.1:4174/.
 
 Sample data, local authentication and inactive external integrations remain as documented in `IMPLEMENTATION-STATUS.md`. This import is a point-in-time sync, not an automatic connection between Claude's cloud workspace and the user's local files. Future Claude edits must be imported again or committed to the shared GitHub repository.
+
+## Design comparison navigation
+
+At the user’s subsequent request, a shared A/B/C picker was added at the top: A and B open the original concept previews, while C opens the imported Claude storefront. This is navigation between previews, rather than reapplying the old themes to the new frontend.
