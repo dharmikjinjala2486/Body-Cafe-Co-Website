@@ -10,7 +10,7 @@ Python 3.9+ is required. No additional packages are needed.
 python3 -B app/server.py --port 4174
 ```
 
-Open the [latest website](http://127.0.0.1:4174/). The top selector links A (Warm editorial) and B (Expressive everyday) to the original concept previews, and C (Claude design) to the current full website. Old `?theme=` parameters no longer select a design. [Operations preview](http://127.0.0.1:4174/ops) offers explicit Admin A, Admin B and Viewer identities.
+Open [direction D — The morning counter](http://127.0.0.1:4174/?design=d). The top selector preserves A (Warm editorial), B (Expressive everyday), C (Claude design) and D (Morning counter). A/B are standalone concepts with links to the working storefront; C/D share the connected commerce preview. All four homepages include the researched trust, customer-experience status, brand, learning and service content. C is explicitly selected at `/?design=c`; D at `/?design=d`. The selected C/D direction persists within the tab across storefront navigation. Old `?theme=` parameters no longer select a design. [Operations preview](http://127.0.0.1:4174/ops) offers explicit Admin A, Admin B and Viewer identities.
 
 This server binds to loopback only, rejects other Host headers, and refuses a non-preview `BCC_MODE`. It is not a production commerce server. Use sample information: the checkout, addresses and support forms persist their input in a local SQLite file, `.local/preview.sqlite3`, which is excluded from Git. No money, SMS, email, courier booking or external analytics transmission occurs.
 

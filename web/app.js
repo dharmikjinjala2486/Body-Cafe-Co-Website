@@ -1,5 +1,13 @@
 /* Body Café Co. — storefront preview.
    View layer: templates + interaction. Data, cart, checkout, account and ops logic live further down. */
+const requestedDesign = new URL(location.href).searchParams.get("design");
+let activeDesign = "c";
+try {
+  activeDesign = requestedDesign === "d" || requestedDesign === "c" ? requestedDesign : sessionStorage.getItem("bcc-design") || "c";
+  if (!["c", "d"].includes(activeDesign)) activeDesign = "c";
+  sessionStorage.setItem("bcc-design", activeDesign);
+} catch { activeDesign = requestedDesign === "d" ? "d" : "c"; }
+document.body.dataset.design = activeDesign;
 const $ = (s) => document.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const escape = (value) =>
@@ -137,6 +145,7 @@ function add(id, quantity = 1) {
   toast(`Added ${p.name} to your bag.`);
 }
 function renderHeaderCount(bump = false) {
+  document.querySelectorAll(".bag-link").forEach((a) => a.setAttribute("aria-label", `Bag, ${count()} items`));
   document.querySelectorAll("[data-cart-count]").forEach((x) => {
     x.textContent = count();
     x.toggleAttribute("data-empty", !count());
@@ -187,7 +196,7 @@ function shell(content) {
     ["/reports", "Lot reports"],
   ];
   const current = (href) => (path === href || path.startsWith(href + "/") ? ' aria-current="page"' : "");
-  return `<div class="preview-bar"><p>Preview store. Prices are samples and no payment is taken.</p><nav class="design-switch" aria-label="Choose design concept"><a data-design-link href="/concepts/index.html?concept=a">A <span>Warm editorial</span></a><a data-design-link href="/concepts/index.html?concept=b">B <span>Expressive everyday</span></a><a data-design-link href="/" aria-current="page">C <span>Claude design</span></a></nav><a href="/ops">Operations preview</a></div><header class="site-header"><a class="logo" href="/" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a><nav class="main-nav" aria-label="Main">${nav.map(([h, l]) => `<a href="${h}"${current(h)}>${l}</a>`).join("")}</nav><div class="header-tools"><button class="icon-button" data-action="search" aria-label="Search">${icon("search")}</button><a class="icon-button" href="/account" aria-label="Your account">${icon("user")}</a><a class="bag-link" href="/cart" aria-label="Bag, ${count()} items">${icon("bag")}<span data-cart-count ${count() ? "" : "data-empty"}>${count()}</span></a><button class="menu-button" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header><nav id="mobile-nav" hidden aria-label="Mobile"><div class="mobile-nav-links">${[
+  return `<div class="preview-bar"><p>Preview store. Prices are samples and no payment is taken.</p><nav class="design-switch" aria-label="Choose design concept"><a data-design-link href="/concepts/index.html?concept=a">A <span>Warm editorial</span></a><a data-design-link href="/concepts/index.html?concept=b">B <span>Expressive everyday</span></a><a data-design-link href="/?design=c"${activeDesign === "c" ? ' aria-current="page"' : ""}>C <span>Claude design</span></a><a data-design-link href="/?design=d"${activeDesign === "d" ? ' aria-current="page"' : ""}>D <span>Morning counter</span></a></nav><a href="/ops">Operations preview</a></div><header class="site-header"><a class="logo" href="/" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a><nav class="main-nav" aria-label="Main">${nav.map(([h, l]) => `<a href="${h}"${current(h)}>${l}</a>`).join("")}</nav><div class="header-tools"><button class="icon-button" data-action="search" aria-label="Search">${icon("search")}</button><a class="icon-button" href="/account" aria-label="Your account">${icon("user")}</a><a class="bag-link" href="/cart" aria-label="Bag, ${count()} items">${icon("bag")}<span data-cart-count ${count() ? "" : "data-empty"}>${count()}</span></a><button class="menu-button" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header><nav id="mobile-nav" hidden aria-label="Mobile"><div class="mobile-nav-links">${[
     ["/shop", "Shop all seven"],
     ["/bundles", "The edits"],
     ["/standards", "Standards"],
@@ -198,12 +207,15 @@ function shell(content) {
     .map(([h, l]) => `<a href="${h}">${l}</a>`)
     .join(
       "",
-    )}</div><div class="mobile-nav-foot"><a href="/account">Account${mobile ? " (…" + escape(mobile.slice(-4)) + ")" : ""}</a><a href="/help">Help</a><a href="/cart">Bag (<span data-cart-count>${count()}</span>)</a></div><div class="mobile-nav-caps" aria-hidden="true">${state.catalog.map((p) => cap(p)).join("")}</div></nav><main id="main" tabindex="-1">${content}</main><footer class="site-footer"><div class="footer-top"><div class="footer-pitch"><p>Seven everyday supplements, each with its label, ingredient notes and lot record in plain view.</p>${link("Shop all seven", "/shop", "button light")}</div><div class="footer-cols"><div><h3>Shop</h3><a href="/shop">All products</a><a href="/bundles">The edits</a><a href="/reports">Lot reports</a><a href="/search">Search</a></div><div><h3>About</h3><a href="/standards">Standards</a><a href="/learn">Learn</a><a href="/story">Story</a></div><div><h3>Help</h3><a href="/help">Help centre</a><a href="/contact">Contact</a><a href="/account">Track an order</a><a href="/settings">Preferences</a></div><div><h3>Policies</h3>${["shipping", "returns", "cancellation", "privacy", "terms"].map((x) => `<a href="/policies/${x}">${x[0].toUpperCase() + x.slice(1)}</a>`).join("")}</div></div></div><div class="footer-caps" aria-hidden="true">${state.catalog.map((p) => cap(p)).join("")}</div><p class="footer-word" aria-hidden="true">Body Cafe Co</p><div class="footer-bottom"><span>© ${new Date().getFullYear()} Body Café Co.</span><span>Draft copy, preview commerce</span><a href="/ops">Operations preview</a></div></footer>`;
+    )}</div><div class="mobile-nav-foot"><a href="/account">Account${mobile ? " (…" + escape(mobile.slice(-4)) + ")" : ""}</a><a href="/help">Help</a><a href="/cart">Bag (<span data-cart-count>${count()}</span>)</a></div><div class="mobile-nav-caps" aria-hidden="true">${state.catalog.map((p) => cap(p)).join("")}</div></nav><main id="main" tabindex="-1">${content}</main><footer class="site-footer"><div class="footer-top"><div class="footer-pitch"><p>Seven everyday supplements. Explore ingredients, formats and a demonstration of the lot-report experience.</p>${link("Shop all seven", "/shop", "button light")}</div><div class="footer-cols"><div><h3>Shop</h3><a href="/shop">All products</a><a href="/bundles">The edits</a><a href="/reports">Lot reports</a><a href="/search">Search</a></div><div><h3>About</h3><a href="/standards">Standards</a><a href="/learn">Learn</a><a href="/story">Story</a></div><div><h3>Help</h3><a href="/help">Help centre</a><a href="/contact">Contact</a><a href="/account">Track an order</a><a href="/settings">Preferences</a></div><div><h3>Policies</h3>${["shipping", "returns", "cancellation", "privacy", "terms"].map((x) => `<a href="/policies/${x}">${x[0].toUpperCase() + x.slice(1)}</a>`).join("")}</div></div></div><div class="footer-caps" aria-hidden="true">${state.catalog.map((p) => cap(p)).join("")}</div><p class="footer-word" aria-hidden="true">Body Cafe Co</p><div class="footer-bottom"><span>© ${new Date().getFullYear()} Body Café Co.</span><span>Draft copy, preview commerce</span><a href="/ops">Operations preview</a></div></footer>`;
 }
 
 /* ---------- Home ---------- */
 function home() {
   const list = state.catalog.filter((p) => p.published);
+  if (activeDesign === "d" && window.BCCDirectionD) {
+    return window.BCCDirectionD({list, image, cap, capStyle, escape, money, format, shortName, link, menuBoard, homeLot});
+  }
   const first = product("vitamin-d3-k2") || list[0];
   if (!first) return notFound();
   return `<section class="counter" data-counter style="${capStyle(first)}" aria-labelledby="counter-title"><div class="counter-ghost" aria-hidden="true"><span data-counter-ghost>${escape(shortName[first.id] || first.name)}</span></div><div class="counter-copy"><h1 id="counter-title" class="display">Seven everyday essentials. Pick a cap.</h1><p class="counter-lede">Seven supplements. A closer look at ingredients, formats and the details behind your choice. Explore the collection while final labels and evidence are prepared.</p><div class="counter-actions">${link("Shop all seven", "/shop", "button on-cap")}${link("Explore our standards", "/standards", "text-link")}</div></div><div class="counter-stage"><div class="counter-bottles">${list
@@ -232,14 +244,6 @@ function menuBoard(list) {
 }
 function homeLot() {
   return `<section id="home-report" class="lot-band" aria-labelledby="lot-title"><div class="lot-inner"><div class="lot-copy"><h2 id="lot-title" class="display">Turn the bottle over.</h2><p>Understand the evidence before you choose. Already have a bottle? Its lot number connects a pack to the corresponding batch record.</p>${window.BCCHome.example()}</div><form id="home-lot" class="lot-form"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">${state.catalog.map((p, i) => `<option value="${p.id}" data-sample="DEMO-${String(i + 1).padStart(2, "0")}-01">${escape(p.name)}</option>`).join("")}</select><label for="home-lot-number">Lot number</label><div class="lot-input"><input id="home-lot-number" name="lot" placeholder="DEMO-01-01" maxlength="60" required autocomplete="off"><button class="button on-dark" type="submit">Look up</button></div><p class="micro">Demonstration only. Try <button type="button" class="link-button" data-fill-lot>the sample lot</button> for the product you picked. No real laboratory document is connected.</p></form></div></section>`;
-}
-function homeSteps() {
-  const steps = [
-    ["The product", "An approved record fixes the formula, directions and label."],
-    ["The lot", "Each manufacturing batch is linked back to that product record."],
-    ["The report", "The lot's evidence is published in a readable summary."],
-  ];
-  return `<section class="section steps"><div class="section-head"><h2 class="display">From bottle to evidence</h2><p>How a lot report connects to what you bought. ${link("Read our standards", "/standards", "text-link")}</p></div><ol class="step-list">${steps.map(([t, d]) => `<li><h3>${t}</h3><p>${d}</p></li>`).join("")}</ol></section>`;
 }
 const faqs = [
   [
@@ -420,7 +424,7 @@ const counter = {
     const rail = root.querySelector(".counter-rail");
     rail?.addEventListener("pointerover", (e) => {
       const b = e.target.closest("[data-counter-pick]");
-      if (b && e.pointerType === "mouse") this.pick(b.dataset.counterPick);
+      if (b && e.pointerType === "mouse" && !root.hasAttribute("data-counter-manual")) this.pick(b.dataset.counterPick);
     });
     // Arrow keys move through the caps.
     rail?.addEventListener("keydown", (e) => {
@@ -868,6 +872,7 @@ function notFound() {
 let renderVersion = 0;
 let booted = false;
 let transitionColor = "#2d2926";
+let renderedRoute = "";
 async function render(scroll = true) {
   const version = ++renderVersion;
   const path = location.pathname;
@@ -900,6 +905,7 @@ async function render(scroll = true) {
     else if (path.startsWith("/ops")) content = ops(path.split("/")[2] || "overview");
     else content = notFound();
     const paint = () => {
+      renderedRoute = location.pathname + location.search;
       $("#app").innerHTML = shell(content);
       document.body.dataset.route = path === "/" ? "home" : path.split("/")[1];
       enhance();
@@ -1206,7 +1212,9 @@ document.addEventListener("keydown", (e) => {
     $("[data-action=menu]")?.focus();
   }
 });
-window.addEventListener("popstate", () => render());
+window.addEventListener("popstate", () => {
+  if (location.pathname + location.search !== renderedRoute) render();
+});
 setInterval(() => {
   document.querySelectorAll("[data-expires]").forEach((x) => {
     const seconds = Math.max(0, Number(x.dataset.expires) - Math.floor(Date.now() / 1000));

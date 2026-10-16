@@ -33,3 +33,19 @@ Sample data, local authentication and inactive external integrations remain as d
 ## Design comparison navigation
 
 At the user’s subsequent request, a shared A/B/C picker was added at the top: A and B open the original concept previews, while C opens the imported Claude storefront. This is navigation between previews, rather than reapplying the old themes to the new frontend.
+
+## Homepage expansion and fourth direction — 16 October 2026
+
+At the user's request, A, B and C now share the researched homepage priorities through `web/homepage.js` and `web/homepage.css`: product discovery, evidence context, honest pending customer experiences, report explanation, brand introduction, learning guides and service FAQs. The standalone A/B product-page mockup and duplicate report tile were removed; product cards now open the working storefront. C's homepage no longer promotes unapproved example bundles or repeats the evidence steps as a separate section. Hero cap selection is manual.
+
+Baseline commit `d61c3a7` was pushed to `design/concepts` and sent to the existing Claude conversation. Claude was explicitly asked to create a fourth synthesis of A's warmth, B's expressive color and C's cap/menu interaction, preserving the first three options and returning isolated `web/direction-d.js` and `web/direction-d.css` files for integration. The brief preserves demo labeling and prohibits fabricated reviews, credentials and claims.
+
+A/B/C desktop and 390px checks found no page-level overflow in the inspected layouts. New section anchors, report details, service FAQ, support navigation and A/B-to-storefront product links were exercised. A hash-navigation rerender issue and B report text contrast were corrected. Existing domain/HTTP regression suite: 21 passing tests.
+
+### Direction D delivered and integrated
+
+Claude delivered “The morning counter” in `body-cafe-co-direction-d.zip`: `web/direction-d.js`, `web/direction-d.css`, and `INTEGRATION-D.md`. Package SHA-256: `821c68823208e9824efc9894f759792380ba3586664f4b3bea55e0ca3fc355fd`. The files were inspected before importing; no external resources, dependencies or backend changes were introduced.
+
+D combines A's warm reading space, B's arch and sage/lavender/indigo section rhythm, and C's interactive caps and café menu. It is integrated at `/?design=d` through the isolated `BCCDirectionD(ctx)` template. All four options are in the top selector; C/D retain their selection across storefront navigation. The imported mobile CSS was adjusted to keep all seven cap labels visible. The existing counter is manual, and D ignores hover selection.
+
+Local D checks: 1440px desktop and 390px mobile layouts without page overflow or broken loaded images; all seven cap selections; one tabbable active bottle; arrow-key selection; menu add-to-bag with the original bag quantity restored; matching demo lot lookup; C/A/D switching; shared support/product routes. A stale accessible bag-count label found during these checks was fixed. New local screenshots are under ignored `web/qa/`. These are targeted preview checks, not a production accessibility or performance certification. Genuine reviews, founder content, final labels/prices, laboratory documents and service policies remain pending.
