@@ -2,13 +2,13 @@
 
 16 October 2026
 
-The user's latest direction is to expand **both A and B**, using clearly labelled preview data. Both designs now run through the complete public page structure and connected local commerce/support workflows. This delivery is a functional local preview and an operational foundation. The complete production v1 in the working plan is not yet launch-ready.
+The user initially requested both A and B, using clearly labelled preview data. After requesting a redesign in Claude, the user asked Codex to sync those changes back. The latest storefront now uses Claude’s single “pick a cap” direction across the public pages and connected local commerce/support workflows. This delivery is a functional local preview and an operational foundation. The complete production v1 in the working plan is not yet launch-ready.
 
 ## Working locally
 
 | Requirement | Implemented behaviour | Production boundary |
 |---|---|---|
-| Two design systems | Editorial and expressive styles across all routes; persisted theme switch; desktop/mobile layouts | Final visual/content sign-off still required |
+| Current design system | Claude “pick a cap” redesign; interactive product caps, transparent bottle assets, locally hosted brand fonts, colour transitions and responsive layouts. Earlier A/B concepts remain in `concepts/` and Git history. | Final visual/content sign-off still required |
 | Seven-product catalogue | All seven supplied mockups, format filters, search, product detail templates, ingredient guides, related products | Final formula, quantities, pack facts, warnings, claims, prices and rear labels are missing |
 | Bundles | Two illustrative combinations, itemised sample totals, all components checked before adding | Approved combinations, rules and savings are pending; no therapeutic combination recommendation |
 | Brand and education | Homepage, Standards, Story, learning hub, three guides, seven ingredient pages | Draft copy; no fabricated founder history or certification claims |
@@ -65,3 +65,7 @@ No SharePoint access is needed. Ask the user directly when these inputs become n
 - Local captures: `web/qa/desktop-a.jpg`, `web/qa/desktop-b.jpg`, `web/qa/mobile-b.jpg` (ignored by Git).
 
 WCAG conformance, field Core Web Vitals, production security, load/availability, disaster recovery and live provider acceptance have not been certified by these checks.
+
+## Claude redesign sync
+
+Imported and verified on 16 October 2026. See `CLAUDE-SYNC.md`. The backend remains unchanged and all production boundaries listed above still apply. The new frontend removes the full-site A/B switch.

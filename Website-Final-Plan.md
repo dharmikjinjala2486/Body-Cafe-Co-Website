@@ -153,3 +153,7 @@ Validate real mobile and desktop journeys, readable product facts, keyboard/focu
 Test payment failures and duplicate/late webhooks, reservation expiry races, refund reconciliation, batch quarantine, bundle stock, OTP recovery, cancellation/dispatch races and courier failures. Confirm that Viewer permissions and second-person approvals hold on server endpoints.
 
 Measure delivered contribution alongside payment success, delivery success, returns/RTO, repeat purchase and support resolution. Keep commercial targets grounded in actual launch data.
+
+## Latest visual implementation update
+
+16 October 2026: after reviewing the initial full-site directions, the user requested a frontend redesign in Claude and then asked Codex to sync it locally. Claude’s single “pick a cap” direction is now the current storefront, replacing its full-site A/B selector. The functional preview backend and pending production requirements remain unchanged. See `CLAUDE-SYNC.md` and `IMPLEMENTATION-STATUS.md`.

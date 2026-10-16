@@ -1,6 +1,6 @@
 # Body Café Co. Website
 
-Both visual directions expanded into a connected, responsive website preview using the supplied brand assets and all seven products. The same local application and records power A (warm editorial) and B (expressive everyday).
+The current storefront uses the “pick a cap” redesign created in Claude and imported into this repository on 16 October 2026. It includes all seven products, interactive cap selection, transparent bottle images, locally hosted Lemon Milk/Aileron fonts, café menu layouts and the existing connected commerce/support preview. See `CLAUDE-SYNC.md` for provenance and verification.
 
 ## Run the complete preview
 
@@ -10,7 +10,7 @@ Python 3.9+ is required. No additional packages are needed.
 python3 -B app/server.py --port 4174
 ```
 
-Open [Direction A](http://127.0.0.1:4174/?theme=a) or [Direction B](http://127.0.0.1:4174/?theme=b). The toolbar switches designs on every page and remembers the choice in this browser. [Operations preview](http://127.0.0.1:4174/ops) offers explicit Admin A, Admin B and Viewer identities.
+Open the [latest website](http://127.0.0.1:4174/). The new single direction replaces the full-site A/B toggle; old `?theme=` parameters no longer select a design. [Operations preview](http://127.0.0.1:4174/ops) offers explicit Admin A, Admin B and Viewer identities.
 
 This server binds to loopback only, rejects other Host headers, and refuses a non-preview `BCC_MODE`. It is not a production commerce server. Use sample information: the checkout, addresses and support forms persist their input in a local SQLite file, `.local/preview.sqlite3`, which is excluded from Git. No money, SMS, email, courier booking or external analytics transmission occurs.
 
@@ -48,7 +48,7 @@ node --check web/app.js
 python3 -B -m unittest app.test_server app.test_http -v
 ```
 
-The 21 tests cover concurrent allocation, FEFO, atomic rollback, payment retry/idempotence, expiry, evidence and quarantine gates, dispatch expiry, cancellation/refunds, different-person approval, ownership, verified-delivery reviews, OTP claiming, HTTP contract, CSRF/origin/Host checks and Viewer enforcement. Browser QA exercised desktop and 390px layouts, both themes, route loading, image loading, guest checkout/payment, mobile sign-in, a safety case, report error states and simulated fulfilment. This is not a full accessibility or production load audit.
+The 21 tests cover concurrent allocation, FEFO, atomic rollback, payment retry/idempotence, expiry, evidence and quarantine gates, dispatch expiry, cancellation/refunds, different-person approval, ownership, verified-delivery reviews, OTP claiming, HTTP contract, CSRF/origin/Host checks and Viewer enforcement. Initial browser QA exercised both earlier themes, mobile sign-in, a safety case, report error states and simulated fulfilment. After the Claude import, browser QA additionally checked 19 desktop routes, seven routes at 390px, asset loading, cap switching, homepage lot lookup, guest checkout, failed payment and successful retry. This is not a full accessibility or production load audit.
 
 ## Assets and repository
 
