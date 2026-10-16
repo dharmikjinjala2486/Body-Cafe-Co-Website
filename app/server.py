@@ -197,7 +197,7 @@ class Store:
             subtotal=sum(x['unit_price']*x['quantity'] for x in lines)
             code=str(data.get('discount','')).strip().upper()
             if code and code!='PREVIEW10':raise Error('Use PREVIEW10 to test discounts, or remove the code.')
-            discount=round(subtotal*.1) if code else 0
+            discount=(subtotal+5)//10 if code else 0
             shipping=0 if subtotal-discount>=1499 else 75
             payload={'items':lines,'subtotal':subtotal,'discount':discount,'discount_code':code,'shipping':shipping,'total':subtotal-discount+shipping,'tax_note':'Sample price is inclusive of illustrative tax; actual GST awaits approved rates.','contact':contact,'gstin':gst,'legal_name':data.get('legal_name',''),'method':'prepaid','expires':now+900,'preview':True,'policy_version':'preview-2026-10-16','consent':{'email':data.get('email_consent') is True,'whatsapp':data.get('whatsapp_consent') is True},'history':[{'state':'pending','at':now}],'provider':None,'refund':'none'}
             c.execute('INSERT INTO orders VALUES(?,?,?,?,?)',(oid,s['user_id'],'pending',json.dumps(payload),now))
@@ -278,6 +278,8 @@ class Store:
                 if kind=='refund':
                     r=c.execute('SELECT * FROM orders WHERE id=?',(target,)).fetchone()
                     if not r or r['state']!='cancelled' or json.loads(r['data'])['refund']!='approval_pending':raise Error('No refundable cancelled order found.')
+                # One pending request per change: a duplicate could never be approved after the first resolved.
+                if c.execute("SELECT id FROM approvals WHERE kind=? AND target=? AND state='pending'",(kind,target)).fetchone():raise Error('A request for this change is already awaiting approval.',409)
                 aid='APR-'+secrets.token_hex(4).upper()
                 c.execute('INSERT INTO approvals VALUES(?,?,?,?,?,?,?,?)',(aid,s['user_id'],kind,target,json.dumps({'value':value,'reason':str(data.get('reason',''))[:500]}),'pending',None,int(time.time())))
                 self.log(c,s['user_id'],'approval_requested',aid)

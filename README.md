@@ -48,7 +48,7 @@ node --check web/app.js
 python3 -B -m unittest app.test_server app.test_http -v
 ```
 
-The 21 tests cover concurrent allocation, FEFO, atomic rollback, payment retry/idempotence, expiry, evidence and quarantine gates, dispatch expiry, cancellation/refunds, different-person approval, ownership, verified-delivery reviews, OTP claiming, HTTP contract, CSRF/origin/Host checks and Viewer enforcement. Initial browser QA exercised both earlier themes, mobile sign-in, a safety case, report error states and simulated fulfilment. After the Claude import, browser QA additionally checked 19 desktop routes, seven routes at 390px, asset loading, cap switching, homepage lot lookup, guest checkout, failed payment and successful retry. This is not a full accessibility or production load audit.
+The 24 tests cover concurrent allocation, FEFO, atomic rollback, payment retry/idempotence, expiry, evidence and quarantine gates, dispatch expiry, cancellation/refunds, different-person approval, ownership, verified-delivery reviews, OTP claiming, HTTP contract, CSRF/origin/Host checks and Viewer enforcement. Initial browser QA exercised both earlier themes, mobile sign-in, a safety case, report error states and simulated fulfilment. After the Claude import, browser QA additionally checked 19 desktop routes, seven routes at 390px, asset loading, cap switching, homepage lot lookup, guest checkout, failed payment and successful retry. The final four-variant QA and independent Claude review are recorded in `QA-Review-and-Next-Steps.md`, including malformed checkout, discount rounding, duplicate approval, focus and responsive layout corrections. This is not a full accessibility or production load audit.
 
 ## Assets and repository
 

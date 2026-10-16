@@ -464,3 +464,10 @@ body[data-design="d"] .d-home .hc-care h2 { font-size: clamp(36px, 3.8vw, 56px);
 @media (prefers-reduced-motion: reduce) {
   body[data-design="d"] .d-home .hc-faq summary > span { transition: none; }
 }
+
+/* Independent QA: contrast fixes.
+   - Example-report disclaimer on the indigo lot band inherited the storefront's muted grey (~1.7:1).
+   - Olive arch-tab text on sage and the kicker on lavender measured just under 4.5:1. */
+body[data-design="d"] .d-home .lot-band .hc-report-example > p { color: inherit; opacity: 0.86; }
+body[data-design="d"] .d-home .hc-proof-grid .hc-index { color: #545a32; }
+body[data-design="d"] .d-home .hc-voices .hc-kicker { color: #4b4239; }

@@ -59,3 +59,12 @@ Only `web/homepage.css` and `web/direction-d.css` were imported, without edits. 
 The prior stylesheets were preserved under ignored `.local/claude-import/pre-four-refinement-65df116/`. Eight supplied desktop/mobile previews and local validation captures are under ignored `web/qa/refined-four/`.
 
 Local checks at 1440px and 390px: all four variants retain five shared homepage sections, no page-level horizontal overflow and no broken loaded images in the inspected layouts. FAQ and example-report accordions open in all four. Desktop evidence compositions were visually inspected. This CSS-only import does not change the previously tested backend or commerce handlers, so backend tests were not repeated.
+
+
+## Independent QA review — 16 October 2026
+
+Claude reviewed fresh `23c6bd3` and delivered `body-cafe-co-independent-qa.zip` (SHA-256 `a3e07d44aee6cee3a85de8e49e847565adf3d5915c89ea2aad1c42fae5a5bbb7`). Seven source files plus `QA-Independent-Review-Claude.md` were inspected. Changed source paths were merged against the supplied baseline, preserving Codex's subsequent discount, published-product fallback and narrow form corrections. The CSS end-of-file conflict was resolved by retaining both independent additions.
+
+Accepted Claude fixes: duplicate pending approval prevention and regression test; pending-refund status in Operations; keyboard focus through in-place renders and submit errors; C/D example-report disclaimer contrast; D label contrast; A/B small-text sizing; taller small links. No dependencies, external services, marketing content or product data were added.
+
+Codex resolved the remaining cap-text contrast observation using black when necessary, opaque informational text and a neutral C detail card, with unchanged cap fills and bottle imagery. Final combined suite: 24 tests pass, four JS syntax checks pass, four homepages at 320/390/768/1440 pass targeted layout checks. See `QA-Review-and-Next-Steps.md` for local verification and unchanged production requirements. Claude's report is preserved as the original point-in-time independent assessment; its cap-contrast observation is superseded by the final integration correction.

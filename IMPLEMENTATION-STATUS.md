@@ -56,7 +56,7 @@ No SharePoint access is needed. Ask the user directly when these inputs become n
 
 ## Verification performed
 
-- 21 passing Python domain/HTTP tests plus JavaScript syntax validation.
+- 24 passing Python domain/HTTP tests plus JavaScript syntax validation (final four-variant QA).
 - Concurrent checkout test: six requests for ten units against forty units permit exactly four reservations, without overselling.
 - FEFO, rollback, duplicate payment, failed-payment retry, expired holds, quarantine, missing proof and expired-before-dispatch checks.
 - Customer ownership, mobile guest-order claim, delivery-gated reviews, cancellation boundary, refund approval and read-only Viewer checks.
@@ -72,4 +72,4 @@ Imported and verified on 16 October 2026. See `CLAUDE-SYNC.md`. The backend rema
 
 ## Full preview QA pass — 16 October 2026
 
-See `QA-Review-and-Next-Steps.md` for the current scope, verified fixes and production sequence. The backend suite now contains 22 passing tests, including malformed nested checkout validation. The public route sweep covered 46 route states at desktop and phone sizes, plus all four homepages at four widths and ten operations routes at two widths. Customer/order/support/approval workflows were exercised on an isolated QA database. Corrections address text/icon layout, small-screen grid sizing, primary headings, review-submission state and comparison-link origins. Claude's independent review is the next gate.
+See `QA-Review-and-Next-Steps.md` for the current scope, verified fixes and production sequence. The backend suite now contains 24 passing tests, including malformed nested checkout validation, discount rounding and duplicate pending approvals. The public route sweep covered 46 route states at desktop and phone sizes, plus all four homepages at four widths and ten operations routes at two widths. Customer/order/support/approval workflows were exercised on an isolated QA database. Corrections address text/icon layout, small-screen grid sizing, primary headings, review-submission state and comparison-link origins. Claude's independent review is completed and imported. The final merge additionally fixes keyboard focus, pending-refund affordances, informational contrast and micro-type. The cap text and C detail card received a targeted readability correction after integration; all four merged homepages passed the affected width checks.

@@ -89,7 +89,10 @@ function onCap(hex) {
     return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
   });
   const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return L > 0.18 ? "#2d2926" : "#f8f7f3";
+  // Prefer brand ink/white; use black when neither reaches 4.5:1 for small text.
+  const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  if (Math.max(ratio(L, 0.0236), ratio(L, 0.925)) < 4.5) return "#000000";
+  return ratio(L, 0.0236) >= ratio(L, 0.925) ? "#2d2926" : "#f8f7f3";
 }
 const capStyle = (p) => `--cap:${p.color};--on-cap:${onCap(p.color)}`;
 async function api(path, data) {
@@ -216,7 +219,7 @@ function home() {
   if (activeDesign === "d" && window.BCCDirectionD) {
     return window.BCCDirectionD({list, image, cap, capStyle, escape, money, format, shortName, link, menuBoard, homeLot});
   }
-  const first = product("vitamin-d3-k2") || list[0];
+  const first = list.find(p => p.id === "vitamin-d3-k2") || list[0];
   if (!first) return notFound();
   return `<section class="counter" data-counter style="${capStyle(first)}" aria-labelledby="counter-title"><div class="counter-ghost" aria-hidden="true"><span data-counter-ghost>${escape(shortName[first.id] || first.name)}</span></div><div class="counter-copy"><h1 id="counter-title" class="display">Seven everyday essentials. Pick a cap.</h1><p class="counter-lede">Seven supplements. A closer look at ingredients, formats and the details behind your choice. Explore the collection while final labels and evidence are prepared.</p><div class="counter-actions">${link("Shop all seven", "/shop", "button on-cap")}${link("Explore our standards", "/standards", "text-link")}</div></div><div class="counter-stage"><div class="counter-bottles">${list
     .map(
@@ -771,7 +774,7 @@ function ops(tab = "overview") {
         badge(x.state),
         money(x.total),
         escape(x.provider || "Not assigned"),
-        `${link("View", "/orders/" + x.id, "small-link")}${["paid", "shipped"].includes(x.state) ? `<button class="small-button" data-ship="${x.id}" ${viewer ? "disabled" : ""}>${x.state === "paid" ? "Simulate shipment" : "Mark delivered"}</button>` : ""}${x.refund === "approval_pending" ? `<button class="small-button" data-refund="${x.id}" ${viewer ? "disabled" : ""}>Request refund approval</button>` : ""}`,
+        `${link("View", "/orders/" + x.id, "small-link")}${["paid", "shipped"].includes(x.state) ? `<button class="small-button" data-ship="${x.id}" ${viewer ? "disabled" : ""}>${x.state === "paid" ? "Simulate shipment" : "Mark delivered"}</button>` : ""}${x.refund === "approval_pending" ? (o.approvals.some((a) => a.kind === "refund" && a.target === x.id && a.state === "pending") ? badge("Refund awaiting approval") : `<button class="small-button" data-refund="${x.id}" ${viewer ? "disabled" : ""}>Request refund approval</button>`) : ""}`,
       ]),
     );
   else if (tab === "inventory")
@@ -874,6 +877,16 @@ let renderVersion = 0;
 let booted = false;
 let transitionColor = "#2d2926";
 let renderedRoute = "";
+/* Selector that finds the "same" control after a re-render: its id, else its data-* attributes, else its form field name. */
+function focusKey(el) {
+  if (!el || el === document.body || !el.closest?.("#app")) return el === document.body ? "#main" : null;
+  if (el.id) return "#" + CSS.escape(el.id);
+  const data = [...el.attributes].filter((a) => a.name.startsWith("data-")).map((a) => `[${a.name}="${CSS.escape(a.value)}"]`).join("");
+  if (data) return el.tagName.toLowerCase() + data;
+  const form = el.form?.id;
+  if (form && el.name) return `#${CSS.escape(form)} [name="${CSS.escape(el.name)}"]`;
+  return "#main";
+}
 async function render(scroll = true) {
   const version = ++renderVersion;
   const path = location.pathname;
@@ -905,11 +918,18 @@ async function render(scroll = true) {
     else if (path === "/search") content = searchPage();
     else if (path.startsWith("/ops")) content = ops(path.split("/")[2] || "overview");
     else content = notFound();
+    // In-place updates (cart quantity, saved address, operations actions…) replace the DOM.
+    // Keep keyboard focus on the same control, or at the start of the main content, instead of losing it to <body>.
+    const keepFocus = !scroll && booted ? focusKey(document.activeElement) : null;
     const paint = () => {
       renderedRoute = location.pathname + location.search;
       $("#app").innerHTML = shell(content);
       document.body.dataset.route = path === "/" ? "home" : path.split("/")[1];
       enhance();
+      if (keepFocus) {
+        const target = keepFocus === "#main" ? null : document.querySelector(keepFocus);
+        (target && !target.disabled ? target : $("#main"))?.focus({ preventScroll: true });
+      }
     };
     if (scroll && document.startViewTransition && !reducedMotion() && booted) {
       document.documentElement.style.setProperty("--wipe", transitionColor);
@@ -1199,7 +1219,11 @@ document.addEventListener("submit", async (e) => {
   } catch (err) {
     formError(form, err);
   } finally {
-    if (button) button.disabled = false;
+    if (button) {
+      button.disabled = false;
+      // Disabling the button during submit blurs it; return focus so keyboard users keep their place next to the error.
+      if (button.isConnected && document.activeElement === document.body) button.focus({ preventScroll: true });
+    }
   }
 });
 document.addEventListener("change", (e) => {

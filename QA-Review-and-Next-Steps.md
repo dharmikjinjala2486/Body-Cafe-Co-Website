@@ -1,6 +1,6 @@
 # Body Café Co. — QA review and next-stage plan
 
-16 October 2026. Working report; independent Claude review is pending.
+16 October 2026. Local QA and independent Claude review completed; merged corrections verified.
 
 ## Current QA pass
 
@@ -14,7 +14,7 @@ Initial checks:
 - 46 public route states inspected at both 1440px desktop and 390px phone widths, including all seven product and ingredient pages, guides, policies, search/filter states and empty states.
 - Four homepage variants checked at 320, 390, 768 and 1440px.
 - No application error state or broken loaded image found in the initial public route sweep.
-- Added a regression test reproducing malformed nested checkout data returning HTTP 500. Fixed input validation; all 22 tests now pass.
+- Added a regression test reproducing malformed nested checkout data returning HTTP 500. Fixed input validation. The final merged suite contains 24 passing tests, including discount rounding and duplicate pending approval regressions.
 
 Verified corrections:
 
@@ -26,6 +26,9 @@ Verified corrections:
 - Primary headings in empty checkout and not-found states.
 - A/B links now use the current preview origin, preserving the older port-4173-to-4174 comparison workflow.
 - Submitted review forms now exclude already reviewed products and show pending moderation when complete.
+- Review form controls and the submit button stay inside the padded card at 320px.
+- Sample discounts round half rupees consistently between checkout and the backend.
+- C selects a published fallback when Vitamin D3 + K2 is unpublished, keeping its active bottle and links consistent.
 
 Completed customer workflow checks: empty-field validation, separate unchecked consents, invalid and valid discount codes, exact sample totals, failed payment and successful retry, mobile OTP/order claim, saved address, linked priority support case, delivered-review submission, duplicate-form prevention, preferences persistence, reorder and unpaid-order cancellation. Test records are confined to the isolated QA database.
 
@@ -33,7 +36,17 @@ Completed operations checks: ten routes at desktop and phone widths; simulated s
 
 Completed navigation/evidence checks: search dialog/results, mobile-menu Escape/focus, A/B report validation and explicit illustrative results, matching/missing/unpublished/withdrawn/unavailable report states, D keyboard cap selection and visible mobile cap labels. All four homepages passed final checks at their affected widths after font loading, including open accordions.
 
-Remaining work in this pass: push the corrected baseline, request Claude's independent review and useful design refinements, inspect/import any delivered changes, then recheck affected areas. Production integrations and the missing inputs below remain outside this preview QA result.
+## Independent review and final integration
+
+Claude independently reviewed fresh commit `23c6bd3`, delivered seven changed source files and a [separate report](QA-Independent-Review-Claude.md). Its reported coverage includes 112 page/width combinations, customer/operations flows and HTTP safeguards. Codex inspected its patch and merged it with the later local corrections; the source package was not executed blindly.
+
+Accepted changes prevent duplicate pending approvals, display pending refund status, preserve keyboard focus through in-place updates and errors, improve report-disclaimer contrast, enlarge A/B informational captions and provide taller small link targets. Content, section order, the seven products and all four themes are preserved.
+
+Codex also resolved the cap-text contrast limitation identified in Claude's report: black is used for small text where neither brand ink nor cream reaches 4.5:1; informational text is opaque, and C's product-detail card uses a solid neutral surface. Packaging images and cap colors are unchanged. Calculated contrast for the seven opaque cap/text pairs ranges from 4.65:1 to 10.86:1. This is a targeted correction, not a site-wide compliance claim; [W3C's contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) specifies 4.5:1 for normal text.
+
+Final validation: 24 backend/HTTP tests passed; all four JavaScript modules passed syntax checks; `git diff --check` passed. The merged four homepages were rechecked at 320/390/768/1440px with no measured page overflow, clipped audited headings or broken loaded images. Targeted checks confirmed cart focus retention, discount-error focus, the pending-refund badge without a repeat action, affected product/report layouts and the narrow review card. Both local servers were restarted with the merged backend; the regular preview database was preserved. The isolated QA server is stopped after verification.
+
+Production integrations and missing approved inputs below remain outside this preview QA result.
 
 ## Proposed work after this QA pass
 

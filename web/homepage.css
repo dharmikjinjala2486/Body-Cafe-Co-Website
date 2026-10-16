@@ -437,3 +437,7 @@ body[data-design="c"] .hc-faq details p { margin: 0 0 22px; max-width: 60ch; }
 .hc-faq details>summary,.hc-report-example>summary{padding-inline-end:8px}
 body[data-design="c"] .hc-story h2{font-size:clamp(30px,4vw,60px);overflow-wrap:anywhere}
 body[data-design="c"] .hc-faq details>summary{padding-inline-end:10px}
+
+/* Independent QA: the example-report disclaimer sits on the dark lot band in C, so it must use the band's light text,
+   not the storefront's muted grey for details > p (it measured ~2:1). */
+body[data-design="c"] .lot-band .hc-report-example > p { color: inherit; }

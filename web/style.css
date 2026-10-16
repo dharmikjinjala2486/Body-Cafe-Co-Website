@@ -946,3 +946,18 @@ summary svg{flex-shrink:0;margin-inline-end:5px}
 
 .pdp-info{min-width:0}.pdp-title{overflow-wrap:anywhere}
 @media(max-width:360px){.pdp-title{font-size:36px}}
+/* Form controls must fit the padded card even with a long submit label. */
+.form-panel{grid-template-columns:minmax(0,1fr);min-width:0}
+.form-panel>.button{min-width:0;white-space:normal;line-height:1.4;text-align:center}
+.form-panel input,.form-panel select,.form-panel textarea{min-width:0}
+
+/* Independent QA: give small footer and breadcrumb links a 24px target. */
+.footer-bottom a, .preview-bar > a { display: inline-flex; align-items: center; min-height: 24px; }
+.breadcrumbs a, .breadcrumbs span { display: inline-flex; align-items: center; min-height: 24px; }
+/* Keep informational text opaque on cap fills; transparency weakens contrast. */
+.counter-lede,.counter-sub,.breadcrumbs a,
+.menu-row:hover .menu-format,.menu-row:focus-within .menu-format,
+.report-result.match .micro,.report-result.match .kicker{opacity:1}
+.counter-card{background:var(--bottle);color:var(--ink);backdrop-filter:none;-webkit-backdrop-filter:none}
+.counter-card .counter-meta{border-color:var(--line-strong)}
+.counter-card :focus-visible{outline-color:var(--ink)}

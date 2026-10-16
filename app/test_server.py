@@ -36,6 +36,13 @@ class CommerceTests(unittest.TestCase):
         self.store.pay(self.customer,order['id'],{'outcome':'success'})
         repeat=self.store.pay(self.customer,order['id'],{'outcome':'success'})
         self.assertTrue(repeat['idempotent']);self.assertEqual(self.stock(),38)
+    def test_discount_half_rupee_matches_checkout_display(self):
+        payload={**self.payload,'discount':'PREVIEW10','items':[{'id':'iron-bisglycinate','quantity':10},{'id':'l-theanine','quantity':5}]}
+        order=self.store.order(self.customer,payload)
+        self.assertEqual(order['subtotal'],12485)
+        self.assertEqual(order['discount'],1249)
+        self.assertEqual(order['total'],11236)
+
     def test_failed_payment_can_retry(self):
         order=self.store.order(self.customer,self.payload)
         failure=self.store.pay(self.customer,order['id'],{'outcome':'failure'})
@@ -72,6 +79,19 @@ class CommerceTests(unittest.TestCase):
         with self.assertRaises(Error):self.store.admin(self.admin_a,'approve',{'id':request['id'],'decision':'approve'})
         self.store.admin(self.admin_b,'approve',{'id':request['id'],'decision':'approve'})
         self.assertEqual(self.store.snapshot(self.customer)['orders'][0]['refund'],'refunded_preview')
+    def test_duplicate_pending_requests_are_rejected(self):
+        # A second pending request for the same change could never be approved once the first resolved.
+        order=self.store.order(self.customer,self.payload);self.store.pay(self.customer,order['id'],{'outcome':'success'});self.store.cancel(self.customer,order['id'])
+        first=self.store.admin(self.admin_a,'request',{'kind':'refund','target':order['id']})
+        with self.assertRaises(Error) as duplicate:self.store.admin(self.admin_b,'request',{'kind':'refund','target':order['id']})
+        self.assertEqual(duplicate.exception.status,409)
+        self.store.admin(self.admin_b,'approve',{'id':first['id'],'decision':'approve'})
+        pending=[a for a in self.store.snapshot(self.admin_a)['approvals'] if a['state']=='pending']
+        self.assertEqual(pending,[])
+        price=self.store.admin(self.admin_a,'request',{'kind':'price','target':'vitamin-d3-k2','value':950})
+        with self.assertRaises(Error):self.store.admin(self.admin_a,'request',{'kind':'price','target':'vitamin-d3-k2','value':975})
+        self.store.admin(self.admin_b,'approve',{'id':price['id'],'decision':'reject'})
+        self.store.admin(self.admin_a,'request',{'kind':'price','target':'vitamin-d3-k2','value':975})
     def test_shipped_order_cannot_cancel_review_requires_delivery(self):
         order=self.store.order(self.customer,self.payload);self.store.pay(self.customer,order['id'],{'outcome':'success'})
         review={'order_id':order['id'],'product':'vitamin-d3-k2','rating':5,'text':'A preview review of a delivered order.'}
