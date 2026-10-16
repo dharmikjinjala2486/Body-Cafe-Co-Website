@@ -4,3 +4,7 @@ node_modules/
 .env.*
 !.env.example
 assets/source/blender/*.blend
+.local/
+__pycache__/
+*.pyc
+web/qa/

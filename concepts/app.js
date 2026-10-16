@@ -1,3 +1,4 @@
+const storefront = location.port === '4173' ? 'http://127.0.0.1:4174/' : location.origin + '/';
 const products = [
   {slug:'iron-bisglycinate',name:'Iron Bisglycinate',sub:'A closer look at iron.',color:'#aa472e'},
   {slug:'l-theanine',name:'L-Theanine',sub:'Get to know the ingredient.',color:'#777d51'},
@@ -10,22 +11,16 @@ const products = [
 const grid=document.querySelector('#product-grid');
 products.forEach((p,i)=>{
   const article=document.createElement('article'); article.className='product-card'; article.style.setProperty('--sku',p.color);
-  article.innerHTML=`<a class="product-photo" href="#product" data-product="${p.slug}" aria-label="Explore ${p.name}"><img src="media/${p.slug}.webp" alt="${p.name} bottle mockup" width="1196" height="1315" loading="lazy"><span class="product-number">0${i+1}</span><span class="product-arrow" aria-hidden="true">↗</span></a><div class="product-meta"><span class="sku-line"></span><h3><a href="#product" data-product="${p.slug}">${p.name}</a></h3><p>${p.sub}</p></div>`;
+  article.innerHTML=`<a class="product-photo" data-product-link href="${storefront}products/${p.slug}" aria-label="Explore ${p.name}"><img src="media/${p.slug}.webp" alt="${p.name} bottle mockup" width="1196" height="1315" loading="lazy"><span class="product-number">0${i+1}</span><span class="product-arrow" aria-hidden="true">↗</span></a><div class="product-meta"><span class="sku-line"></span><h3><a data-product-link href="${storefront}products/${p.slug}">${p.name}</a></h3><p>${p.sub}</p></div>`;
   grid.append(article);
   const option=document.createElement('option');option.value=p.slug;option.textContent=p.name;document.querySelector('#report-product').append(option);
 });
-const reportTile=document.createElement('a'); reportTile.href='#report'; reportTile.className='collection-report'; reportTile.innerHTML='<span class="eyebrow">A LITTLE CURIOSITY</span><strong>Start with<br>the details.</strong><p>Have a bottle? Find the report for your lot.</p><span class="report-tile-link">Find your lot report ↗</span>'; grid.append(reportTile);
 document.querySelector('#report-product').value='vitamin-d3-k2';
-document.querySelectorAll('[data-product]').forEach(link=>link.addEventListener('click',()=>{
-  const p=products.find(p=>p.slug===link.dataset.product);const i=products.indexOf(p);
-  const image=document.querySelector('#detail-image');image.src=`media/${p.slug}.webp`;image.alt=`${p.name} product mockup`;
-  document.querySelector('#detail-title').textContent=p.name;
-  document.querySelector('#detail-subtitle').textContent=p.sub;
-  document.querySelector('#detail-category').textContent=`THE EVERYDAY COLLECTION / 0${i+1}`;
-  document.querySelector('#ingredients-copy').textContent=p.slug==='vitamin-d3-k2'?'Vitamin D3, Vitamin K2 and Omega-3 as triglycerides. Full formulation and amounts per serving will be added from the approved label.':'The full formulation, ingredient forms and amounts per serving will appear here from the approved label.';
-  document.querySelector('#report-product').value=p.slug;
-  document.querySelector('#report-result').replaceChildren();
-}));
+document.querySelectorAll('.claude-design-link').forEach(a => { a.href = new URL(a.getAttribute('href'), storefront).href; });
+document.querySelector('#home-trust-strip').innerHTML=window.BCCHome.strip();
+document.querySelector('#home-evidence-modules').innerHTML=window.BCCHome.evidence(storefront)+window.BCCHome.voices();
+document.querySelector('#home-report-example').innerHTML=window.BCCHome.example();
+document.querySelector('#home-lower-modules').innerHTML=window.BCCHome.story(storefront)+window.BCCHome.learn(storefront)+window.BCCHome.care(storefront);
 function setConcept(concept){
   const b=concept==='b';document.body.dataset.concept=b?'b':'a';
   document.querySelectorAll('[data-switch]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.switch===(b?'b':'a'))));
@@ -34,6 +29,9 @@ function setConcept(concept){
   document.querySelector('#collection-title').innerHTML=b?'Seven essentials.<br><em>Which is your thing?</em>':'Find your<br><em>everyday thing.</em>';
   document.querySelector('.studio-label span').textContent=b?'DESIGN STUDY / 02':'DESIGN STUDY / 01';
   const url=new URL(location.href);url.searchParams.set('concept',b?'b':'a');history.replaceState(null,'',url);
+  // Product pages open in the matching direction: the link carries ?design= and this tab remembers it.
+  document.querySelectorAll('[data-product-link]').forEach(a=>{const u=new URL(a.href);u.searchParams.set('design',b?'b':'a');a.href=u.href;});
+  try{sessionStorage.setItem('bcc-design',b?'b':'a');}catch{}
   document.title=`Body Café Co. — ${b?'Expressive everyday':'Warm editorial'} concept`;
 }
 document.querySelectorAll('[data-switch]').forEach(button=>button.addEventListener('click',()=>setConcept(button.dataset.switch)));

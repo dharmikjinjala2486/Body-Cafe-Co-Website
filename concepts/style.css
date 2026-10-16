@@ -11,3 +11,24 @@ body[data-concept=b]{--paper:#f2ecdF;--accent:#ae452c;--line:#cfc5b4}body[data-c
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
 .collection-report{background:#e5e7d9;display:flex;flex-direction:column;justify-content:center;padding:32px;min-height:300px}.collection-report strong{font-weight:400;font-size:38px;line-height:1.05;letter-spacing:-.045em}.collection-report p{font-size:12px;margin-top:22px;max-width:240px}.report-tile-link{font-size:11px;padding-top:20px;border-top:1px solid #b9bda8}.collection-report .eyebrow{font-size:8px}body[data-concept=b] .collection-report{grid-column:span 2;background:#d9b8df}body[data-concept=b] .collection-report strong{font-size:55px;font-weight:700}@media(max-width:760px){.collection-report{padding:18px;min-height:240px}.collection-report strong{font-size:28px}.collection-report p{font-size:10px;margin-top:18px}.report-tile-link{font-size:9px}.collection-report .eyebrow{font-size:7px;margin-bottom:15px}body[data-concept=b] .collection-report{grid-column:auto}body[data-concept=b] .collection-report strong{font-size:28px}}
+
+/* Cross-preview navigation: C opens the full Claude storefront. */
+.concept-switch .claude-design-link{display:inline-flex;align-items:center;border:0;border-radius:4px;padding:8px 12px;font-size:11px;white-space:nowrap}.concept-switch .claude-design-link span{margin-left:7px}.concept-switch .claude-design-link:hover{background:#ded9ce}
+@media(max-width:760px){.concept-switch .claude-design-link{flex:1;justify-content:center;padding:9px 6px;font-size:10px}.concept-switch .claude-design-link span{margin-left:4px}}
+
+
+/* Independent QA: readable micro-type. Small captions, product descriptions and footers were 7–10px;
+   keep the editorial scale but give every informational line a legible minimum. Taller footer links for touch. */
+.catalogue-note,#lot-help,.sample-disclosure{font-size:11.5px}
+.product-meta p{font-size:12px}
+.site-footer>div{gap:4px}
+.site-footer>div a{padding:5px 0}
+@media(max-width:760px){
+.studio-label,.eyebrow,.hero-foot,.image-caption,.small-note,.product-number,.photo-note,.detail-heading>span,.gallery-caption{font-size:10px}
+.collection-report .eyebrow{font-size:9.5px}
+.principles,.collection-controls p,.catalogue-note,#lot-help,.sample-disclosure,.report-tile-link{font-size:11px}
+.product-meta p,.facts>div{font-size:11.5px}
+.report-step{font-size:10.5px}
+.site-footer>span{font-size:10.5px}
+.site-footer>div,.collection-report p,#report-result p{font-size:12px}
+}

@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#f6f3ec">
   <title>Body Café Co. — Two directions, one everyday</title>
   <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/web/homepage.css">
 </head>
 <body data-concept="a">
   <a class="skip" href="#main">Skip to content</a>
@@ -14,55 +15,50 @@
     <div class="concept-switch" role="group" aria-label="Choose design concept">
       <button data-switch="a" aria-pressed="true">A <span>Warm editorial</span></button>
       <button data-switch="b" aria-pressed="false">B <span>Expressive everyday</span></button>
+      <a href="/?design=c" class="claude-design-link">C <span>Claude design</span></a>
+      <a href="/?design=d" class="claude-design-link">D <span>Still life</span></a>
     </div>
     <span class="preview-label">Interactive concept · not a live store</span>
   </div>
   <header class="site-header">
     <a class="logo" href="#main" aria-label="Body Café Co. home"><img src="../assets/brand/logos/Body%20Cafe%20Co%20logo.svg" alt="Body Café Co." width="1080" height="1080"></a>
-    <nav aria-label="Main navigation"><a href="#shop">Shop the collection</a><a href="#standards">Our approach</a><a href="#report">Find your lot report <span>↗</span></a></nav>
+    <nav aria-label="Main navigation"><a href="#shop">Shop the collection</a><a href="#home-evidence">Our approach</a><a href="#home-report">Find your lot report <span>↗</span></a></nav>
     <button class="menu-button" aria-expanded="false" aria-controls="mobile-menu">Menu <span>＋</span></button>
-    <a class="header-cta" href="#product">Meet your everyday <span>↗</span></a>
+    <a class="header-cta" href="#shop">Meet your everyday <span>↗</span></a>
   </header>
-  <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation" hidden><a href="#shop">Shop all seven</a><a href="#standards">Our approach</a><a href="#report">Find your lot report</a><a href="#product">Product preview</a></nav>
+  <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation" hidden><a href="#shop">Shop all seven</a><a href="#home-evidence">Our approach</a><a href="#home-report">Find your lot report</a><a href="#shop">Product preview</a></nav>
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow"><span class="tiny-sun">✳</span> A LITTLE MORE KNOWING. EVERY DAY.</p>
         <h1 id="hero-title">Good things.<br>Clear intentions.<br><span>Your everyday.</span></h1>
         <p class="hero-description">Seven everyday supplements. Clear product details.<br class="desktop-break"> A place to find the report for your lot.</p>
-        <div class="hero-actions"><a class="button dark" href="#shop">Explore all seven <span>↗</span></a><a class="text-link" href="#report">Find your lot report <span>→</span></a></div>
+        <div class="hero-actions"><a class="button dark" href="#shop">Explore all seven <span>↗</span></a><a class="text-link" href="#home-evidence">Explore our approach <span>→</span></a></div>
         <div class="hero-foot"><span>BODY CAFÉ CO.</span><span>Made for the curious.</span></div>
       </div>
       <div class="hero-art">
         <img class="hero-primary" src="media/vitamin-d3-k2.webp" alt="Body Café Co. Vitamin D3 + K2 bottle with a violet cap in soft natural light" width="1196" height="1315" fetchpriority="high">
         <div class="hero-float"><img src="media/l-theanine.webp" alt="L-Theanine bottle with an olive green cap" width="1196" height="1315"><span>Small habits.<br>Room to grow.</span></div>
         <div class="round-stamp" aria-hidden="true">A CURIOUS MIND<br><b>✳</b><br>A CLEARER CHOICE</div>
-        <div class="image-caption"><span>01 / THE EVERYDAY COLLECTION</span><a href="#product" data-product="vitamin-d3-k2" aria-label="Explore Vitamin D3 + K2">↗</a></div>
+        <div class="image-caption"><span>01 / THE EVERYDAY COLLECTION</span><a href="#shop" data-product="vitamin-d3-k2" aria-label="Explore Vitamin D3 + K2">↗</a></div>
       </div>
     </section>
-    <div class="principles"><span>Seven essentials. Your choice.</span><span>Ingredients, explained.</span><span>Lot reports, within reach.</span><span>A little curiosity goes a long way. <b>✳</b></span></div>
+    <div id="home-trust-strip"></div>
     <section id="shop" class="collection section-wrap" aria-labelledby="collection-title">
       <div class="section-heading"><div><p class="eyebrow">01 — MEET THE COLLECTION</p><h2 id="collection-title">Find your<br><em>everyday thing.</em></h2></div><div class="heading-aside"><p>Different essentials.<br>The same clear approach.</p><span class="small-note">Seven products · one-time purchases</span></div></div>
       <div class="collection-controls"><p>Take a closer look at what’s inside.</p><span class="product-count">01—07</span></div>
       <div id="product-grid" class="product-grid"></div>
       <p class="catalogue-note">Design preview. Final prices, serving quantities and full label information will appear here after content approval.</p>
     </section>
-    <section id="standards" class="approach section-wrap" aria-labelledby="approach-title">
-      <div class="approach-image"><img src="media/iron-bisglycinate.webp" alt="Iron Bisglycinate bottle, terracotta cap and warm ivory packaging" width="1196" height="1315" loading="lazy"><span class="photo-note">THE DETAILS MAKE THE DIFFERENCE.</span></div>
-      <div class="approach-copy"><p class="eyebrow">02 — OUR APPROACH</p><h2 id="approach-title">A good question<br>deserves a<br><em>clear answer.</em></h2><p>What’s inside? How do I use it? Where can I see the report? We’re making room for the questions that matter to you.</p><div class="approach-lines"><div><span>01</span><p><strong>Meet the ingredient.</strong><br>Understand the form and what’s in a serving.</p></div><div><span>02</span><p><strong>Read the details.</strong><br>Directions and label information, in plain sight.</p></div><div><span>03</span><p><strong>Look up your lot.</strong><br>A direct route from your bottle to its report.</p></div></div><a class="text-link" href="#report">Take a closer look <span>↗</span></a></div>
-    </section>
-    <section id="product" class="product-preview section-wrap" aria-labelledby="detail-title">
-      <div class="detail-heading"><p class="eyebrow">03 — A CLOSER LOOK</p><span>PRODUCT PAGE CONCEPT</span></div>
-      <div class="detail-layout"><div class="detail-gallery"><img id="detail-image" src="media/vitamin-d3-k2.webp" alt="Vitamin D3 + K2 product mockup" width="1196" height="1315" loading="lazy"><div class="gallery-caption"><span>01 / FRONT VIEW</span><span>BODY CAFÉ CO. ORIGINAL MOCKUP</span></div></div>
-      <div class="detail-copy"><p class="eyebrow" id="detail-category">THE EVERYDAY COLLECTION / 03</p><h2 id="detail-title">Vitamin D3<br>+ K2</h2><p class="detail-subtitle" id="detail-subtitle">With Omega-3 as triglycerides.</p><p class="detail-description">A little clarity before you choose. Get to know the ingredients, the serving details and the information on your label.</p><div class="facts"><div><span>Purchase</span><strong>One-time purchase</strong></div><div><span>Price & pack details</span><strong>Awaiting approved product data</strong></div></div><a class="button dark full" href="#report">Explore the lot-report experience <span>↗</span></a><p class="purchase-note">Product-page preview. Checkout will follow confirmed pricing and product details.</p><div class="accordions"><details open><summary>What’s inside <span>＋</span></summary><p id="ingredients-copy">Vitamin D3, Vitamin K2 and Omega-3 as triglycerides. Full formulation and amounts per serving will be added from the approved label.</p></details><details><summary>How to use <span>＋</span></summary><p>Approved serving instructions and storage information will appear here. This preview does not recommend a dose.</p></details><details><summary>Before you choose <span>＋</span></summary><p>Full ingredients, allergens and product-specific warnings will appear here from the approved label.</p></details></div><a class="back-collection" href="#shop">← Back to the seven essentials</a></div></div>
-    </section>
-    <section id="report" class="report-section section-wrap" aria-labelledby="report-title">
-      <div class="report-intro"><p class="eyebrow">04 — FROM YOUR BOTTLE TO THE DETAILS</p><h2 id="report-title">Your lot.<br><em>Your closer look.</em></h2><p>Start with the lot number printed on your pack.<br>That’s the link to your product’s report.</p><div class="report-step"><span>01</span> Choose your product <i>→</i><span>02</span> Enter your lot</div></div>
+    <div id="home-evidence-modules"></div>
+    <section id="home-report" class="report-section section-wrap" aria-labelledby="report-title">
+      <div class="report-intro"><p class="eyebrow">04 — FROM YOUR BOTTLE TO THE DETAILS</p><h2 id="report-title">Your lot.<br><em>Your closer look.</em></h2><p>Understand what a report contains before you choose. Already have a bottle? Look for the lot number printed on the pack.</p><div id="home-report-example"></div><div class="report-step"><span>01</span> Choose your product <i>→</i><span>02</span> Enter your lot</div></div>
       <form id="report-form" class="report-form"><p class="form-kicker">FIND YOUR LOT REPORT <span>↗</span></p><label for="report-product">Your product</label><select id="report-product" name="product"></select><label for="lot-number">Lot number</label><input id="lot-number" name="lot" placeholder="e.g. BCC-DEMO-001" autocomplete="off" maxlength="60" aria-describedby="lot-help"><p id="lot-help">The lot-number location guide will be added from the final pack.</p><button class="button dark full" type="submit">Preview the report layout <span>→</span></button><p class="sample-disclosure">Illustrative experience only. No live reports or authenticity verification are connected.</p><div id="report-result" role="status" aria-live="polite"></div></form>
     </section>
-    <section class="closing section-wrap"><p class="eyebrow">CURIOUS LOOKS GOOD ON YOU.</p><h2>A little more clarity.<br><em>A little more you.</em></h2><a class="button dark" href="#shop">Meet the collection <span>↗</span></a></section>
+    <div id="home-lower-modules"></div>
   </main>
-  <footer class="site-footer"><a class="logo footer-logo" href="#main" aria-label="Body Café Co. home"><img src="../assets/brand/logos/Body%20Cafe%20Co%20logo.svg" alt="Body Café Co." width="1080" height="1080"></a><p>Good questions.<br>Clear intentions.</p><div><a href="#shop">The collection ↗</a><a href="#report">Lot reports ↗</a><a href="#standards">Our approach ↗</a></div><span>© Body Café Co.<br>Design exploration / October 2026<br>Draft copy for brand review.</span></footer>
-  <script src="app.js"></script>
+  <footer class="site-footer"><a class="logo footer-logo" href="#main" aria-label="Body Café Co. home"><img src="../assets/brand/logos/Body%20Cafe%20Co%20logo.svg" alt="Body Café Co." width="1080" height="1080"></a><p>Good questions.<br>Clear intentions.</p><div><a href="#shop">The collection ↗</a><a href="#home-report">Lot reports ↗</a><a href="#home-evidence">Our approach ↗</a></div><span>© Body Café Co.<br>Design exploration / October 2026<br>Draft copy for brand review.</span></footer>
+  <script src="/web/homepage.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

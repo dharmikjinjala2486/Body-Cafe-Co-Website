@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Body Café Co. — product pages, shared primitives.
+   Structure shared by all four directions; each direction's look lives in pdp-a/b/c/d.css.
+   Everything here targets PDP-only classes (.pd-*, .pdp-*) or body[data-route="products"].
+   ========================================================================== */
+
+.pdp-a, .pdp-b, .pdp-c, .pdp-d { overflow-wrap: break-word; }
+.pdp-a h1, .pdp-b h1, .pdp-c h1, .pdp-d h1 { text-wrap: balance; }
+.pdp-a h2, .pdp-b h2, .pdp-c h2, .pdp-d h2 { text-wrap: balance; }
+
+.pd-nobreak { white-space: nowrap; }
+
+/* Breadcrumbs */
+.pd-crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; font-size: 14px; }
+.pd-crumbs li { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.pd-crumbs li + li::before { content: "/"; opacity: 0.5; }
+.pd-crumbs a { display: inline-flex; align-items: center; min-height: 24px; text-decoration: none; }
+.pd-crumbs a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Purchase block */
+.pd-buy { display: grid; gap: 16px; }
+.pd-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin: 0; }
+.pd-price-note { font-size: 13.5px; }
+.pd-stock { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 15px; font-weight: 600; }
+.pd-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; background: #2f6f47; box-shadow: 0 0 0 4px rgb(47 111 71 / 0.15); }
+.pd-stock.is-off .pd-dot { background: transparent; box-shadow: inset 0 0 0 1.5px currentColor; }
+.pd-purchase { display: flex; align-items: flex-start; gap: 12px; margin: 0; }
+.pd-purchase strong { display: block; font-size: 16px; }
+.pd-purchase small { display: block; margin-top: 2px; font-size: 13.5px; }
+.pd-check { width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; flex: none; box-shadow: inset 0 0 0 1.5px currentColor; background: radial-gradient(circle, currentColor 0 4px, transparent 4.5px); }
+.pd-buy-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; }
+.pd-qty { position: relative; display: flex; align-items: center; gap: 10px; min-height: 54px; padding-left: 18px; }
+.pd-qty label { font-size: 13.5px; font-weight: 600; margin: 0; }
+.pd-qty select { min-height: 44px; width: auto; padding: 0 38px 0 10px; font-weight: 700; border: 0 !important; background-color: transparent; box-shadow: none !important; }
+.pd-qty:focus-within { box-shadow: 0 0 0 2px currentColor; }
+.pd-add {
+  flex: 1 1 200px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 54px; padding: 0 24px; border: 0; cursor: pointer; font-weight: 600; font-size: 16px; text-decoration: none;
+}
+.pd-add svg { font-size: 20px; }
+.pd-add:disabled, .pd-qty select:disabled { cursor: not-allowed; }
+.pd-add:disabled { opacity: 0.5; }
+.pd-micro { margin: 0; font-size: 13.5px; line-height: 1.5; }
+.pd-buy .pd-micro { margin-top: -6px; }
+
+/* Inline field + button (pincode, lot) */
+.pd-pincode label, .pd-lot-form label { display: block; margin-bottom: 8px; }
+.pd-inline { display: flex; gap: 8px; }
+.pd-inline input:not([type=checkbox]) { flex: 1; min-width: 0; }
+.pd-inline button { flex: none; min-height: 48px; min-width: 88px; padding: 0 20px; border: 0; font-weight: 600; cursor: pointer; }
+.pd-pincode .pd-micro, .pd-lot-form .pd-micro { margin-top: 10px; }
+.pd-pincode .pd-micro:empty { display: none; }
+.pd-pincode input[aria-invalid="true"] { border-color: #a33a22 !important; }
+.pd-lot-for { margin: 0 0 14px; }
+.pd-lot-form .link-button { min-height: 24px; }
+
+/* Formula table */
+.pd-formula { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 15.5px; }
+.pd-formula thead th:first-child { width: 56%; }
+.pd-formula th, .pd-formula td { text-align: left; vertical-align: top; padding: 12px 12px 12px 0; }
+.pd-formula thead th { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.pd-formula tbody th { font-weight: 600; }
+.pd-formula td { text-align: right; padding-right: 0; }
+.pd-pending { font-style: italic; }
+
+/* FAQ */
+.pd-faq summary > span:first-child { min-width: 0; }
+
+/* Mobile purchase bar: appears only after the main control scrolls away, and hides at the footer. */
+.pd-sticky {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--bottle, #fff); color: var(--ink, #2d2926);
+  box-shadow: 0 -1px 0 var(--line-strong, rgb(0 0 0 / 0.2)), 0 -12px 30px -18px rgb(0 0 0 / 0.35);
+}
+.pd-sticky[hidden] { display: none; }
+.pd-sticky-name { flex: 1; min-width: 0; margin: 0; display: grid; line-height: 1.3; font-size: 13.5px; }
+.pd-sticky-name strong { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pd-sticky .pd-add { flex: none; min-height: 48px; padding: 0 18px; font-size: 15px; }
+@media (min-width: 761px) { .pd-sticky { display: none !important; } }
+html:has(body.pd-sticky-on) { scroll-padding-bottom: 88px; }
+body.pd-sticky-on #toast { bottom: 92px; }
+
+/* ---------- Storefront chrome on product pages, per direction ----------
+   C keeps the shared storefront chrome. A, B and D take their homepage palette on product pages only. */
+body[data-route="products"][data-design="a"] {
+  --paper: #f6f3ec; --paper-deep: #ece8df; --bottle: #fbf9f4; --ink: #2e2926; --muted: #625c53;
+  --line: rgb(46 41 38 / 0.14); --line-strong: rgb(46 41 38 / 0.32);
+}
+body[data-route="products"][data-design="b"] {
+  --paper: #f2ecdf; --paper-deep: #e8dfcd; --bottle: #fbf7ef; --ink: #2e2926; --muted: #5a5047;
+  --line: rgb(46 41 38 / 0.14); --line-strong: rgb(46 41 38 / 0.32);
+}
+body[data-route="products"][data-design="d"] {
+  --paper: #f5f2ec; --paper-deep: #e9e3d9; --bottle: #fdfbf8; --ink: #1f1b18; --muted: #5b534a;
+  --line: rgb(31 27 24 / 0.14); --line-strong: rgb(31 27 24 / 0.36);
+}
+body[data-route="products"][data-design="a"] .site-header,
+body[data-route="products"][data-design="b"] .site-header { border-bottom-color: var(--line); }
+body[data-route="products"][data-design="a"] .main-nav a,
+body[data-route="products"][data-design="b"] .main-nav a { font-size: 14px; }
+
+/* A and B use the light concept footer. */
+body[data-route="products"][data-design="a"] .site-footer,
+body[data-route="products"][data-design="b"] .site-footer { background: var(--paper-deep); color: var(--ink); border-top: 1px solid var(--line); }
+body[data-route="products"][data-design="a"] .site-footer .button.light,
+body[data-route="products"][data-design="b"] .site-footer .button.light { --b-bg: var(--ink); --b-fg: var(--paper); }
+body[data-route="products"][data-design="a"] .footer-word,
+body[data-route="products"][data-design="b"] .footer-word { color: var(--ink); font-family: var(--text); letter-spacing: -0.07em; text-transform: none; font-size: 11.6vw; }
+body[data-route="products"][data-design="a"] .footer-word { font-weight: 400; color: color-mix(in srgb, var(--ink) 88%, var(--paper-deep)); }
+body[data-route="products"][data-design="b"] .site-footer { background: #dcbfa2; }
+body[data-route="products"][data-design="b"] .footer-bottom { opacity: 0.8; }
+body[data-route="products"][data-design="a"] .footer-bottom { opacity: 0.78; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-a *, .pdp-b *, .pdp-c *, .pdp-d * { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 420px) {
+  .pd-formula thead th { font-size: 10px !important; letter-spacing: 0.03em !important; }
+  .pd-formula thead th:first-child { width: 50%; }
+}

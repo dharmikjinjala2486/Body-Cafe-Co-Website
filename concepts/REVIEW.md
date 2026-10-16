@@ -30,3 +30,7 @@ The folder was initialized as a Git checkout, linked to the user-selected remote
 A bounded concept-brief critique was requested in the user's existing Body Cafe Co Website Claude project. Claude was explicitly told it could not see localhost. This is a brief review, not a visual inspection of the implementation.
 
 Claude’s completed brief review recommended clearer category wording and consistent report-link language. Applied: explicit supplements subheads, “Find your lot report” CTA, a report-link tile alongside seven product cards, and an honest placeholder for the lot-location guide. Retained both visual directions for user comparison. No label quantities from the critique were adopted without product-data review.
+
+## Homepage expansion — current state
+
+A and B now include the shared researched evidence, customer-experience status, brand, learning and service sections. The former inline product-page preview and duplicate report tile have been removed; product links open the full storefront. The historical product-preview checks above describe the earlier revision. Current report lookup remains explicitly illustrative, with an expandable explanation for prospective buyers. Desktop and mobile checks found no page-level overflow or broken loaded images in the inspected layouts.
