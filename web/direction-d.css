@@ -372,3 +372,95 @@ body[data-design="d"] .d-home .hc-faq details p { font-size: 15.5px; }
 body[data-design="d"] .d-receipt-link,
 body[data-design="d"] .d-menu-head .text-link { min-height: 44px; display: inline-flex; align-items: center; }
 body[data-design="d"] .d-home .lot-form .link-button { padding: 12px 2px; margin: -12px 0; }
+
+/* ==========================================================================
+   Refinement pass: the shared modules as native pieces of the counter.
+   ========================================================================== */
+
+/* Kickers carry the hero's leading rule instead of floating labels. */
+body[data-design="d"] .d-home .hc-kicker { display: flex; align-items: center; gap: 12px; font-size: 11px; letter-spacing: 0.14em; color: var(--d-muted); }
+body[data-design="d"] .d-home .hc-kicker::before { content: ""; width: 28px; height: 1.5px; background: currentColor; flex: none; }
+body[data-design="d"] .d-home .hc-section h2 { letter-spacing: -0.05em; }
+
+/* The tray stack continues all the way to the footer. */
+body[data-design="d"] .d-home .hc-story,
+body[data-design="d"] .d-home .hc-learn,
+body[data-design="d"] .d-home .hc-care {
+  position: relative; border-radius: var(--d-tray) var(--d-tray) 0 0; margin-top: calc(var(--d-tray) * -1);
+}
+body[data-design="d"] .d-home .hc-story { isolation: isolate; padding-bottom: calc(110px + var(--d-tray)); }
+body[data-design="d"] .d-home .hc-learn { padding-block: 110px calc(110px + var(--d-tray)); }
+body[data-design="d"] .d-home .hc-care { padding-block: 110px 120px; }
+
+/* Evidence: cream cards on sage, each indexed with a small arch tab. */
+body[data-design="d"] .d-home .hc-evidence .hc-heading { max-width: 760px; }
+body[data-design="d"] .d-home .hc-evidence .hc-proof-grid { gap: 18px; }
+body[data-design="d"] .d-home .hc-proof-grid article {
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 30px 28px 24px; border: 0; border-radius: 22px; background: var(--d-cream);
+  box-shadow: 0 18px 36px -30px rgb(46 41 38 / 0.55);
+}
+body[data-design="d"] .d-home .hc-proof-grid .hc-index {
+  padding: 7px 14px 6px; border-radius: 999px 999px 6px 6px; background: var(--d-sage); color: var(--d-olive); letter-spacing: 0.12em;
+}
+body[data-design="d"] .d-home .hc-proof-grid article:nth-child(2) .hc-index { background: var(--d-lavender); color: #5b3e64; }
+body[data-design="d"] .d-home .hc-proof-grid article:nth-child(3) .hc-index { background: #dddbee; color: var(--d-indigo); }
+body[data-design="d"] .d-home .hc-proof-grid h3 { margin: 22px 0 10px; letter-spacing: -0.03em; }
+body[data-design="d"] .d-home .hc-proof-grid a { margin-top: auto; text-decoration: underline; text-underline-offset: 5px; border: 0; }
+
+/* Customer experiences: the status is printed on a receipt, like the hero's. */
+body[data-design="d"] .d-home .hc-voices h2 { font-size: clamp(42px, 5.2vw, 78px); }
+body[data-design="d"] .d-home .hc-voices .hc-split { align-items: center; }
+body[data-design="d"] .d-home .hc-voices .hc-split > div {
+  position: relative; max-width: 470px; justify-self: center;
+  padding: 34px 32px 26px; background: var(--d-cream); border-radius: 6px; transform: rotate(1.2deg);
+  box-shadow: 0 26px 44px -26px rgb(53 48 111 / 0.55);
+  -webkit-mask: radial-gradient(circle 5px at 8px 0, transparent 98%, #000) top left / 16px 100% repeat-x;
+  mask: radial-gradient(circle 5px at 8px 0, transparent 98%, #000) top left / 16px 100% repeat-x;
+}
+body[data-design="d"] .d-home .hc-voices .hc-lede { font-size: 20px; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1.5px dashed var(--d-line); }
+body[data-design="d"] .d-home .hc-voices .hc-small { padding-top: 14px; border-top: 1.5px dashed var(--d-line); }
+
+/* Lot band: the example report sits as an indigo-on-cream accordion. */
+body[data-design="d"] .d-home .lot-band .hc-report-example summary > span,
+body[data-design="d"] .d-home .hc-faq summary > span {
+  width: 34px; height: 34px; border-radius: 50%; font-size: 16px; border: 1.5px solid currentColor;
+}
+body[data-design="d"] .d-home .lot-band .hc-report-example dl > div { border-top-color: rgb(246 241 232 / 0.2); }
+body[data-design="d"] .d-home .lot-band .hc-report-example dt { color: #e8deef; }
+
+/* Story: the olive arch gets the hero's hairline echo. */
+body[data-design="d"] .d-home .hc-story-mark { position: relative; }
+body[data-design="d"] .d-home .hc-story-mark::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  border: 1.5px solid var(--d-line); transform: translate(20px, -16px);
+}
+body[data-design="d"] .d-home .hc-story-copy .hc-lede { font-size: clamp(20px, 1.8vw, 24px); letter-spacing: -0.02em; }
+
+/* Guides: arch-tab index, matching the evidence cards. */
+body[data-design="d"] .d-home .hc-guides .hc-index {
+  align-self: flex-start; padding: 7px 14px 6px; border-radius: 999px 999px 6px 6px; background: var(--d-paper-2); letter-spacing: 0.12em;
+}
+
+/* Before you order: each question is a cream card. */
+body[data-design="d"] .d-home .hc-faq { display: grid; gap: 10px; }
+body[data-design="d"] .d-home .hc-faq details { border: 0; border-radius: 18px; background: var(--d-cream); padding: 6px 22px; box-shadow: 0 1px 0 rgb(46 41 38 / 0.06); }
+body[data-design="d"] .d-home .hc-faq summary { min-height: 64px; }
+body[data-design="d"] .d-home .hc-faq details[open] { box-shadow: inset 4px 0 0 var(--d-indigo); }
+body[data-design="d"] .d-home .hc-faq details[open] summary > span { background: var(--d-indigo); color: var(--d-cream); border-color: var(--d-indigo); }
+body[data-design="d"] .d-home .hc-faq details p { margin: 0 0 20px; }
+body[data-design="d"] .d-home .hc-care h2 { font-size: clamp(36px, 3.8vw, 56px); }
+
+@media (max-width: 720px) {
+  body[data-design="d"] .d-home .hc-story { padding-bottom: calc(60px + var(--d-tray)); }
+  body[data-design="d"] .d-home .hc-learn { padding-block: 60px calc(60px + var(--d-tray)); }
+  body[data-design="d"] .d-home .hc-care { padding-block: 60px 72px; }
+  body[data-design="d"] .d-home .hc-proof-grid article { padding: 24px 22px 20px; }
+  body[data-design="d"] .d-home .hc-voices h2 { font-size: 38px; }
+  body[data-design="d"] .d-home .hc-voices .hc-split > div { padding: 30px 22px 22px; transform: rotate(0.6deg); }
+  body[data-design="d"] .d-home .hc-story-mark::after { transform: translate(10px, -10px); }
+  body[data-design="d"] .d-home .hc-faq details { padding: 4px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-design="d"] .d-home .hc-faq summary > span { transition: none; }
+}

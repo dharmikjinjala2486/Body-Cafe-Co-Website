@@ -49,3 +49,13 @@ Claude delivered “The morning counter” in `body-cafe-co-direction-d.zip`: `w
 D combines A's warm reading space, B's arch and sage/lavender/indigo section rhythm, and C's interactive caps and café menu. It is integrated at `/?design=d` through the isolated `BCCDirectionD(ctx)` template. All four options are in the top selector; C/D retain their selection across storefront navigation. The imported mobile CSS was adjusted to keep all seven cap labels visible. The existing counter is manual, and D ignores hover selection.
 
 Local D checks: 1440px desktop and 390px mobile layouts without page overflow or broken loaded images; all seven cap selections; one tabbable active bottle; arrow-key selection; menu add-to-bag with the original bag quantity restored; matching demo lot lookup; C/A/D switching; shared support/product routes. A stale accessible bag-count label found during these checks was fixed. New local screenshots are under ignored `web/qa/`. These are targeted preview checks, not a production accessibility or performance certification. Genuine reviews, founder content, final labels/prices, laboratory documents and service policies remain pending.
+
+## Four-variant visual refinement — imported 16 October 2026
+
+Imported Claude's completed `body-cafe-co-four-directions-refinement.zip`, built against commit `65df116`. Package SHA-256: `106e387e040fdcc139ecdcab4cc43187addba21efbb2c2df640b7fa50e4bbcac`.
+
+Only `web/homepage.css` and `web/direction-d.css` were imported, without edits. Markup, copy, section order, data, JavaScript and backend code are unchanged. A now uses editorial evidence rows, framed customer-experience status, product photography and field-note guides. B uses colorful arch cards, a speech-bubble notice, terracotta story treatment and pill accordions. C uses cap motifs, brand display typography, a lilac customer-experience section and menu-style FAQs. D refines its receipt notices, cream evidence cards, arch tabs, story outline and tray-style section transitions.
+
+The prior stylesheets were preserved under ignored `.local/claude-import/pre-four-refinement-65df116/`. Eight supplied desktop/mobile previews and local validation captures are under ignored `web/qa/refined-four/`.
+
+Local checks at 1440px and 390px: all four variants retain five shared homepage sections, no page-level horizontal overflow and no broken loaded images in the inspected layouts. FAQ and example-report accordions open in all four. Desktop evidence compositions were visually inspected. This CSS-only import does not change the previously tested backend or commerce handlers, so backend tests were not repeated.
