@@ -68,3 +68,14 @@ Claude reviewed fresh `23c6bd3` and delivered `body-cafe-co-independent-qa.zip` 
 Accepted Claude fixes: duplicate pending approval prevention and regression test; pending-refund status in Operations; keyboard focus through in-place renders and submit errors; C/D example-report disclaimer contrast; D label contrast; A/B small-text sizing; taller small links. No dependencies, external services, marketing content or product data were added.
 
 Codex resolved the remaining cap-text contrast observation using black when necessary, opaque informational text and a neutral C detail card, with unchanged cap fills and bottle imagery. Final combined suite: 24 tests pass, four JS syntax checks pass, four homepages at 320/390/768/1440 pass targeted layout checks. See `QA-Review-and-Next-Steps.md` for local verification and unchanged production requirements. Claude's report is preserved as the original point-in-time independent assessment; its cap-contrast observation is superseded by the final integration correction.
+
+
+## Variant D replacement: Still life — 16 October 2026
+
+At the user's request, the earlier Morning counter D was replaced with a completely new art direction from Claude, built on fresh baseline `d2da26c`. Imported `body-cafe-co-direction-d-still-life.zip`, SHA-256 `bba01a3dff280bb13e82634a75576f7bd511bb8417305a2f8ff32a2fa8c50656`. Archive paths and both source files were inspected before import. The package's rewritten `web/direction-d.js` and `web/direction-d.css` were copied unchanged. The design and integration note is preserved in `DIRECTION-D-STILL-LIFE.md`. Codex also updated the D selector label in the shared app and standalone concept navigation, and current documentation, to “Still life.”
+
+The new D uses a neutral porcelain stage, numbered product index, shelf collection, facts-panel evidence, dark lot lookup and label-inspired story layout. It preserves existing homepage copy and shared content. No backend, shared homepage-content, product-data or image changes were introduced. The only inline asset is a CSS SVG grain texture; there are no external resources or dependencies.
+
+Local verification: all 24 backend tests pass; JavaScript syntax and diff checks pass. D layouts inspected at 320, 390, 768, 1100 and 1440px with one primary heading, seven labels, no page overflow or clipped audited headings. Mobile sections visually inspected through the footer; no broken loaded images or captured console errors. All seven manual selections update the name/link and leave one tabbable bottle; Home, Down and End keyboard navigation checked. Shelf add-to-bag and sample lot lookup passed, and the original bag quantity was restored. Shared report/FAQ accordions work. A/B/C mobile isolation checks passed. Local screenshots are under ignored `web/qa/still-life/`.
+
+This replaces the earlier D design, which remains recoverable in Git history. Production integrations and approved content inputs remain as documented.
