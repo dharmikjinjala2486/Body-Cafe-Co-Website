@@ -1,0 +1,302 @@
+{
+  "created_date": "2026-10-16",
+  "scope": "All assets explicitly supplied by user, both reviewed requirements decks, and existing companion colour workbook",
+  "asset_count": 40,
+  "total_bytes": 133866291,
+  "files": [
+    {
+      "path": "assets/source/Bottle Mockups.zip",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./Bottle Mockups.zip",
+      "bytes": 11364990,
+      "sha256": "de9ac5516c857a5f9c0bda66ad13eacc33b38ef475bcdd9aebc2e78907ba9b29",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/logos/Body Cafe Co logo.svg",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/Body Cafe Co logo.svg",
+      "bytes": 2682,
+      "sha256": "cf3a7a5df5192dde439ebd85f6147fdaa1fb7ea39c19d998b2039c5b0ba0d23e",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/logos/Body Cafe Co logo white.svg",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/Body Cafe Co logo white.svg",
+      "bytes": 2574,
+      "sha256": "ff97b2654882c34c702981d9484b811c75b5660c9f326785cf22803c571bc77d",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/logos/Body Cafe Co logo-01.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/Body Cafe Co logo-01.png",
+      "bytes": 57239,
+      "sha256": "10e8e0b7104845b37ea933810814c6e781f56a64eb8dc4c43344e3e4e21eadf2",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/logos/Body Cafe Co logo white.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/Body Cafe Co logo white.png",
+      "bytes": 10649,
+      "sha256": "ea393671f18573108f301b2e7a2ffd32a1f68357d8990f0fb18360d3938e4f6a",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/guidelines/Body Cafe Co logo guideline.pdf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/Body Cafe Co logo guideline.pdf",
+      "bytes": 257224,
+      "sha256": "45ff205a9564699a15d21bd0bc06033437217b30fd4774825c8aded23d24c129",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/colours/Colours.jpg",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/Colors/Colours.jpg",
+      "bytes": 254855,
+      "sha256": "402bd5bcd54605a903f7a371e646b45267d7e6649b38ceda23198f048d09c96b",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/colours/Body Cafe Co Colours.xlsx",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/Colors/Body Cafe Co Colours .xlsx",
+      "bytes": 10342,
+      "sha256": "670cc61fc5210f21139c11ac2a32a9aa24fe1a5094eaacb5f3a0ddc506594b63",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/source/blender/BCC_Final_Varient_1_Garden_SpotUV_Corrected.blend",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./3d bottles/BCC_Final_Varient_1_Garden_SpotUV_Corrected.blend",
+      "bytes": 107644396,
+      "sha256": "39c86b3720eaf977cf260c6e4e21912ee6c50870d6adcdfd2cc50bcbaf455000",
+      "verified_identical": true
+    },
+    {
+      "path": "docs/requirements/Body-Cafe-Co-Functional-Requirements-Decisions.pptx",
+      "source": "/Users/dharmikjinjala/Downloads/Body-Cafe-Co-Functional-Requirements-Decisions.pptx",
+      "bytes": 344236,
+      "sha256": "84582dbf84a6f110a814df5ab600ffd840519c0014b2f8b011c8c9d06836d3a9",
+      "verified_identical": true
+    },
+    {
+      "path": "docs/requirements/Body-Cafe-Co-Technical-Questions.pptx",
+      "source": "/Users/dharmikjinjala/Downloads/Body-Cafe-Co-Technical-Questions.pptx",
+      "bytes": 296298,
+      "sha256": "8a698b6222dad130e748ba8279e94374df48971a7e50ea076cf987d5cce51d12",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-Black.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-Black.otf",
+      "bytes": 29904,
+      "sha256": "d1ca93a2798f3beffbc99c08c75f63dbbce52effebb37ae352b6dc27047870a6",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-BlackItalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-BlackItalic.otf",
+      "bytes": 30812,
+      "sha256": "969e26731e1a0a29c83f543f275ba0a703460ed144a876079868bc576de31c12",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-Bold.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-Bold.otf",
+      "bytes": 29196,
+      "sha256": "750ed54a5aa461dc7fd25ae86f6d555778801e2c2bbc83bb524d7e4f4d1e5017",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-BoldItalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-BoldItalic.otf",
+      "bytes": 30968,
+      "sha256": "620f43b12bdecdc9e0f8512014bd5fea8d9741374eff43ab8a891d96be2f68ea",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-Heavy.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-Heavy.otf",
+      "bytes": 30060,
+      "sha256": "a6ae98e4a64cc123b52ca7e3111f2c53d4090f353ee332e4f1f666a7440ed63e",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-HeavyItalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-HeavyItalic.otf",
+      "bytes": 31444,
+      "sha256": "9729b88566911a8f95ef2829d9716f7b4fd1341c9c41c9ce0acb4dc6582d5b39",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-Italic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-Italic.otf",
+      "bytes": 29612,
+      "sha256": "b017e7cfd772da159b5bcfd13f29c1cf4be8945ce21f0b56fa635f06ed3e2df3",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-Light.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-Light.otf",
+      "bytes": 28324,
+      "sha256": "93134346e8bd43c6738cec7ccfbd0e6625d6e828c09d223dcb025f07a1de46a1",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-LightItalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-LightItalic.otf",
+      "bytes": 29372,
+      "sha256": "3440ec4b9f2cc420d6f34310a82f12e83395630d4de32904831f1e41bf1fcb4b",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-Regular.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-Regular.otf",
+      "bytes": 27644,
+      "sha256": "2762f4fc2ebad8323264aea52ffa2260b86c9677493d3ce2dc4f34e5851d2aa2",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-SemiBold.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-SemiBold.otf",
+      "bytes": 28860,
+      "sha256": "6abbac55e111221de952c32037445131184baab8707dd264ebd67a271f1ab6c4",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-SemiBoldItalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-SemiBoldItalic.otf",
+      "bytes": 29988,
+      "sha256": "ddbd410742119639aaec85e53eced03a46d2d7a8451279148c794f330d1e2f17",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-Thin.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-Thin.otf",
+      "bytes": 28620,
+      "sha256": "20d6b7a2052db13af5a7e382e0ba723c3f2b55342f12060ec80d8873029b080f",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-ThinItalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-ThinItalic.otf",
+      "bytes": 29540,
+      "sha256": "646049abce36f2830585fa9169a687f72a89ea46d0ec3281bac3a8d3d92d59ab",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-UltraLight.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-UltraLight.otf",
+      "bytes": 27636,
+      "sha256": "6ec58752dadf956bcf55646d24af827e4a90b601ec395bf6c870341d047302e0",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/aileron/Aileron-UltraLightItalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/aileron/Aileron-UltraLightItalic.otf",
+      "bytes": 28940,
+      "sha256": "f8beef63dc75865dd0e5bbd95b75a11b17087e57be8d05e4747c281d65c67258",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/lemonmilk/LemonMilk.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/lemonmilk/LemonMilk.otf",
+      "bytes": 94464,
+      "sha256": "37b45adef32701bf853674acaac4cfa5873442971080daada0da5dacf0d38c76",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/lemonmilk/LemonMilkbold.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/lemonmilk/LemonMilkbold.otf",
+      "bytes": 103340,
+      "sha256": "536f34da978ebfe34c7502a222718e1342a159796d8ffeb8d2090b2c61b813a7",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/lemonmilk/LemonMilkbolditalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/lemonmilk/LemonMilkbolditalic.otf",
+      "bytes": 69640,
+      "sha256": "71f0aa097aeade4ce5cb95e02870960518c84f663a9e752fd2faa4070d6d59a8",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/lemonmilk/LemonMilkitalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/lemonmilk/LemonMilkitalic.otf",
+      "bytes": 69696,
+      "sha256": "4d5319d3c156a70421727d2a1085782858dac8221a2a7d9109b8bb669a98b0f0",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/lemonmilk/LemonMilklight.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/lemonmilk/LemonMilklight.otf",
+      "bytes": 96672,
+      "sha256": "cfe0801cde52323cf44893eae7c1b4123a6cb5276017af377d752567525cbf2e",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/brand/fonts/lemonmilk/LemonMilklightitalic.otf",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./BCC Logo/lemonmilk/LemonMilklightitalic.otf",
+      "bytes": 61632,
+      "sha256": "6794471398044f75aa9e2075c61de481827945a44557f3970aba97864987d5c9",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/products/mockups/iron-bisglycinate.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./Bottle Mockups.zip :: Bottle Mockups/iron-bisglycinate.png",
+      "bytes": 1940671,
+      "sha256": "2f14174fbd97ef7eddea2f78c053d4541b2a0fd48367d1895d6fb92016ecab39",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/products/mockups/l-theanine.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./Bottle Mockups.zip :: Bottle Mockups/l-theanine.png",
+      "bytes": 1870442,
+      "sha256": "02faa6078da91e91fb65e0b3e34fff618cbb62834e2e1547d46e24549b67d568",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/products/mockups/vitamin-d3-k2.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./Bottle Mockups.zip :: Bottle Mockups/vitamin-d3-k2.png",
+      "bytes": 1889907,
+      "sha256": "1c3a80fc1c28f89a7aa356eda02fb7d4220eb77f4a5bda81c751e688984c2bf5",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/products/mockups/omega-3-fish-oil.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./Bottle Mockups.zip :: Bottle Mockups/omega-3-fish-oil.png",
+      "bytes": 1740962,
+      "sha256": "a6fbc0aabfb0b4b2524f2230865ea62206f51522cb0f20ac9b1253c93e0f5bfe",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/products/mockups/myo-d-chiro-inositol.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./Bottle Mockups.zip :: Bottle Mockups/myo-d-chiro-inositol.png",
+      "bytes": 1714664,
+      "sha256": "d7972030b44c576f0d70e74735b793bed94801fbf47e432660ef6bf95cf84a0c",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/products/mockups/creatine-chews.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./Bottle Mockups.zip :: Bottle Mockups/creatine-chews.png",
+      "bytes": 1779035,
+      "sha256": "559fd4ec56c980977e814209c9436cd8e503a1685d4926ad5800816d962a362f",
+      "verified_identical": true
+    },
+    {
+      "path": "assets/products/mockups/psyllium-husk.png",
+      "source": "/Users/dharmikjinjala/Documents/Dharmik/Work/Body Cafe Co./Bottle Mockups.zip :: Bottle Mockups/psyllium-husk.png",
+      "bytes": 1718761,
+      "sha256": "1a31615b865aa49859465397caba80abba1aa644cf8e30f3081bf86b18753f67",
+      "verified_identical": true
+    }
+  ],
+  "notes": [
+    "Original source files unchanged.",
+    "Blender file copied without opening or modifying scene; external dependencies not yet audited.",
+    "Mockups preserved as supplied RGB PNGs with backgrounds.",
+    "No SharePoint content included.",
+    "D3 + K2 inclusion of Omega-3 as triglycerides confirmed directly by user."
+  ],
+  "github_storage": {
+    "blender_archive": "assets/source/blender/BCC_Final_Varient_1_Garden_SpotUV_Corrected.blend.gz",
+    "bytes": 104277306,
+    "sha256": "6324928723aee56221b8862bd7197efd8d13624c6176b15bd06a39307590ac88",
+    "original_sha256": "39c86b3720eaf977cf260c6e4e21912ee6c50870d6adcdfd2cc50bcbaf455000",
+    "lossless_restore_verified": true
+  }
+}
