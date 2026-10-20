@@ -645,6 +645,8 @@
     var m = model(ctx);
     return (PAGES[ctx.design] || pageC)(m);
   };
+  /* Per-product "still to confirm" fields, shared with the ingredient notes in site-*.js. */
+  window.BCCProductPage.toConfirm = TO_CONFIRM;
 
   /* ---------- Behaviour ---------- */
   /* Show the bar once the main purchase row has scrolled above the viewport; hide it again while the footer is in view

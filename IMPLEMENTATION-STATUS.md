@@ -1,3 +1,7 @@
+# Latest design update — 19 October 2026
+
+All four visual directions now extend across customer routes with expanded shared copy and distinct page compositions. A/B homepages run in the main app; old concept URLs redirect. The existing 28 product-page themes remain. Synthetic transaction states are explicitly labelled and disabled. This is a frontend/content import only; production requirements below remain unresolved. See `SITE-DESIGN.md`, `SITE-COPY-LEDGER.md`, `INTEGRATION-SITE.md` and the latest `CLAUDE-SYNC.md` entry. Older entries below are historical snapshots.
+
 # Website implementation and launch readiness
 
 16 October 2026

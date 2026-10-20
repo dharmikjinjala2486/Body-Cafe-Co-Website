@@ -1,6 +1,6 @@
 # Body Café Co. Website
 
-The current storefront uses the “pick a cap” redesign created in Claude and imported into this repository on 16 October 2026. It includes all seven products, interactive cap selection, transparent bottle images, locally hosted Lemon Milk/Aileron fonts, café menu layouts and the existing connected commerce/support preview. See `CLAUDE-SYNC.md` for provenance and verification.
+All four design directions now cover the complete customer website: A (Warm editorial), B (Expressive everyday), C (Pick a cap), and D (Still life). Claude's full-site design package was imported on 19 October 2026. Each direction has its own inner-page compositions, header/footer treatment and shared expanded content. See `SITE-DESIGN.md` for coverage, `SITE-COPY-LEDGER.md` for content status and `CLAUDE-SYNC.md` for import verification.
 
 ## Run the complete preview
 
@@ -10,7 +10,7 @@ Python 3.9+ is required. No additional packages are needed.
 python3 -B app/server.py --port 4174
 ```
 
-Open [direction D — Still life](http://127.0.0.1:4174/?design=d). The top selector preserves A (Warm editorial), B (Expressive everyday), C (Claude design) and D (Still life). A/B are standalone concepts with links to the working storefront; C/D share the connected commerce preview. All four homepages include the researched trust, customer-experience status, brand, learning and service content. C is explicitly selected at `/?design=c`; D at `/?design=d`. All seven products now have distinct A/B/C/D detail pages. Product URLs carry `?design=a|b|c|d`; the selector changes theme while keeping the same product. The chosen direction persists within the tab, and A/B product home links return to their matching concept homepage. See `PDP-THEMES.md` for integration and content gaps. Old `?theme=` parameters no longer select a design. [Operations preview](http://127.0.0.1:4174/ops) offers explicit Admin A, Admin B and Viewer identities.
+Open [direction D — Still life](http://127.0.0.1:4174/?design=d). Use the top selector to switch A/B/C/D on the current page. Every customer route retains the selected direction, including shop, products, brand, learning, reports, bag, checkout, account, support and policies. Old A/B concept entry URLs redirect into the main app. All seven products retain their four existing detail-page designs. [Design states](http://127.0.0.1:4174/preview/states?design=d) lists clearly labelled synthetic transactional examples with disabled controls. [Operations preview](http://127.0.0.1:4174/ops) retains its existing shared interface.
 
 This server binds to loopback only, rejects other Host headers, and refuses a non-preview `BCC_MODE`. It is not a production commerce server. Use sample information: the checkout, addresses and support forms persist their input in a local SQLite file, `.local/preview.sqlite3`, which is excluded from Git. No money, SMS, email, courier booking or external analytics transmission occurs.
 

@@ -1,0 +1,49 @@
+/* ==========================================================================
+   Body Café Co. — shared primitives for the themed site (all four directions).
+   Only structure and states that every direction needs. Each direction styles them in site-a/b/c/d.css.
+   Scoped to body[data-theme] so operations pages (no data-theme) keep the storefront styles unchanged.
+   ========================================================================== */
+body[data-theme] .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Fields: hints and errors */
+body[data-theme] .field-hint { display: block; margin: -2px 0 8px; font-size: 13px; line-height: 1.4; color: var(--muted); }
+body[data-theme] .field-error { margin: 6px 0 0; font-size: 13.5px; font-weight: 600; color: #a33a22; display: flex; gap: 6px; align-items: flex-start; }
+body[data-theme] .field-error::before { content: "!"; flex: none; display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; background: #a33a22; color: #fff; font-size: 11px; line-height: 1; margin-top: 1px; }
+body[data-theme] .has-error input, body[data-theme] .has-error textarea, body[data-theme] [aria-invalid="true"] { border-color: #a33a22 !important; }
+body[data-theme] .form-error:empty { display: none; }
+body[data-theme] .form-error { padding: 12px 14px; border-left: 3px solid #a33a22; background: #a33a2214; color: #7f2a17; font-weight: 600; font-size: 14.5px; margin: 14px 0; }
+body[data-theme] input:disabled, body[data-theme] select:disabled, body[data-theme] textarea:disabled { opacity: 0.75; cursor: not-allowed; }
+body[data-theme] button:disabled { cursor: not-allowed; }
+
+/* Summary rows */
+body[data-theme] .sum-row { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+body[data-theme] .sum-row.summary-total { border-bottom: 0; font-size: 19px; padding-top: 16px; }
+
+/* Report result hierarchy */
+body[data-theme] .rr-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0; margin: 18px 0; }
+body[data-theme] .rr-facts > div { padding: 10px 12px 10px 0; border-top: 1px solid currentColor; border-top-color: color-mix(in srgb, currentColor 25%, transparent); }
+body[data-theme] .rr-facts dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+body[data-theme] .rr-facts dd { margin: 4px 0 0; font-weight: 600; font-size: 15px; }
+body[data-theme] .rr-links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 0; }
+body[data-theme] .rr-loading { display: flex; align-items: center; gap: 12px; padding: 16px 0; }
+body[data-theme] .rr-loading p { margin: 0; }
+body[data-theme] .rr-spinner { width: 20px; height: 20px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: rr-spin 0.8s linear infinite; }
+@keyframes rr-spin { to { transform: rotate(360deg); } }
+
+/* Preference rows */
+body[data-theme] .pref-group { border: 0; margin: 0 0 28px; padding: 0; }
+body[data-theme] .pref-group legend { padding: 0; margin-bottom: 8px; font-weight: 700; }
+body[data-theme] .pref-row { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: start; padding: 16px 0; border-top: 1px solid var(--line); margin: 0; font-weight: 400; }
+body[data-theme] .pref-row strong { display: block; }
+body[data-theme] .pref-row small { display: block; margin-top: 3px; font-size: 14px; color: var(--muted); }
+body[data-theme] .pref-lock { width: 20px; height: 20px; border-radius: 50%; background: currentColor; opacity: 0.25; }
+body[data-theme] .pref-state { font-size: 13px; font-weight: 600; color: var(--muted); }
+
+/* Payment/COD option and checkboxes inside themed forms */
+body[data-theme] .disabled-option { padding: 14px 0; color: var(--muted); }
+body[data-theme] .disabled-option p { font-size: 14px; margin: 6px 0 0; }
+body[data-theme] .gst-details { margin-top: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme] .rr-spinner { animation: none; border-right-color: currentColor; opacity: 0.5; }
+}

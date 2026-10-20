@@ -14,8 +14,9 @@ function syncDesign() {
 }
 syncDesign();
 /* Where "home" is for the active direction: A/B return to their concept homepage. */
-const conceptHome = (d) => `/concepts/index.html?concept=${d}`;
-const designHome = () => (activeDesign === "a" || activeDesign === "b" ? conceptHome(activeDesign) : "/");
+/* All four homepages now render in this app; the old A/B concept URLs redirect here. */
+const designHome = () => "/";
+const theme = () => (window.BCCSite && window.BCCSite.themes[activeDesign]) || null;
 const $ = (s) => document.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const escape = (value) =>
@@ -197,10 +198,13 @@ function card(p) {
 function grid(products = state.catalog) {
   return `<div class="tile-grid">${products.map(card).join("")}</div>`;
 }
-/* The four-option selector. On a product page every option keeps the same product (handled in-app);
-   elsewhere A/B open their concept homepage and C/D open their storefront homepage. */
+/* The four-option selector keeps the visitor on the same route, entity, query and anchor; only ?design= changes. */
+function designHref(d) {
+  const u = new URL(location.href);
+  u.searchParams.set("design", d);
+  return u.pathname + u.search + u.hash;
+}
 function designLinks() {
-  const pid = location.pathname.startsWith("/products/") && product(location.pathname.split("/")[2]) ? location.pathname.split("/")[2] : "";
   return [
     ["a", "Warm editorial"],
     ["b", "Expressive everyday"],
@@ -208,12 +212,16 @@ function designLinks() {
     ["d", "Still life"],
   ]
     .map(([d, label]) => {
-      const href = pid ? `/products/${pid}?design=${d}` : d === "a" || d === "b" ? conceptHome(d) : `/?design=${d}`;
-      return `<a ${pid ? "data-design-switch" : "data-design-link"} href="${href}"${activeDesign === d ? ' aria-current="page"' : ""}>${d.toUpperCase()} <span>${label}</span></a>`;
+      return `<a data-design-switch href="${designHref(d)}"${activeDesign === d ? ' aria-current="page"' : ""}>${d.toUpperCase()} <span>${label}</span></a>`;
     })
     .join("");
 }
+function previewBar() {
+  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Shared design preview. Ordering and sign-in are unavailable." : "Preview store. Prices are samples and no payment is taken."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><a href="/ops">Operations preview</a></div>`;
+}
 function shell(content) {
+  const t = theme();
+  if (t && t.chrome && !location.pathname.startsWith("/ops")) return previewBar() + t.chrome(siteCtx(), content);
   const mobile = state.user?.mobile;
   const path = location.pathname;
   const nav = [
@@ -224,7 +232,7 @@ function shell(content) {
     ["/reports", "Lot reports"],
   ];
   const current = (href) => (path === href || path.startsWith(href + "/") ? ' aria-current="page"' : "");
-  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Shared design preview. Ordering and sign-in are unavailable." : "Preview store. Prices are samples and no payment is taken."}</p><nav class="design-switch" aria-label="Choose design concept">${designLinks()}</nav><a href="/ops">Operations preview</a></div><header class="site-header"><a class="logo" href="${designHome()}" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a><nav class="main-nav" aria-label="Main">${nav.map(([h, l]) => `<a href="${h}"${current(h)}>${l}</a>`).join("")}</nav><div class="header-tools"><button class="icon-button" data-action="search" aria-label="Search">${icon("search")}</button><a class="icon-button" href="/account" aria-label="Your account">${icon("user")}</a><a class="bag-link" href="/cart" aria-label="Bag, ${count()} items">${icon("bag")}<span data-cart-count ${count() ? "" : "data-empty"}>${count()}</span></a><button class="menu-button" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header><nav id="mobile-nav" hidden aria-label="Mobile"><div class="mobile-nav-links">${[
+  return `${previewBar()}<header class="site-header"><a class="logo" href="${designHome()}" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a><nav class="main-nav" aria-label="Main">${nav.map(([h, l]) => `<a href="${h}"${current(h)}>${l}</a>`).join("")}</nav><div class="header-tools"><button class="icon-button" data-action="search" aria-label="Search">${icon("search")}</button><a class="icon-button" href="/account" aria-label="Your account">${icon("user")}</a><a class="bag-link" href="/cart" aria-label="Bag, ${count()} items">${icon("bag")}<span data-cart-count ${count() ? "" : "data-empty"}>${count()}</span></a><button class="menu-button" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header><nav id="mobile-nav" hidden aria-label="Mobile"><div class="mobile-nav-links">${[
     ["/shop", "Shop all seven"],
     ["/bundles", "The edits"],
     ["/standards", "Standards"],
@@ -330,7 +338,7 @@ function detail(p) {
     faqs,
     learning,
     homeHref: designHome(),
-    collectionHref: activeDesign === "a" || activeDesign === "b" ? conceptHome(activeDesign) + "#shop" : "/shop",
+    collectionHref: "/shop",
   });
 }
 
@@ -590,7 +598,19 @@ function closeMenu() {
 }
 
 /* Run after every render. */
+/* Internal links carry the active direction, so copied links and new tabs keep it. */
+function keepDesignOnLinks() {
+  document.querySelectorAll('#app a[href^="/"], #search-dialog a[href^="/"]').forEach((a) => {
+    const h = a.getAttribute("href");
+    if (/^\/(ops|web|concepts|assets)(\/|$)/.test(h) || a.hasAttribute("data-design-switch")) return;
+    const u = new URL(h, location.origin);
+    if (u.searchParams.get("design") === activeDesign) return;
+    u.searchParams.set("design", activeDesign);
+    a.setAttribute("href", u.pathname + u.search + u.hash);
+  });
+}
 function enhance() {
+  keepDesignOnLinks();
   counter.paused = false;
   counter.mount($("[data-counter]"));
   menuPeek($(".menu"));
@@ -634,6 +654,119 @@ function addressFields(prefix = "", v = {}) {
         `<div class="field ${k === "address" ? "span-two" : ""}"><label for="${prefix + k}">${l}</label><input id="${prefix + k}" name="${k}" type="${t}" value="${escape(v[k] || "")}" ${k === "email" ? "" : "required"} ${k === "mobile" ? 'inputmode="tel" pattern="[6-9][0-9]{9}" maxlength="10"' : k === "pincode" ? 'inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6"' : 'maxlength="200"'}></div>`,
     )
     .join("")}</div>`;
+}
+/* ---------- Shared form builders for the four directions ----------
+   Field ids, names and validation stay identical in every direction, so the existing submit and click handlers keep working.
+   `dis` renders a disabled, read-only visual fixture: nothing can be submitted. `err` maps field names to error text. */
+function fieldError(err, k) {
+  return err && err[k] ? `<p class="field-error" id="err-${k}">${escape(err[k])}</p>` : "";
+}
+function addressFieldsX(prefix = "", v = {}, dis = false, err = null) {
+  return `<div class="field-grid">${[
+    ["name", "Full name", "text", "As it should appear on the parcel", "name"],
+    ["mobile", "Mobile number", "tel", "10-digit Indian mobile, for delivery updates", "tel-national"],
+    ["email", "Email (optional)", "email", "For an order receipt, if you'd like one", "email"],
+    ["pincode", "Pincode", "text", "6 digits", "postal-code"],
+    ["address", "Address", "text", "House or flat, street and area", "street-address"],
+    ["city", "City", "text", "", "address-level2"],
+    ["state", "State", "text", "", "address-level1"],
+  ]
+    .filter(([k]) => prefix !== "saved-" || !["mobile", "email"].includes(k))
+    .map(([k, l, t, hint, ac]) => {
+      const e = err && err[k];
+      const desc = [hint ? `hint-${prefix + k}` : "", e ? `err-${k}` : ""].filter(Boolean).join(" ");
+      return `<div class="field ${k === "address" ? "span-two" : ""}${e ? " has-error" : ""}"><label for="${prefix + k}">${l}</label>${hint ? `<span class="field-hint" id="hint-${prefix + k}">${hint}</span>` : ""}<input id="${prefix + k}" name="${k}" type="${t}" autocomplete="${ac}" value="${escape(v[k] || "")}" ${k === "email" ? "" : "required"} ${k === "mobile" ? 'inputmode="tel" pattern="[6-9][0-9]{9}" maxlength="10"' : k === "pincode" ? 'inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6"' : 'maxlength="200"'}${desc ? ` aria-describedby="${desc}"` : ""}${e ? ' aria-invalid="true"' : ""}${dis ? " disabled" : ""}>${fieldError(err, k)}</div>`;
+    })
+    .join("")}</div>`;
+}
+const forms = {
+  delivery(v = {}, dis = false, err = null) {
+    return `${addressFieldsX("", v, dis, err)}<details class="gst-details"><summary><span>Need a GST invoice?</span>${icon("plus")}</summary><label for="gstin">GSTIN (optional)</label><input id="gstin" name="gstin" maxlength="15"${dis ? " disabled" : ""}><label for="legal-name">Legal name</label><input id="legal-name" name="legal_name" maxlength="200"${dis ? " disabled" : ""}></details>`;
+  },
+  payment(dis = false) {
+    return `<label class="payment-choice"><input type="radio" checked name="method" value="prepaid"${dis ? " disabled" : ""}><span><strong>Prepaid · preview payment</strong><small>UPI, cards, wallets and net banking are planned with Razorpay. Nothing is charged in the preview.</small></span></label><div class="disabled-option"><span>Cash on delivery</span>${badge("Policy pending")}<p>${window.BCCSite?.copy.checkout.cod || ""}</p></div>`;
+  },
+  confirm(dis = false, err = null) {
+    return `<label class="check${err?.adult ? " has-error" : ""}"><input type="checkbox" name="adult" required${dis ? " disabled" : ""}${err?.adult ? ' aria-invalid="true" aria-describedby="err-adult"' : ""}><span>I confirm the purchaser is 18 or older.</span></label>${fieldError(err, "adult")}<label class="check"><input type="checkbox" name="email_consent"${dis ? " disabled" : ""}><span>I'd like optional email updates.</span></label><label class="check"><input type="checkbox" name="whatsapp_consent"${dis ? " disabled" : ""}><span>I'd like optional WhatsApp updates.</span></label><p class="micro">Marketing choices are separate and start unticked. See <a href="/policies/privacy">privacy</a> and the <a href="/policies/terms">working terms</a>.</p><div class="form-error" role="alert">${err?.form ? escape(err.form) : ""}</div><button class="button full" type="submit"${dis ? " disabled" : ""}><span>Create preview order</span>${icon("arrow")}</button><p class="micro">A 15-minute preview stock reservation starts when this order is created.</p>`;
+  },
+  /* Order summary for checkout. `items` are {id, quantity}. Ids are those the discount handler updates. */
+  summary(items = state.cart, dis = false) {
+    const lines = items.map((i) => ({ p: product(i.id), q: i.quantity })).filter((x) => x.p);
+    const sub = lines.reduce((n, x) => n + x.p.price * x.q, 0);
+    const ship = sub >= 1499 ? 0 : 75;
+    return {
+      lines: lines.map((x) => `<div class="summary-product">${image(x.p)}<span>${escape(x.p.name)}<small>Qty ${x.q} · ${money(x.p.price)} each</small></span><strong>${money(x.p.price * x.q)}</strong></div>`).join(""),
+      discount: `<label for="discount-code">Sample discount code</label><div class="discount-input"><input id="discount-code" form="checkout-form" name="discount" placeholder="Try PREVIEW10"${dis ? " disabled" : ""}><button type="button" data-action="discount"${dis ? " disabled" : ""}>Apply</button></div>`,
+      totals: `<div class="sum-row"><span>Subtotal</span><strong>${money(sub)}</strong></div><div class="sum-row"><span>Discount</span><strong id="checkout-discount">—</strong></div><div class="sum-row"><span>Sample delivery</span><strong id="checkout-shipping">${ship ? money(ship) : "Free"}</strong></div><div class="sum-row summary-total"><span>Sample total</span><strong id="checkout-total">${money(sub + ship)}</strong></div>`,
+      count: lines.reduce((n, x) => n + x.q, 0),
+      subtotal: sub,
+      shipping: ship,
+    };
+  },
+  otp(dis = false) {
+    return `<form id="otp-form" class="form-panel otp-form"><label for="login-mobile">Mobile number</label><input id="login-mobile" name="mobile" inputmode="tel" autocomplete="tel-national" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit Indian number" required${dis ? " disabled" : ""}><button class="button full" type="submit"${dis ? " disabled" : ""}><span>Get preview code</span>${icon("arrow")}</button><p class="micro">${window.BCCSite?.copy.account.otp || ""}</p><div id="otp-result" role="status"></div><div class="form-error" role="alert"></div></form>`;
+  },
+  codeEntry(code = "000000") {
+    return `<div class="preview-code"><strong>Sample code: ${escape(code)}</strong><p>Visual demonstration only. No SMS was sent and nothing can be verified here.</p><label for="verify-code-sample">Enter the code</label><input id="verify-code-sample" inputmode="numeric" maxlength="6" value="" disabled><button type="button" class="button full" disabled><span>Verify code</span></button></div>`;
+  },
+  address(dis = false) {
+    return `<form id="address-form" class="form-panel">${addressFieldsX("saved-", {}, dis)}<div class="form-error" role="alert"></div><button class="button full"${dis ? " disabled" : ""}><span>Save address</span>${icon("arrow")}</button></form>`;
+  },
+  caseForm(oid = "", kind = "general", dis = false, err = null) {
+    const kinds = [["general", "General question"], ["delivery", "Delivery"], ["return", "Unopened return"], ["replacement", "Replacement / product issue"], ["safety", "Product safety"]];
+    return `<form id="case-form" class="form-panel case-form"><label for="case-kind">What can we help with?</label><select id="case-kind" name="kind"${dis ? " disabled" : ""}>${kinds.map(([v, l]) => `<option value="${v}"${v === kind ? " selected" : ""}>${l}</option>`).join("")}</select><label for="case-order">Order ID (optional)</label><span class="field-hint" id="hint-case-order">Starts with BCC- on your order confirmation</span><input id="case-order" name="order_id" value="${escape(oid)}" maxlength="40" aria-describedby="hint-case-order"${dis ? " disabled" : ""}><div class="field${err?.message ? " has-error" : ""}"><label for="case-message">Tell us a little more</label><textarea id="case-message" name="message" minlength="10" maxlength="3000" required placeholder="Describe the issue and the product or lot it relates to."${err?.message ? ' aria-invalid="true" aria-describedby="err-message"' : ""}${dis ? " disabled" : ""}></textarea>${fieldError(err, "message")}</div><p class="micro">${window.BCCSite?.copy.contact.privacy || ""}</p><div class="form-error" role="alert"></div><button class="button full"${dis ? " disabled" : ""}><span>Create preview case</span>${icon("arrow")}</button><div id="case-result" role="status"></div></form>`;
+  },
+  reviewForm(o, items, dis = false) {
+    return `<form id="review-form" class="form-panel review-form"><input type="hidden" name="order_id" value="${escape(o.id)}"><label for="review-product">Product</label><select id="review-product" name="product"${dis ? " disabled" : ""}>${items.map((i) => `<option value="${i.id}">${escape(i.name)}</option>`).join("")}</select><label for="rating">Rating</label><select id="rating" name="rating"${dis ? " disabled" : ""}>${[5, 4, 3, 2, 1].map((n) => `<option value="${n}">${n} of 5</option>`).join("")}</select><label for="review-text">Your review</label><textarea id="review-text" name="text" minlength="10" maxlength="1000" required${dis ? " disabled" : ""}></textarea><p class="micro">Reviews are published only after moderation, and only from delivered orders.</p><div class="form-error" role="alert"></div><button class="button"${dis ? " disabled" : ""}><span>Submit for preview moderation</span></button></form>`;
+  },
+  preferences(groups) {
+    return `<form id="preferences-form" class="form-panel prefs-form">${groups
+      .map((g) => `<fieldset class="pref-group"><legend>${g.title}</legend>${g.items
+        .map((it) => (it.length === 2 ? `<div class="pref-row is-fixed"><span class="pref-lock" aria-hidden="true"></span><span><strong>${it[0]}</strong><small>${it[1]}</small></span><span class="pref-state">Always on</span></div>` : `<label class="pref-row check"><input type="checkbox" name="${it[0]}"><span><strong>${it[1]}</strong><small>${it[2]}</small></span></label>`))
+        .join("")}</fieldset>`)
+      .join("")}<button class="button"><span>Save my choices</span></button></form>`;
+  },
+  reportForm(pid, lot) {
+    const index = Math.max(0, state.catalog.findIndex((p) => p.id === pid));
+    const sample = "DEMO-" + String(index + 1).padStart(2, "0") + "-01";
+    return `<form id="report-form" class="form-panel report-form-x"><label for="report-product">Product</label><select id="report-product" name="product">${state.catalog.map((p) => `<option value="${p.id}" ${p.id === pid ? "selected" : ""}>${escape(p.name)}</option>`).join("")}</select><label for="lot">Lot number</label><span class="field-hint" id="hint-lot">As printed on the pack. Not your order number or barcode.</span><input id="lot" name="lot" value="${escape(lot || "")}" placeholder="e.g. ${sample}" maxlength="60" required autocomplete="off" aria-describedby="hint-lot"><p class="micro">For a sample match, try <strong id="sample-lot">${sample}</strong>.</p><button class="button full" type="submit"><span>Look up lot</span>${icon("arrow")}</button><details class="sample-states"><summary><span>Try other sample results</span>${icon("plus")}</summary><div class="sample-buttons">${[["UNKNOWN", "Not found"], ["DEMO-UNPUBLISHED", "Unpublished"], ["DEMO-WITHDRAWN", "Withdrawn"], ["DEMO-OUTAGE", "Service down"]].map(([s, l]) => `<button type="button" data-sample-lot="${s}">${l}</button>`).join("")}</div></details><div id="report-result" role="status" aria-live="polite"></div></form>`;
+  },
+  productPicker(pid) {
+    return `<div class="report-product-picker" role="group" aria-label="Choose your product">${state.catalog.map((p) => `<button type="button" style="${capStyle(p)}" class="${p.id === pid ? "selected" : ""}" data-report-product="${p.id}" aria-pressed="${p.id === pid}">${image(p)}<span>${escape(p.name)}</span></button>`).join("")}</div>`;
+  },
+  search(q = "") {
+    return `<form id="page-search" class="inline-search" role="search"><label class="sr-only" for="page-query">Search products and guides</label><input id="page-query" name="q" type="search" value="${escape(q)}" placeholder="Product, ingredient or format"><button class="button"><span>Search</span>${icon("search")}</button></form>`;
+  },
+};
+/* Report lookup result: one hierarchy for every direction (themes restyle .rr-*). */
+function reportResult(r, pid) {
+  const c = window.BCCSite?.copy.reports;
+  const t = (c && c.states[r.state]) || ["Record", "", ""];
+  const p = product(pid || r.product);
+  return `<article class="report-result rr rr-${r.state} ${t[2]}"><p class="rr-kicker">Sample record · ${escape(r.lot)}</p><h2>${t[0]}</h2><p class="rr-lede">${t[1]}</p><dl class="rr-facts"><div><dt>Product</dt><dd>${p ? escape(p.name) : "—"}</dd></div><div><dt>Lot</dt><dd>${escape(r.lot)}</dd></div><div><dt>Report version</dt><dd>Preview only</dd></div><div><dt>Source document</dt><dd>Not supplied</dd></div><div><dt>Individual pack</dt><dd>Not authenticated</dd></div></dl><p class="rr-links"><a class="text-link" href="/contact?kind=${r.state === "withdrawn" ? "safety" : "general"}">${r.state === "withdrawn" ? "Contact support about this lot" : "Ask about this lot"}</a><a class="text-link" href="/learn/understanding-reports">How to read a report</a></p></article>`;
+}
+function fixtureState(path) {
+  const s = new URL(location.href).searchParams.get("state");
+  if (!s) return "";
+  const key = path.split("/")[1];
+  const allowed = {
+    checkout: ["sample", "errors", "unavailable"],
+    payment: ["pending", "failed", "paid", "expired", "unavailable"],
+    orders: ["paid", "shipped", "delivered", "cancelled"],
+    account: ["signed-out", "code", "empty", "orders", "sample"],
+    contact: ["errors", "submitted", "unavailable"],
+  };
+  if ((key === "payment" || key === "orders") && !/^SAMPLE-/.test(path.split("/")[2] || "")) return "";
+  return (allowed[key] || []).includes(s) ? s : "";
+}
+/* Everything a direction needs to compose a page. Data and behaviour stay here; layout lives in site-*.js. */
+function siteCtx() {
+  return {
+    design: activeDesign, state, catalog: state.catalog, published: state.catalog.filter((p) => p.published), product, image, cap, capStyle, onCap,
+    escape, money, date, format, shortName, bottleWidth, icon, link, badge, price, faqs, learning, count: count(), total: total(), staticPreview: !!window.BCCStaticPreview,
+    query: new URL(location.href).searchParams, path: location.pathname, forms, site: window.BCCSite, homeLot, menuBoard, user: state.user, account: state.account,
+    orderCard, caseCard, accountNav, sampleLot: (id) => "DEMO-" + String(Math.max(0, state.catalog.findIndex((p) => p.id === id)) + 1).padStart(2, "0") + "-01",
+  };
 }
 function checkout() {
   if (!state.cart.length)
@@ -936,44 +1069,55 @@ async function render(scroll = true) {
   const version = ++renderVersion;
   syncDesign();
   const path = location.pathname;
-  // A/B homepages are the standalone concepts: going "home" in those directions returns there.
-  if (path === "/" && (activeDesign === "a" || activeDesign === "b")) return location.replace(conceptHome(activeDesign));
-  // Product pages carry their direction in the URL so reload, back/forward and shared links reopen the same design.
-  if (path.startsWith("/products/") && new URL(location.href).searchParams.get("design") !== activeDesign) {
+  // Customer pages carry their direction in the URL so reload, back/forward and shared links reopen the same design.
+  if (!path.startsWith("/ops") && new URL(location.href).searchParams.get("design") !== activeDesign) {
     const u = new URL(location.href);
     u.searchParams.set("design", activeDesign);
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
   }
   try {
     let content;
-    if (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/")) state.account = await api("/account");
+    const fx = fixtureState(path);
+    if (!fx && (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/"))) state.account = await api("/account");
     if (path.startsWith("/ops") && ["admin", "viewer"].includes(state.user.role)) state.ops = await api("/admin");
     if (version !== renderVersion) return;
-    if (window.BCCStaticPreview && /^\/(checkout|account|orders|payment|ops|contact)(\/|$)/.test(path))
-      content = `<section class="section article">${heading("Shared design preview", "Explore the design", "You can browse all four designs, inspect product details and try the sample bag and lot lookup. Ordering, sign-in and support submissions are not enabled on this shared preview.")}${link("Continue shopping", "/shop")}</section>`;
-    else if (path === "/") content = home();
-    else if (path === "/shop") content = shop();
-    else if (path.startsWith("/products/")) content = detail(product(path.split("/")[2]));
-    else if (path.startsWith("/bundles")) content = bundles(path.split("/")[2]);
-    else if (path === "/standards") content = standards();
+    // Each customer route asks the active direction for its own composition, falling back to the shared template.
+    const t = theme();
+    const call = (name, ...args) => (t && typeof t[name] === "function" ? t[name](siteCtx(), ...args) : undefined);
+    const seg = path.split("/")[2];
+    const sampleOrder = () => (fx && /^SAMPLE-/.test(seg || "") ? Object.assign(window.BCCSite.fixtures.order(fx, state.catalog), { id: seg }) : null);
+    if (window.BCCStaticPreview && path.startsWith("/ops"))
+      content = `<section class="section article">${heading("Shared design preview", "Operations aren't available here", "The operations preview needs the local application. Browse the customer designs instead.")}${link("Continue shopping", "/shop")}</section>`;
+    else if (window.BCCStaticPreview && !fx && /^\/(checkout|account|orders|payment|contact)(\/|$)/.test(path))
+      content = call("unavailable", path) ?? `<section class="section article">${heading("Shared design preview", "Explore the design", "You can browse all four designs, inspect product details and try the sample bag and lot lookup. Ordering, sign-in and support submissions are not enabled on this shared preview.")}${link("Continue shopping", "/shop")}</section>`;
+    else if (path === "/") content = call("home") ?? home();
+    else if (path === "/shop") content = call("shop") ?? shop();
+    else if (path.startsWith("/products/")) content = detail(product(seg));
+    else if (path.startsWith("/bundles")) content = call("bundles", seg) ?? bundles(seg);
+    else if (path === "/standards") content = call("standards") ?? standards();
     else if (path.startsWith("/learn"))
       content = state.flags.ingredient_library
-        ? learn(path.split("/")[2])
-        : `<section class="section-wrap">${empty("Learn is offline", "The ingredient library isn't published right now.", "Shop all seven", "/shop")}</section>`;
-    else if (path === "/story") content = story();
-    else if (path === "/reports") content = reports();
-    else if (path === "/cart") content = cart();
-    else if (path === "/checkout") content = checkout();
-    else if (path.startsWith("/account")) content = account(path.split("/")[2] || "orders");
-    else if (path.startsWith("/orders/")) content = orderDetail(state.account.orders.find((o) => o.id === path.split("/")[2]));
-    else if (path.startsWith("/payment/")) content = payment(state.account.orders.find((o) => o.id === path.split("/")[2]));
-    else if (path === "/help") content = help();
-    else if (path === "/contact") content = contact();
-    else if (path.startsWith("/policies/")) content = policy(path.split("/")[2]);
-    else if (path === "/settings") content = settings();
-    else if (path === "/search") content = searchPage();
-    else if (path.startsWith("/ops")) content = ops(path.split("/")[2] || "overview");
-    else content = notFound();
+        ? call("learn", seg) ?? learn(seg)
+        : call("learnOffline") ?? `<section class="section-wrap">${empty("Learn is offline", "The ingredient library isn't published right now.", "Shop all seven", "/shop")}</section>`;
+    else if (path === "/story") content = call("story") ?? story();
+    else if (path === "/reports") content = call("reports") ?? reports();
+    else if (path === "/cart") content = call("cart") ?? cart();
+    else if (path === "/checkout") content = call("checkout", fx) ?? checkout();
+    else if (path.startsWith("/account")) content = call("account", seg || "orders", fx) ?? account(seg || "orders");
+    else if (path.startsWith("/orders/")) {
+      const o = sampleOrder() || state.account?.orders.find((x) => x.id === seg);
+      content = call("order", o, fx) ?? orderDetail(o);
+    } else if (path.startsWith("/payment/")) {
+      const o = sampleOrder() || state.account?.orders.find((x) => x.id === seg);
+      content = call("payment", o, fx) ?? payment(o);
+    } else if (path === "/help") content = call("help") ?? help();
+    else if (path === "/contact") content = call("contact", fx) ?? contact();
+    else if (path.startsWith("/policies/")) content = call("policy", seg) ?? policy(seg);
+    else if (path === "/settings") content = call("settings") ?? settings();
+    else if (path === "/search") content = call("search") ?? searchPage();
+    else if (path === "/preview/states") content = call("states") ?? notFound();
+    else if (path.startsWith("/ops")) content = ops(seg || "overview");
+    else content = call("notFound") ?? notFound();
     // In-place updates (cart quantity, saved address, operations actions…) replace the DOM.
     // Keep keyboard focus on the same control, or at the start of the main content, instead of losing it to <body>.
     const keepFocus = !scroll && booted ? focusKey(document.activeElement) : null;
@@ -981,6 +1125,10 @@ async function render(scroll = true) {
       renderedRoute = location.pathname + location.search;
       $("#app").innerHTML = shell(content);
       document.body.dataset.route = path === "/" ? "home" : path.split("/")[1];
+      // Themed customer surfaces; operations keep the shared storefront chrome.
+      document.body.dataset.theme = path.startsWith("/ops") ? "" : activeDesign;
+      // A/B homepages reuse the shared homepage modules' A/B presentation (homepage.css keys on data-concept).
+      document.body.dataset.concept = path === "/" && (activeDesign === "a" || activeDesign === "b") ? activeDesign : "";
       enhance();
       if (keepFocus) {
         const target = keepFocus === "#main" ? null : document.querySelector(keepFocus);
@@ -993,9 +1141,10 @@ async function render(scroll = true) {
     } else paint();
     booted = true;
     const shown = path.startsWith("/products/") ? product(path.split("/")[2]) : null;
+    const pageTitle = $("#main h1")?.textContent.trim();
     document.title = shown
       ? `${shown.name} — Body Café Co.`
-      : (path === "/"
+      : path !== "/" && pageTitle ? `${pageTitle} — Body Café Co.` : (path === "/"
         ? "Seven everyday essentials"
         : path
             .split("/")
@@ -1003,7 +1152,9 @@ async function render(scroll = true) {
             .map((x) => x.replaceAll("-", " "))
             .join(" · ")) + " — Body Café Co.";
     if (scroll) {
-      window.scrollTo({ top: 0, behavior: "instant" });
+      const anchor = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+      if (anchor) anchor.scrollIntoView();
+      else window.scrollTo({ top: 0, behavior: "instant" });
       $("#main").focus({ preventScroll: true });
     }
     if (path === "/reports" && new URL(location.href).searchParams.get("lot")) $("#report-form")?.requestSubmit();
@@ -1231,7 +1382,7 @@ document.addEventListener("submit", async (e) => {
       navigate("/payment/" + o.id);
     } else if (form.id === "report-form") {
       const result = $("#report-result");
-      result.innerHTML = '<p class="micro">Looking up the record…</p>';
+      result.innerHTML = '<div class="rr rr-loading" aria-busy="true"><span class="rr-spinner" aria-hidden="true"></span><p>Looking up the record for this lot…</p></div>';
       event("report_lookup");
       try {
         const r = await api("/reports?product=" + encodeURIComponent(data.product) + "&lot=" + encodeURIComponent(data.lot));
@@ -1247,9 +1398,11 @@ document.addEventListener("submit", async (e) => {
             "In the live experience, reviewed safety instructions and a direct support route would appear here.",
           ],
         }[r.state];
-        result.innerHTML = `<div class="report-result ${r.state === "withdrawn" ? "warning" : r.state === "sample_match" ? "match" : ""}"><p class="kicker">Sample record ${escape(r.lot)}</p><h2>${t[0]}</h2><p>${t[1]}</p><p class="micro">Report version: preview only. Source document: not supplied. Individual unit authenticity: not verified.</p><a class="text-link" href="/contact">Ask about this lot</a></div>`;
+        result.innerHTML = reportResult(r, data.product);
+        keepDesignOnLinks();
       } catch (error) {
-        result.innerHTML = `<div class="report-result warning"><h2>Lookup unavailable</h2><p>${escape(error.message)}</p><button type="submit" class="small-button">Try again</button></div>`;
+        const u = window.BCCSite?.copy.reports.unavailable || ["Lookup unavailable", ""];
+        result.innerHTML = `<div class="report-result rr warning rr-unavailable"><p class="rr-kicker">Lookup status</p><h2>${u[0]}</h2><p>${escape(error.message)} ${u[1]}</p><button type="submit" class="small-button rr-retry">Try again</button></div>`;
       }
     } else if (form.id === "otp-form") {
       state.otp = { mobile: data.mobile, ...(await api("/auth/otp", data)) };
@@ -1268,7 +1421,8 @@ document.addEventListener("submit", async (e) => {
     } else if (form.id === "case-form") {
       const c = await api("/cases", data);
       $("#case-result").innerHTML =
-        `<div class="report-result"><p class="kicker">Case created</p><h2>${c.id}</h2><p>Your case is saved locally. ${c.kind === "safety" ? "It is marked for priority safety review." : ""}</p><a class="text-link" href="/account/cases">Follow your case</a></div>`;
+        `<div class="report-result case-created"><p class="kicker">Case created · saved in this preview only</p><h2>${c.id}</h2><p>Your case is saved locally and no external message was sent. ${c.kind === "safety" ? "It is marked for priority safety review." : ""}</p><a class="text-link" href="/account/cases">Follow your case</a></div>`;
+      keepDesignOnLinks();
       form.reset();
     } else if (form.id === "address-form") {
       await api("/addresses", data);

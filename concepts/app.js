@@ -1,4 +1,11 @@
 const storefront = location.port === '4173' ? 'http://127.0.0.1:4174/' : location.origin + '/';
+// The A and B homepages now render inside the storefront app with every other page of their direction.
+// Keep this older entry path working: forward to the same direction, preserving any section anchor.
+{
+  const concept = new URL(location.href).searchParams.get('concept') === 'b' ? 'b' : 'a';
+  try { sessionStorage.setItem('bcc-design', concept); } catch {}
+  location.replace(storefront + '?design=' + concept + location.hash);
+}
 const products = [
   {slug:'iron-bisglycinate',name:'Iron Bisglycinate',sub:'A closer look at iron.',color:'#aa472e'},
   {slug:'l-theanine',name:'L-Theanine',sub:'Get to know the ingredient.',color:'#777d51'},
