@@ -1,3 +1,11 @@
+# Latest refinement — 20 October 2026
+
+Current directions: A **State of Play**, B **Expressive everyday**, C **Everyday Elsewhere**, D **The Other Side**. A retains its sculpture with smooth source bottles/caps; D now tells a four-chapter bottle-and-cap scroll story. All four themes gain interactive sections and original, unrecoloured header/footer logo artwork. Read [REFINEMENT-20261020.md](REFINEMENT-20261020.md) for the current scope, implementation and checks. Older entries below are historical snapshots.
+
+# Current design update — 20 October 2026
+
+A, C and D have been rebuilt as Instrument, Liner Notes and Screening Room across customer routes and product pages. B Expressive everyday is preserved. Read `CREATIVE-RESET-RESEARCH.md` for current rationale and verification; prior entries below describe earlier snapshots. Backend, integration and launch-readiness requirements remain unchanged.
+
 # Latest design update — 19 October 2026
 
 All four visual directions now extend across customer routes with expanded shared copy and distinct page compositions. A/B homepages run in the main app; old concept URLs redirect. The existing 28 product-page themes remain. Synthetic transaction states are explicitly labelled and disabled. This is a frontend/content import only; production requirements below remain unresolved. See `SITE-DESIGN.md`, `SITE-COPY-LEDGER.md`, `INTEGRATION-SITE.md` and the latest `CLAUDE-SYNC.md` entry. Older entries below are historical snapshots.
@@ -87,3 +95,15 @@ The user requested a distinct modern premium D rather than the earlier synthesis
 ## Four product-page themes
 
 Claude's four-theme PDP package built on `919c8f8` is imported. A/B/C/D product pages share catalogue/commerce data and present distinct compositions matching each homepage. Added detail structure covers formula and label gaps, use/care, evidence and lot lookup, service links, customer-experience empty states, FAQs and learning. Theme URLs, same-product switching, related links and A/B return-home navigation are implemented. Missing approved facts remain explicit, and pincode results promise no delivery date. Codex independently checked all 28 product/theme combinations at four widths and targeted flows; see `CLAUDE-SYNC.md`.
+
+### 20 October — Everyday Elsewhere exploration
+
+The user selected a surreal, playful product world. Direction C now loads `world.js` and `world.css`: original miniature-café artwork, seven selectable bottles, light control, a staggered collection, scene-based product art, and dedicated story/reading-room layouts. Supporting pages inherit the new shell and styling. A/B/D were not redesigned again in this pass. See `EVERYDAY-ELSEWHERE.md` for asset provenance and validation. Changes remain local and uncommitted.
+
+### 20 October — Cinematic storytelling and creative A / D
+
+C now has three cinematic scroll chapters. A is a working Curiosity Machine; D is a Night Museum with original artwork and exhibition chapters. `cinema.js` / `cinema.css` provide the new layer and lifecycle cleanup. Supporting page styling follows A/D’s new directions; checkout retains readable forms. See `CINEMATIC-DIRECTIONS.md` for provenance, behavior and checks. B’s baseline source hashes remain identical. Changes remain local and uncommitted.
+
+### 20 October — live 3D motion research and A/D landing pages
+
+The user rejected image-led heroes. A is now State of Play: procedural metallic ribbons, a draggable source bottle, inertial movement and spring scatter/gather of all seven real models. D is The Other Side: an actual 3D orbital exhibition, repeating illuminated geometry, drag selection and scroll-driven perspective. `live.js` and `live-scene.js` override the A/D homepages after the earlier layers. The seven GLBs are reproducibly exported from the existing Blender file; source assets remain untouched. See `MOTION-RESEARCH.md` for primary references, design reasoning, asset provenance, performance boundaries and validation. B/C retain their previous experiences. Local and uncommitted.

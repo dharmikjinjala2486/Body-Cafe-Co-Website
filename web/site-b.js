@@ -38,7 +38,7 @@
     var nav = [["/shop", "Shop"], ["/standards", "Standards"], ["/learn", "Learn"], ["/story", "Story"]];
     var mob = [["/shop", "Shop all seven", "lilac"], ["/bundles", "The edits", "sage"], ["/standards", "Our standards", "lime"], ["/learn", "Learn", "peach"], ["/story", "Our story", "lilac"], ["/reports", "Lot reports", "sage"], ["/help", "Help", "lime"]];
     return (
-      '<header class="site-header tb-header"><a class="logo" href="/" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a>' +
+      '<header class="site-header tb-header"><a class="logo" href="/" aria-label="Body Café Co. home"><img src="/web/media/brand-original.svg" alt="" width="465" height="451"></a>' +
       '<nav class="main-nav tb-nav" aria-label="Main">' + nav.map(function (n) { return '<a href="' + n[0] + '"' + cur(n[0]) + ">" + n[1] + "</a>"; }).join("") + "</nav>" +
       '<div class="header-tools tb-tools"><a class="tb-lot" href="/reports"' + cur("/reports") + ">Lot reports</a>" +
       '<button class="icon-button tb-ico" data-action="search" aria-label="Search">' + ctx.icon("search") + '</button><a class="icon-button tb-ico" href="/account" aria-label="Your account">' + ctx.icon("user") + "</a>" +
@@ -48,7 +48,7 @@
       '<main id="main" tabindex="-1" class="tb-main">' + content + "</main>" +
       '<footer class="site-footer tb-footer"><div class="tb-foot-top"><div class="tb-foot-pitch"><p class="tb-foot-sticker" aria-hidden="true">A curious mind<b>✳</b>A clearer choice</p><p class="tb-foot-line">Your body.<br>Your curiosity.<br><em>Your café.</em></p>' + btn("/shop", "Shop all seven", "is-ink") + "</div>" +
       '<div class="tb-foot-cols"><div><h2>Shop</h2><a href="/shop">All seven</a><a href="/bundles">The edits</a><a href="/reports">Lot reports</a><a href="/search">Search</a></div><div><h2>Read</h2><a href="/standards">Standards</a><a href="/learn">Learn</a><a href="/story">Story</a></div><div><h2>Help</h2><a href="/help">Help centre</a><a href="/contact">Contact</a><a href="/account">Account</a><a href="/settings">Preferences</a></div><div><h2>Policies</h2>' + S.policyOrder.map(function (k) { return '<a href="/policies/' + k + '">' + S.policies[k].title + "</a>"; }).join("") + "</div></div></div>" +
-      '<p class="tb-foot-word" aria-hidden="true">Body Café Co.</p><div class="tb-foot-bottom"><span>© ' + new Date().getFullYear() + ' Body Café Co.</span><span>Draft copy · sample prices · preview commerce</span><a href="/preview/states">Design states</a></div></footer>'
+      '<p class="tb-foot-word" ><img src="/web/media/brand-horizontal.svg" alt="Body Cafe Co." width="1160" height="140"></p><div class="tb-foot-bottom"><span>© ' + new Date().getFullYear() + ' Body Café Co.</span><span>Draft copy · sample prices · preview commerce</span><a href="/preview/states">Design states</a></div></footer>'
     );
   }
 

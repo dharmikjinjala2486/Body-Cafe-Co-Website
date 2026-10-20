@@ -113,3 +113,27 @@ The new `site.js` content layer and four JS/CSS direction modules theme all cust
 Independent local verification: all 24 backend/HTTP tests passed, all frontend JS syntax checks and `git diff --check` passed, and the static build/API/publish-boundary checks passed. Browser inspection covered 32 representative desktop inner-page states plus 112 mobile states (28 routes × four directions), with one h1, no measured page overflow, broken loaded images or detected app error states. Local audit JSON is retained in the ignored import directory. Targeted keyboard interactions confirmed filtered collection browsing, B-to-D same-route selector switching retaining the filter, add-to-bag, quantity update, D checkout summary, PREVIEW10 totals, removal back to the original empty bag, a product-linked sample lot match, and same-article A switching retaining #sources. No checkout order was submitted during these checks. Local server uses the existing preview database and is running at http://127.0.0.1:4174/.
 
 Claude's supplied QA report is preserved as its own assessment, not presented as Codex's independent coverage. Its remaining B mobile PDP target-overlap finding, shared search/toast styling, and untested screen reader/cross-browser/live transaction coverage remain documented. No production claims or readiness status changed. No commit, push or deployment was made.
+
+
+## Three-direction creative reset — 20 October 2026
+
+Following the user's rejection of A/C/D and approval of B, Codex researched non-supplement references and requested a critical creative review in the existing Claude conversation. Claude provided concept critique only; the implementation was created locally. New A Instrument, C Liner Notes and D Screening Room replace customer page renderers and product compositions using `web/creative.js` / `.css`. All seven products, reading/brand/evidence pages and transactional/support/policy states are covered. B's site modules, PDP stylesheet, shared homepage stylesheet and original PDP renderer match their pre-revision checksums. Backend, source product assets and static write boundaries are unchanged.
+
+Current research, design rationale and QA are in `CREATIVE-RESET-RESEARCH.md`. Local checks include 564 page states plus 40 final narrow/B states, all 24 existing tests, JavaScript syntax, static build/publish-boundary checks, all three checkout/payment/confirmation flows on an isolated QA database, A failed-payment retry, all 15 report states and the new manual interactions. Screenshot and audit evidence is under ignored `.local/redesign-20261020/`. Blender MCP was unavailable and no Blender output is asserted. The local preview remains at port 4174. No push, commit or deployment was performed for this revision.
+
+## Latest user direction: surreal, playful world (20 October)
+
+The user rejected the previous creativity level and chose a surreal, playful product world. C is now Everyday Elsewhere, implemented in `web/world.js` / `web/world.css` after the creative layer. Read `EVERYDAY-ELSEWHERE.md` before further work. It contains the new concept, exact artwork prompt, factual boundaries, changed scope and checks. Avoid restoring the prior Liner Notes homepage over this layer. A/B/D remain as before this exploration.
+
+## Latest: cinematic motion, Curiosity Machine and Night Museum
+
+The user approved the surreal concept but requested smoother cinematic storytelling and creativity in A/D. Read `CINEMATIC-DIRECTIONS.md`. The new `cinema.js` / `cinema.css` layer overrides A/C/D homepages after `world.js`; the app invokes its enhancement hook on each render. Preserve native scroll, route cleanup, reduced-motion presentation, selector destinations, and the new artwork. Do not restore earlier Instrument/Screening Room homepages over these overrides.
+
+## Latest: real-time 3D replaces A/D image-led heroes
+
+Read `MOTION-RESEARCH.md` first. A/D now use the final `live.js` / `live-scene.js` / `live.css` layer, with actual source GLB bottles, original procedural geometry, direct manipulation and pause/reduced-motion handling. Models and vendor provenance are in their README files. The Blender source was never saved or modified. Preserve the local imports, lifecycle cleanup, fallback selector, reduced-motion layout, correct selected-object links and the new State of Play / The Other Side names. Do not restore the earlier machine/image-museum homepage over the live override. C/B remain as before this pass.
+
+
+## Latest local refinement — 20 October 2026
+
+Read `REFINEMENT-20261020.md` before editing. D's former seven-bottle orbit is replaced by the four-chapter single-bottle/cap story. `atelier.js/css` is the final design layer across ALL FOUR themes, now including B at the user's request. Keep the existing palettes and type systems. Do not recolour header logos or replace the footer's original SVG glyphs/underline with text. Full source label geometry is deliberately retained to prevent surface artifacts. Source Blender and original SVGs are untouched.

@@ -1,3 +1,11 @@
+# Latest refinement — 20 October 2026
+
+Current directions: A **State of Play**, B **Expressive everyday**, C **Everyday Elsewhere**, D **The Other Side**. A retains its sculpture with smooth source bottles/caps; D now tells a four-chapter bottle-and-cap scroll story. All four themes gain interactive sections and original, unrecoloured header/footer logo artwork. Read [REFINEMENT-20261020.md](REFINEMENT-20261020.md) for the current scope, implementation and checks. Older entries below are historical snapshots.
+
+# Current direction update — 20 October 2026
+
+A/C/D are replaced by **Instrument**, **Liner Notes** and **Screening Room** across all customer page families and all seven product detail pages. B (**Expressive everyday**) is preserved. The new implementation is in `web/creative.js` and `web/creative.css`. Read `CREATIVE-RESET-RESEARCH.md` for current decisions, coverage and checks. The document below describes the superseded 19 October designs and is retained for history.
+
 # Body Café Co. — four complete website directions
 
 Baseline: `design/concepts @ cf8376f`. Frontend design and content only. No backend, schema, integration, deployment or pushes.
@@ -107,3 +115,7 @@ Each grammar is defined by composition, type, density, framing and navigation, n
 - **Shared overlays.** The search dialog and toasts use the shared storefront styling in every direction.
 - **Product imagery.** The Vitamin D3 + K2 mockup is framed tighter than the other six; D scales it down on plinths and shelves. No new photography exists: there is no rear label, product-in-hand or founder imagery.
 - **Out-of-stock.** The out-of-stock / unavailable add state is designed (disabled "Unavailable" control) but appears only when catalogue stock is 0. No fixture forces it on the listing pages.
+
+### Latest A/D homepage direction
+
+A: State of Play. D: The Other Side. Both are real-time product geometry experiences, superseding the earlier Instrument / Curiosity Machine and Screening Room / Night Museum homepages. See `MOTION-RESEARCH.md` for reference analysis and implementation details. The final override loads from `live.js` after the world/cinema layers.

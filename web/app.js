@@ -206,10 +206,10 @@ function designHref(d) {
 }
 function designLinks() {
   return [
-    ["a", "Warm editorial"],
+    ["a", "State of Play"],
     ["b", "Expressive everyday"],
-    ["c", "Claude design"],
-    ["d", "Still life"],
+    ["c", "Everyday Elsewhere"],
+    ["d", "The Other Side"],
   ]
     .map(([d, label]) => {
       return `<a data-design-switch href="${designHref(d)}"${activeDesign === d ? ' aria-current="page"' : ""}>${d.toUpperCase()} <span>${label}</span></a>`;
@@ -319,7 +319,7 @@ function shop() {
    Layout and visual language come from web/pdp.js (one template per design direction).
    Product data, quantity limits, add-to-bag, pincode and lot lookup stay in this file. */
 function detail(p) {
-  if (!p) return notFound();
+  if (!p) return activeDesign !== "b" && theme()?.notFound ? theme().notFound(siteCtx()) : notFound();
   event("product_view");
   if (!window.BCCProductPage) return notFound();
   return window.BCCProductPage({
@@ -615,6 +615,9 @@ function enhance() {
   counter.mount($("[data-counter]"));
   menuPeek($(".menu"));
   window.BCCProductPage?.enhance?.();
+  window.BCCCinema?.enhance?.();
+  window.BCCLive?.enhance?.();
+  window.BCCAtelier?.enhance?.();
   headerState();
   document.body.classList.remove("menu-open");
   if (!$("[data-counter]")) document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#e4e9ef");
