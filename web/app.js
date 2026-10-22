@@ -2,13 +2,25 @@
    View layer: templates + interaction. Data, cart, checkout, account and ops logic live further down. */
 /* Design direction. A/B homepages are the standalone concepts; C/D homepages and all four product pages live here.
    Precedence: ?design= in the URL, then this tab's sessionStorage (also written by the A/B concept pages), then C. */
-const DESIGNS = ["a", "b", "c", "d"];
+const DESIGNS = ["a", "b", "c", "d", "e", "f", "g", "h"];
+const DESIGN_LABELS = [
+  ["a", "A", "State of Play"],
+  ["b", "B", "Expressive everyday"],
+  ["c", "C", "Everyday Elsewhere"],
+  ["d", "D", "The Other Side"],
+  ["e", "E", "Fan Deck"],
+  ["f", "F", "Edition"],
+  ["g", "G", "Darkroom"],
+  ["h", "H", "Folio"],
+];
+const availableDesigns = () => DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
 let activeDesign = "c";
 function syncDesign() {
   const requested = new URL(location.href).searchParams.get("design");
   let stored = null;
   try { stored = sessionStorage.getItem("bcc-design"); } catch {}
-  activeDesign = DESIGNS.includes(requested) ? requested : DESIGNS.includes(stored) ? stored : DESIGNS.includes(activeDesign) ? activeDesign : "c";
+  const available = availableDesigns();
+  activeDesign = available.includes(requested) ? requested : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "c";
   try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
   document.body.dataset.design = activeDesign;
 }
@@ -158,7 +170,7 @@ function add(id, quantity = 1) {
   toast(`Added ${p.name} to your bag.`);
 }
 function renderHeaderCount(bump = false) {
-  document.querySelectorAll(".bag-link").forEach((a) => a.setAttribute("aria-label", `Bag, ${count()} items`));
+  document.querySelectorAll(".bag-link").forEach((a) => a.setAttribute("aria-label", `Cart, ${count()} items`));
   document.querySelectorAll("[data-cart-count]").forEach((x) => {
     x.textContent = count();
     x.toggleAttribute("data-empty", !count());
@@ -198,26 +210,22 @@ function card(p) {
 function grid(products = state.catalog) {
   return `<div class="tile-grid">${products.map(card).join("")}</div>`;
 }
-/* The four-option selector keeps the visitor on the same route, entity, query and anchor; only ?design= changes. */
+/* The eight-option selector keeps the visitor on the same route, entity, query and anchor; only ?design= changes. */
 function designHref(d) {
   const u = new URL(location.href);
   u.searchParams.set("design", d);
   return u.pathname + u.search + u.hash;
 }
 function designLinks() {
-  return [
-    ["a", "State of Play"],
-    ["b", "Expressive everyday"],
-    ["c", "Everyday Elsewhere"],
-    ["d", "The Other Side"],
-  ]
-    .map(([d, label]) => {
-      return `<a data-design-switch href="${designHref(d)}"${activeDesign === d ? ' aria-current="page"' : ""}>${d.toUpperCase()} <span>${label}</span></a>`;
+  return DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d))
+    .map(([d, number, label]) => {
+      return `<a data-design-switch href="${designHref(d)}"${activeDesign === d ? ' aria-current="page"' : ""}>${number} <span>${label}</span></a>`;
     })
     .join("");
 }
 function previewBar() {
-  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Shared design preview. Ordering and sign-in are unavailable." : "Preview store. Prices are samples and no payment is taken."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><a href="/ops">Operations preview</a></div>`;
+  const options = DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d)).map(([d, number, label]) => `<option value="${d}"${activeDesign === d ? " selected" : ""}>${number} · ${label}</option>`).join("");
+  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Shared design preview. Ordering and sign-in are unavailable." : "Preview store. Prices are samples and no payment is taken."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><label class="preview-design-mobile">Design<select data-design-select aria-label="Choose design direction">${options}</select></label><a href="/ops">Operations preview</a></div>`;
 }
 function shell(content) {
   const t = theme();
@@ -321,6 +329,8 @@ function shop() {
 function detail(p) {
   if (!p) return activeDesign !== "b" && theme()?.notFound ? theme().notFound(siteCtx()) : notFound();
   event("product_view");
+  const themedProduct = theme()?.product?.(siteCtx(), p);
+  if (themedProduct !== undefined) return themedProduct;
   if (!window.BCCProductPage) return notFound();
   return window.BCCProductPage({
     p,
@@ -390,6 +400,12 @@ function learn(slug) {
   if (p)
     return `<section class="section article ingredient" style="${capStyle(p)}">${heading("Ingredient notes", escape(p.name), escape(p.subtitle))}<div class="ingredient-inline"><div class="ingredient-art">${image(p)}</div><div><h2>What's in view</h2><p>${escape(p.ingredients)}.</p><p>Amounts, sources, approved uses and references are waiting on the reviewed product record. This page doesn't turn an ingredient name into a health claim.</p>${link("View the product", "/products/" + p.id)}</div></div><p>${link("All guides", "/learn", "text-link")}</p></section>`;
   return `<section class="section">${heading("Learn", "Read the label, then the lot", "Short guides on labels, ingredient forms and what a lot report can show.")}<div class="learning-grid">${learning.map((a) => `<a class="learning-card" href="/learn/${a[0]}"><h2>${a[1]}</h2><p>${a[2]}</p><span class="text-link">Read the guide</span></a>`).join("")}</div><div class="section-head below"><h2 class="display">Ingredients</h2><p>Notes for each product. Specific amounts arrive with approved specifications.</p></div><ul class="ingredient-list">${state.catalog.map((p) => `<li><a href="/learn/${p.id}">${cap(p)}<strong>${p.name}</strong><span>${escape(p.ingredients)}</span></a></li>`).join("")}</ul></section>`;
+}
+/* About: a short introduction that points to Story and Standards. Shared copy lives in BCCSite.copy.about. */
+function about() {
+  const c = window.BCCSite?.copy.about;
+  if (!c) return notFound();
+  return `<section class="section article">${heading("About", c.title, c.lede)}${c.blocks.map(([h, t]) => `<h2>${h}</h2><p>${t}</p>`).join("")}<p>${c.next.map(([h, l]) => link(l, h, "text-link")).join(" ")}</p></section>`;
 }
 function story() {
   return `<section class="section story-page">${heading("Story", "Curiosity is a good place to start", "Body Café Co. is built around one idea: the details should be easy to find.")}<div class="story-shelf" aria-hidden="true">${state.catalog.map((p) => image(p)).join("")}</div><div class="story-text"><h2>Make room for understanding</h2><p>A product name is a starting point. The ingredients, the label and the lot record should help you take the next step with confidence.</p><p>The founder's story, team and original photography will be added in their own words. This draft doesn't invent a history, credentials or endorsements.</p>${link("Read our standards", "/standards", "text-link")}</div></section>`;
@@ -528,6 +544,7 @@ function menuPeek(section) {
   if (!section || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
   const peek = section.querySelector(".menu-peek");
   const board = section.querySelector(".menu-board");
+  if (!peek || !board) return;
   let raf = 0,
     tx = 0,
     ty = 0,
@@ -618,6 +635,7 @@ function enhance() {
   window.BCCCinema?.enhance?.();
   window.BCCLive?.enhance?.();
   window.BCCAtelier?.enhance?.();
+  window.BCCDirectionMotion?.enhance?.();
   headerState();
   document.body.classList.remove("menu-open");
   if (!$("[data-counter]")) document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#e4e9ef");
@@ -625,6 +643,8 @@ function enhance() {
     document.documentElement.classList.add("intro");
     setTimeout(() => document.documentElement.classList.remove("intro"), 2200);
   }
+  window.BCCEH?.enhance?.();
+  window.BCCStandards?.enhance?.();
 }
 function cart() {
   return `<section class="section-wrap">${heading("", "Your bag")}${
@@ -1092,7 +1112,7 @@ async function render(scroll = true) {
     if (window.BCCStaticPreview && path.startsWith("/ops"))
       content = `<section class="section article">${heading("Shared design preview", "Operations aren't available here", "The operations preview needs the local application. Browse the customer designs instead.")}${link("Continue shopping", "/shop")}</section>`;
     else if (window.BCCStaticPreview && !fx && /^\/(checkout|account|orders|payment|contact)(\/|$)/.test(path))
-      content = call("unavailable", path) ?? `<section class="section article">${heading("Shared design preview", "Explore the design", "You can browse all four designs, inspect product details and try the sample bag and lot lookup. Ordering, sign-in and support submissions are not enabled on this shared preview.")}${link("Continue shopping", "/shop")}</section>`;
+      content = call("unavailable", path) ?? `<section class="section article">${heading("Shared design preview", "Explore the design", "You can browse all eight designs, inspect product details and try the sample bag and lot lookup. Ordering, sign-in and support submissions are not enabled on this shared preview.")}${link("Continue shopping", "/shop")}</section>`;
     else if (path === "/") content = call("home") ?? home();
     else if (path === "/shop") content = call("shop") ?? shop();
     else if (path.startsWith("/products/")) content = detail(product(seg));
@@ -1102,6 +1122,7 @@ async function render(scroll = true) {
       content = state.flags.ingredient_library
         ? call("learn", seg) ?? learn(seg)
         : call("learnOffline") ?? `<section class="section-wrap">${empty("Learn is offline", "The ingredient library isn't published right now.", "Shop all seven", "/shop")}</section>`;
+    else if (path === "/about") content = call("about") ?? call("story") ?? about();
     else if (path === "/story") content = call("story") ?? story();
     else if (path === "/reports") content = call("reports") ?? reports();
     else if (path === "/cart") content = call("cart") ?? cart();
@@ -1138,7 +1159,7 @@ async function render(scroll = true) {
         (target && !target.disabled ? target : $("#main"))?.focus({ preventScroll: true });
       }
     };
-    if (scroll && document.startViewTransition && !reducedMotion() && booted) {
+    if (scroll && document.startViewTransition && ["a", "b", "c", "d"].includes(activeDesign) && !reducedMotion() && booted) {
       document.documentElement.style.setProperty("--wipe", transitionColor);
       await document.startViewTransition(paint).updateCallbackDone;
     } else paint();
@@ -1452,6 +1473,10 @@ document.addEventListener("submit", async (e) => {
   }
 });
 document.addEventListener("change", (e) => {
+  if (e.target.matches("[data-design-select]") && availableDesigns().includes(e.target.value)) {
+    navigate(designHref(e.target.value));
+    return;
+  }
   if (e.target.id === "report-product") {
     document.querySelector(`[data-report-product="${e.target.value}"]`)?.click();
   }

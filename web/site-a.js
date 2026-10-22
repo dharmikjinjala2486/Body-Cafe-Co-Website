@@ -36,16 +36,16 @@
   function chrome(ctx, content) {
     var path = ctx.path;
     var cur = function (h) { return path === h || path.indexOf(h + "/") === 0 ? ' aria-current="page"' : ""; };
-    var nav = [["/shop", "Shop the collection"], ["/standards", "Our standards"], ["/learn", "Learn"], ["/story", "Our story"]];
-    var mobile = [["/shop", "Shop the collection"], ["/bundles", "The edits"], ["/standards", "Our standards"], ["/learn", "Learn"], ["/story", "Our story"], ["/reports", "Find your lot report"], ["/help", "Help"]];
+    var nav = [["/shop", "Shop"], ["/standards", "Standards"], ["/about", "About"], ["/learn", "Learn"], ["/story", "Story"]];
+    var mobile = nav.concat([["/reports", "Lot report"], ["/search", "Search"]]);
     return (
       '<header class="site-header ta-header"><a class="logo" href="/" aria-label="Body Café Co. home"><img src="/web/media/logo.svg" alt="" width="465" height="451"></a>' +
       '<nav class="main-nav ta-nav" aria-label="Main">' + nav.map(function (n) { return '<a href="' + n[0] + '"' + cur(n[0]) + ">" + n[1] + "</a>"; }).join("") + "</nav>" +
-      '<div class="header-tools ta-tools"><a class="ta-lotlink" href="/reports"' + cur("/reports") + '>Find your lot report <span aria-hidden="true">↗</span></a>' +
+      '<div class="header-tools ta-tools"><a class="ta-lotlink" href="/reports"' + cur("/reports") + '>Lot report <span aria-hidden="true">↗</span></a>' +
       '<button class="icon-button" data-action="search" aria-label="Search">' + ctx.icon("search") + '</button><a class="icon-button" href="/account" aria-label="Your account">' + ctx.icon("user") + "</a>" +
-      '<a class="bag-link ta-bag" href="/cart" aria-label="Bag, ' + ctx.count + ' items"><span class="ta-bag-word">Bag</span><span data-cart-count' + (ctx.count ? "" : " data-empty") + ">" + ctx.count + "</span></a>" +
+      '<a class="bag-link ta-bag" href="/cart" aria-label="Cart, ' + ctx.count + ' items">' + ctx.icon("bag") + '<span data-cart-count' + (ctx.count ? "" : " data-empty") + ">" + ctx.count + "</span></a>" +
       '<button class="menu-button ta-menu" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header>' +
-      '<nav id="mobile-nav" class="ta-mnav" hidden aria-label="Mobile"><ol class="mobile-nav-links">' + mobile.map(function (n, i) { return '<li><a href="' + n[0] + '"><span>0' + (i + 1) + "</span>" + n[1] + "</a></li>"; }).join("") + '</ol><div class="mobile-nav-foot"><a href="/account">Account</a><a href="/cart">Bag (<span data-cart-count>' + ctx.count + '</span>)</a><a href="/settings">Preferences</a></div></nav>' +
+      '<nav id="mobile-nav" class="ta-mnav" hidden aria-label="Mobile"><ol class="mobile-nav-links">' + mobile.map(function (n, i) { return '<li><a href="' + n[0] + '"><span>0' + (i + 1) + "</span>" + n[1] + "</a></li>"; }).join("") + '</ol><div class="mobile-nav-foot"><a href="/account">Account</a><a href="/cart">Cart (<span data-cart-count>' + ctx.count + '</span>)</a></div></nav>' +
       '<main id="main" tabindex="-1" class="ta-main">' + content + "</main>" +
       '<footer class="site-footer ta-footer"><div class="ta-foot-top"><div class="ta-foot-pitch"><img src="/web/media/logo.svg" alt="Body Café Co." width="465" height="451" class="ta-foot-logo"><p>Good questions.<br>Clear intentions.</p><a class="ta-link" href="/shop">The collection ' + arrow() + "</a></div>" +
       '<div class="ta-foot-cols"><div><h2>Shop</h2><a href="/shop">All seven</a><a href="/bundles">The edits</a><a href="/reports">Lot reports</a><a href="/search">Search</a></div><div><h2>Read</h2><a href="/standards">Our standards</a><a href="/learn">Learn</a><a href="/story">Our story</a></div><div><h2>Help</h2><a href="/help">Help centre</a><a href="/contact">Contact</a><a href="/account">Your account</a><a href="/settings">Preferences</a></div><div><h2>Policies</h2>' + S.policyOrder.map(function (k) { return '<a href="/policies/' + k + '">' + S.policies[k].title + "</a>"; }).join("") + "</div></div></div>" +

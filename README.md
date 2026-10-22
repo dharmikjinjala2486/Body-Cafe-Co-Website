@@ -1,3 +1,22 @@
+# Standards across A–H — 22 October 2026
+
+Claude’s approved Standards redesign is integrated across all eight variants, with one shared content model and eight distinct presentations. It preserves the existing headers, other pages and commerce handlers. See [implementation](STANDARDS-IMPLEMENTATION.md) and [local release verification](design-review/RELEASE-2026-10-22.md). Approved business records remain pending and are labelled in the page.
+
+# E–H merged redesign — 22 October 2026
+
+Claude’s completed full-site directions are now merged into the local application:
+
+| Variant | Direction | Local preview |
+|---|---|---|
+| E | Fan Deck — minimal, brand colours | [Open E](http://127.0.0.1:4180/?design=e) |
+| F | Edition — premium editorial, brand colours | [Open F](http://127.0.0.1:4180/?design=f) |
+| G | Darkroom — luxury monochrome interface, real-colour bottles | [Open G](http://127.0.0.1:4180/?design=g) |
+| H | Folio — quiet monochrome interface, real-colour bottles | [Open H](http://127.0.0.1:4180/?design=h) |
+
+All four cover the existing customer routes and states, including a dedicated About page, collection filter/sort, all seven product pages, bag, checkout, account, reports, help and policies. They retain the common seven-section homepage order. A–D keep their local designs, homepage-flow, navigation and motion improvements. The earlier Cap Index / Rooms / Monolith / Formulary implementation is archived locally and is no longer loaded.
+
+See [local merge and verification](design-review/EH-MERGE-2026-10-22.md) and [Claude’s integration notes](INTEGRATION-E-H.md). The static export has been rebuilt; see the Git history and Netlify deploy history for publication status. Historical notes below describe earlier snapshots.
+
 # Latest refinement — 20 October 2026
 
 Current directions: A **State of Play**, B **Expressive everyday**, C **Everyday Elsewhere**, D **The Other Side**. A retains its sculpture with smooth source bottles/caps; D now tells a four-chapter bottle-and-cap scroll story. All four themes gain interactive sections and original, unrecoloured header/footer logo artwork. Read [REFINEMENT-20261020.md](REFINEMENT-20261020.md) for the current scope, implementation and checks. Older entries below are historical snapshots.
@@ -14,7 +33,7 @@ Python 3.9+ is required. No additional packages are needed.
 python3 -B app/server.py --port 4174
 ```
 
-Open [direction C — Everyday Elsewhere](http://127.0.0.1:4174/?design=c). Use the top selector to switch A/B/C/D on the current page. Every customer route retains the selected direction, including shop, products, brand, learning, reports, bag, checkout, account, support and policies. Old A/B concept entry URLs redirect into the main app. All seven products have new A/C/D detail-page compositions; B retains its existing design. [Design states](http://127.0.0.1:4174/preview/states?design=d) lists clearly labelled synthetic transactional examples with disabled controls. [Operations preview](http://127.0.0.1:4174/ops) retains its existing shared interface.
+Open [direction C — Everyday Elsewhere](http://127.0.0.1:4174/?design=c). Use the top selector to switch A–H on the current page. Every customer route retains the selected direction, including shop, products, brand, learning, reports, bag, checkout, account, support and policies. Old A/B concept entry URLs redirect into the main app. All seven products have new A/C/D detail-page compositions; B retains its existing design. [Design states](http://127.0.0.1:4174/preview/states?design=d) lists clearly labelled synthetic transactional examples with disabled controls. [Operations preview](http://127.0.0.1:4174/ops) retains its existing shared interface.
 
 This server binds to loopback only, rejects other Host headers, and refuses a non-preview `BCC_MODE`. It is not a production commerce server. Use sample information: the checkout, addresses and support forms persist their input in a local SQLite file, `.local/preview.sqlite3`, which is excluded from Git. No money, SMS, email, courier booking or external analytics transmission occurs.
 
@@ -69,4 +88,4 @@ Repository: [Body-Cafe-Co-Website](https://github.com/dharmikjinjala2486/Body-Ca
 
 ## Netlify deployment
 
-See [NETLIFY.md](NETLIFY.md). The committed configuration builds `dist/` with a root entry page, SPA fallback and a seeded, read-only design-preview adapter. All four designs and product pages work without the local Python API. Account, ordering, support submissions and operations require a hosted backend and show an explicit unavailable state on this export. Local functionality is unchanged.
+See [NETLIFY.md](NETLIFY.md). The committed configuration builds `dist/` with a root entry page, SPA fallback and a seeded, read-only design-preview adapter. All eight designs and product pages work without the local Python API. Account, ordering, support submissions and operations require a hosted backend and show an explicit unavailable state on this export. Local functionality is unchanged.

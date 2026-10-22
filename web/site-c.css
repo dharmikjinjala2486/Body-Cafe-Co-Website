@@ -103,6 +103,10 @@ body[data-theme="c"] .tc-foot-caps a { display: inline-flex; border-radius: 50%;
 body[data-theme="c"] .tc-foot-caps a:hover .cap { transform: rotate(180deg) scale(1.1); }
 body[data-theme="c"] .tc-foot-caps .cap { --size: 34px; }
 
+body[data-theme="c"] .tc-report { display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px; border: 1px solid currentColor; border-radius: 999px; font-size: 13px; text-decoration: none; white-space: nowrap; }
+body[data-theme="c"] .tc-report:hover, body[data-theme="c"] .tc-report[aria-current] { background: var(--ink); color: var(--paper); }
+@media (max-width: 720px) { body[data-theme="c"] .tc-report { display: none; } }
+
 /* ---------- Page header ---------- */
 .tc-head { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr); gap: 32px 6%; align-items: end; padding: clamp(48px, 6vw, 96px) var(--c-pad) 0; }
 .tc-head-side { padding-bottom: 6px; }

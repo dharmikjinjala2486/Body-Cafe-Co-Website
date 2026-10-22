@@ -14,7 +14,7 @@ The committed configuration supplies the build command and publish directory. Re
 
 ## What works
 
-All four homepages and all seven product pages per theme, theme routing/reloads, shop/search, guides, policies, the browser sample bag, pincode format checks and illustrative lot matches/error states. A generated seeded catalogue supplies public preview data without requiring `/api`.
+All eight homepages and all seven product pages per theme, theme routing/reloads, shop/search, guides, policies, the browser sample bag, pincode format checks and illustrative lot matches/error states. A generated seeded catalogue supplies public preview data without requiring `/api`.
 
 ## What requires the hosted backend
 
@@ -29,6 +29,6 @@ python3 -B deploy/build_netlify.py
 node deploy/test_hosted_preview.mjs
 ```
 
-Export checks cover the seeded catalogue/session, product-scoped report matching and demo error states, rejected writes, root entry/fallback rule and publish boundary. The existing 24 Python tests pass. Browser checks verified static root/product loading, all four PDP themes, sample add-to-bag and unavailable checkout messaging without the application API.
+Export checks cover the seeded catalogue/session, product-scoped report matching and demo error states, rejected writes, root entry/fallback rule and publish boundary. The existing 24 Python tests pass. Browser checks verified static root/product loading, all eight PDP themes, sample add-to-bag and unavailable checkout messaging without the application API.
 
 References: [Netlify 404 troubleshooting](https://docs.netlify.com/resources/troubleshooting/page-not-found-error-guide/) and [SPA routing](https://docs.netlify.com/build/configure-builds/javascript-spas/).

@@ -137,3 +137,42 @@ Read `MOTION-RESEARCH.md` first. A/D now use the final `live.js` / `live-scene.j
 ## Latest local refinement — 20 October 2026
 
 Read `REFINEMENT-20261020.md` before editing. D's former seven-bottle orbit is replaced by the four-chapter single-bottle/cap story. `atelier.js/css` is the final design layer across ALL FOUR themes, now including B at the user's request. Keep the existing palettes and type systems. Do not recolour header logos or replace the footer's original SVG glyphs/underline with text. Full source label geometry is deliberately retained to prevent surface artifacts. Source Blender and original SVGs are untouched.
+
+## Complete local working-tree sync to Claude — 22 October 2026
+
+Sent the current `design/concepts` working tree (HEAD `6df6a74` plus all uncommitted source and non-ignored additions) to the active [Body Café website redesign variants E–H](https://claude.ai/chat/98e9faf5-768a-4fd0-a399-7447a9f05abb) chat in two packages:
+
+- `body-cafe-sync-source-20261022.zip` — SHA-256 `9c75ac5cd4c1d2716817cba10e1f88e93e83877f3cdeb5c22d620562a4d3cb13`.
+- `body-cafe-sync-runtime-assets-20261022.zip` — SHA-256 `9d8d9625de1207901f0d925c47f7a77a626686be5beff7334e6181ce0818775d`.
+
+Claude confirmed both archive hashes, extracted both into `/home/claude/body-cafe-sync-20261022/`, and verified the size and SHA-256 of every one of the 284 project files against the manifest. Its clean-baseline patch check reproduced all 13 tracked modified files byte for byte. The 287 archive entries include three sync metadata files. Claude saved the receipt/context as `Website/SYNC-2026-10-22-LOCAL-SNAPSHOT.md` in its project.
+
+All current application source, runtime assets, backend/deployment references, research, design studies and new project files were included. Only the two unchanged `assets/source/` archives were omitted; they remain in the shared GitHub baseline. Ignored local databases, secrets, Git internals, generated builds and local QA captures were excluded. Packages, manifest, notes, patch and confirmation screenshot are retained in ignored `.local/claude-sync-20261022/`.
+
+This synchronizes context/source to Claude; it does not merge Claude's separate Fan Deck / Edition / Darkroom / Folio implementation into the local Cap Index / Rooms / Monolith / Formulary implementation. Both use `window.BCCEH` and the E–H design parameters, so they cannot be enabled together without explicit integration. Both sets remain preserved. No application code, commit, push or deployment was made in this sync. This receipt entry was added locally after remote verification.
+
+## Claude E–H source merged locally — 22 October 2026
+
+At the user’s request to merge all changes, imported Claude’s `bcc-e-h-source-and-assets-20261022.zip` (SHA-256 `e8e57ab3fc4ef17d639d6537360d71e93f1df25f5b9beec5b919df86e002c850`). The new Fan Deck / Edition / Darkroom / Folio directions replace the earlier E–H runtime, whose source is archived in ignored `.local/claude-merge-20261022/retired-earlier-eh/` and the complete pre-merge backup. App/index conflicts were merged manually, preserving the local A–D, homepage ordering, navigation, selector and motion refinements. See `design-review/EH-MERGE-2026-10-22.md` for provenance, decisions and independent verification (24 backend/HTTP tests, syntax/static export checks, 656 browser states and targeted commerce/account/report interactions). No commit, push or deployment was made.
+
+Sent the completed local merge receipt and verification summary back to the same Claude E–H chat. The cloud branch remains a separate source baseline; its context now records the local merge, but it has not been given a byte-for-byte snapshot of the manually resolved entrypoints.
+
+## Exact merged source supplied to Standards chat — 22 October 2026
+
+At the owner’s request, attached the complete current merged A–H snapshot and Claude’s original E–H source package to [Body Café Co. Standards page redesign](https://claude.ai/chat/9a05f629-e1b9-4139-9e16-56d208fef6dc), using the ZIP option that chat requested.
+
+- `body-cafe-merged-source-20261022.zip`: SHA-256 `9c297d1a1fd89d440a18fce598a6c6e8830c53b51d67e467ff5ccc82e1687d2a`.
+- `body-cafe-merged-runtime-assets-20261022.zip`: SHA-256 `fe9ff961d4cb8b13bbdfdd66ff7f829e691a13972c44cfa755ff9433932784c7`.
+- Original `bcc-e-h-source-and-assets-20261022.zip`: SHA-256 `e8e57ab3fc4ef17d639d6537360d71e93f1df25f5b9beec5b919df86e002c850`.
+
+The merged ZIPs contain 311 exact current project files, manifest, tracked-file patch, detailed handoff and twelve archived earlier E–H files under `_sync/retired-earlier-eh/`. All runtime assets/models/fonts are included. Only the two unchanged original `assets/source/` archives are omitted and remain in the GitHub baseline. Databases, secrets, Git internals and build output are excluded.
+
+Claude confirmed all three archive hashes, all 311 manifest sizes/hashes, no missing code, and the presence of every script/stylesheet loaded by the entrypoint. It acknowledged the current snapshot is ALREADY MERGED with Fan Deck / Edition / Darkroom / Folio, and began tracing the Standards render path for the owner’s approved A–H Standards work. It was instructed to preserve headers/other pages/flows, use the existing factual boundaries, and return source/verification without pushing or deploying. The Standards implementation itself is in progress, not yet received or integrated locally.
+
+Archives, manifest, handoff and receipt screenshot are retained under ignored `.local/claude-standards-sync-20261022/`. No commit or push was needed for this ZIP handoff. This receipt was added locally after capture.
+
+## Standards imported for GitHub and Netlify publication — 22 October 2026
+
+Imported the completed `bcc-standards-a-h-20261022.zip` from the Standards chat; SHA-256 `448837c8964970b29d79503ee16422220a0a4232b61b7e741ce081729b4762d8`. Every package-manifest entry passed size/hash verification; archive paths/integrity/symlinks were checked; the supplied patch passed `git apply --check` against the exact merged working tree. Imported eight source/documentation/tool files. App/index changes are only the Standards enhancement hook, script and stylesheet. Claude’s supplied QA logs/screenshots remain in the ignored incoming package, separate from local verification.
+
+Independent local checks: 24 backend/HTTP tests, syntax for all 24 frontend JS files, static build and hosted-preview boundary tests pass. Standards A–H at 320/390/768/1100/1440px (40 states) have correct section order, one h1, no duplicate IDs/missing local anchors/page overflow, correct disclosure state, working keyboard product selection and identical shared facts. The owner requested committing/pushing all current work and deploying the existing Netlify project. See `design-review/RELEASE-2026-10-22.md` and Git/Netlify histories for release evidence.

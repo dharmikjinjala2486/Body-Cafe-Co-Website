@@ -140,6 +140,17 @@
       people: "The founder's own story, the team and real photography will appear here in their own words. We're not filling this space with stock faces or an invented history.",
       peopleNeeds: ["Founder story, in their words", "Founder and team portraits", "Original product-in-hand photography"],
     },
+    about: {
+      title: "A supplement shop that shows its working",
+      lede: "Body Café Co. makes seven everyday supplements and puts the details where you can find them: the ingredient, the format, the label and the record for your lot.",
+      blocks: [
+        ["What we make", "Seven everyday supplements: Iron Bisglycinate, L-Theanine, Vitamin D3 + K2, Omega-3 Fish Oil, Myo & D-Chiro Inositol, Creatine Chews and Psyllium Husk. Each is named for what's in it, and each has its own cap colour."],
+        ["How we work", "Detail you can check comes before badges you can't. Product pages separate what's confirmed now from what the approved rear label will add, and every pack carries a lot number that leads to its record."],
+        ["Where things stand", "This is a preview. Prices are samples, packaging is a draft, and lot reports are demonstration records until approved labels and reports are published."],
+        ["Who it's for", "Curious, sceptical shoppers in India who read labels, compare products and would rather check than be told."],
+      ],
+      next: [["/story", "Read our story"], ["/standards", "See our standards"], ["/shop", "Meet the seven"], ["/reports", "Look up a lot"]],
+    },
     learn: {
       lede: "Short, practical guides to reading labels, comparing ingredient forms and understanding what a lot report can show.",
       intro: "Learn is a reading room, not a sales page. The guides explain how to read any supplement label, not just ours. The ingredient notes show what to check for each of our seven products, and which details are still waiting on approved labels.",

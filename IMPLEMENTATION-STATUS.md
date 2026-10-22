@@ -1,3 +1,7 @@
+# Directions E–H — 22 October 2026
+
+Four new full-site directions sit alongside A–D: E **Fan Deck**, F **Edition**, G **Darkroom** and H **Folio**. Each one covers every customer route and state, including the new `/about` route, and keeps the fixed navigation and the seven-section homepage order. A–D, operations and the backend are unchanged apart from shared wiring. The G and H interfaces are black and white, while the bottles keep their real colours. Read [INTEGRATION-E-H.md](INTEGRATION-E-H.md) for files, contracts, checks and the source handoff. The local merge is complete on `design/concepts` with its uncommitted homepage-flow/navigation refinements retained; see [local verification](design-review/EH-MERGE-2026-10-22.md).
+
 # Latest refinement — 20 October 2026
 
 Current directions: A **State of Play**, B **Expressive everyday**, C **Everyday Elsewhere**, D **The Other Side**. A retains its sculpture with smooth source bottles/caps; D now tells a four-chapter bottle-and-cap scroll story. All four themes gain interactive sections and original, unrecoloured header/footer logo artwork. Read [REFINEMENT-20261020.md](REFINEMENT-20261020.md) for the current scope, implementation and checks. Older entries below are historical snapshots.

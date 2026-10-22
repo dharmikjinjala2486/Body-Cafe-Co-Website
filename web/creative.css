@@ -356,3 +356,16 @@ body[data-theme] .r-bag [data-cart-count]{display:inline-flex;align-items:center
 body[data-theme] .r-bag{display:inline-flex;align-items:center;gap:6px;padding:0;min-height:44px;line-height:1;position:relative}
 body[data-theme] .r-bag [data-cart-count]{position:static!important;inset:auto!important;display:inline-flex;height:auto;min-height:0;padding:0;flex:none;line-height:1}
 .r-c .r-report-readout .rr h2{text-transform:none;letter-spacing:-.035em}
+
+/* Header actions follow the shared storefront flow while keeping each direction's palette. */
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-reportlink{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border:1px solid currentColor;text-decoration:none;white-space:nowrap}
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-reportlink[aria-current]{background:var(--r-ink);color:var(--r-bg)}
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-account{display:inline-grid;place-items:center}
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-account svg,
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-bag svg{width:20px;height:20px;flex:none}
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-bag{width:40px;height:40px;display:inline-grid;place-items:center;position:relative;gap:0;text-decoration:none}
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-bag [data-cart-count]{position:absolute!important;top:-2px;right:-4px;display:inline-grid;place-items:center;width:auto!important;min-width:17px;height:17px;min-height:17px;padding:0 4px;background:var(--r-ink)!important;color:var(--r-bg)!important;border-radius:999px;font:600 9px/1 Aileron,Arial,sans-serif}
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-bag [data-cart-count]::before,
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-bag [data-cart-count]::after{content:none}
+body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-tools .r-bag [data-empty]{display:none}
+@media(max-width:1100px){body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-header .r-tools .r-reportlink,body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .r-header .r-tools .r-account{display:none}}

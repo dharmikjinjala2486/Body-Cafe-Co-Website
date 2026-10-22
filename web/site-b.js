@@ -35,16 +35,16 @@
   function chrome(ctx, content) {
     var path = ctx.path;
     var cur = function (h) { return path === h || path.indexOf(h + "/") === 0 ? ' aria-current="page"' : ""; };
-    var nav = [["/shop", "Shop"], ["/standards", "Standards"], ["/learn", "Learn"], ["/story", "Story"]];
-    var mob = [["/shop", "Shop all seven", "lilac"], ["/bundles", "The edits", "sage"], ["/standards", "Our standards", "lime"], ["/learn", "Learn", "peach"], ["/story", "Our story", "lilac"], ["/reports", "Lot reports", "sage"], ["/help", "Help", "lime"]];
+    var nav = [["/shop", "Shop"], ["/standards", "Standards"], ["/about", "About"], ["/learn", "Learn"], ["/story", "Story"]];
+    var mob = nav.map(function (n, i) { return [n[0], n[1], ["lilac", "sage", "lime", "peach", "lilac"][i]]; }).concat([["/reports", "Lot report", "sage"], ["/search", "Search", "lime"]]);
     return (
       '<header class="site-header tb-header"><a class="logo" href="/" aria-label="Body Café Co. home"><img src="/web/media/brand-original.svg" alt="" width="465" height="451"></a>' +
       '<nav class="main-nav tb-nav" aria-label="Main">' + nav.map(function (n) { return '<a href="' + n[0] + '"' + cur(n[0]) + ">" + n[1] + "</a>"; }).join("") + "</nav>" +
-      '<div class="header-tools tb-tools"><a class="tb-lot" href="/reports"' + cur("/reports") + ">Lot reports</a>" +
+      '<div class="header-tools tb-tools"><a class="tb-lot" href="/reports"' + cur("/reports") + ">Lot report</a>" +
       '<button class="icon-button tb-ico" data-action="search" aria-label="Search">' + ctx.icon("search") + '</button><a class="icon-button tb-ico" href="/account" aria-label="Your account">' + ctx.icon("user") + "</a>" +
-      '<a class="bag-link tb-bag" href="/cart" aria-label="Bag, ' + ctx.count + ' items">' + ctx.icon("bag") + "<span data-cart-count" + (ctx.count ? "" : " data-empty") + ">" + ctx.count + "</span></a>" +
+      '<a class="bag-link tb-bag" href="/cart" aria-label="Cart, ' + ctx.count + ' items">' + ctx.icon("bag") + "<span data-cart-count" + (ctx.count ? "" : " data-empty") + ">" + ctx.count + "</span></a>" +
       '<button class="menu-button tb-menu" data-action="menu" aria-expanded="false" aria-controls="mobile-nav"><span>Menu</span></button></div></header>' +
-      '<nav id="mobile-nav" class="tb-mnav" hidden aria-label="Mobile"><div class="mobile-nav-links">' + mob.map(function (n, i) { return '<a href="' + n[0] + '"><span class="tb-mnum tb-' + n[2] + '">0' + (i + 1) + "</span>" + n[1] + "</a>"; }).join("") + '</div><div class="mobile-nav-foot"><a href="/account">Account</a><a href="/cart">Bag (<span data-cart-count>' + ctx.count + '</span>)</a><a href="/settings">Preferences</a></div></nav>' +
+      '<nav id="mobile-nav" class="tb-mnav" hidden aria-label="Mobile"><div class="mobile-nav-links">' + mob.map(function (n, i) { return '<a href="' + n[0] + '"><span class="tb-mnum tb-' + n[2] + '">0' + (i + 1) + "</span>" + n[1] + "</a>"; }).join("") + '</div><div class="mobile-nav-foot"><a href="/account">Account</a><a href="/cart">Cart (<span data-cart-count>' + ctx.count + '</span>)</a></div></nav>' +
       '<main id="main" tabindex="-1" class="tb-main">' + content + "</main>" +
       '<footer class="site-footer tb-footer"><div class="tb-foot-top"><div class="tb-foot-pitch"><p class="tb-foot-sticker" aria-hidden="true">A curious mind<b>✳</b>A clearer choice</p><p class="tb-foot-line">Your body.<br>Your curiosity.<br><em>Your café.</em></p>' + btn("/shop", "Shop all seven", "is-ink") + "</div>" +
       '<div class="tb-foot-cols"><div><h2>Shop</h2><a href="/shop">All seven</a><a href="/bundles">The edits</a><a href="/reports">Lot reports</a><a href="/search">Search</a></div><div><h2>Read</h2><a href="/standards">Standards</a><a href="/learn">Learn</a><a href="/story">Story</a></div><div><h2>Help</h2><a href="/help">Help centre</a><a href="/contact">Contact</a><a href="/account">Account</a><a href="/settings">Preferences</a></div><div><h2>Policies</h2>' + S.policyOrder.map(function (k) { return '<a href="/policies/' + k + '">' + S.policies[k].title + "</a>"; }).join("") + "</div></div></div>" +

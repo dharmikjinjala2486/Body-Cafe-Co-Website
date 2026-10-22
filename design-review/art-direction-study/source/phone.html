@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Body Café Co. — The design house, art-direction study 01</title>
+<!-- Static visual study. Not a website: no commerce, no forms, no data. Rendered to PNG/JPG by render.py. -->
+<style>
+@font-face { font-family: "Aileron"; src: url("assets/aileron-light.woff2") format("woff2"); font-weight: 300; }
+@font-face { font-family: "Aileron"; src: url("assets/aileron-regular.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Aileron"; src: url("assets/aileron-semibold.woff2") format("woff2"); font-weight: 600; }
+@font-face { font-family: "Aileron"; src: url("assets/aileron-bold.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Aileron"; src: url("assets/aileron-black.woff2") format("woff2"); font-weight: 900; }
+:root {
+  --white: #FAFAF8; --ink: #2E2926; --grey: #5C5E60; --steel: #B4B6B6; --steel-d: #77797A; --enamel: #F1F0EC; --rule: #DEDDD8;
+  --iron: #AA472E; --theanine: #777D51; --d3: #35306F; --omega: #84919B; --myo: #B184B9; --creatine: #07566A; --psyllium: #9C9274;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #d9d9d6; font-family: "Aileron", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+section.frame { position: relative; overflow: hidden; background: var(--white); margin: 40px; }
+img { display: block; }
+.tag { position: absolute; z-index: 20; display: inline-flex; gap: 6px; align-items: center; padding: 4px 9px; font: 600 11px/1.2 "Aileron"; letter-spacing: .04em; color: #fff; background: #1d1c1a; }
+.tag b { padding: 1px 5px; background: #fff; color: #1d1c1a; font-weight: 700; }
+
+/* Signature device from the brand guideline: the circle container logo, top right, black or white only. */
+.sig { position: absolute; z-index: 10; display: grid; place-items: center; border-radius: 50%; background: var(--ink); }
+.sig img { width: 54%; }
+
+/* ---------- DESKTOP OPENING 1440 × 900 ---------- */
+#desk { width: 1440px; height: 900px; }
+.pv { height: 30px; display: grid; place-items: center; font-size: 12px; color: var(--grey); background: var(--enamel); }
+.nav { position: absolute; left: 0; right: 0; top: 30px; z-index: 12; height: 64px; display: flex; justify-content: space-between; align-items: center; padding: 0 56px; font-size: 15px; color: #fff; }
+.nav div { display: flex; gap: 32px; }
+.hero { position: absolute; left: 0; right: 0; top: 30px; bottom: 0; }
+.hero > img.bg { width: 100%; height: 100%; object-fit: cover; }
+.hero .jar { position: absolute; }
+.hero .jar img { width: 100%; }
+.hero .jar::after { content: ""; position: absolute; left: -10%; right: -10%; bottom: -10px; height: 22px; border-radius: 50%; background: radial-gradient(closest-side, rgba(20,16,14,.55), transparent); z-index: -1; }
+.hero .jar::before { content: ""; position: absolute; left: -40%; bottom: 6px; width: 70%; height: 80%; background: rgba(40,18,10,.22); filter: blur(14px); transform: skewX(24deg); transform-origin: bottom right; z-index: -1; }
+.say { position: absolute; color: #fff; }
+.say h1 { font-weight: 700; letter-spacing: -0.025em; }
+.say p { font-size: 18px; line-height: 1.5; opacity: .96; }
+.btn { display: inline-flex; align-items: center; height: 50px; padding: 0 26px; background: #fff; color: var(--ink); font-size: 15px; font-weight: 600; }
+.lk { color: #fff; font-size: 15px; text-decoration: underline; text-underline-offset: 6px; }
+.cap { position: absolute; font-size: 12.5px; color: rgba(255,255,255,.9); }
+
+#desk .jar { left: 63.5%; width: 196px; bottom: 192px; }
+#desk .say { left: 56px; top: 150px; width: 560px; }
+#desk .say h1 { font-size: 84px; line-height: .96; }
+#desk .say p { margin: 28px 0 30px; max-width: 30ch; }
+#desk .say .row { display: flex; gap: 28px; align-items: center; }
+#desk .sig { right: 56px; top: 96px; width: 112px; height: 112px; }
+#desk .cap { right: 56px; bottom: 40px; text-align: right; }
+
+/* ---------- PHONE OPENING 390 × 844 ---------- */
+#phone { width: 390px; height: 844px; }
+#phone .pv { height: 28px; font-size: 11px; }
+#phone .nav { top: 28px; height: 52px; padding: 0 20px; font-size: 15px; }
+#phone .hero { top: 28px; }
+#phone .jar { left: 12%; width: 104px; bottom: 182px; }
+#phone .say { left: 20px; right: 20px; top: 92px; }
+#phone .say h1 { font-size: 46px; line-height: .96; }
+#phone .say p { font-size: 16px; margin: 16px 0 20px; max-width: 24ch; }
+#phone .sig { right: 20px; bottom: 120px; width: 68px; height: 68px; }
+#phone .btn { height: 48px; }
+#phone .cap { left: 20px; right: 110px; bottom: 64px; color: #fff; font-size: 11.5px; }
+
+/* ---------- FOLLOW-ON MOMENT 1440 × 900: up close ---------- */
+#moment { width: 1440px; height: 900px; display: grid; grid-template-columns: 760px 1fr; }
+#moment .macro { position: relative; overflow: hidden; background: var(--enamel); }
+#moment .macro img { width: 100%; height: 100%; object-fit: cover; object-position: 40% 30%; }
+#moment .txt { position: relative; padding: 96px 80px 64px 88px; display: flex; flex-direction: column; }
+.eyebrow { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
+.chip { width: 12px; height: 12px; border-radius: 50%; }
+#moment h2 { margin: 22px 0 18px; font-size: 64px; line-height: .96; font-weight: 700; letter-spacing: -0.025em; }
+#moment .sub { font-size: 19px; color: var(--grey); }
+.facts { margin: 30px 0 32px; border-top: 1px solid var(--ink); max-width: 460px; }
+.facts div { display: grid; grid-template-columns: 120px 1fr; padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+.facts dt { color: var(--grey); }
+.btn.dark { background: var(--ink); color: #fff; }
+.lk.dark { color: var(--ink); }
+#moment .row { display: flex; gap: 28px; align-items: center; }
+#moment .truescale { margin-top: auto; display: flex; align-items: flex-end; gap: 14px; }
+#moment .truescale img { width: 64px; }
+#moment .truescale span { font-size: 12px; color: var(--grey); max-width: 16ch; line-height: 1.4; }
+#moment .note { margin-top: 18px; font-size: 12.5px; color: var(--grey); }
+
+/* ---------- BOARD 3200 × 2300 ---------- */
+#board { width: 3200px; padding: 72px 80px 80px; background: var(--white); }
+.bh { display: grid; grid-template-columns: 1fr auto; align-items: end; padding-bottom: 28px; border-bottom: 2px solid var(--ink); }
+.bh h1 { font-size: 56px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.bh p { font-size: 18px; color: var(--grey); margin-top: 10px; }
+.legend { display: flex; gap: 22px; font-size: 15px; }
+.legend span { display: inline-flex; gap: 8px; align-items: center; }
+.legend b { padding: 2px 7px; background: #1d1c1a; color: #fff; font-size: 12px; }
+.grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 40px; margin-top: 44px; }
+.panel h2 { font-size: 15px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 16px; display: flex; gap: 14px; }
+.panel h2 i { font-style: normal; color: var(--grey); }
+.panel .copy { font-size: 16px; line-height: 1.55; color: #3a3836; margin-top: 16px; }
+.panel .copy li { margin-left: 18px; margin-bottom: 4px; }
+.box { position: relative; overflow: hidden; background: var(--enamel); }
+.dash { position: absolute; border: 2px dashed rgba(255,255,255,.9); }
+.dash.k { border-color: rgba(29,28,26,.75); }
+.lab { position: absolute; padding: 3px 8px; font-size: 12.5px; font-weight: 600; background: rgba(255,255,255,.92); color: #1d1c1a; }
+.p1 { grid-column: 1 / 8; }
+.p2 { grid-column: 8 / 13; }
+.p3 { grid-column: 1 / 5; }
+.p4 { grid-column: 5 / 9; }
+.p5 { grid-column: 9 / 13; }
+.p6 { grid-column: 1 / 13; }
+.slot { position: relative; background: repeating-linear-gradient(135deg, #ecebe7 0 18px, #e3e2dd 18px 36px); border: 2px dashed #9c9a94; }
+.slot .t { position: absolute; left: 20px; top: 18px; right: 20px; font-size: 15px; font-weight: 600; }
+.swatches { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 14px; }
+.sw { height: 120px; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; color: #fff; font-size: 12px; line-height: 1.3; }
+.sw.l { color: var(--ink); }
+.base { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.base div { height: 90px; display: flex; align-items: flex-end; padding: 10px; font-size: 12px; border: 1px solid var(--rule); }
+.spec { border-top: 2px solid var(--ink); }
+.spec > div { display: grid; grid-template-columns: 220px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.spec small { font-size: 13px; color: var(--grey); }
+
+.hero .jar { isolation:isolate; }
+.hero .jar img { position:relative;z-index:1; }
+.hero .jar::after,.hero .jar::before { z-index:0; }
+#desk>.tag,#phone>.tag { display:none; }
+#desk .jar { bottom:150px; }
+#phone .jar { bottom:108px; }
+#phone .sig { bottom:46px; }
+#phone .cap { bottom:28px; }
+</style>
+<style>section.frame{display:none!important;margin:0!important} #phone{display:block!important} body{background:#FAFAF8}</style></head>
+<body>
+
+<!-- ===================== DESKTOP OPENING ===================== -->
+<section class="frame" id="desk" aria-label="Desktop opening 1440">
+  <div class="pv">Preview store. Prices are samples and no payment is taken.</div>
+  <div class="nav"><div><span>Shop</span><span>Learn</span><span>About</span></div><div><span>Lot records</span><span>Search</span><span>Bag (0)</span></div></div>
+  <div class="hero">
+    <img class="bg" src="assets/campaign-desktop.png" alt="">
+    <div class="jar"><img src="assets/front-iron-bisglycinate.webp" alt="Iron Bisglycinate jar"></div>
+    <div class="sig"><img src="assets/logo-light.svg" alt="Body Café Co."></div>
+    <div class="say">
+      <h1>The everyday,<br>considered.</h1>
+      <p>Seven supplements, each named for what’s in it.</p>
+      <div class="row"><span class="btn">Shop the collection</span><span class="lk">Meet Iron Bisglycinate</span></div>
+    </div>
+    <p class="cap">Iron Bisglycinate on the counter.<br>Packaging shown is draft artwork.</p>
+  </div>
+  <span class="tag" style="left:16px;bottom:52px"><b>G</b>AI campaign scene · original product front</span>
+  <span class="tag" style="left:63%;top:430px"><b>S</b>Supplied front, composited</span>
+</section>
+
+<!-- ===================== PHONE OPENING ===================== -->
+<section class="frame" id="phone" aria-label="Phone opening 390">
+  <div class="pv">Preview store. Prices are samples.</div>
+  <div class="nav"><div><span>Menu</span></div><div><span>Bag (0)</span></div></div>
+  <div class="hero">
+    <img class="bg" src="assets/campaign-phone.png" alt="">
+    <div class="jar"><img src="assets/front-iron-bisglycinate.webp" alt="Iron Bisglycinate jar"></div>
+    <div class="sig"><img src="assets/logo-light.svg" alt="Body Café Co."></div>
+    <div class="say">
+      <h1>The everyday,<br>considered.</h1>
+      <p>Seven supplements, each named for what’s in it.</p>
+      <span class="btn">Shop the collection</span>
+    </div>
+    <p class="cap">Iron Bisglycinate. Draft packaging.</p>
+  </div>
+  <span class="tag" style="right:8px;top:470px;font-size:10px"><b>G</b>AI campaign scene</span>
+  <span class="tag" style="left:8px;top:520px;font-size:10px"><b>S</b>Supplied front</span>
+</section>
+
+<!-- ===================== FOLLOW-ON MOMENT ===================== -->
+<section class="frame" id="moment" aria-label="Follow-on moment 1440">
+  <div class="macro">
+    <img src="assets/myo-detail.webp" alt="Close view of the Myo &amp; D-Chiro Inositol cap edge and printed mark">
+    <span class="tag" style="left:16px;top:16px"><b>D</b>Source-derived CGI · material detail</span>
+  </div>
+  <div class="txt">
+    <p class="eyebrow"><span class="chip" style="background:var(--myo)"></span>Capsules · Cap: Pantone 2572 C</p>
+    <h2>Myo &amp;<br>D-Chiro<br>Inositol</h2>
+    <p class="sub">Two ingredients. All the details.</p>
+    <dl class="facts"><div><dt>In view</dt><dd>Myo-inositol and D-chiro inositol</dd></div><div><dt>Format</dt><dd>Capsules</dd></div><div><dt>Price</dt><dd>₹1,299 <span style="color:var(--grey);font-size:13px">Sample price</span></dd></div></dl>
+    <div class="row"><span class="btn dark">View the product</span><span class="lk dark">What to check on this label</span></div>
+    <div class="truescale"><img src="assets/front-myo-d-chiro-inositol.webp" alt=""><span>The whole jar, shown small beside its close-up.</span></div>
+    <p class="note">Packaging shown is draft artwork. Label amounts appear once the rear label is approved.</p>
+  </div>
+</section>
+
+<!-- ===================== BOARD ===================== -->
+<section class="frame" id="board" aria-label="Art-direction board">
+  <div class="bh">
+    <div><h1>The design house · Art-direction study 01</h1><p>Body Café Co. Variant 5 (internal E). Static study for review: not a website. 21 October 2026.</p></div>
+    <div class="legend"><span><b>S</b>Supplied file</span><span><b>G</b>AI concept imagery</span><span><b>D</b>Source-derived CGI</span><span><b>R</b>Reference only, not reproduced</span></div>
+  </div>
+
+  <div class="grid">
+    <!-- 1 Signature campaign composition -->
+    <div class="panel p1">
+      <h2>01 Signature campaign <i>“The counter, in its own colour”</i></h2>
+      <div class="box" style="height:760px">
+        <img src="assets/campaign-desktop.png" alt="" style="width:100%;height:100%;object-fit:cover">
+        <img src="assets/front-iron-bisglycinate.webp" alt="" style="position:absolute;left:61%;bottom:23%;width:170px">
+        <div class="sig" style="right:36px;top:36px;width:96px;height:96px"><img src="assets/logo-light.svg" alt=""></div>
+        <div class="dash" style="left:4%;top:12%;width:40%;height:44%"></div><span class="lab" style="left:4%;top:calc(12% - 30px)">Type field: quiet wall, controlled contrast</span>
+        <div class="dash" style="left:59%;top:44%;width:17%;height:36%"></div><span class="lab" style="left:59%;top:calc(80% + 6px)">Product slot: original front, composition study</span>
+        <div class="dash" style="right:24px;top:24px;width:120px;height:120px;border-radius:50%"></div><span class="lab" style="right:24px;top:152px">Circle signature zone (guideline: top right)</span>
+        <div class="dash" style="left:0;right:0;top:66%;height:0;border-width:2px 0 0"></div><span class="lab" style="left:12px;top:calc(66% + 8px)">Counter edge at 66%: brushed steel</span>
+        <span class="tag" style="left:12px;bottom:66px"><b>G</b>AI campaign scene</span><span class="tag" style="left:61%;top:30%"><b>S</b>Iron front</span>
+      </div>
+      <ul class="copy"><li>One product, one painted surface in its own cap colour (Iron: Pantone 7599 C), one hard sun shadow, one café material (brushed steel). The colour is in the room, not added on screen.</li><li>The logo appears only as the guideline’s circle signature, black or white, never recoloured, with clear space.</li><li>A rotating series of seven: each scene uses one product’s cap colour. Never two products in one scene.</li></ul>
+    </div>
+
+    <!-- 2 Material / detail -->
+    <div class="panel p2">
+      <h2>02 Material and detail</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="box" style="height:420px"><img src="assets/mockup-myo-d-chiro-inositol.jpg" alt="" style="width:100%;height:100%;object-fit:cover"><span class="tag" style="left:10px;top:10px"><b>S</b>Supplied product reference</span></div>
+        <div class="box" style="height:420px"><img src="assets/myo-detail.webp" alt="" style="width:100%;height:100%;object-fit:cover;object-position:40% 30%"><span class="tag" style="left:10px;top:10px"><b>D</b>Source-derived CGI detail</span></div>
+      </div>
+      <div class="box" style="height:300px;margin-top:16px"><img src="assets/myo-detail.webp" alt="Matte lavender cap and printed brand detail" style="width:100%;height:100%;object-fit:cover;object-position:50% 22%"><span class="tag" style="right:12px;bottom:12px"><b>D</b>Blender-derived material study</span></div>
+      <ul class="copy"><li>Detail makes materials legible: matte cap texture, print edge, label surface. No gloss, splashes or floating capsules.</li><li>Detail always appears with the whole jar shown small beside it, so the relationship to the whole object stays clear.</li></ul>
+    </div>
+
+    <!-- 3 Human imagery -->
+    <div class="panel p3">
+      <h2>03 Product + human</h2>
+      <div class="box" style="height:560px"><img src="assets/reading-the-jar.png" alt="A person reading a jar at an enamel cafe table" style="width:100%;height:100%;object-fit:cover;object-position:50% 52%"><span class="tag" style="right:12px;bottom:12px"><b>G</b>AI human campaign concept</span></div>
+      <ul class="copy"><li><b>Keep from the brand guideline’s Products + Human page</b> <span style="color:var(--grey)">(R: third-party moodboard, not reproduced here)</span>: hands holding the product, daylight, colour.</li><li><b>Refine:</b> attention instead of performance. No grinning at camera, no stadium, no podiums. People read, carry and set down.</li></ul>
+    </div>
+
+    <!-- 4 Type -->
+    <div class="panel p4">
+      <h2>04 Type hierarchy</h2>
+      <div style="background:var(--white);border:1px solid var(--rule);padding:32px 32px 28px;height:560px;display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start"><img src="assets/logo.svg" alt="" style="width:110px"><span style="font-size:12.5px;color:var(--grey);text-align:right">Logo: Lemon Milk,<br>supplied artwork only</span></div>
+        <p style="font-size:64px;font-weight:700;line-height:.96;letter-spacing:-.025em">The everyday,<br>considered.</p>
+        <p style="font-size:13px;color:var(--grey)">Display: Aileron Bold, stacked in short lines to echo the stacked logo. 84 / 64 / 46px. Sentence case.</p>
+        <p style="font-size:28px;font-weight:600;letter-spacing:-.015em">Two ingredients. All the details.</p>
+        <p style="font-size:17px;line-height:1.55">Body: Aileron Regular 16–18px. Calm, plain English, the product’s own facts.</p>
+        <p style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--grey)">Labels · Aileron SemiBold 12px · ₹1,299 sample</p>
+      </div>
+      <ul class="copy"><li>No serif and no pseudo-heritage face. The character comes from the logo’s weight.</li></ul>
+    </div>
+
+    <!-- 5 Colour / material -->
+    <div class="panel p5">
+      <h2>05 Colour and material</h2>
+      <div class="base">
+        <div style="background:var(--white)">Paper white<br>#FAFAF8</div>
+        <div style="background:var(--ink);color:#fff">Logo black<br>#2E2926</div>
+        <div style="background:var(--steel)">Brushed steel<br>(AI concept)</div>
+        <div style="background:var(--enamel)">Enamel white<br>#F1F0EC</div>
+      </div>
+      <div class="swatches">
+        <div class="sw" style="background:var(--iron)">Iron<br>7599 C</div>
+        <div class="sw" style="background:var(--theanine)">L-Theanine<br>5763 C</div>
+        <div class="sw" style="background:var(--d3)">D3 + K2<br>2372 C</div>
+        <div class="sw l" style="background:var(--omega)">Omega-3<br>7543 C</div>
+        <div class="sw l" style="background:var(--myo)">Myo<br>2572 C</div>
+        <div class="sw" style="background:var(--creatine)">Creatine<br>7708 C</div>
+        <div class="sw l" style="background:var(--psyllium)">Psyllium<br>2325 C</div>
+      </div>
+      <p style="font-size:12.5px;color:var(--grey);margin-top:8px">Pantone references from the brand guideline. Screen hex values are the catalogue’s cap colours, still to be verified against the swatches.</p>
+      <ul class="copy"><li>The interface stays black and white. Cap colour lives in photographs (paint, tile, enamel, fabric) and in one 12px chip beside a product name.</li><li>Only one cap colour per scene or screen. The collection grid is the only place all seven meet.</li><li>Materials: brushed steel, enamel, painted plaster, terrazzo. No limestone, linen, bronze or gold.</li></ul>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<script type="module">
+import * as T from './vendor/three/three.module.min.js';
+import { GLTFLoader } from './vendor/three/GLTFLoader.js';
+const ids=(new URLSearchParams(location.search).get('ids')||'iron-bisglycinate,l-theanine,vitamin-d3-k2,omega-3-fish-oil,myo-d-chiro-inositol,creatine-chews,psyllium-husk').split(',');const SWEEP=location.search.includes('sweep');
+const out={}; window.results=out; window.log=[];
+const renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1); renderer.outputColorSpace=T.SRGBColorSpace;
+renderer.toneMapping=T.NeutralToneMapping; renderer.toneMappingExposure=0.85;
+renderer.setClearColor(0x000000,0);
+document.body.appendChild(renderer.domElement);
+// environment: a soft studio built from emissive panels
+const envScene=new T.Scene(); envScene.background=new T.Color(0x9a9a9a);
+const panel=(w,h,pos,int,rot)=>{const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({color:new T.Color(int,int,int),side:T.DoubleSide}));m.position.set(...pos);m.lookAt(0,0,0);envScene.add(m);};
+panel(6,8,[-6,3,4],6); panel(6,8,[6,2,3],3.5); panel(10,3,[0,8,0],4); panel(8,8,[0,1,-7],1.6); panel(12,12,[0,-6,0],0.6);
+const pmrem=new T.PMREMGenerator(renderer); const env=pmrem.fromScene(envScene,0.02).texture;
+const loader=new GLTFLoader();const qs=new URLSearchParams(location.search);const ROT_FRONT=parseFloat(qs.get('front')||'0');const ROT_TQ=parseFloat(qs.get('tq')||'-0.5');
+function frame(scene,cam,w,h){renderer.setSize(w,h,false);renderer.render(scene,cam);return renderer.domElement.toDataURL('image/png');}
+async function go(){
+ for(const id of ids){
+  const g=await loader.loadAsync('./models/'+id+'.glb');
+  const scene=new T.Scene(); scene.environment=env;
+  const key=new T.DirectionalLight(0xffffff,1.6); key.position.set(-3,5,4); scene.add(key);
+  const rim=new T.DirectionalLight(0xffffff,1.1); rim.position.set(4,3,-3); scene.add(rim);
+  scene.add(new T.AmbientLight(0xffffff,0.15));
+  const root=g.scene; scene.add(root);
+  const box=new T.Box3().setFromObject(root); const size=box.getSize(new T.Vector3()); const c=box.getCenter(new T.Vector3());
+  root.position.sub(c); // centre at origin
+  const H=size.y, W=Math.max(size.x,size.z);
+  window.log.push([id,size.x.toFixed(3),size.y.toFixed(3),size.z.toFixed(3)]);
+  // three-quarter: rotate model so front label turns slightly, camera slightly above
+  const views={};
+  const list=SWEEP?[0,1,2,3,4,5,6,7].map(i=>['r'+i,i*Math.PI/4,0.1]):[['tq',ROT_TQ,0.30],['front',ROT_FRONT,0.05]];
+  for(const [name,rot,elev] of list){
+    root.rotation.y=rot;
+    const cam=new T.PerspectiveCamera(22,1000/1300,0.01,100);
+    const dist=H*3.7; cam.position.set(0,Math.sin(elev)*dist,Math.cos(elev)*dist); cam.lookAt(0,0,0);
+    views[name]=frame(scene,cam,1000,1300);
+  }
+  root.rotation.y=0;
+  // top-down cap: orthographic from above, framed on cap diameter
+  scene.environmentIntensity=0.35; key.position.set(-6,1.2,0); key.intensity=3.2; rim.position.set(6,0.8,2); rim.intensity=1.2;
+  const r=W*0.56; const oc=new T.OrthographicCamera(-r,r,r,-r,0.01,100); oc.position.set(0,H*3,0); oc.up.set(0,0,-1); oc.lookAt(0,0,0);
+  views.top=frame(scene,oc,800,800);
+  out[id]=views;
+ }
+ window.done=true;
+}
+go().catch(e=>{window.err=String(e.stack||e);window.done=true;});
+</script></body></html>
