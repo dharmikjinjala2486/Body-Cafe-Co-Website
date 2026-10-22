@@ -1,3 +1,7 @@
+# Shop across A–H — 22 October 2026
+
+Claude’s shared Shop rebuild is integrated across all eight designs, including format/stock filters, sorting, URL history, return-position restoration and inline Add to bag feedback. See [implementation](SHOP-IMPLEMENTATION.md) and [independent release checks](design-review/SHOP-RELEASE-2026-10-22.md).
+
 # Product pages across A–H — 22 October 2026
 
 Claude’s product-page rebuild is integrated for all seven products and eight directions. One shared model supplies the eight sections. The local Python preview supports verified-delivery reviews, private photo uploads and moderation. Netlify remains a static design preview; review and question submissions require the backend and are unavailable there. See [implementation](PRODUCT-PAGE-IMPLEMENTATION.md) and [verification](design-review/PRODUCT-RELEASE-2026-10-22.md).

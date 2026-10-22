@@ -183,3 +183,8 @@ Independent local checks: 24 backend/HTTP tests, syntax for all 24 frontend JS f
 Imported Claude’s corrected `bcc-product-page-a-h-20261022.zip` against baseline `107a9333bd2aa392a6f046aa755d746bb73d639c`. SHA-256: `0ff6fb21d0fa368aa5122ad4bb64d270d65a373130def716c0c108ddcd32efc7`. Archive integrity, paths, manifest hashes and patch applicability were checked; imported sources match the overlay byte for byte.
 
 All seven products now use the shared eight-section product template in A–H. The package includes moderated verified-delivery reviews, photo validation/private storage, review feedback and product questions in the local preview backend, plus unavailable states for the static Netlify export. Existing E–H directions and Standards remain in place. Independent verification is recorded in `design-review/PRODUCT-RELEASE-2026-10-22.md`.
+
+
+## Shop rebuild — 22 October 2026
+
+Imported `body-cafe-co-shop-a-h.zip` from the existing Standards/product conversation against `3eca344`. SHA-256: `1a0cd7d2671ba5f50daeff9f4e8bb63e5c30097e2e635f1bdb79128b94e51cc1`. Archive integrity and safe paths checked; patch applies cleanly, and imported files match the supplied source overlay byte for byte. No database or server changes. Independent checks are recorded in `design-review/SHOP-RELEASE-2026-10-22.md`; supplied broader QA is in `SHOP-IMPLEMENTATION.md`.

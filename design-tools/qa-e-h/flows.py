@@ -44,11 +44,12 @@ async def run(b, d, w):
   ok("home lot → report match", "/reports" in pg.url and await pg.locator("#report-result").inner_text() != "")
   # shop filter + sort
   await pg.goto(f"{BASE}/shop?design={d}", wait_until="networkidle")
-  await pg.locator("main a[href*='format=Softgels']").first.click(); await pg.wait_for_timeout(400)
-  n = await pg.locator("main [data-add]").count()
-  ok("filter softgels", "format=Softgels" in pg.url and n == 2)
-  await pg.select_option("#eh-sort", "price-desc"); await pg.wait_for_timeout(500)
-  ok("sort desc", "sort=price-desc" in pg.url and "format=Softgels" in pg.url)
+  # Shop controls (web/shop.js): format toggle buttons and a sort select, state kept in the URL.
+  await pg.locator('[data-sp-format="softgels"]').click(); await pg.wait_for_timeout(400)
+  n = await pg.locator("[data-sp-item]:not([hidden])").count()
+  ok("filter softgels", "format=softgels" in pg.url and n == 2)
+  await pg.select_option("[data-sp-sort]", "price-desc"); await pg.wait_for_timeout(500)
+  ok("sort desc", "sort=price-desc" in pg.url and "format=softgels" in pg.url)
   # pdp
   await pg.goto(f"{BASE}/products/l-theanine?design={d}", wait_until="networkidle")
   await pg.select_option("#product-quantity", "2")

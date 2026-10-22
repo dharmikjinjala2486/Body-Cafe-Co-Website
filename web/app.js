@@ -138,6 +138,10 @@ window.BCCApp = {
   toast: (m) => toast(m),
   keepDesignOnLinks: () => keepDesignOnLinks(),
   event: (name) => event(name),
+  /* Shop: add without the toast (the card confirms), and record in-place URL changes. */
+  addToBag: (id, quantity = 1) => add(id, quantity, { quiet: true }),
+  bagCount: () => count(),
+  routeChanged: () => { renderedRoute = location.pathname + location.search; },
 };
 async function session() {
   const s = await api("/session");
@@ -168,18 +172,31 @@ function total() {
 function count() {
   return state.cart.reduce((n, i) => n + i.quantity, 0);
 }
-function add(id, quantity = 1) {
+/* Returns { ok, message, count }. `quiet` lets a page show its own confirmation instead of the toast (Shop). */
+function add(id, quantity = 1, { quiet = false } = {}) {
   const p = product(id);
-  if (!p || !p.published || p.stock < 1) return toast("This product is out of preview stock.");
+  const fail = (message) => {
+    if (!quiet) toast(message);
+    return { ok: false, message, count: count() };
+  };
+  if (!p || !p.published || p.stock < 1) return fail("This product is out of preview stock.");
   const existing = state.cart.find((i) => i.id === id);
   const qty = (existing?.quantity || 0) + quantity;
-  if (qty > Math.min(10, p.stock)) return toast("That's more than the preview stock allows.");
+  if (qty > Math.min(10, p.stock)) return fail("That's more than the preview stock allows.");
   if (existing) existing.quantity = qty;
   else state.cart.push({ id, quantity });
-  saveCart();
+  try {
+    saveCart();
+  } catch {
+    if (existing) existing.quantity -= quantity;
+    else state.cart.pop();
+    return fail("Your bag couldn't be saved in this browser. Please try again.");
+  }
   event("cart_add");
   renderHeaderCount(true);
-  toast(`Added ${p.name} to your bag.`);
+  const message = `Added ${p.name} to your bag.`;
+  if (!quiet) toast(message);
+  return { ok: true, message, count: count() };
 }
 function renderHeaderCount(bump = false) {
   document.querySelectorAll(".bag-link").forEach((a) => a.setAttribute("aria-label", `Cart, ${count()} items`));
@@ -658,6 +675,7 @@ function enhance() {
   window.BCCEH?.enhance?.();
   window.BCCStandards?.enhance?.();
   window.BCCPDP?.enhance?.();
+  window.BCCShop?.enhance?.();
 }
 function cart() {
   return `<section class="section-wrap">${heading("", "Your bag")}${
@@ -1226,7 +1244,7 @@ async function render(scroll = true) {
     if (scroll) {
       const anchor = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
       if (anchor) anchor.scrollIntoView();
-      else window.scrollTo({ top: 0, behavior: "instant" });
+      else if (!restoreShopScroll()) window.scrollTo({ top: 0, behavior: "instant" });
       $("#main").focus({ preventScroll: true });
     }
     if (path === "/reports" && new URL(location.href).searchParams.get("lot")) $("#report-form")?.requestSubmit();
@@ -1246,6 +1264,8 @@ async function render(scroll = true) {
 function navigate(href, color) {
   transitionColor = color || "#2d2926";
   closeMenu();
+  clearTimeout(shopScrollTimer);
+  rememberShopScroll();
   history.pushState({}, "", href);
   render();
 }
@@ -1547,8 +1567,40 @@ document.addEventListener("keydown", (e) => {
   }
 });
 window.addEventListener("popstate", () => {
-  if (location.pathname + location.search !== renderedRoute) render();
+  if (location.pathname + location.search === renderedRoute) return;
+  // Shop to Shop (filters, sort): update in place, keeping the shopper's place.
+  if (renderedRoute.split("?")[0] === "/shop" && window.BCCShop?.popstate?.()) {
+    renderedRoute = location.pathname + location.search;
+    return;
+  }
+  render();
 });
+/* Shop remembers its scroll position in the history entry, so Back from a product page and refresh return to it. */
+let shopScrollTimer;
+function rememberShopScroll() {
+  if (location.pathname !== "/shop") return;
+  try {
+    history.replaceState({ ...(history.state || {}), shopScroll: Math.round(scrollY) }, "");
+  } catch {}
+}
+window.addEventListener(
+  "scroll",
+  () => {
+    clearTimeout(shopScrollTimer);
+    shopScrollTimer = setTimeout(rememberShopScroll, 150);
+  },
+  { passive: true },
+);
+function restoreShopScroll() {
+  const y = history.state?.shopScroll;
+  if (location.pathname !== "/shop" || typeof y !== "number") return false;
+  window.scrollTo({ top: y, behavior: "instant" });
+  // Some directions restyle their header once the page is scrolled; settle on the saved position after that.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (location.pathname === "/shop" && Math.abs(scrollY - y) > 2) window.scrollTo({ top: y, behavior: "instant" });
+  }));
+  return true;
+}
 setInterval(() => {
   document.querySelectorAll("[data-expires]").forEach((x) => {
     const seconds = Math.max(0, Number(x.dataset.expires) - Math.floor(Date.now() / 1000));
@@ -1563,6 +1615,7 @@ try {
   state.cart = state.cart.filter((i) => product(i.id));
   saveCart();
   await render(false);
+  restoreShopScroll();
 } catch (e) {
   $("#app").innerHTML =
     `<div class="boot"><p class="boot-title">The store didn't load</p><p>${escape(e.message)}</p><p>${window.BCCStaticPreview ? "Reload the preview. If this continues, check the latest deployment build." : "Start the local Python preview server, then reload."}</p></div>`;
