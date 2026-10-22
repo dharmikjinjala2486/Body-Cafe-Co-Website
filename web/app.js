@@ -127,6 +127,18 @@ async function api(path, data) {
   if (!res.ok) throw new Error(value.error || "Please try again.");
   return value;
 }
+/* The product page (web/product-page.js) reuses these instead of duplicating sign-in, API and cart logic. */
+window.BCCApp = {
+  api: (path, data) => api(path, data),
+  csrf: () => state.csrf,
+  user: () => state.user,
+  staticPreview: () => !!window.BCCStaticPreview,
+  async signedIn() { await session(); },
+  refreshCatalog: () => refreshCatalog(),
+  toast: (m) => toast(m),
+  keepDesignOnLinks: () => keepDesignOnLinks(),
+  event: (name) => event(name),
+};
 async function session() {
   const s = await api("/session");
   state.user = s.user;
@@ -645,6 +657,7 @@ function enhance() {
   }
   window.BCCEH?.enhance?.();
   window.BCCStandards?.enhance?.();
+  window.BCCPDP?.enhance?.();
 }
 function cart() {
   return `<section class="section-wrap">${heading("", "Your bag")}${
@@ -740,6 +753,8 @@ const forms = {
     return `<form id="case-form" class="form-panel case-form"><label for="case-kind">What can we help with?</label><select id="case-kind" name="kind"${dis ? " disabled" : ""}>${kinds.map(([v, l]) => `<option value="${v}"${v === kind ? " selected" : ""}>${l}</option>`).join("")}</select><label for="case-order">Order ID (optional)</label><span class="field-hint" id="hint-case-order">Starts with BCC- on your order confirmation</span><input id="case-order" name="order_id" value="${escape(oid)}" maxlength="40" aria-describedby="hint-case-order"${dis ? " disabled" : ""}><div class="field${err?.message ? " has-error" : ""}"><label for="case-message">Tell us a little more</label><textarea id="case-message" name="message" minlength="10" maxlength="3000" required placeholder="Describe the issue and the product or lot it relates to."${err?.message ? ' aria-invalid="true" aria-describedby="err-message"' : ""}${dis ? " disabled" : ""}></textarea>${fieldError(err, "message")}</div><p class="micro">${window.BCCSite?.copy.contact.privacy || ""}</p><div class="form-error" role="alert"></div><button class="button full"${dis ? " disabled" : ""}><span>Create preview case</span>${icon("arrow")}</button><div id="case-result" role="status"></div></form>`;
   },
   reviewForm(o, items, dis = false) {
+    if (!dis && state.user && !String(state.user.id || "").startsWith("customer-"))
+      return `<div class="form-panel review-form review-signin"><p>Reviews come from signed-in customers. Sign in with the mobile number used for this order, and you'll come straight back here.</p><a class="button" href="/account?next=${encodeURIComponent("/orders/" + o.id)}">Sign in to review</a><p class="micro">You can also write a review, with a title and photos, on each product's page.</p></div>`;
     return `<form id="review-form" class="form-panel review-form"><input type="hidden" name="order_id" value="${escape(o.id)}"><label for="review-product">Product</label><select id="review-product" name="product"${dis ? " disabled" : ""}>${items.map((i) => `<option value="${i.id}">${escape(i.name)}</option>`).join("")}</select><label for="rating">Rating</label><select id="rating" name="rating"${dis ? " disabled" : ""}>${[5, 4, 3, 2, 1].map((n) => `<option value="${n}">${n} of 5</option>`).join("")}</select><label for="review-text">Your review</label><textarea id="review-text" name="text" minlength="10" maxlength="1000" required${dis ? " disabled" : ""}></textarea><p class="micro">Reviews are published only after moderation, and only from delivered orders.</p><div class="form-error" role="alert"></div><button class="button"${dis ? " disabled" : ""}><span>Submit for preview moderation</span></button></form>`;
   },
   preferences(groups) {
@@ -827,7 +842,8 @@ function account(tab) {
   return `<section class="section-wrap">${heading("", "Your account", guest ? "Sign in to claim matching guest orders, or review orders from this preview session." : `Signed in with mobile ending ${escape(state.user.mobile.slice(-4))}.`)}${guest ? loginPanel() : ""}${accountNav(tab)}${tab === "addresses" ? `<div class="account-columns"><div><h2>Saved addresses</h2>${a.addresses.length ? a.addresses.map((v) => `<article class="address-card"><strong>${escape(v.name)}</strong><p>${escape(v.address)}<br>${escape(v.city)}, ${escape(v.state)} ${escape(v.pincode)}</p></article>`).join("") : "<p>No saved addresses yet.</p>"}</div><form id="address-form" class="form-panel"><p class="kicker">Add an address</p>${addressFields("saved-")}<div class="form-error" role="alert"></div><button class="button full">Save address</button></form></div>` : tab === "cases" ? `<div class="section-heading"><h2>Support cases</h2>${link("Open a support case", "/contact", "text-link")}</div>${a.cases.length ? `<div class="case-grid">${a.cases.map(caseCard).join("")}</div>` : empty("No open cases", "Support cases and their updates will show up here.", "Contact support", "/contact")}` : a.orders.length ? `<div class="orders-grid">${a.orders.map(orderCard).join("")}</div>` : empty("No orders yet", "Orders you place in this session will show up here.")}</section>`;
 }
 function caseCard(c) {
-  return `<article class="case-card"><div>${badge(c.kind, c.kind === "safety" ? "warning" : "")}${badge(c.state)}</div><h3>${c.id}</h3><p>${escape(c.message)}</p><small>${escape(c.owner)} · ${escape(c.sla)}</small>${c.order_id ? `<a class="text-link" href="/orders/${c.order_id}">${c.order_id}</a>` : ""}</article>`;
+  const answer = c.public && c.public.answer ? `<div class="case-answer"><p class="kicker">Answer from Body Café Co.${c.public.state === "published" ? " · also published on the product page" : ""}</p><p>${escape(c.public.answer)}</p></div>` : "";
+  return `<article class="case-card"><div>${badge(c.kind === "product_question" ? "Product question" : c.kind, c.kind === "safety" ? "warning" : "")}${badge(c.state)}</div><h3>${c.id}</h3>${c.subject ? `<p><strong>${escape(c.subject)}</strong></p>` : ""}<p>${escape(c.message)}</p>${answer}<small>${escape(c.owner)} · ${escape(c.sla)}</small>${c.order_id ? `<a class="text-link" href="/orders/${c.order_id}">${c.order_id}</a>` : ""}</article>`;
 }
 function payment(o) {
   if (!o) return notFound();
@@ -925,6 +941,7 @@ const opsTabs = [
   ["inventory", "Inventory & batches"],
   ["products", "Products & prices"],
   ["cases", "Support & safety"],
+  ["reviews", "Reviews & questions"],
   ["approvals", "Approvals"],
   ["audit", "Audit history"],
   ["analytics", "Analytics"],
@@ -1067,8 +1084,39 @@ function ops(tab = "overview") {
         `<button class="small-button" data-flag="${k}" data-value="${!v}" ${viewer ? "disabled" : ""}>Request ${v ? "disable" : "enable"}</button>`,
       ]),
     )}`;
+  else if (tab === "reviews") content = opsReviews(o, viewer);
   else return notFound();
   return `<div class="ops-layout"><aside class="ops-sidebar"><p class="kicker">Body Café Co. operations</p><h2>Operations</h2><p>${escape(state.user.name)} ${badge(state.user.role)}</p><nav aria-label="Operations sections">${opsTabs.map(([id, l]) => `<a class="${id === tab ? "active" : ""}" href="/ops${id === "overview" ? "" : "/" + id}">${l}</a>`).join("")}</nav><button class="small-button" data-action="logout">Leave operations</button></aside><section class="ops-content"><div class="ops-heading"><div><p class="kicker">${viewer ? "Read-only" : "Admin"} view</p><h1>${opsTabs.find((x) => x[0] === tab)[1]}</h1></div><button class="small-button" data-action="refresh">Refresh</button></div>${content}</section></div>`;
+}
+/* Review and product-question moderation. Publication follows written rules: a low rating or criticism is never a
+   reason to reject. Each photo is decided separately. Brand replies and official answers are labelled as ours. */
+const REJECT_REASONS = [
+  ["personal_information", "Contains personal information"],
+  ["offensive", "Abusive or offensive language"],
+  ["not_about_product", "Not about this product"],
+  ["spam_or_promotion", "Spam or promotion"],
+  ["medical_or_safety", "Medical claim or safety issue (handle privately)"],
+];
+function opsReviews(o, viewer) {
+  const dis = viewer ? " disabled" : "";
+  const name = (id) => escape(product(id)?.name || id);
+  const stars = (n) => `${"★".repeat(n)}${"☆".repeat(5 - n)} <span class="sr-only">${n} of 5</span>`;
+  const incentive = { none: "No incentive declared", free_product: "Received the product free", other: "Other incentive declared" };
+  const reports = o.review_reports || [];
+  const mediaFor = (r) => (r.media || []).map((id) => (o.review_media || []).find((m) => m.id === id)).filter(Boolean);
+  const reasonSelect = (id) => `<label for="reason-${id}">Reason if rejecting</label><select id="reason-${id}" name="reason"${dis}><option value="">Choose a reason</option>${REJECT_REASONS.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select>`;
+  const reviewCard = (r) => {
+    const media = mediaFor(r);
+    const open = reports.filter((x) => x.review_id === r.id && x.state === "open");
+    const order = o.orders.find((x) => x.id === r.order_id);
+    return `<article class="mod-card"><header><p class="kicker">${name(r.product)} · ${escape(r.id)} · ${date(r.created || 0)}</p><p class="mod-stars">${stars(r.rating)}</p><h3>${escape(r.title || "Untitled")}</h3></header><p>${escape(r.text)}</p><p class="micro">Display name: ${escape(r.display_name || "")} · ${incentive[r.incentive] || ""} · Order ${escape(r.order_id)} ${order ? badge(order.state) : badge("order missing", "warning")}</p>${open.length ? `<p class="micro"><strong>${open.length} open report${open.length > 1 ? "s" : ""}:</strong> ${open.map((x) => escape(x.reason + (x.note ? " — " + x.note : ""))).join("; ")}</p>` : ""}<form class="mod-form" data-ops-review="${r.id}">${media.length ? `<fieldset class="mod-media"><legend>Photos (${media.length})</legend>${media.map((m) => `<div class="mod-photo"><img src="/api/review-media/${m.id}" alt="Customer photo ${escape(m.id)} for review ${escape(r.id)}" width="${m.width}" height="${m.height}" loading="lazy"><label><input type="radio" name="media-${m.id}" value="approve"${m.state === "approved" ? " checked" : ""}${dis}> Approve</label><label><input type="radio" name="media-${m.id}" value="reject"${m.state === "rejected" ? " checked" : ""}${dis}> Reject</label></div>`).join("")}</fieldset>` : ""}${reasonSelect(r.id)}<div class="form-error" role="alert"></div><div class="mod-actions">${r.state !== "published" ? `<button class="small-button" name="decision" value="publish"${dis}>Publish</button>` : ""}<button class="small-button" name="decision" value="reject"${dis}>${r.state === "published" ? "Remove from public view" : "Reject"}</button></div></form>${r.state === "published" ? `<form class="mod-form mod-reply" data-ops-reply="${r.id}"><label for="reply-${r.id}">Reply from Body Café Co. (shown publicly, labelled as ours)</label><textarea id="reply-${r.id}" name="text" maxlength="1000"${dis}>${escape(r.reply?.text || "")}</textarea><div class="form-error" role="alert"></div><button class="small-button"${dis}>${r.reply ? "Update reply" : "Publish reply"}</button></form>` : ""}</article>`;
+  };
+  const pending = o.reviews.filter((r) => r.state === "pending_moderation");
+  const published = o.reviews.filter((r) => r.state === "published");
+  const rejected = o.reviews.filter((r) => r.state === "rejected");
+  const questions = o.cases.filter((c) => c.kind === "product_question");
+  const questionCard = (c) => `<article class="mod-card"><header><p class="kicker">${name(c.product)} · ${escape(c.id)} · ${badge(c.state)} ${badge(c.public?.state === "published" ? "Published answer" : c.public?.answer ? "Answered privately" : "Unanswered")}</p><h3>${escape(c.message)}</h3></header><form class="mod-form" data-ops-question="${c.id}"><label for="q-${c.id}">Question as published (edit only to remove personal details)</label><textarea id="q-${c.id}" name="question" maxlength="600"${dis}>${escape(c.public?.question || c.message)}</textarea><label for="a-${c.id}">Official answer from Body Café Co.</label><textarea id="a-${c.id}" name="answer" maxlength="2000"${dis}>${escape(c.public?.answer || "")}</textarea><label class="check"><input type="checkbox" name="publish"${c.public?.state === "published" ? " checked" : ""}${dis}><span>Publish this question and answer on the product page</span></label><p class="micro">Answer only from approved product information. Order or health questions stay private: answer them here without publishing.</p><div class="form-error" role="alert"></div><button class="small-button"${dis}>Save answer</button></form></article>`;
+  return `<div class="note-panel"><strong>Moderation rules</strong><p>Publish verified reviews whatever their rating. Reject only for the listed reasons, and approve or reject each photo. Safety concerns go to a private safety case, not a public reply.</p></div><h2>Awaiting moderation (${pending.length})</h2>${pending.length ? pending.map(reviewCard).join("") : "<p>No reviews are waiting.</p>"}<h2>Product questions (${questions.length})</h2>${questions.length ? questions.map(questionCard).join("") : "<p>No product questions yet.</p>"}<h2>Published reviews (${published.length})</h2>${published.length ? published.map(reviewCard).join("") : "<p>No reviews are published.</p>"}<h2>Rejected (${rejected.length})</h2>${rejected.length ? table(["Review", "Product", "Reason"], rejected.map((r) => [r.id, name(r.product), escape((REJECT_REASONS.find(([v]) => v === r.reject_reason) || ["", r.reject_reason || ""])[1])])) : "<p>None.</p>"}`;
 }
 function notFound() {
   return `<section class="section-wrap">${empty("Page not found", "That link doesn't lead anywhere. Head back to the shop.", "Shop all seven", "/shop", "h1")}</section>`;
@@ -1436,6 +1484,8 @@ document.addEventListener("submit", async (e) => {
         try {
           await api("/auth/verify", { mobile: state.otp.mobile, code: $("#verify-code").value });
           await session();
+          const next = new URL(location.href).searchParams.get("next") || "";
+          if (/^\/(orders|products)\/[A-Za-z0-9-]+$/.test(next)) return navigate(next);
           await render(false);
           toast("Preview mobile verified. Matching guest orders claimed.");
         } catch (err) {
@@ -1452,6 +1502,15 @@ document.addEventListener("submit", async (e) => {
       await api("/addresses", data);
       await render(false);
       toast("Preview address saved.");
+    } else if (form.dataset.opsReview) {
+      const decision = e.submitter?.value || "publish";
+      const media = {};
+      form.querySelectorAll("input[type=radio][name^=media-]:checked").forEach((r) => (media[r.name.slice(6)] = r.value));
+      await opsAction("review", { id: form.dataset.opsReview, decision, reason: data.reason || undefined, media });
+    } else if (form.dataset.opsReply) {
+      await opsAction("review_reply", { id: form.dataset.opsReply, text: data.text || "" });
+    } else if (form.dataset.opsQuestion) {
+      await opsAction("question", { id: form.dataset.opsQuestion, answer: data.answer || "", question: data.question || "", publish: form.elements.publish.checked });
     } else if (form.id === "review-form") {
       await api("/reviews", { ...data, rating: Number(data.rating) });
       await render(false);

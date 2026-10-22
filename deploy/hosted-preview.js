@@ -27,6 +27,12 @@
         const state = lot === 'DEMO-UNPUBLISHED' ? 'unpublished' : lot === 'DEMO-WITHDRAWN' ? 'withdrawn' : [prefix+'01', prefix+'02'].includes(lot) ? 'sample_match' : 'not_found';
         return {state, lot, product: pid, preview: true, document: null, message: 'Illustrative record only. No laboratory result or authenticity claim.'};
       }
+      if (url.pathname === '/reviews') {
+        // No customer data is published with the static design preview, so no reviews exist here.
+        return {product: url.searchParams.get('product'), summary: {count: 0, average: null, breakdown: {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}}, reviews: [], page: 1, pages: 1, total: 0, staticPreview: true};
+      }
+      if (url.pathname === '/reviews/eligibility') return {state: 'static_preview'};
+      if (url.pathname === '/questions') return {product: url.searchParams.get('product'), questions: [], staticPreview: true};
       throw new Error('This action needs the connected store, which is not enabled in this shared design preview.');
     }
   };

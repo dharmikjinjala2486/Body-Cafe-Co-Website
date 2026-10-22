@@ -98,7 +98,11 @@ class CommerceTests(unittest.TestCase):
         with self.assertRaises(Error):self.store.review(self.customer,review)
         self.store.admin(self.admin_a,'ship',{'id':order['id']})
         with self.assertRaises(Error):self.store.cancel(self.customer,order['id'])
-        self.store.admin(self.admin_a,'ship',{'id':order['id']});self.store.review(self.customer,review)
+        self.store.admin(self.admin_a,'ship',{'id':order['id']})
+        # A guest session must sign in (claiming its order) before reviewing.
+        with self.assertRaises(Error):self.store.review(self.customer,review)
+        otp=self.store.otp(self.customer,{'mobile':'9876543210'});self.store.verify(self.customer,{'mobile':'9876543210','code':otp['preview_code']})
+        self.customer=self.store.session(self.customer['id'])[0];self.store.review(self.customer,review)
         self.assertEqual(len(self.store.snapshot(self.customer)['reviews']),1)
     def test_paid_lot_expiry_blocks_dispatch(self):
         order=self.store.order(self.customer,self.payload)

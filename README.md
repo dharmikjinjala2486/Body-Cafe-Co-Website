@@ -1,3 +1,7 @@
+# Product pages across A–H — 22 October 2026
+
+Claude’s product-page rebuild is integrated for all seven products and eight directions. One shared model supplies the eight sections. The local Python preview supports verified-delivery reviews, private photo uploads and moderation. Netlify remains a static design preview; review and question submissions require the backend and are unavailable there. See [implementation](PRODUCT-PAGE-IMPLEMENTATION.md) and [verification](design-review/PRODUCT-RELEASE-2026-10-22.md).
+
 # Standards across A–H — 22 October 2026
 
 Claude’s approved Standards redesign is integrated across all eight variants, with one shared content model and eight distinct presentations. It preserves the existing headers, other pages and commerce handlers. See [implementation](STANDARDS-IMPLEMENTATION.md) and [local release verification](design-review/RELEASE-2026-10-22.md). Approved business records remain pending and are labelled in the page.

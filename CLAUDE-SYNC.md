@@ -176,3 +176,10 @@ Archives, manifest, handoff and receipt screenshot are retained under ignored `.
 Imported the completed `bcc-standards-a-h-20261022.zip` from the Standards chat; SHA-256 `448837c8964970b29d79503ee16422220a0a4232b61b7e741ce081729b4762d8`. Every package-manifest entry passed size/hash verification; archive paths/integrity/symlinks were checked; the supplied patch passed `git apply --check` against the exact merged working tree. Imported eight source/documentation/tool files. App/index changes are only the Standards enhancement hook, script and stylesheet. Claude’s supplied QA logs/screenshots remain in the ignored incoming package, separate from local verification.
 
 Independent local checks: 24 backend/HTTP tests, syntax for all 24 frontend JS files, static build and hosted-preview boundary tests pass. Standards A–H at 320/390/768/1100/1440px (40 states) have correct section order, one h1, no duplicate IDs/missing local anchors/page overflow, correct disclosure state, working keyboard product selection and identical shared facts. The owner requested committing/pushing all current work and deploying the existing Netlify project. See `design-review/RELEASE-2026-10-22.md` and Git/Netlify histories for release evidence.
+
+
+## Product-page rebuild — 22 October 2026
+
+Imported Claude’s corrected `bcc-product-page-a-h-20261022.zip` against baseline `107a9333bd2aa392a6f046aa755d746bb73d639c`. SHA-256: `0ff6fb21d0fa368aa5122ad4bb64d270d65a373130def716c0c108ddcd32efc7`. Archive integrity, paths, manifest hashes and patch applicability were checked; imported sources match the overlay byte for byte.
+
+All seven products now use the shared eight-section product template in A–H. The package includes moderated verified-delivery reviews, photo validation/private storage, review feedback and product questions in the local preview backend, plus unavailable states for the static Netlify export. Existing E–H directions and Standards remain in place. Independent verification is recorded in `design-review/PRODUCT-RELEASE-2026-10-22.md`.

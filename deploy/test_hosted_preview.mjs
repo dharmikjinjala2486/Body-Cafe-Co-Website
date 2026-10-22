@@ -17,6 +17,14 @@ assert.equal((await api('/reports?product=l-theanine&lot=DEMO-UNPUBLISHED')).sta
 await assert.rejects(api('/reports?product=invalid&lot=DEMO-01-01'), /Choose a product/);
 await assert.rejects(api('/reports?product=l-theanine&lot=DEMO-OUTAGE'), /service-unavailable/);
 await assert.rejects(api('/orders', {contact: {name: 'Synthetic test'}}), /does not save/);
+const reviews = await api('/reviews?product=iron-bisglycinate');
+assert.equal(reviews.summary.count, 0);
+assert.equal(reviews.reviews.length, 0);
+assert.equal((await api('/reviews/eligibility?product=iron-bisglycinate')).state, 'static_preview');
+assert.equal((await api('/questions?product=iron-bisglycinate')).questions.length, 0);
+await assert.rejects(api('/reviews', {product: 'iron-bisglycinate', rating: 5}), /does not save/);
+await assert.rejects(api('/questions', {product: 'iron-bisglycinate', question: 'Synthetic question text'}), /does not save/);
+assert.ok(catalog.products.every((p) => p.rating && p.rating.count === 0));
 assert.ok(fs.existsSync('dist/index.html'));
 assert.ok(fs.readFileSync('dist/_redirects', 'utf8').includes('/* /index.html 200'));
 assert.ok(!fs.existsSync('dist/.local'));
