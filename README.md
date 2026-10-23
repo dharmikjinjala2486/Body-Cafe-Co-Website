@@ -1,3 +1,7 @@
+# About and Learn across A–H — 23 October 2026
+
+Claude’s dedicated About page and Learn knowledge hub are integrated across all eight designs. Learn includes seven product guides, five foundation guides, a glossary, search, local saved reading and preview-backend feedback. The hosted static preview disables server-dependent submissions. See [About](ABOUT-IMPLEMENTATION.md), [Learn](LEARN-IMPLEMENTATION.md) and [independent release checks](design-review/ABOUT-LEARN-RELEASE-2026-10-23.md). Guides disclose their pending specialist review; research findings remain in the internal review pack.
+
 # Shop across A–H — 22 October 2026
 
 Claude’s shared Shop rebuild is integrated across all eight designs, including format/stock filters, sorting, URL history, return-position restoration and inline Add to bag feedback. See [implementation](SHOP-IMPLEMENTATION.md) and [independent release checks](design-review/SHOP-RELEASE-2026-10-22.md).

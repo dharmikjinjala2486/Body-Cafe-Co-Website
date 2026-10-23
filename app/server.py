@@ -34,6 +34,8 @@ BUNDLES = [
     {'id':'curious-edit','name':'The curious edit','description':'An example collection of L-Theanine and Creatine Chews.','items':['l-theanine','creatine-chews']},
 ]
 
+LEARN_TOPIC=re.compile(r'/learn(/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?')
+
 class Error(Exception):
     def __init__(self, message, status=400):
         super().__init__(message)
@@ -65,6 +67,7 @@ class Store:
             CREATE TABLE IF NOT EXISTS settings(id TEXT PRIMARY KEY,data TEXT);
             CREATE TABLE IF NOT EXISTS review_media(id TEXT PRIMARY KEY, user_id TEXT, product TEXT, review_id TEXT, mime TEXT, ext TEXT, bytes INTEGER, width INTEGER, height INTEGER, state TEXT, created INTEGER);
             CREATE TABLE IF NOT EXISTS review_votes(review_id TEXT, user_id TEXT, created INTEGER, PRIMARY KEY(review_id,user_id));
+            CREATE TABLE IF NOT EXISTS learn_feedback(id INTEGER PRIMARY KEY, page TEXT, section TEXT, clear INTEGER, session TEXT, created INTEGER);
             CREATE TABLE IF NOT EXISTS review_reports(id INTEGER PRIMARY KEY, review_id TEXT, user_id TEXT, reason TEXT, note TEXT, state TEXT, created INTEGER, UNIQUE(review_id,user_id));
             ''')
             for i,p in enumerate(PRODUCTS):
@@ -259,13 +262,21 @@ class Store:
     def case(self,s,data):
         if s['role']!='customer':raise Error('Use a customer session to open a case.',403)
         kind=data.get('kind','general');text=str(data.get('message','')).strip()
-        if kind not in ['general','delivery','return','replacement','safety']:raise Error('Select a valid case type.')
+        if kind not in ['general','brand','learn','delivery','return','replacement','safety']:raise Error('Select a valid case type.')
+        topic=str(data.get('topic','') or '').strip()
+        if topic and not LEARN_TOPIC.fullmatch(topic):raise Error('That page reference is not valid.')
+        feedback=str(data.get('feedback','') or '')
+        if feedback and feedback not in ('correction','followup'):raise Error('Choose correction or follow-up.')
         if not 10<=len(text)<=3000:raise Error('Describe the issue in 10–3000 characters.')
         with self.db() as c:
             oid=str(data.get('order_id','')).strip()
             if oid:self.owned_order(c,s,oid)
             cid='CASE-'+secrets.token_hex(4).upper()
             payload={'kind':kind,'message':text,'order_id':oid,'state':'open','owner':'Unassigned','sla':'Priority review' if kind=='safety' else 'Preview target: 1 business day','preview':True,'history':[]}
+            if topic and kind in ('learn','brand'):
+                payload['topic']=topic
+                payload['subject']=({'correction':'Suggested correction','followup':'Follow-up question'}.get(feedback,'Learn question') if kind=='learn' else 'About the brand')+' · '+topic
+                if feedback:payload['feedback']=feedback
             c.execute('INSERT INTO cases VALUES(?,?,?,?)',(cid,s['user_id'],json.dumps(payload),int(time.time())))
             self.log(c,s['user_id'],'safety_case_created' if kind=='safety' else 'case_created',cid)
         return {'id':cid,**payload}
@@ -357,7 +368,20 @@ class Store:
                 result['review_media']=[dict(r) for r in c.execute('SELECT * FROM review_media ORDER BY created DESC')]
                 result['review_reports']=[dict(r) for r in c.execute('SELECT * FROM review_reports ORDER BY created DESC')]
                 result['events']=[dict(r) for r in c.execute('SELECT name,COUNT(*) AS count FROM events GROUP BY name')]
+                result['learn_feedback']=[dict(r) for r in c.execute('SELECT page,SUM(clear) AS clear,SUM(1-clear) AS unclear,COUNT(*) AS total FROM learn_feedback GROUP BY page ORDER BY page')]
             return result
+
+    def learn_feedback(self,s,data):
+        """Anonymous 'Was this clear?' answer for a Learn page. Stores the page, section and answer only; one answer per
+        session per page and section (a repeat replaces the earlier one)."""
+        page=str(data.get('page','')).strip();section=str(data.get('section','') or '').strip()
+        if not LEARN_TOPIC.fullmatch(page) or '#' in page:raise Error('That page reference is not valid.')
+        if section and not re.fullmatch(r'[a-z0-9-]{1,40}',section):raise Error('That section reference is not valid.')
+        if not isinstance(data.get('clear'),bool):raise Error('Answer yes or no.')
+        with self.db() as c:
+            c.execute('DELETE FROM learn_feedback WHERE session=? AND page=? AND section=?',(s['id'],page,section))
+            c.execute('INSERT INTO learn_feedback(page,section,clear,session,created) VALUES(?,?,?,?,?)',(page,section,1 if data['clear'] else 0,s['id'],int(time.time())))
+        return {'ok':True}
 
     def address(self,s,data):
         if s['role']!='customer':raise Error('Use a customer session.',403)
@@ -787,6 +811,7 @@ class Handler(BaseHTTPRequestHandler):
                 elif re.fullmatch(r'/api/orders/[^/]+/pay',path):result=self.store.pay(s,path.split('/')[3],data)
                 elif re.fullmatch(r'/api/orders/[^/]+/cancel',path):result=self.store.cancel(s,path.split('/')[3])
                 elif path=='/api/cases':result=self.store.case(s,data)
+                elif path=='/api/learn/feedback':result=self.store.learn_feedback(s,data)
                 elif path=='/api/addresses':result=self.store.address(s,data)
                 elif path=='/api/reviews':result=self.store.review(s,data)
                 elif re.fullmatch(r'/api/reviews/REV-[0-9a-f]{10}/helpful',path):result=self.store.helpful(s,path.split('/')[3])

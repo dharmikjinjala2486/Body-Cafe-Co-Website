@@ -14,6 +14,25 @@ class CommerceTests(unittest.TestCase):
     def tearDown(self):self.temp.cleanup()
     def stock(self,pid='vitamin-d3-k2'):
         return next(p['stock'] for p in self.store.products() if p['id']==pid)
+    def test_case_kinds_include_about_the_brand(self):
+        c=self.store.case(self.customer,{'kind':'brand','message':'A question about the brand and its name.'})
+        self.assertEqual(c['kind'],'brand');self.assertEqual(c['state'],'open')
+        with self.assertRaises(Error):self.store.case(self.customer,{'kind':'partnership','message':'Not a supported case type.'})
+    def test_learn_cases_keep_their_page_reference(self):
+        c=self.store.case(self.customer,{'kind':'learn','feedback':'correction','topic':'/learn/iron-bisglycinate#name','message':'The section on elemental iron could be clearer.'})
+        self.assertEqual(c['topic'],'/learn/iron-bisglycinate#name');self.assertEqual(c['feedback'],'correction');self.assertIn('Suggested correction',c['subject'])
+        for bad in ['https://evil.example','/shop','/learn/../admin','/learn/x y']:
+            with self.assertRaises(Error):self.store.case(self.customer,{'kind':'learn','topic':bad,'message':'A follow-up question about this guide.'})
+        with self.assertRaises(Error):self.store.case(self.customer,{'kind':'learn','feedback':'praise','message':'A follow-up question about this guide.'})
+    def test_learn_feedback_is_validated_and_counted_once_per_session(self):
+        self.store.learn_feedback(self.customer,{'page':'/learn/serving-sizes','section':'units','clear':True})
+        self.store.learn_feedback(self.customer,{'page':'/learn/serving-sizes','section':'units','clear':False})
+        other=self.store.session('')[0]
+        self.store.learn_feedback(other,{'page':'/learn/serving-sizes','section':'units','clear':True})
+        for bad in [{'page':'/shop','clear':True},{'page':'/learn/x#y','clear':True},{'page':'/learn','section':'Bad Section','clear':True},{'page':'/learn','clear':'yes'}]:
+            with self.assertRaises(Error):self.store.learn_feedback(self.customer,bad)
+        summary=self.store.snapshot(self.admin_a)['learn_feedback']
+        self.assertEqual(summary,[{'page':'/learn/serving-sizes','clear':1,'unclear':1,'total':2}])
     def test_fefo_and_atomic_reservation(self):
         order=self.store.order(self.customer,self.payload)
         self.assertEqual(self.stock(),38)

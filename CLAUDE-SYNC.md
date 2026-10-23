@@ -188,3 +188,8 @@ All seven products now use the shared eight-section product template in A–H. T
 ## Shop rebuild — 22 October 2026
 
 Imported `body-cafe-co-shop-a-h.zip` from the existing Standards/product conversation against `3eca344`. SHA-256: `1a0cd7d2671ba5f50daeff9f4e8bb63e5c30097e2e635f1bdb79128b94e51cc1`. Archive integrity and safe paths checked; patch applies cleanly, and imported files match the supplied source overlay byte for byte. No database or server changes. Independent checks are recorded in `design-review/SHOP-RELEASE-2026-10-22.md`; supplied broader QA is in `SHOP-IMPLEMENTATION.md`.
+
+
+## About and Learn — 23 October 2026
+
+Imported About then the frozen Learn snapshot from the existing Claude conversation over baseline `3216b09`. About ZIP SHA-256: `959a82ae2703adf42efd2650767dd17faf41ee0e40cdb06967126ce36dff445f`; Learn ZIP SHA-256: `9b1b2f52813d7e7a0f61804f37e40b2564a0bac7790c5899233350ce90ad2576`. Archive integrity/paths, clean patch applicability and source overlay equality passed. About adds a dedicated eight-section page and brand support cases. Learn adds the hub, guides, glossary and validated feedback/case references. The server creates the feedback table on startup. Independent checks and remaining review status are in `design-review/ABOUT-LEARN-RELEASE-2026-10-23.md`.

@@ -1,0 +1,392 @@
+/* Body Café Co. — About page for A–H (markup in about.js).
+   Part 1 is structure shared by every direction. Parts 2–9 give each direction its own type, colour, rhythm and
+   composition, scoped to `.ab-<direction>`. Nothing here reaches any other route. */
+
+/* =====================================================================================================
+   1. SHARED STRUCTURE
+   ===================================================================================================== */
+.ab {
+  --pad: clamp(16px, 4.5vw, 64px); --max: 1320px; --gap: clamp(18px, 3vw, 44px);
+  --bg: #fff; --ink: #2d2926; --muted: #5d5853; --line: rgb(45 41 38 / .16); --panel: rgb(45 41 38 / .045); --field: #fff;
+  --btn: var(--ink); --btn-ink: #fff; --radius: 0px; --btn-radius: 0px; --plate: #f2f0eb; --accent: var(--ink);
+  --text: "Aileron", "Helvetica Neue", Arial, sans-serif; --display: var(--text); --label: var(--text);
+  background: var(--bg); color: var(--ink); font-family: var(--text); font-size: 17px; line-height: 1.6; overflow-x: clip;
+}
+.ab *, .ab *::before, .ab *::after { box-sizing: border-box; }
+.ab :where(h1, h2, h3, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+.ab :where(ul, ol) { list-style: none; }
+.ab :where(h1, h2, h3) { text-wrap: balance; overflow-wrap: break-word; }
+.ab :where(p) { text-wrap: pretty; }
+.ab a { color: inherit; text-underline-offset: 4px; }
+.ab img { display: block; max-width: 100%; height: auto; }
+.ab [hidden] { display: none !important; }
+.ab :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.ab :where(button) { font: inherit; color: inherit; }
+.ab [id] { scroll-margin-top: 96px; }
+
+.ab-kicker, .ab-k, .ab-nav-k, .ab-role, .ab-value-n, .ab-folio { font-family: var(--label); font-size: 12px; letter-spacing: .09em; text-transform: uppercase; font-weight: 600; line-height: 1.4; }
+.ab-p { max-width: 62ch; }
+.ab-lead { font-size: clamp(19px, 1.7vw, 24px); line-height: 1.45; max-width: 46ch; }
+.ab-small, .ab-cap { font-size: 14px; color: var(--muted); max-width: 70ch; }
+.ab-note { padding: 14px 18px; border-left: 3px solid var(--accent); background: var(--panel); max-width: 60ch; font-size: 16px; }
+
+/* Buttons and links */
+.ab .ab-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 10px 20px; background: var(--btn); color: var(--btn-ink); border: 1px solid var(--btn); border-radius: var(--btn-radius); font-weight: 600; text-decoration: none; transition: transform .15s; }
+.ab .ab-btn.is-quiet { background: transparent; color: var(--ink); border-color: currentColor; }
+.ab .ab-btn:hover { transform: translateY(-1px); }
+.ab-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; }
+.ab-arr { transition: transform .2s; }
+.ab-link:hover .ab-arr, .ab-route:hover .ab-arr { transform: translateX(3px); }
+.ab-more, .ab-meet-links { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; }
+.ab-meet-links { gap: 10px; margin-top: 8px; }
+
+/* 1 Meet */
+.ab-meet-in { max-width: var(--max); margin: 0 auto; padding: clamp(28px, 5vw, 72px) var(--pad) clamp(28px, 4vw, 56px); display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gap); align-items: center; }
+.ab-meet-text { display: grid; gap: 16px; align-content: center; min-width: 0; }
+.ab-h1 { font-family: var(--display); font-size: clamp(40px, 5.2vw, 76px); line-height: 1; letter-spacing: -.035em; font-weight: 600; }
+.ab-h1 em { font-style: inherit; }
+.ab-lede { font-size: clamp(19px, 1.6vw, 22px); line-height: 1.45; max-width: 44ch; }
+.ab-view { font-weight: 600; max-width: 46ch; }
+.ab-lineup { display: grid; gap: 10px; }
+.ab-lineup-row { display: flex; align-items: flex-end; justify-content: center; padding: clamp(20px, 3vw, 40px) clamp(10px, 2vw, 28px) 0; background: var(--plate); border-radius: var(--radius); overflow: hidden; min-height: 300px; }
+.ab-lineup-row img { width: 21%; margin: 0 -3.4%; filter: drop-shadow(0 14px 14px rgb(0 0 0 / .14)); }
+.ab-lineup-row img:nth-child(even) { margin-bottom: 6%; }
+
+/* Section navigation */
+.ab-nav { max-width: var(--max); margin: 0 auto; padding: 8px var(--pad) 18px; display: flex; gap: 6px 18px; align-items: center; flex-wrap: wrap; }
+.ab-nav ol { display: flex; flex-wrap: wrap; gap: 4px 4px; }
+.ab-nav a { display: inline-flex; gap: 6px; align-items: center; min-height: 40px; padding: 6px 12px; border: 1px solid var(--line); border-radius: var(--btn-radius); text-decoration: none; font-size: 14px; white-space: nowrap; }
+.ab-nav a[aria-current] { background: var(--btn); color: var(--btn-ink); border-color: var(--btn); }
+.ab-nav-n { font-size: 11px; font-variant-numeric: tabular-nums; }
+
+/* Sections */
+.ab-sec { border-top: 1px solid var(--line); }
+.ab-sec-in { max-width: var(--max); margin: 0 auto; padding: clamp(40px, 6vw, 88px) var(--pad); display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px var(--gap); }
+.ab-head { display: grid; gap: 10px; align-content: start; }
+.ab-head h2 { font-family: var(--display); font-size: clamp(30px, 3.4vw, 50px); line-height: 1.04; letter-spacing: -.025em; font-weight: 600; }
+.ab-body { display: grid; gap: 20px; align-content: start; min-width: 0; }
+.ab-quote { font-family: var(--display); font-size: clamp(24px, 2.6vw, 36px); line-height: 1.25; letter-spacing: -.015em; max-width: 30ch; }
+.ab-quote p::before { content: "“"; } .ab-quote p::after { content: "”"; }
+
+/* People */
+.ab-people { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: var(--gap); }
+.ab-person { display: grid; gap: 12px; align-content: start; }
+.ab-portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
+.ab-person h3 { font-family: var(--display); font-size: 24px; line-height: 1.15; }
+.ab-role { color: var(--muted); }
+.ab-bio summary { cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; font-weight: 600; text-decoration: underline; }
+.ab-founder { padding: clamp(20px, 3vw, 36px); background: var(--panel); border-radius: var(--radius); display: grid; gap: 12px; }
+.ab-founder blockquote { font-family: var(--display); font-size: clamp(20px, 2vw, 26px); line-height: 1.4; }
+.ab-founder figcaption { font-size: 14px; color: var(--muted); }
+.ab-people-empty { padding: clamp(20px, 3vw, 36px); border: 1px dashed var(--line); border-radius: var(--radius); }
+
+/* Values */
+.ab-values { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.ab-value { display: grid; gap: 8px; align-content: start; padding-top: 14px; border-top: 2px solid var(--ink); }
+.ab-value h3 { font-family: var(--display); font-size: clamp(24px, 2.2vw, 32px); line-height: 1.1; letter-spacing: -.02em; }
+.ab-value-line { font-weight: 600; }
+.ab-value .ab-p { font-size: 16px; }
+.ab-links { display: flex; flex-wrap: wrap; gap: 0 22px; }
+.ab-links .ab-link { font-size: 15px; }
+
+/* Collection */
+.ab-fmts { display: flex; flex-wrap: wrap; gap: 10px; }
+.ab-fmts li { display: grid; gap: 2px; padding: 12px 16px; background: var(--panel); border-radius: var(--radius); min-width: min(100%, 200px); flex: 1 1 200px; font-weight: 600; }
+.ab-fmt-n { text-transform: capitalize; }
+.ab-fmt-p { font-size: 13px; font-weight: 400; color: var(--muted); }
+.ab-caps { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr)); gap: 6px 14px; }
+.ab-caps a { display: flex; gap: 10px; align-items: center; min-height: 44px; text-decoration: none; font-size: 15px; }
+.ab-caps a:hover span:last-child { text-decoration: underline; }
+.ab-cap-dot { width: 26px; height: 26px; border-radius: 50%; background: var(--dot); box-shadow: inset 0 0 0 3px rgb(255 255 255 / .35), 0 0 0 1px rgb(0 0 0 / .12); flex: none; }
+
+/* Behind the scenes */
+.ab-gallery { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap) 16px; }
+.ab-shot { grid-column: span 2; }
+.ab-shot-1 { grid-column: span 2; grid-row: span 3; }
+.ab-shot-2, .ab-shot-5 { grid-column: span 4; }
+.ab-shot figure { display: grid; gap: 10px; }
+.ab-open { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--plate); border-radius: var(--radius); overflow: hidden; cursor: zoom-in; }
+.ab-open img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; transition: transform .4s; }
+.ab-shot-1 .ab-open img { aspect-ratio: 3 / 4.4; object-fit: cover; }
+.ab-shot-2 .ab-open img { aspect-ratio: 2340 / 360; object-fit: contain; }
+.ab-shot-5 .ab-open img { aspect-ratio: 1400 / 700; }
+.ab-open:hover img { transform: scale(1.02); }
+.ab-zoom { position: absolute; right: 10px; bottom: 10px; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: var(--bg); color: var(--ink); font-size: 20px; line-height: 1; box-shadow: 0 0 0 1px var(--line); }
+.ab-shot figcaption { font-size: 14px; color: var(--muted); }
+.ab-shot figcaption strong { color: var(--ink); font-weight: 600; display: block; }
+
+/* Keep talking */
+.ab-routes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ab-route { position: relative; display: grid; gap: 4px; min-height: 100%; padding: 18px 48px 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; background: var(--field); }
+.ab-route strong { font-size: 18px; }
+.ab-route span:not(.ab-arr) { font-size: 14px; color: var(--muted); }
+.ab-route .ab-arr { position: absolute; right: 18px; top: 50%; translate: 0 -50%; font-size: 20px; }
+.ab-route.is-primary { background: var(--btn); color: var(--btn-ink); border-color: var(--btn); }
+.ab-route.is-primary span:not(.ab-arr) { color: inherit; opacity: .85; }
+.ab-route:hover strong { text-decoration: underline; }
+
+/* Image viewer */
+.ab-lightbox { width: min(1100px, 100vw - 24px); max-width: none; max-height: calc(100vh - 24px); padding: 0; border: 0; border-radius: var(--radius); background: #111; color: #fff; }
+.ab-lightbox::backdrop { background: rgb(0 0 0 / .78); }
+.ab-lb-in { display: grid; gap: 10px; padding: 14px; }
+.ab-lb-top, .ab-lb-nav { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.ab-lb-count { font-size: 13px; letter-spacing: .06em; }
+.ab-lb-btn { min-width: 44px; min-height: 44px; border: 1px solid rgb(255 255 255 / .4); background: transparent; color: #fff; font-size: 20px; cursor: pointer; border-radius: 999px; }
+.ab-lb-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ab-lb-fig { display: grid; gap: 10px; }
+.ab-lb-fig img { width: 100%; max-height: calc(100vh - 220px); object-fit: contain; background: #f2f0eb; }
+.ab-lb-fig figcaption { font-size: 15px; color: #e6e6e6; }
+.ab-lb-fig figcaption strong { color: #fff; }
+
+@media (max-width: 1000px) {
+  .ab-meet-in { grid-template-columns: 1fr; }
+  .ab-sec-in { grid-template-columns: 1fr; }
+  .ab-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ab-shot, .ab-shot-1 { grid-column: span 1; grid-row: auto; }
+  .ab-shot-2, .ab-shot-5 { grid-column: 1 / -1; }
+  .ab-shot-1 .ab-open img { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 700px) {
+  .ab { font-size: 16px; }
+  .ab-values, .ab-routes { grid-template-columns: 1fr; }
+  .ab-nav { flex-wrap: nowrap; }
+  .ab-nav ol { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--pad)); padding: 2px var(--pad) 6px; scrollbar-width: none; }
+  .ab-nav ol::-webkit-scrollbar { display: none; }
+  .ab-nav-k { display: none; }
+  .ab-gallery { grid-template-columns: 1fr; }
+  .ab-lineup-row { min-height: 200px; }
+  .ab [id] { scroll-margin-top: 72px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab *, .ab *::before, .ab *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* =====================================================================================================
+   2. A — STATE OF PLAY. A poster index: Anton capitals, bracketed numbers, lime highlighter, graph paper.
+   ===================================================================================================== */
+.ab-a { --bg: #f1f2ef; --ink: #142bc5; --muted: #3b4785; --line: rgb(20 43 197 / .25); --field: #fff; --btn: #142bc5; --btn-ink: #f1f2ef; --panel: #ecff54; --accent: #142bc5;
+  --display: Anton, "Aileron", sans-serif; --label: SpaceMono, monospace; --plate: #e4e8f6; }
+.ab-a :is(.ab-kicker, .ab-k, .ab-nav-k, .ab-role, .ab-value-n) { font-weight: 400; letter-spacing: .03em; }
+.ab-a :is(.ab-h1, .ab-head h2, .ab-value h3, .ab-person h3) { text-transform: uppercase; font-weight: 400; letter-spacing: 0; }
+.ab-a .ab-h1 { font-size: clamp(48px, 6.6vw, 104px); line-height: .9; }
+.ab-a .ab-view { background: #ecff54; color: #101a6b; justify-self: start; padding: 2px 8px; }
+.ab-a .ab-lineup-row { background-color: #e4e8f6; background-image: linear-gradient(rgb(20 43 197 / .08) 1px, transparent 1px), linear-gradient(90deg, rgb(20 43 197 / .08) 1px, transparent 1px); background-size: 26px 26px; border: 2px solid var(--ink); }
+.ab-a .ab-lineup-row img { rotate: -5deg; }
+.ab-a .ab-btn, .ab-a .ab-nav a, .ab-a .ab-route strong { font-family: SpaceMono, monospace; font-weight: 400; text-transform: uppercase; font-size: 13px; }
+.ab-a .ab-btn:not(.is-quiet), .ab-a .ab-route.is-primary { box-shadow: 5px 5px 0 #ecff54; }
+.ab-a .ab-nav { border-block: 2px solid var(--ink); padding-block: 12px; }
+.ab-a .ab-nav a { border-color: var(--ink); }
+.ab-a .ab-sec { border-top: 2px solid var(--ink); }
+.ab-a .ab-sec-in { grid-template-columns: 1fr; }
+.ab-a .ab-head h2 { font-size: clamp(42px, 6vw, 92px); line-height: .9; max-width: 14ch; }
+.ab-a .ab-k { background: var(--ink); color: #ecff54; justify-self: start; padding: 2px 8px; }
+@media (min-width: 1001px) { .ab-a .ab-body { padding-left: 25%; } }
+.ab-a .ab-quote { font-family: Anton, sans-serif; text-transform: uppercase; font-size: clamp(30px, 3.6vw, 52px); line-height: 1.02; max-width: 22ch; }
+.ab-a .ab-note { background: #ecff54; color: #101a6b; }
+.ab-a .ab-value { border-top: 0; border: 2px solid var(--ink); padding: 18px; background: #fff; }
+.ab-a .ab-value-n { background: var(--ink); color: #ecff54; justify-self: start; padding: 2px 6px; }
+.ab-a .ab-fmts li { background: #fff; border: 1px solid var(--ink); }
+.ab-a .ab-open { border: 2px solid var(--ink); background-color: #e4e8f6; }
+.ab-a .ab-sec-talk { background: #142bc5; color: #f1f2ef; --ink: #f1f2ef; --muted: #e6e9ff; --line: rgb(241 242 239 / .35); --btn: #ecff54; --btn-ink: #142bc5; --field: transparent; }
+.ab-a .ab-sec-talk .ab-k { background: #ecff54; color: #142bc5; }
+
+/* =====================================================================================================
+   3. B — EXPRESSIVE EVERYDAY. A lilac table: colour fields, rounded bands, a speech-bubble quote.
+   ===================================================================================================== */
+.ab-b { --bg: #f2ecdf; --ink: #2e2926; --muted: #4a423c; --line: rgb(46 41 38 / .2); --field: #fffdf8; --radius: 28px; --btn-radius: 999px; --panel: #fffdf8; --accent: #35306f;
+  --display: "Aileron", sans-serif; --plate: #d9c3e6; }
+.ab-b .ab-meet { background: #d9c3e6; border-bottom: 1.5px solid var(--ink); }
+.ab-b :is(.ab-h1, .ab-head h2, .ab-value h3, .ab-person h3) { font-weight: 800; letter-spacing: -.05em; }
+.ab-b .ab-kicker { justify-self: start; padding: 4px 14px; border: 1.5px solid var(--ink); border-radius: 999px; background: #fffdf8; text-transform: none; letter-spacing: 0; font-size: 14px; }
+.ab-b .ab-lineup-row { background: #fffdf8; border: 1.5px solid var(--ink); border-radius: 200px 200px 28px 28px; }
+.ab-b .ab-lineup-row img { rotate: 4deg; }
+.ab-b .ab-lineup-row img:nth-child(even) { rotate: -4deg; }
+.ab-b .ab-nav { padding-top: 22px; }
+.ab-b .ab-nav a { border: 1.5px solid var(--ink); background: #fffdf8; font-weight: 700; }
+.ab-b .ab-nav a[aria-current] { background: var(--ink); color: #fffdf8; }
+.ab-b .ab-sec { border: 0; padding: 0 max(1.4vw, 10px) 14px; }
+.ab-b .ab-sec-in { border-radius: 28px; background: var(--tone); }
+.ab-b .ab-sec-why { --tone: #d8ddbb; } .ab-b .ab-sec-name { --tone: #e3cbe7; } .ab-b .ab-sec-people { --tone: #eaedb6; } .ab-b .ab-sec-values { --tone: #fbf7ef; }
+.ab-b .ab-sec-collection { --tone: #e6ceb5; } .ab-b .ab-sec-behind { --tone: #fbf7ef; } .ab-b .ab-sec-talk { --tone: #d8ddbb; }
+.ab-b .ab-disc { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: #f2ecdf; font-size: 11px; margin-right: 6px; }
+.ab-b .ab-k { text-transform: none; letter-spacing: 0; font-size: 15px; font-weight: 700; display: flex; align-items: center; }
+.ab-b .ab-quote { position: relative; background: #fff; border: 1.5px solid var(--ink); border-radius: 28px; padding: 22px 26px; font-weight: 800; letter-spacing: -.03em; }
+.ab-b .ab-quote::after { content: ""; position: absolute; left: 36px; bottom: -10px; width: 18px; height: 18px; background: #fff; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: skewX(-20deg) rotate(45deg); }
+.ab-b .ab-note { background: rgb(255 255 255 / .6); border: 0; border-radius: 18px; }
+.ab-b .ab-value { border: 0; background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 0 0 1.5px var(--ink); }
+.ab-b .ab-value-n { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #d9c3e6; color: var(--ink); justify-self: start; }
+.ab-b .ab-fmts li { background: rgb(255 255 255 / .6); }
+.ab-b .ab-open { border: 1.5px solid var(--ink); border-radius: 22px; }
+.ab-b .ab-shot:nth-child(odd) .ab-open { rotate: -1deg; } .ab-b .ab-shot:nth-child(even) .ab-open { rotate: 1deg; }
+.ab-b .ab-route { border: 1.5px solid var(--ink); border-radius: 22px; }
+.ab-b .ab-people-empty { background: rgb(255 255 255 / .6); border: 0; }
+
+/* =====================================================================================================
+   4. C — EVERYDAY ELSEWHERE. Butter paper, Gloock serif, stamped chapters, an arched window for the line-up.
+   ===================================================================================================== */
+.ab-c { --bg: #fff2c7; --ink: #40291e; --muted: #5e4337; --line: rgb(64 41 30 / .24); --field: #fffaf0; --panel: #fff8df; --display: Gloock, Georgia, serif;
+  --btn: #40291e; --btn-ink: #fff2c7; --btn-radius: 999px; --plate: #f0a868; --red: #b4311c; --blue: #193fa8; --accent: #b4311c; }
+.ab-c :is(.ab-h1, .ab-head h2, .ab-value h3, .ab-person h3) { font-weight: 400; letter-spacing: -.02em; }
+.ab-c .ab-h1 { font-size: clamp(46px, 6vw, 90px); }
+.ab-c .ab-h1 em { font-style: italic; color: var(--red); }
+.ab-c .ab-kicker, .ab-c .ab-k { color: var(--blue); }
+.ab-c .ab-lineup-row { border-radius: 999px 999px 18px 18px; border: 10px solid #fff8df; box-shadow: 8px 8px 0 rgb(64 41 30 / .12); background: linear-gradient(#f3b46e, #e98f5c); min-height: 340px; }
+.ab-c .ab-btn:not(.is-quiet) { box-shadow: 4px 4px 0 var(--red); }
+.ab-c .ab-nav a { border: 1.5px solid var(--ink); border-radius: 999px; }
+.ab-c .ab-nav a[aria-current] { background: var(--red); border-color: var(--red); color: #fff2c7; }
+.ab-c .ab-sec { border-top: 1px dashed var(--line); }
+.ab-c .ab-head h2 { color: var(--red); }
+.ab-c .ab-sec-name .ab-sec-in { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+.ab-c .ab-sec-name .ab-body { justify-items: center; }
+.ab-c .ab-quote { font-size: clamp(30px, 3.6vw, 52px); max-width: 24ch; }
+.ab-c .ab-note { background: transparent; border: 1.5px dashed var(--red); text-align: left; }
+.ab-c .ab-value { border-top: 1.5px dashed var(--red); }
+.ab-c .ab-value-n { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--red); color: var(--red); rotate: -8deg; font: 400 20px/1 Gloock, serif; letter-spacing: 0; }
+.ab-c .ab-open { border: 8px solid #fff8df; border-radius: 18px; box-shadow: 5px 5px 0 rgb(64 41 30 / .12); }
+.ab-c .ab-shot-1 .ab-open { border-radius: 999px 999px 18px 18px; }
+.ab-c .ab-sec-talk { background: var(--blue); color: #fff2c7; --ink: #fff2c7; --muted: #e2e7ff; --line: rgb(255 242 199 / .35); --btn: #fff2c7; --btn-ink: #193fa8; --field: transparent; }
+.ab-c .ab-sec-talk .ab-head h2, .ab-c .ab-sec-talk .ab-k { color: #fff2c7; }
+
+/* =====================================================================================================
+   5. D — THE OTHER SIDE. After hours: midnight blue, a lit vitrine, gold wall labels, centred captions.
+   ===================================================================================================== */
+.ab-d { --bg: #091321; --ink: #f7e9c5; --muted: #c6c9c8; --line: rgb(216 179 123 / .32); --panel: #122033; --field: #0d1828; --btn: #d8b37b; --btn-ink: #091321;
+  --display: "Aileron", sans-serif; --label: SpaceMono, monospace; --plate: #0d1828; --gold: #d8b37b; --accent: #d8b37b; }
+.ab-d :is(.ab-kicker, .ab-k, .ab-nav-k, .ab-role, .ab-value-n) { font-weight: 400; color: var(--gold); letter-spacing: .06em; }
+.ab-d :is(.ab-h1, .ab-head h2, .ab-value h3, .ab-person h3) { font-weight: 300; letter-spacing: -.045em; }
+.ab-d .ab-h1 em { font-style: normal; color: var(--gold); }
+.ab-d .ab-meet-in { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+.ab-d .ab-meet-text { justify-items: center; }
+.ab-d .ab-meet-media { width: min(100%, 980px); }
+.ab-d .ab-lineup-row { background: radial-gradient(ellipse 55% 60% at 50% 40%, rgb(247 233 197 / .18), transparent 72%), #0d1828; border: 1px solid var(--line); border-bottom: 14px solid #122033; }
+.ab-d .ab-lineup-row img { filter: drop-shadow(0 24px 22px rgb(0 0 0 / .6)); }
+.ab-d .ab-btn, .ab-d .ab-nav a { font-family: SpaceMono, monospace; font-size: 13px; text-transform: uppercase; }
+.ab-d .ab-nav { justify-content: center; border-block: 1px solid var(--line); padding-block: 12px; }
+.ab-d .ab-nav a { border-color: var(--line); }
+.ab-d .ab-nav a[aria-current] { background: var(--gold); color: #091321; }
+.ab-d .ab-sec:nth-of-type(even) { background: #0d1a2c; }
+.ab-d .ab-sec-in { grid-template-columns: 1fr; max-width: 1060px; }
+.ab-d .ab-head { justify-items: center; text-align: center; }
+.ab-d .ab-head::after { content: ""; width: 56px; height: 1px; background: var(--gold); margin-top: 6px; }
+.ab-d .ab-sec-why .ab-body, .ab-d .ab-sec-name .ab-body, .ab-d .ab-sec-people .ab-body, .ab-d .ab-sec-talk .ab-body { justify-items: center; text-align: center; }
+.ab-d .ab-more { justify-content: center; }
+.ab-d .ab-quote { color: var(--gold); font-weight: 300; }
+.ab-d .ab-note { background: transparent; border: 1px solid var(--gold); text-align: left; }
+.ab-d .ab-value { border-top: 1px solid var(--gold); }
+.ab-d .ab-open { background: radial-gradient(ellipse at 50% 40%, rgb(247 233 197 / .14), transparent 70%), #0d1828; border: 1px solid var(--line); }
+.ab-d .ab-open img { opacity: .94; }
+.ab-d .ab-shot figcaption { text-align: center; }
+.ab-d .ab-shot figcaption strong { color: var(--gold); }
+.ab-d .ab-people-empty { border-color: var(--gold); }
+.ab-d .ab-routes { text-align: left; width: 100%; }
+
+/* =====================================================================================================
+   6. E — FAN DECK. Each section is a swatch: a cap-colour band over a cream body.
+   ===================================================================================================== */
+.ab-e { --bg: #fff; --ink: #2d2926; --muted: #5d5853; --line: rgb(45 41 38 / .16); --panel: #f2f0eb; --plate: #f2f0eb; --btn-radius: 3px; --radius: 6px;
+  --display: "Aileron", sans-serif; --label: "Lemon Milk", "Aileron", sans-serif; }
+.ab-e :is(.ab-kicker, .ab-k, .ab-nav-k, .ab-role, .ab-value-n) { font-weight: 400; font-size: 10px; letter-spacing: .14em; }
+.ab-e :is(.ab-head h2, .ab-value h3, .ab-person h3) { font-weight: 300; letter-spacing: -.035em; }
+.ab-e .ab-h1 { font: 700 clamp(36px, 4.6vw, 70px)/.98 "Lemon Milk", sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.ab-e .ab-lineup-row { border-top: 12px solid; border-image: linear-gradient(90deg, #aa472e 0 14.28%, #777d51 0 28.56%, #35306f 0 42.84%, #84919b 0 57.12%, #b184b9 0 71.4%, #07566a 0 85.68%, #9c9274 0) 1; }
+.ab-e .ab-nav { border-top: 1px solid var(--ink); padding-top: 16px; }
+.ab-e .ab-nav a { border-color: transparent; background: #f2f0eb; }
+.ab-e .ab-nav a[aria-current] { background: var(--ink); }
+.ab-e .ab-sec { --band: #2d2926; border-top: 10px solid var(--band); }
+.ab-e .ab-sec-why { --band: #aa472e; } .ab-e .ab-sec-name { --band: #777d51; } .ab-e .ab-sec-people { --band: #35306f; } .ab-e .ab-sec-values { --band: #84919b; }
+.ab-e .ab-sec-collection { --band: #b184b9; } .ab-e .ab-sec-behind { --band: #07566a; } .ab-e .ab-sec-talk { --band: #9c9274; }
+.ab-e .ab-k { display: flex; gap: 10px; justify-self: start; padding: 7px 10px; background: color-mix(in srgb, var(--band) 14%, #fff); border-radius: 3px; }
+.ab-e .ab-k-of { opacity: .7; }
+.ab-e .ab-note { border-left: 6px solid var(--band, #2d2926); }
+.ab-e .ab-value { border-top: 0; background: #f2f0eb; border-radius: 6px; padding: 18px; box-shadow: inset 0 8px 0 var(--vc); }
+.ab-e .ab-value:nth-child(1) { --vc: #aa472e; } .ab-e .ab-value:nth-child(2) { --vc: #777d51; } .ab-e .ab-value:nth-child(3) { --vc: #35306f; } .ab-e .ab-value:nth-child(4) { --vc: #07566a; }
+.ab-e .ab-value h3 { font: 700 18px/1.2 "Lemon Milk", sans-serif; text-transform: uppercase; letter-spacing: .03em; padding-top: 8px; }
+.ab-e .ab-quote { font-weight: 300; }
+.ab-e .ab-open { border-top: 10px solid var(--band); }
+
+/* =====================================================================================================
+   7. F — EDITION. A printed feature: folio, ultralight headline, drop cap, pull quote, colour plates.
+   ===================================================================================================== */
+.ab-f { --bg: #f3f0ea; --ink: #2d2926; --muted: #5a544e; --line: rgb(45 41 38 / .2); --panel: #ebe6dc; --field: #fbfaf7; --btn-radius: 999px;
+  --display: "Aileron", sans-serif; --label: "Lemon Milk", "Aileron", sans-serif; --plate: #35306f; }
+.ab-f :is(.ab-kicker, .ab-k, .ab-nav-k, .ab-role, .ab-value-n, .ab-folio) { font: 400 10px/1.5 "Lemon Milk", sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+.ab-f .ab-folio { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--ink); padding-bottom: 10px; }
+.ab-f :is(.ab-h1, .ab-head h2, .ab-value h3, .ab-person h3) { font-weight: 200; letter-spacing: -.055em; }
+.ab-f .ab-h1 { font-size: clamp(48px, 6.4vw, 100px); line-height: .95; }
+.ab-f :is(.ab-lede, .ab-lead, .ab-cap, .ab-shot figcaption) { font-style: italic; font-weight: 300; }
+.ab-f .ab-lineup-row { background: var(--plate); padding-top: 60px; }
+.ab-f .ab-lineup-row img { margin-bottom: -4% !important; }
+.ab-f .ab-nav a { border-color: var(--ink); border-radius: 999px; }
+.ab-f .ab-sec { border-top: 0; }
+.ab-f .ab-sec-in { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); }
+.ab-f .ab-head, .ab-f .ab-body { border-top: 1px solid var(--ink); padding-top: 14px; }
+.ab-f .ab-sec-why .ab-lead::first-letter { float: left; font-size: 4.1em; line-height: .8; font-weight: 200; font-style: normal; padding: 6px 10px 0 0; }
+.ab-f .ab-quote { font-weight: 200; font-size: clamp(32px, 4vw, 58px); line-height: 1.08; letter-spacing: -.04em; border-block: 1px solid var(--ink); padding-block: 22px; max-width: none; }
+.ab-f .ab-note { background: transparent; border-left: 0; border-top: 1px solid var(--ink); padding: 12px 0 0; font-style: italic; }
+.ab-f .ab-value { border-top: 1px solid var(--ink); }
+.ab-f .ab-value h3 { font-size: clamp(30px, 2.8vw, 40px); }
+.ab-f .ab-open { border-radius: 0; }
+.ab-f .ab-shot figcaption strong::before { content: "Fig. — "; font-style: normal; }
+@media (max-width: 1000px) { .ab-f .ab-sec-in { grid-template-columns: 1fr; } .ab-f .ab-body { border-top: 0; padding-top: 0; } }
+
+/* =====================================================================================================
+   8. G — DARKROOM. A contact sheet: black and white sections in turn, frame numbers, a lit wall.
+   ===================================================================================================== */
+.ab-g { --bg: #000; --ink: #fff; --muted: #c9c9c9; --line: rgb(255 255 255 / .24); --panel: #121212; --field: #000; --btn: #fff; --btn-ink: #000;
+  --display: "Aileron", sans-serif; --plate: #000; --accent: #fff; }
+.ab-g :is(.ab-kicker, .ab-k, .ab-nav-k, .ab-role, .ab-value-n) { letter-spacing: .16em; font-size: 11px; font-weight: 400; }
+.ab-g :is(.ab-h1, .ab-head h2, .ab-value h3, .ab-person h3) { font-weight: 200; letter-spacing: -.055em; }
+.ab-g .ab-h1 { font-size: clamp(48px, 6.4vw, 98px); line-height: .92; }
+.ab-g .ab-lineup-row { background: radial-gradient(ellipse 50% 55% at 50% 45%, rgb(255 255 255 / .22), transparent 72%), #000; border: 1px solid var(--line); }
+.ab-g .ab-btn, .ab-g .ab-nav a { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; }
+.ab-g .ab-nav a[aria-current] { background: #fff; color: #000; }
+.ab-g .ab-sec:nth-of-type(odd) { background: #fff; color: #000; --ink: #000; --muted: #4a4a4a; --line: rgb(0 0 0 / .18); --panel: #f2f2f2; --btn: #000; --btn-ink: #fff; --field: #fff; --plate: #f2f2f2; --accent: #000; }
+.ab-g .ab-k { border-block: 1px solid currentColor; padding: 6px 0; }
+.ab-g .ab-head h2 { font-size: clamp(36px, 4.4vw, 68px); }
+.ab-g .ab-quote { font-weight: 200; font-size: clamp(30px, 3.6vw, 54px); letter-spacing: -.04em; }
+.ab-g .ab-note { background: transparent; border: 1px solid currentColor; }
+.ab-g .ab-value { border-top: 1px solid currentColor; }
+.ab-g .ab-gallery { gap: 2px; background: #000; padding: 2px; }
+.ab-g .ab-shot figure { background: #000; color: #fff; padding: 12px 12px 16px; height: 100%; }
+.ab-g .ab-shot figcaption { color: #c9c9c9; }
+.ab-g .ab-shot figcaption strong { color: #fff; }
+.ab-g .ab-open { background: #f2f2f2; }
+.ab-g .ab-open img { filter: grayscale(1) contrast(1.05); transition: filter .5s, transform .4s; }
+.ab-g .ab-open:hover img, .ab-g .ab-open:focus-visible img { filter: none; }
+.ab-g .ab-shot { counter-increment: frame; }
+.ab-g .ab-shot figure::before { content: "Frame " counter(frame, decimal-leading-zero); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #c9c9c9; }
+.ab-g .ab-gallery { counter-reset: frame; }
+
+/* =====================================================================================================
+   9. H — FOLIO. A reference page: sticky margin contents, § heads, ruled entries, small plates.
+   ===================================================================================================== */
+.ab-h { --bg: #fff; --ink: #111; --muted: #555; --line: rgb(0 0 0 / .16); --panel: #f6f6f6; --plate: #f6f6f6; --display: "Aileron", sans-serif; --btn: #111; --accent: #111; }
+.ab-h :is(.ab-kicker, .ab-k, .ab-nav-k, .ab-role, .ab-value-n) { font-weight: 400; letter-spacing: .06em; font-size: 11px; }
+.ab-h :is(.ab-h1, .ab-head h2, .ab-value h3, .ab-person h3) { font-weight: 300; letter-spacing: -.035em; }
+.ab-h .ab-h1 { font-size: clamp(40px, 4.6vw, 66px); line-height: 1.02; }
+.ab-h .ab-lineup-row { border: 1px solid var(--line); background: #fff; }
+.ab-h .ab-cap { font-size: 12px; }
+.ab-h .ab-cap::before { content: "Plate. "; font-style: italic; color: var(--ink); }
+.ab-h .ab-btn { border-radius: 0; }
+.ab-h .ab-btn.is-quiet { border: 0; border-bottom: 1px solid var(--ink); padding-inline: 0; }
+.ab-h .ab-sec { border-top: 1px solid var(--ink); }
+.ab-h .ab-sec-in { grid-template-columns: 200px minmax(0, 1fr); gap: 28px; padding-block: 52px; }
+.ab-h .ab-head { position: sticky; top: 90px; }
+.ab-h .ab-head h2 { font-size: clamp(26px, 2.6vw, 36px); }
+.ab-h .ab-body { max-width: 860px; }
+.ab-h .ab-quote { font-weight: 300; font-style: italic; font-size: clamp(24px, 2.4vw, 32px); border-left: 1px solid var(--ink); padding-left: 22px; }
+.ab-h .ab-note { background: transparent; border-left: 1px solid var(--ink); font-size: 15px; }
+.ab-h .ab-values { grid-template-columns: 1fr; gap: 0; }
+.ab-h .ab-value { grid-template-columns: 56px minmax(0, 1fr); column-gap: 18px; border-top: 1px solid var(--line); padding: 18px 0; }
+.ab-h .ab-value > :not(.ab-value-n) { grid-column: 2; }
+.ab-h .ab-value-n { grid-row: 1 / span 4; font-style: italic; font-size: 14px; text-transform: none; }
+.ab-h .ab-value h3 { font-size: 22px; font-weight: 600; letter-spacing: -.01em; }
+.ab-h .ab-open { border: 1px solid var(--line); background: #fff; }
+.ab-h .ab-shot figcaption strong::before { content: "Plate. "; font-weight: 400; font-style: italic; }
+.ab-h .ab-route { border-radius: 0; }
+@media (min-width: 1101px) {
+  /* The contents list sits in the left margin and stays in view while reading. */
+  .ab-h { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .ab-h .ab-nav { position: sticky; top: 80px; z-index: 2; background: #fff; border-block: 1px solid var(--line); }
+}
+@media (max-width: 1000px) { .ab-h .ab-sec-in { grid-template-columns: 1fr; } .ab-h .ab-head { position: static; } }
