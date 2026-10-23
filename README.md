@@ -1,3 +1,7 @@
+# Lot Reports across A–H — 23 October 2026
+
+Claude’s Lot Reports rebuild is integrated over the latest feedback-form release. It adds exact product/lot lookup, stable record links, separate document/test/notice states and a two-admin publishing workflow in the local backend. Netlify displays demonstration records; no real laboratory reports are supplied. See [implementation](LOT-REPORTS-IMPLEMENTATION.md) and [release checks](design-review/LOTS-RELEASE-2026-10-23.md).
+
 # Story across A–H — 23 October 2026
 
 Claude’s dedicated Story page is integrated across all eight designs, with shared chapters, object tabs, image viewer, reading progress and chapter-linked support. Five chapters use available brand copy; founder chapters and historical components remain hidden until genuine approved material is supplied. See [implementation](STORY-IMPLEMENTATION.md) and [release checks](design-review/STORY-RELEASE-2026-10-23.md).

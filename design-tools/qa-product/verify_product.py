@@ -199,9 +199,10 @@ async def interactions(browser, d, pid="iron-bisglycinate"):
     await pg.click("[data-fill-pdp-lot]")
     check(await pg.input_value("#pdp-lot-number") == "DEMO-01-01", f"{tag} sample lot fills")
     await pg.click("#pdp-lot button[type=submit]")
-    await pg.wait_for_url("**/reports?product=iron-bisglycinate&lot=DEMO-01-01**")
-    await pg.wait_for_selector("#report-result .report-result, #report-result .rr", timeout=5000)
-    check("Lot found" in await pg.locator("#report-result").inner_text() or "sample" in (await pg.locator("#report-result").inner_text()).lower(), f"{tag} lot lookup result for this product")
+    # Lot reports (web/lots.js) run the lookup, then move to the stable record link /reports/<product>/<lot>.
+    await pg.wait_for_url("**/reports**")
+    await pg.wait_for_selector("#report-result #lt-match-h", timeout=8000)
+    check("demo-01-01" in (await pg.locator("#lt-match-h").inner_text()).lower() and "/reports/iron-bisglycinate/DEMO-01-01" in pg.url, f"{tag} lot lookup result for this product")
     check(not errs, f"{tag} errors {errs[:3]}")
     await pg.close()
 

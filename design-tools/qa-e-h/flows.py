@@ -105,9 +105,10 @@ async def run(b, d, w):
   await pg.keyboard.press("Escape")
   # reports picker
   await pg.goto(f"{BASE}/reports?design={d}", wait_until="networkidle")
-  await pg.locator("[data-report-product='omega-3-fish-oil']").click(); await pg.wait_for_timeout(300)
-  ok("report picker", await pg.locator("#report-product").input_value() == "omega-3-fish-oil")
-  await pg.locator("#lot").fill("DEMO-04-01"); await pg.locator("#report-form button[type=submit]").click(); await pg.wait_for_timeout(700)
+  # Lot reports (web/lots.js): product radio group, lot field, result region directly below.
+  await pg.locator("#lot-form input[name=product][value='omega-3-fish-oil']").check(force=True); await pg.wait_for_timeout(200)
+  ok("report picker", await pg.evaluate("() => document.querySelector('#lot-form input[name=product]:checked')?.value") == "omega-3-fish-oil")
+  await pg.locator("#lt-lot").fill("DEMO-04-01"); await pg.locator("#lot-form button[type=submit]").click(); await pg.wait_for_timeout(700)
   ok("report match", "DEMO-04-01" in await pg.locator("#report-result").inner_text())
   for e in errs: log.append("ERR " + e[:200])
   await c.close()

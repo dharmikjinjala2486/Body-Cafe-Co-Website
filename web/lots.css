@@ -1,0 +1,418 @@
+/* Body Café Co. — Lot reports for A–H (markup in lots.js) and the Operations › Lot reports workflow (lots-ops.js).
+   Part 1 is shared structure. Parts 2–9 give each direction its own type, colour, rhythm and composition, scoped to
+   `.lt-<direction>`. Part 10 is print. Part 11 is the operations panel. Nothing here reaches any other route. */
+
+/* =====================================================================================================
+   1. SHARED STRUCTURE
+   ===================================================================================================== */
+.lt {
+  --pad: clamp(16px, 4.5vw, 64px); --max: 1320px; --gap: clamp(18px, 3vw, 44px);
+  --bg: #fff; --ink: #2d2926; --muted: #5d5853; --line: rgb(45 41 38 / .16); --panel: #f6f4f0; --field: #fff;
+  --btn: var(--ink); --btn-ink: #fff; --radius: 0px; --btn-radius: 0px; --accent: var(--ink); --cap: #2d2926;
+  --ok: #24613a; --bad: #9b2b17; --warn: #8a5a00; --lt-cap: #2d2926;
+  --text: "Aileron", "Helvetica Neue", Arial, sans-serif; --display: var(--text); --label: var(--text); --mono: SpaceMono, ui-monospace, Menlo, monospace;
+  background: var(--bg); color: var(--ink); font-family: var(--text); font-size: 17px; line-height: 1.6; overflow-x: clip;
+}
+.lt *, .lt *::before, .lt *::after { box-sizing: border-box; }
+.lt :where(h1, h2, h3, h4, p, ul, ol, dl, dd, figure) { margin: 0; padding: 0; }
+.lt :where(ul, ol) { list-style: none; }
+.lt :where(h1, h2, h3, h4) { text-wrap: balance; overflow-wrap: anywhere; }
+.lt :where(p) { text-wrap: pretty; }
+.lt a { color: inherit; text-underline-offset: 4px; }
+.lt img { display: block; max-width: 100%; height: auto; }
+.lt [hidden] { display: none !important; }
+.lt :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.lt :where(button, input, select) { font: inherit; color: inherit; }
+.lt [id] { scroll-margin-top: 96px; }
+.lt-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.lt-mono { font-family: var(--mono); letter-spacing: .02em; overflow-wrap: anywhere; }
+.lt-kicker, .lt-k, .lt-doc-k, .lt-notice-k { font-family: var(--label); font-size: 12px; letter-spacing: .09em; text-transform: uppercase; font-weight: 600; line-height: 1.4; }
+.lt-small, .lt-note, .lt-hint { font-size: 14px; color: var(--muted); }
+.lt-nd { color: var(--muted); font-style: italic; }
+.lt-empty { color: var(--muted); padding: 14px 0; }
+.lt-link { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; }
+.lt-more { display: flex; flex-wrap: wrap; gap: 0 24px; }
+.lt-plus { font-size: 20px; line-height: 1; transition: transform .2s; }
+details[open] > summary .lt-plus { transform: rotate(45deg); }
+.lt summary { cursor: pointer; list-style: none; }
+.lt summary::-webkit-details-marker { display: none; }
+.lt .lt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 16px; background: var(--btn); color: var(--btn-ink); border: 1px solid var(--btn); border-radius: var(--btn-radius); font-weight: 600; font-size: 15px; text-decoration: none; cursor: pointer; }
+.lt .lt-btn.is-quiet { background: transparent; color: var(--ink); border-color: currentColor; }
+.lt-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.lt-chip { display: inline-block; padding: 1px 8px; border: 1px solid currentColor; border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1.6; white-space: nowrap; }
+.lt-chip.is-published { color: var(--ok); }
+.lt-chip.is-withdrawn, .lt-chip.is-notice { color: var(--bad); }
+.lt-chip.is-superseded, .lt-chip.is-unavailable, .lt-chip.is-demo { color: var(--muted); }
+
+/* Hero: intro beside the lookup, so the search is always in the first view */
+.lt-hero-in { max-width: var(--max); margin: 0 auto; padding: clamp(24px, 4vw, 64px) var(--pad) clamp(24px, 3vw, 44px); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--gap); align-items: start; }
+.lt-intro { display: grid; gap: 16px; align-content: start; }
+.lt .lt-h1 { font-family: var(--display); font-size: clamp(38px, 5vw, 76px); line-height: 1; letter-spacing: -.035em; font-weight: 600; }
+.lt-h1 em { font-style: inherit; }
+.lt-lede { font-size: clamp(17px, 1.4vw, 20px); max-width: 46ch; }
+.lt-steps { display: grid; gap: 0; border-top: 1px solid var(--line); margin-top: 6px; }
+.lt-steps li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 0 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.lt-steps strong { font-family: var(--display); font-size: 18px; }
+.lt-steps span:last-child { grid-column: 2; color: var(--muted); }
+.lt-step-n { grid-row: span 2; font-family: var(--label); font-size: 13px; padding-top: 3px; }
+.lt-find { display: grid; gap: 14px; padding: clamp(18px, 2.4vw, 30px); background: var(--field); border: 1px solid var(--line); border-radius: var(--radius); }
+.lt .lt-find-h { font-family: var(--display); font-size: clamp(22px, 2vw, 28px); line-height: 1.15; }
+.lt-form { display: grid; gap: 16px; }
+.lt .lt-products { border: 0; padding: 0; margin: 0; min-width: 0; }
+.lt .lt-products legend, .lt-lotfield label { font-weight: 600; margin-bottom: 8px; padding: 0; }
+.lt-caps { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 6px; }
+.lt .lt-cap { position: relative; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--btn-radius); cursor: pointer; font-size: 14px; line-height: 1.25; background: var(--bg); }
+.lt .lt-cap input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.lt .lt-cap-dot { display: block; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--lt-dot); box-shadow: inset 0 0 0 3px rgb(255 255 255 / .35), 0 0 0 1px rgb(0 0 0 / .14); }
+.lt .lt-cap:has(input:checked) { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); font-weight: 600; }
+.lt .lt-cap:has(input:checked) .lt-cap-dot { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--lt-dot); }
+.lt .lt-cap:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 2px; }
+.lt .lt-lotfield { display: grid; gap: 4px; }
+.lt .lt-lotfield input { min-height: 52px; padding: 10px 14px; border: 1.5px solid var(--ink); border-radius: var(--btn-radius); background: var(--bg); font-family: var(--mono); font-size: 20px; letter-spacing: .06em; text-transform: uppercase; width: 100%; }
+.lt .lt-lotfield input::placeholder { text-transform: none; }
+.lt .lt-lotfield input[aria-invalid="true"] { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
+.lt-error { color: var(--bad); font-weight: 600; font-size: 15px; }
+.lt .lt-submit { display: flex; justify-content: space-between; align-items: center; min-height: 54px; padding: 12px 20px; background: var(--btn); color: var(--btn-ink); border: 0; border-radius: var(--btn-radius); font-weight: 700; font-size: 17px; cursor: pointer; }
+.lt .lt-submit:disabled { opacity: .7; cursor: progress; }
+.lt .lt-try { padding: 0; border: 0; background: none; font-family: var(--mono); font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 24px; }
+.lt .lt-samples summary { font-size: 14px; text-decoration: underline; min-height: 44px; display: flex; align-items: center; }
+.lt .lt-samples div { display: flex; flex-wrap: wrap; gap: 6px; }
+.lt .lt-samples button { min-height: 40px; padding: 6px 12px; border: 1px solid var(--line); border-radius: var(--btn-radius); background: var(--bg); cursor: pointer; font-size: 14px; }
+.lt .lt-where { border-top: 1px solid var(--line); }
+.lt .lt-where summary { display: flex; justify-content: space-between; align-items: center; min-height: 48px; font-weight: 600; }
+.lt .lt-where-in { display: grid; gap: 12px; padding-bottom: 6px; font-size: 15px; }
+.lt-numbers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.lt-numbers div { padding: 10px 12px; background: var(--panel); border-radius: var(--radius); }
+.lt-numbers dt { font-weight: 700; }
+.lt-numbers dd { font-size: 14px; color: var(--muted); }
+
+/* Result region: directly below the search */
+.lt-record { border-top: 1px solid var(--line); outline: 0; }
+.lt-record .lt-sec-in { padding-block: clamp(20px, 3vw, 40px); }
+.lt-idle { color: var(--muted); }
+.lt-loading { display: flex; align-items: center; gap: 12px; padding: 18px 0; }
+.lt-spin { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--ink); animation: lt-spin .8s linear infinite; }
+@keyframes lt-spin { to { transform: rotate(360deg); } }
+.lt-match { display: grid; gap: 18px; }
+.lt-match-id { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 18px; align-items: start; }
+.lt-pack { width: 88px; filter: drop-shadow(0 8px 10px rgb(0 0 0 / .15)); }
+.lt .lt-match-p { font-size: inherit; font-family: inherit; }
+.lt .lt-match-h { display: grid; gap: 4px; font-family: var(--display); font-size: clamp(26px, 3vw, 42px); line-height: 1.05; letter-spacing: -.025em; outline: 0; }
+.lt .lt-lotno { font-family: var(--mono); font-size: clamp(20px, 2.4vw, 30px); letter-spacing: .04em; color: var(--accent); overflow-wrap: anywhere; }
+.lt-searched, .lt-demo { margin-top: 10px; font-size: 15px; }
+.lt-demo { padding: 10px 14px; border: 1.5px dashed currentColor; border-radius: var(--radius); max-width: 70ch; }
+.lt-trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.lt-st { padding: 14px 16px; border: 1px solid var(--line); border-top: 4px solid var(--muted); border-radius: var(--radius); background: var(--field); display: grid; gap: 4px; align-content: start; }
+.lt-st dt { font-family: var(--label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+.lt-st dd { display: grid; gap: 4px; }
+.lt-st strong { font-size: 18px; line-height: 1.2; }
+.lt-st span { font-size: 14px; color: var(--muted); }
+.lt-st-doc.is-published, .lt-st-test.is-meets { border-top-color: var(--ok); }
+.lt-st-doc.is-withdrawn, .lt-st-test.is-does_not_meet, .lt-st-notice.is-active { border-top-color: var(--bad); }
+.lt-st-doc.is-under_review, .lt-st-test.is-partly_assessed { border-top-color: var(--warn); }
+.lt-notice { padding: 18px 20px; border: 2px solid var(--bad); border-radius: var(--radius); background: color-mix(in srgb, var(--bad) 7%, var(--bg)); display: grid; gap: 8px; }
+.lt .lt-notice h3 { font-size: 22px; line-height: 1.2; }
+.lt-notice-k { color: var(--bad); }
+.lt-notice .lt-btn { justify-self: start; background: var(--bad); border-color: var(--bad); color: #fff; }
+.lt-stage { padding-top: clamp(22px, 3vw, 36px); margin-top: clamp(22px, 3vw, 36px); border-top: 1px solid var(--line); display: grid; gap: 14px; }
+.lt-stage-head { display: grid; gap: 4px; }
+.lt .lt-stage-head h3 { font-family: var(--display); font-size: clamp(22px, 2.2vw, 30px); line-height: 1.1; }
+.lt-facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 0 24px; border-top: 1px solid var(--line); }
+.lt-facts > div { display: grid; gap: 2px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.lt-facts dt { font-size: 13px; color: var(--muted); }
+.lt-facts dd small { display: block; font-size: 13px; color: var(--muted); }
+.lt-facts.is-compact { grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+.lt-summary { font-size: clamp(18px, 1.6vw, 22px); line-height: 1.5; max-width: 60ch; }
+.lt-count { font-weight: 600; }
+.lt-callout { padding: 12px 16px; border-left: 4px solid var(--warn); background: var(--panel); max-width: 70ch; }
+.lt-sub { font-family: var(--label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-top: 8px; }
+.lt-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--field); }
+.lt-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lt-table caption { text-align: left; padding: 10px 14px; font-size: 13px; color: var(--muted); }
+.lt-table th, .lt-table td { text-align: left; padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+.lt-table thead th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.lt-table tbody th small, .lt-table td small { display: block; font-size: 12.5px; color: var(--muted); font-weight: 400; }
+.lt-table .lt-group th { background: var(--panel); font-size: 13px; letter-spacing: .05em; text-transform: uppercase; }
+.lt-res { white-space: nowrap; font-weight: 700; }
+.lt-assess { font-weight: 700; font-size: 13px; white-space: nowrap; }
+.lt-assess.is-meets { color: var(--ok); } .lt-assess.is-fail { color: var(--bad); } .lt-assess.is-na { color: var(--muted); }
+.lt-inspect-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.lt-docs { display: grid; gap: 10px; margin-top: 8px; }
+.lt-doc { display: grid; gap: 10px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--field); }
+.lt .lt-doc h4 { font-size: 18px; }
+.lt-doc-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.lt-hash summary { font-size: 13px; text-decoration: underline; min-height: 32px; }
+.lt-hash code { display: block; font-size: 12px; overflow-wrap: anywhere; background: var(--panel); padding: 6px 8px; }
+.lt-hash p, .lt-redact { font-size: 13px; color: var(--muted); }
+.lt-lab { display: grid; gap: 10px; margin-top: 8px; }
+.lt .lt-lab h4 { font-size: 20px; }
+.lt-covers { font-size: 14px; font-weight: 600; }
+.lt-history { margin-top: 10px; }
+.lt .lt-history h3 { font-size: 18px; margin-bottom: 8px; }
+.lt-history ol { display: grid; gap: 8px; border-left: 2px solid var(--line); padding-left: 16px; }
+.lt-history li { display: grid; gap: 2px; font-size: 15px; }
+.lt-miss { display: grid; gap: 12px; max-width: 72ch; }
+.lt .lt-miss h3 { font-family: var(--display); font-size: clamp(24px, 2.6vw, 34px); line-height: 1.1; outline: 0; }
+.lt-tips { display: grid; gap: 4px; list-style: disc; padding-left: 20px; }
+
+/* Sections 7–9 */
+.lt-sec { border-top: 1px solid var(--line); }
+.lt-sec-in { max-width: var(--max); margin: 0 auto; padding: clamp(36px, 5vw, 80px) var(--pad); display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px var(--gap); }
+.lt-record .lt-sec-in { grid-template-columns: minmax(0, 1fr); }
+.lt-head { display: grid; gap: 8px; align-content: start; }
+.lt .lt-head h2 { font-family: var(--display); font-size: clamp(28px, 3vw, 46px); line-height: 1.05; letter-spacing: -.025em; font-weight: 600; }
+.lt-body { display: grid; gap: 20px; align-content: start; min-width: 0; }
+.lt-terms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+.lt-terms > div { padding: 12px 0; border-top: 1px solid var(--line); }
+.lt-terms dt { font-weight: 700; }
+.lt-terms dd { font-size: 15px; color: var(--muted); }
+.lt-limits { padding: 16px 20px; background: var(--panel); border-radius: var(--radius); }
+.lt .lt-limits h3 { font-size: 18px; margin-bottom: 6px; }
+.lt-limits ul { list-style: disc; padding-left: 20px; display: grid; gap: 4px; font-size: 15px; }
+.lt .lt-archive-form { display: grid; grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr) auto; gap: 8px 10px; align-items: center; }
+.lt .lt-archive-form :is(select, input) { min-height: 44px; padding: 8px 10px; border: 1px solid var(--ink); border-radius: var(--btn-radius); background: var(--field); width: 100%; }
+.lt .lt-archive-form button { min-height: 44px; padding: 8px 16px; border: 1px solid var(--btn); background: var(--btn); color: var(--btn-ink); border-radius: var(--btn-radius); cursor: pointer; font-weight: 600; }
+.lt-arch-count { font-size: 14px; color: var(--muted); }
+.lt-arch-list { display: grid; gap: 10px; }
+.lt-arch-h { font-size: 15px; letter-spacing: .06em; text-transform: uppercase; margin-top: 6px; }
+.lt-arch-ul { border-top: 1px solid var(--line); }
+.lt-arch-row a { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 3fr) 24px; gap: 4px 16px; align-items: center; min-height: 52px; padding: 8px 4px 8px 14px; border-bottom: 1px solid var(--line); border-left: 4px solid var(--lt-dot); text-decoration: none; }
+.lt-arch-row a:hover .lt-arch-p { text-decoration: underline; }
+.lt-arch-meta { font-size: 13px; color: var(--muted); }
+.lt-faq details { border-top: 1px solid var(--line); }
+.lt-faq summary { display: flex; justify-content: space-between; gap: 12px; align-items: center; min-height: 52px; font-weight: 600; }
+.lt-faq p { padding-bottom: 14px; max-width: 66ch; color: var(--muted); }
+.lt-asks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.lt-ask { display: grid; gap: 4px; align-content: start; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; background: var(--field); min-height: 100%; }
+.lt-ask strong { font-size: 17px; }
+.lt-ask span { font-size: 14px; color: var(--muted); }
+.lt-ask:hover strong { text-decoration: underline; }
+.lt-ask.is-safety { border-color: var(--bad); }
+
+@media (max-width: 1000px) {
+  .lt-hero-in, .lt-sec-in { grid-template-columns: minmax(0, 1fr); }
+  .lt-inspect-grid { grid-template-columns: 1fr; }
+  .lt-steps { display: none; }
+}
+@media (max-width: 720px) {
+  .lt { font-size: 16px; }
+  .lt-numbers, .lt-terms, .lt-trio, .lt-asks { grid-template-columns: 1fr; }
+  .lt .lt-caps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lt-match-id { display: block; }
+  .lt-match-id::after { content: ""; display: block; clear: both; }
+  .lt-pack { width: 52px; float: left; margin: 0 12px 6px 0; }
+  .lt .lt-match-id .lt-k { display: inline-block; width: auto; }
+  .lt .lt-match-h { clear: none; }
+  .lt-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+  .lt-table caption { display: block; }
+  .lt .lt-archive-form { grid-template-columns: 1fr; }
+  .lt-arch-row a { grid-template-columns: minmax(0, 1fr) 20px; }
+  .lt-arch-row a > :not(.lt-arr) { grid-column: 1; }
+  .lt-arch-row .lt-arr { grid-column: 2; grid-row: 1 / span 3; }
+  /* The results table becomes one card per result. */
+  .lt-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .lt-table, .lt-table tbody, .lt-table tr, .lt-table th, .lt-table td { display: block; }
+  .lt-table tr { padding: 10px 14px; border-top: 1px solid var(--line); }
+  .lt-table .lt-group { padding: 0; }
+  .lt-table tbody th, .lt-table td { border: 0; padding: 2px 0; }
+  .lt-table td { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px; }
+  .lt-table td::before { content: attr(data-label); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding-top: 2px; }
+  .lt-res { white-space: normal; }
+  .lt-table-wrap { overflow: visible; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lt *, .lt *::before, .lt *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  .lt-spin { border-top-color: var(--line); border-right-color: var(--ink); }
+}
+
+/* =====================================================================================================
+   2. A — STATE OF PLAY. A field notice: Anton capitals, bracketed numbers, lime highlighter, graph paper.
+   ===================================================================================================== */
+.lt-a { --bg: #f1f2ef; --ink: #142bc5; --muted: #3b4785; --line: rgb(20 43 197 / .28); --field: #fff; --panel: #e4e8f6; --btn: #142bc5; --btn-ink: #f1f2ef; --accent: #142bc5;
+  --display: Anton, "Aileron", sans-serif; --label: SpaceMono, monospace; --ok: #1d5c33; --bad: #a3271a; }
+.lt-a :is(.lt-kicker, .lt-k, .lt-step-n) { font-weight: 400; letter-spacing: .03em; }
+.lt-a :is(.lt-h1, .lt-head h2, .lt-find-h, .lt-match-h, .lt-stage-head h3, .lt-miss h3, .lt-steps strong) { text-transform: uppercase; font-weight: 400; letter-spacing: 0; }
+.lt-a .lt-h1 { font-size: clamp(50px, 7vw, 112px); line-height: .9; }
+.lt-a .lt-find-h { font-size: clamp(26px, 2.6vw, 38px); line-height: .95; }
+.lt-a .lt-hero { background-image: linear-gradient(rgb(20 43 197 / .07) 1px, transparent 1px), linear-gradient(90deg, rgb(20 43 197 / .07) 1px, transparent 1px); background-size: 26px 26px; border-bottom: 2px solid var(--ink); }
+.lt-a .lt-find { border: 2px solid var(--ink); box-shadow: 8px 8px 0 #ecff54; }
+.lt-a .lt-k { background: var(--ink); color: #ecff54; justify-self: start; padding: 2px 8px; }
+.lt-a .lt-submit, .lt-a .lt-btn { font-family: SpaceMono, monospace; text-transform: uppercase; font-weight: 400; font-size: 14px; }
+.lt-a .lt-submit { box-shadow: 5px 5px 0 #ecff54; }
+.lt-a .lt-cap { border: 2px solid var(--ink); }
+.lt-a .lt-cap:has(input:checked) { background: #ecff54; color: #101a6b; }
+.lt-a .lt-lotno { background: #ecff54; color: #101a6b; justify-self: start; padding: 0 8px; }
+.lt-a .lt-st { border: 2px solid var(--ink); border-top-width: 8px; }
+.lt-a .lt-sec { border-top: 2px solid var(--ink); }
+.lt-a .lt-head h2 { font-size: clamp(40px, 5vw, 80px); line-height: .92; }
+.lt-a .lt-help { background: #142bc5; color: #f1f2ef; --ink: #f1f2ef; --muted: #dfe3ff; --line: rgb(241 242 239 / .35); --field: transparent; --btn: #ecff54; --btn-ink: #142bc5; }
+.lt-a .lt-help .lt-k { background: #ecff54; color: #142bc5; }
+.lt-a .lt-ask.is-safety { border-color: #ecff54; }
+
+/* =====================================================================================================
+   3. B — EXPRESSIVE EVERYDAY. A friendly counter: lilac field, rounded chips, a speech-bubble lookup.
+   ===================================================================================================== */
+.lt-b { --bg: #f2ecdf; --ink: #2e2926; --muted: #4a423c; --line: rgb(46 41 38 / .22); --field: #fffdf8; --panel: #e3cbe7; --radius: 24px; --btn-radius: 999px; --accent: #35306f; }
+.lt-b .lt-hero { background: #d9c3e6; border-bottom: 1.5px solid var(--ink); }
+.lt-b :is(.lt-h1, .lt-head h2, .lt-find-h, .lt-match-h, .lt-stage-head h3, .lt-miss h3) { font-weight: 800; letter-spacing: -.05em; }
+.lt-b .lt-kicker { justify-self: start; padding: 4px 14px; border: 1.5px solid var(--ink); border-radius: 999px; background: #fffdf8; text-transform: none; letter-spacing: 0; font-size: 14px; }
+.lt-b .lt-find { border: 1.5px solid var(--ink); border-radius: 28px; position: relative; }
+.lt-b .lt-find::after { content: ""; position: absolute; left: -11px; top: 48px; width: 20px; height: 20px; background: #fffdf8; border-left: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(45deg); }
+.lt-b .lt-cap { border: 1.5px solid var(--ink); }
+.lt-b .lt-cap:has(input:checked) { background: color-mix(in srgb, var(--lt-dot) 26%, #fffdf8); color: var(--ink); }
+.lt-b .lt-lotfield input { border-radius: 18px; }
+.lt-b .lt-k { justify-self: start; padding: 2px 10px; background: var(--ink); color: #f2ecdf; border-radius: 999px; letter-spacing: 0; text-transform: none; }
+.lt-b .lt-st, .lt-b .lt-doc, .lt-b .lt-ask { border: 1.5px solid var(--ink); }
+.lt-b .lt-st { border-top-width: 1.5px; box-shadow: inset 0 8px 0 var(--st, transparent); padding-top: 20px; }
+.lt-b .lt-st-doc.is-published, .lt-b .lt-st-test.is-meets { --st: #d8ddbb; }
+.lt-b .lt-st-doc.is-withdrawn, .lt-b .lt-st-test.is-does_not_meet, .lt-b .lt-st-notice.is-active { --st: #f0b7a6; }
+.lt-b .lt-st-doc.is-under_review { --st: #eaedb6; }
+.lt-b .lt-sec { border: 0; padding: 14px max(1.4vw, 10px) 0; }
+.lt-b .lt-sec-in { border-radius: 28px; background: var(--tone, #fbf7ef); }
+.lt-b .lt-understand { --tone: #d8ddbb; } .lt-b .lt-archive { --tone: #fbf7ef; } .lt-b .lt-help { --tone: #e6ceb5; margin-bottom: 14px; }
+.lt-b .lt-record { border: 0; }
+
+/* =====================================================================================================
+   4. C — EVERYDAY ELSEWHERE. Turn the bottle over: butter paper, Gloock serif, stamped roman numerals.
+   ===================================================================================================== */
+.lt-c { --bg: #fff2c7; --ink: #40291e; --muted: #5e4337; --line: rgb(64 41 30 / .24); --field: #fffaf0; --panel: #fff8df; --display: Gloock, Georgia, serif;
+  --btn: #40291e; --btn-ink: #fff2c7; --btn-radius: 999px; --radius: 16px; --red: #b4311c; --blue: #193fa8; --accent: #b4311c; --bad: #a32a17; }
+.lt-c :is(.lt-h1, .lt-head h2, .lt-find-h, .lt-match-h, .lt-stage-head h3, .lt-miss h3, .lt-steps strong) { font-weight: 400; letter-spacing: -.02em; }
+.lt-c .lt-h1 em { font-style: italic; color: var(--red); }
+.lt-c .lt-kicker, .lt-c .lt-k { color: var(--blue); }
+.lt-c .lt-step-n { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--red); color: var(--red); font: 400 14px/1 Gloock, serif; rotate: -8deg; padding: 0; }
+.lt-c .lt-find { border: 8px solid #fff8df; box-shadow: 6px 6px 0 rgb(64 41 30 / .12); background: #fffaf0; }
+.lt-c .lt-cap { border-radius: 999px; }
+.lt-c .lt-cap:has(input:checked) { border-color: var(--red); color: var(--red); box-shadow: inset 0 0 0 1px var(--red); }
+.lt-c .lt-submit { box-shadow: 4px 4px 0 var(--red); }
+.lt-c .lt-lotno { color: var(--red); }
+.lt-c .lt-head h2, .lt-c .lt-stage-head h3 { color: var(--red); }
+.lt-c .lt-sec, .lt-c .lt-stage { border-top-style: dashed; }
+.lt-c .lt-st { border-top-style: solid; background: #fffaf0; }
+.lt-c .lt-help { background: var(--blue); color: #fff2c7; --ink: #fff2c7; --muted: #e2e7ff; --line: rgb(255 242 199 / .35); --field: transparent; --btn: #fff2c7; --btn-ink: #193fa8; }
+.lt-c .lt-help .lt-head h2, .lt-c .lt-help .lt-k { color: #fff2c7; }
+.lt-c .lt-ask.is-safety { border-color: #ffb9a8; }
+
+/* =====================================================================================================
+   5. D — THE OTHER SIDE. The record room after hours: midnight blue, gold wall labels, a lit case for the match.
+   ===================================================================================================== */
+.lt-d { --bg: #091321; --ink: #f7e9c5; --muted: #c6c9c8; --line: rgb(216 179 123 / .32); --panel: #122033; --field: #0d1828; --btn: #d8b37b; --btn-ink: #091321;
+  --label: SpaceMono, monospace; --gold: #d8b37b; --accent: #d8b37b; --ok: #8fd19e; --bad: #ff9b85; --warn: #f2c66d; }
+.lt-d :is(.lt-kicker, .lt-k, .lt-step-n, .lt-st dt, .lt-sub) { font-weight: 400; color: var(--gold); letter-spacing: .06em; }
+.lt-d :is(.lt-h1, .lt-head h2, .lt-find-h, .lt-match-h, .lt-stage-head h3, .lt-miss h3) { font-weight: 300; letter-spacing: -.045em; }
+.lt-d .lt-h1 em { font-style: normal; color: var(--gold); }
+.lt-d .lt-find-h { font-size: clamp(26px, 2.4vw, 34px); }
+.lt-d .lt-find { background: radial-gradient(ellipse 70% 60% at 50% 0%, rgb(247 233 197 / .1), transparent 70%), #0d1828; border-color: var(--line); border-bottom: 10px solid #122033; }
+.lt-d .lt-cap { background: #0d1828; }
+.lt-d .lt-cap:has(input:checked) { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); color: var(--gold); }
+.lt-d .lt-lotfield input { background: #091321; border-color: var(--gold); }
+.lt-d .lt-submit, .lt-d .lt-btn { font-family: SpaceMono, monospace; text-transform: uppercase; font-size: 13px; }
+.lt-d .lt-match { padding: clamp(18px, 2.6vw, 30px); background: radial-gradient(ellipse 60% 70% at 15% 30%, rgb(247 233 197 / .12), transparent 70%), #0d1828; border: 1px solid var(--line); }
+.lt-d .lt-notice { background: #2a1414; }
+.lt-d .lt-notice .lt-btn { color: #091321; }
+.lt-d .lt-head { text-align: left; }
+.lt-d .lt-head h2::after { content: ""; display: block; width: 56px; height: 1px; background: var(--gold); margin-top: 12px; }
+.lt-d .lt-sec:nth-of-type(even) { background: #0d1a2c; }
+.lt-d .lt-table .lt-group th { background: #122033; }
+
+/* =====================================================================================================
+   6. E — FAN DECK. The cap colour of the chosen product runs through the page as a swatch band.
+   ===================================================================================================== */
+.lt-e { --bg: #fff; --ink: #2d2926; --muted: #5d5853; --line: rgb(45 41 38 / .16); --panel: #f2f0eb; --field: #fff; --btn-radius: 3px; --radius: 6px; --label: "Lemon Milk", "Aileron", sans-serif; }
+.lt-e :is(.lt-kicker, .lt-k, .lt-step-n, .lt-st dt, .lt-sub) { font-weight: 400; font-size: 10px; letter-spacing: .14em; }
+.lt-e :is(.lt-head h2, .lt-find-h, .lt-match-h, .lt-stage-head h3, .lt-miss h3) { font-weight: 300; letter-spacing: -.035em; }
+.lt-e .lt-h1 { font: 700 clamp(34px, 4.4vw, 66px)/.98 "Lemon Milk", sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.lt-e .lt-hero { border-bottom: 12px solid var(--lt-cap); transition: border-color .3s; }
+.lt-e .lt-find { background: #f2f0eb; border: 0; box-shadow: inset 0 10px 0 var(--lt-cap); padding-top: 34px; }
+.lt-e .lt-cap { border-radius: 3px; border-left: 8px solid var(--lt-dot); }
+.lt-e .lt-cap-dot { display: none; }
+.lt-e .lt-cap:has(input:checked) { background: color-mix(in srgb, var(--lt-dot) 14%, #fff); }
+.lt-e .lt-k { justify-self: start; padding: 6px 10px; background: color-mix(in srgb, var(--lt-cap) 14%, #fff); border-radius: 3px; }
+.lt-e .lt-match-id { border-top: 10px solid var(--lt-cap); padding-top: 18px; }
+.lt-e .lt-sec { border-top: 10px solid var(--band, var(--ink)); }
+.lt-e .lt-understand { --band: #84919b; } .lt-e .lt-archive { --band: #07566a; } .lt-e .lt-help { --band: #9c9274; }
+.lt-e .lt-st { border-top-width: 6px; }
+
+/* =====================================================================================================
+   7. F — EDITION. A printed certificate page: folio rules, ultralight heads, figure numbers, italic captions.
+   ===================================================================================================== */
+.lt-f { --bg: #f3f0ea; --ink: #2d2926; --muted: #5a544e; --line: rgb(45 41 38 / .22); --panel: #ebe6dc; --field: #fbfaf7; --btn-radius: 999px; --label: "Lemon Milk", "Aileron", sans-serif; }
+.lt-f :is(.lt-kicker, .lt-k, .lt-step-n, .lt-st dt, .lt-sub, .lt-doc-k, .lt-notice-k) { font: 400 10px/1.5 "Lemon Milk", sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+.lt-f :is(.lt-h1, .lt-head h2, .lt-find-h, .lt-match-h, .lt-stage-head h3, .lt-miss h3) { font-weight: 200; letter-spacing: -.055em; }
+.lt-f .lt-h1 { font-size: clamp(46px, 6.4vw, 100px); line-height: .94; }
+.lt-f .lt-kicker { border-bottom: 1px solid var(--ink); padding-bottom: 10px; }
+.lt-f :is(.lt-lede, .lt-summary, .lt-table caption, .lt-terms dd) { font-style: italic; font-weight: 300; }
+.lt-f .lt-find { border: 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: transparent; padding-inline: 0; }
+.lt-f .lt-cap { border-radius: 999px; }
+.lt-f .lt-match { border-top: 3px double var(--ink); padding-top: 18px; }
+.lt-f .lt-st { background: transparent; border: 0; border-top: 1px solid var(--ink); padding-inline: 0; }
+.lt-f .lt-table-wrap { border: 0; border-block: 1px solid var(--ink); background: transparent; }
+.lt-f .lt-sec { border-top: 0; }
+.lt-f .lt-head, .lt-f .lt-body { border-top: 1px solid var(--ink); padding-top: 14px; }
+
+/* =====================================================================================================
+   8. G — DARKROOM. A proof sheet: black and white bands, frame numbers, the match printed on white.
+   ===================================================================================================== */
+.lt-g { --bg: #000; --ink: #fff; --muted: #c9c9c9; --line: rgb(255 255 255 / .26); --panel: #121212; --field: #000; --btn: #fff; --btn-ink: #000; --accent: #fff; --ok: #9fe0b0; --bad: #ff9e8a; --warn: #f5d27a; }
+.lt-g :is(.lt-kicker, .lt-k, .lt-step-n, .lt-st dt, .lt-sub) { letter-spacing: .16em; font-size: 11px; font-weight: 400; }
+.lt-g :is(.lt-h1, .lt-head h2, .lt-find-h, .lt-match-h, .lt-stage-head h3, .lt-miss h3) { font-weight: 200; letter-spacing: -.05em; }
+.lt-g .lt-h1 { font-size: clamp(46px, 6.4vw, 98px); line-height: .92; }
+.lt-g .lt-k { border-block: 1px solid currentColor; padding: 4px 0; justify-self: start; }
+.lt-g .lt-submit, .lt-g .lt-btn { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; }
+.lt-g .lt-cap-dot { filter: grayscale(1); transition: filter .3s; }
+.lt-g .lt-cap:has(input:checked) .lt-cap-dot { filter: none; }
+.lt-g .lt-record, .lt-g .lt-archive { --bg: #fff; background: #fff; color: #000; --ink: #000; --muted: #4a4a4a; --line: rgb(0 0 0 / .2); --panel: #f2f2f2; --btn: #000; --btn-ink: #fff; --field: #fff; --accent: #000; --ok: #1d5c33; --bad: #a3271a; --warn: #7a5200; }
+.lt-g .lt-pack { filter: grayscale(1) contrast(1.05) drop-shadow(0 8px 10px rgb(0 0 0 / .15)); }
+
+/* =====================================================================================================
+   9. H — FOLIO. A reference entry: § heads, ruled definition lists, margin labels and small plates.
+   ===================================================================================================== */
+.lt-h { --bg: #fff; --ink: #111; --muted: #555; --line: rgb(0 0 0 / .16); --panel: #f6f6f6; --field: #fff; --btn: #111; --accent: #111; }
+.lt-h :is(.lt-kicker, .lt-k, .lt-step-n, .lt-st dt) { font-weight: 400; letter-spacing: .06em; font-size: 11px; }
+.lt-h .lt-k { font-style: italic; text-transform: none; font-size: 14px; letter-spacing: 0; }
+.lt-h :is(.lt-h1, .lt-head h2, .lt-find-h, .lt-match-h, .lt-stage-head h3, .lt-miss h3) { font-weight: 300; letter-spacing: -.035em; }
+.lt-h .lt-h1 { font-size: clamp(38px, 4.6vw, 64px); line-height: 1.02; }
+.lt-h .lt-find { border: 0; border-left: 1px solid var(--ink); padding: 0 0 0 clamp(16px, 2vw, 28px); }
+.lt-h .lt-st { border: 0; border-top: 1px solid var(--ink); border-radius: 0; padding-inline: 0; background: transparent; }
+.lt-h .lt-st dt::before { content: "¶ "; }
+.lt-h .lt-pack { border: 1px solid var(--line); padding: 6px; background: #fff; }
+.lt-h .lt-head { position: sticky; top: 90px; }
+.lt-h .lt-sec-in { grid-template-columns: 220px minmax(0, 1fr); }
+.lt-h .lt-record .lt-sec-in { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 1000px) { .lt-h .lt-sec-in { grid-template-columns: 1fr; } .lt-h .lt-head { position: static; } .lt-h .lt-find { border-left: 0; border-top: 1px solid var(--ink); padding: 18px 0 0; } }
+
+/* =====================================================================================================
+   10. PRINT — a one-page summary (built in lots.js) instead of the page
+   ===================================================================================================== */
+#lt-print-root { display: none; }
+@media print {
+  html.lt-printing body > *:not(#lt-print-root) { display: none !important; }
+  html.lt-printing #lt-print-root { display: block; }
+  .lt-print { font: 11pt/1.45 "Aileron", Arial, sans-serif; color: #000; }
+  .lt-print h1 { font-size: 20pt; margin: 4pt 0 10pt; }
+  .lt-print-k { font-size: 8.5pt; letter-spacing: .08em; text-transform: uppercase; }
+  .lt-print table { width: 100%; border-collapse: collapse; margin: 8pt 0; font-size: 10pt; }
+  .lt-print th, .lt-print td { text-align: left; border-bottom: 1px solid #999; padding: 3pt 6pt 3pt 0; vertical-align: top; }
+  .lt-print-foot { margin-top: 12pt; font-size: 8.5pt; color: #333; }
+}
+
+/* =====================================================================================================
+   11. OPERATIONS — Lot reports tab
+   ===================================================================================================== */
+.lot-start { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0 24px; }
+.lot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 4px 14px; align-items: end; }
+.lot-grid label { font-size: 13px; }
+.lot-f { display: grid; gap: 2px; min-width: 0; }
+.lot-f :is(input, select) { width: 100%; }
+.lot-form fieldset { border: 1px solid rgb(0 0 0 / .14); padding: 12px 14px; margin: 0 0 12px; min-width: 0; }
+.lot-form textarea { width: 100%; min-height: 70px; }
+.lot-card { border: 1px solid rgb(0 0 0 / .16); padding: 16px; margin: 0 0 14px; display: grid; gap: 10px; }
+.lot-card h3 { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.lot-results input { min-width: 70px; width: 100%; }
+.lot-results td { padding: 2px; }
+.lot-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+.lot-inline { display: flex; flex-wrap: wrap; gap: 6px; align-items: end; }
+.lot-inline label { font-size: 13px; width: 100%; }
+.lot-docs ul { display: grid; gap: 6px; }
+.lot-docs small { display: block; }
+@media (max-width: 800px) { .lot-start { grid-template-columns: 1fr; } }

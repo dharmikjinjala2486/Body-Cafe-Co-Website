@@ -132,6 +132,9 @@ window.BCCApp = {
   api: (path, data) => api(path, data),
   csrf: () => state.csrf,
   user: () => state.user,
+  catalog: () => state.catalog,
+  opsAction: (action, data) => opsAction(action, data),
+  rerender: () => render(false),
   staticPreview: () => !!window.BCCStaticPreview,
   async signedIn() { await session(); },
   refreshCatalog: () => refreshCatalog(),
@@ -679,6 +682,7 @@ function enhance() {
   window.BCCAbout?.enhance?.();
   window.BCCLearn?.enhance?.();
   window.BCCStory?.enhance?.();
+  window.BCCLots?.enhance?.();
 }
 function cart() {
   return `<section class="section-wrap">${heading("", "Your bag")}${
@@ -770,8 +774,8 @@ const forms = {
     return `<form id="address-form" class="form-panel">${addressFieldsX("saved-", {}, dis)}<div class="form-error" role="alert"></div><button class="button full"${dis ? " disabled" : ""}><span>Save address</span>${icon("arrow")}</button></form>`;
   },
   caseForm(oid = "", kind = "general", dis = false, err = null) {
-    const kinds = [["general", "General question"], ["brand", "About the brand"], ["learn", "A Learn guide"], ["delivery", "Delivery"], ["return", "Unopened return"], ["replacement", "Replacement / product issue"], ["safety", "Product safety"]];
-    return `<form id="case-form" class="form-panel case-form"><label for="case-kind">What can we help with?</label><select id="case-kind" name="kind"${dis ? " disabled" : ""}>${kinds.map(([v, l]) => `<option value="${v}"${v === kind ? " selected" : ""}>${l}</option>`).join("")}</select>${caseTopic()}<label for="case-order">Order ID (optional)</label><span class="field-hint" id="hint-case-order">Starts with BCC- on your order confirmation</span><input id="case-order" name="order_id" value="${escape(oid)}" maxlength="40" aria-describedby="hint-case-order"${dis ? " disabled" : ""}><div class="field${err?.message ? " has-error" : ""}"><label for="case-message">Tell us a little more</label><textarea id="case-message" name="message" minlength="10" maxlength="3000" required placeholder="Describe the issue and the product or lot it relates to."${err?.message ? ' aria-invalid="true" aria-describedby="err-message"' : ""}${dis ? " disabled" : ""}></textarea>${fieldError(err, "message")}</div><p class="micro">${window.BCCSite?.copy.contact.privacy || ""}</p><div class="form-error" role="alert"></div><button class="button full"${dis ? " disabled" : ""}><span>Create preview case</span>${icon("arrow")}</button><div id="case-result" role="status"></div></form>`;
+    const kinds = [["general", "General question"], ["brand", "About the brand"], ["learn", "A Learn guide"], ["report", "A lot report"], ["delivery", "Delivery"], ["return", "Unopened return"], ["replacement", "Replacement / product issue"], ["safety", "Product safety"]];
+    return `<form id="case-form" class="form-panel case-form"><label for="case-kind">What can we help with?</label><select id="case-kind" name="kind"${dis ? " disabled" : ""}>${kinds.map(([v, l]) => `<option value="${v}"${v === kind ? " selected" : ""}>${l}</option>`).join("")}</select>${caseTopic()}${casePhoto(kind)}<label for="case-order">Order ID (optional)</label><span class="field-hint" id="hint-case-order">Starts with BCC- on your order confirmation</span><input id="case-order" name="order_id" value="${escape(oid)}" maxlength="40" aria-describedby="hint-case-order"${dis ? " disabled" : ""}><div class="field${err?.message ? " has-error" : ""}"><label for="case-message">Tell us a little more</label><textarea id="case-message" name="message" minlength="10" maxlength="3000" required placeholder="Describe the issue and the product or lot it relates to."${err?.message ? ' aria-invalid="true" aria-describedby="err-message"' : ""}${dis ? " disabled" : ""}></textarea>${fieldError(err, "message")}</div><p class="micro">${window.BCCSite?.copy.contact.privacy || ""}</p><div class="form-error" role="alert"></div><button class="button full"${dis ? " disabled" : ""}><span>Create preview case</span>${icon("arrow")}</button><div id="case-result" role="status"></div></form>`;
   },
   reviewForm(o, items, dis = false) {
     if (!dis && state.user && !String(state.user.id || "").startsWith("customer-"))
@@ -865,13 +869,22 @@ function account(tab) {
 /* A Learn page reference (?topic=/learn/…#section) travels with the case, so support knows which guide it's about. */
 function caseTopic() {
   const t = new URL(location.href).searchParams.get("topic") || "";
-  if (!/^\/(learn(\/[a-z0-9-]{1,60})?|story|about)(#[a-z0-9-]{1,40})?$/.test(t)) return "";
-  return `<input type="hidden" name="topic" value="${escape(t)}"><p class="micro case-topic">About: <a href="${escape(t)}">${escape(t)}</a></p>`;
+  const lotTopic = /^\/reports(\/[a-z0-9-]{1,60}\/[A-Za-z0-9._~%-]{1,120})?$/.test(t);
+  if (!lotTopic && !/^\/(learn(\/[a-z0-9-]{1,60})?|story|about)(#[a-z0-9-]{1,40})?$/.test(t)) return "";
+  const lot = lotTopic ? (new URL(location.href).searchParams.get("lot") || "").trim().slice(0, 40) : "";
+  const lotOk = lot && /^[\x21-\x7e ]+$/.test(lot);
+  return `<input type="hidden" name="topic" value="${escape(t)}">${lotOk ? `<input type="hidden" name="lot" value="${escape(lot)}">` : ""}<p class="micro case-topic">About: <a href="${escape(t)}">${escape(lotTopic && t !== "/reports" ? decodeURIComponent(t) : t)}</a>${lotOk ? ` · lot ${escape(lot)}` : ""}</p>`;
 }
-const caseKind = (k) => ({ product_question: "Product question", brand: "About the brand", learn: "Learn guide" })[k] || k;
+/* Optional pack photo for lot and product cases. Cleaned on the server like review photos; visible only to you and support. */
+function casePhoto(kind) {
+  const t = new URL(location.href).searchParams.get("topic") || "";
+  if (!(t.startsWith("/reports") || ["report", "safety", "replacement"].includes(kind))) return "";
+  return `<div class="field case-photo"><label for="case-photo">Photo of the pack (optional)</label><span class="field-hint" id="hint-case-photo">JPEG, PNG or WebP, up to 5 MB. Location data is removed. Only you and our support team can see it.</span><input id="case-photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="hint-case-photo"></div>`;
+}
+const caseKind = (k) => ({ product_question: "Product question", brand: "About the brand", learn: "Learn guide", report: "Lot report" })[k] || k;
 function caseCard(c) {
   const answer = c.public && c.public.answer ? `<div class="case-answer"><p class="kicker">Answer from Body Café Co.${c.public.state === "published" ? " · also published on the product page" : ""}</p><p>${escape(c.public.answer)}</p></div>` : "";
-  return `<article class="case-card"><div>${badge(caseKind(c.kind), c.kind === "safety" ? "warning" : "")}${badge(c.state)}</div><h3>${c.id}</h3>${c.subject ? `<p><strong>${escape(c.subject)}</strong></p>` : ""}<p>${escape(c.message)}</p>${answer}<small>${escape(c.owner)} · ${escape(c.sla)}</small>${c.order_id ? `<a class="text-link" href="/orders/${c.order_id}">${c.order_id}</a>` : ""}</article>`;
+  return `<article class="case-card"><div>${badge(caseKind(c.kind), c.kind === "safety" ? "warning" : "")}${badge(c.state)}</div><h3>${c.id}</h3>${c.subject ? `<p><strong>${escape(c.subject)}</strong></p>` : ""}<p>${escape(c.message)}</p>${c.topic && c.topic.startsWith("/reports/") ? `<a class="text-link" href="${escape(c.topic)}">Open the lot record</a>` : ""}${(c.media || []).length ? `<p class="micro">${c.media.length} pack photo${c.media.length > 1 ? "s" : ""} attached</p>` : ""}${answer}<small>${escape(c.owner)} · ${escape(c.sla)}</small>${c.order_id ? `<a class="text-link" href="/orders/${c.order_id}">${c.order_id}</a>` : ""}</article>`;
 }
 function payment(o) {
   if (!o) return notFound();
@@ -911,7 +924,7 @@ function help() {
 }
 function contact() {
   const oid = new URL(location.href).searchParams.get("order") || "";
-  return `<section class="section-wrap">${heading("", "Contact us", "Every case gets an ID and stays in your account. The preview sends no external messages.")}<div class="contact-layout"><div><h2>Talk to a person</h2><p>WhatsApp, email, web and phone are planned support channels. Confirmed contact details and service hours will appear before launch.</p><div class="contact-channel"><strong>WhatsApp</strong><span>Business number pending</span></div><div class="contact-channel"><strong>Email</strong><span>Support address pending</span></div><div class="contact-channel"><strong>Phone</strong><span>Initial service planned</span></div><div class="note-panel"><strong>Product issue?</strong><p>Choose Product safety for a dedicated priority case. In this preview the case is local; no safety outreach or recall is initiated automatically.</p></div></div><form id="case-form" class="form-panel"><p class="kicker">Open a case</p><label for="case-kind">What can we help with?</label><select id="case-kind" name="kind"><option value="general">General question</option><option value="brand">About the brand</option><option value="learn">A Learn guide</option><option value="delivery">Delivery</option><option value="return">Unopened return</option><option value="replacement">Replacement / product issue</option><option value="safety">Product safety</option></select><label for="case-order">Order ID (optional)</label><input id="case-order" name="order_id" value="${escape(oid)}" maxlength="40"><label for="case-message">Tell us a little more</label><textarea id="case-message" name="message" minlength="10" maxlength="3000" required placeholder="Describe the issue and the relevant product or lot."></textarea><p class="micro">Do not include medical records or payment credentials in the preview.</p><div class="form-error" role="alert"></div><button class="button full">Create preview case</button><div id="case-result" role="status"></div></form></div></section>`;
+  return `<section class="section-wrap">${heading("", "Contact us", "Every case gets an ID and stays in your account. The preview sends no external messages.")}<div class="contact-layout"><div><h2>Talk to a person</h2><p>WhatsApp, email, web and phone are planned support channels. Confirmed contact details and service hours will appear before launch.</p><div class="contact-channel"><strong>WhatsApp</strong><span>Business number pending</span></div><div class="contact-channel"><strong>Email</strong><span>Support address pending</span></div><div class="contact-channel"><strong>Phone</strong><span>Initial service planned</span></div><div class="note-panel"><strong>Product issue?</strong><p>Choose Product safety for a dedicated priority case. In this preview the case is local; no safety outreach or recall is initiated automatically.</p></div></div><form id="case-form" class="form-panel"><p class="kicker">Open a case</p><label for="case-kind">What can we help with?</label><select id="case-kind" name="kind"><option value="general">General question</option><option value="brand">About the brand</option><option value="learn">A Learn guide</option><option value="report">A lot report</option><option value="delivery">Delivery</option><option value="return">Unopened return</option><option value="replacement">Replacement / product issue</option><option value="safety">Product safety</option></select><label for="case-order">Order ID (optional)</label><input id="case-order" name="order_id" value="${escape(oid)}" maxlength="40"><label for="case-message">Tell us a little more</label><textarea id="case-message" name="message" minlength="10" maxlength="3000" required placeholder="Describe the issue and the relevant product or lot."></textarea><p class="micro">Do not include medical records or payment credentials in the preview.</p><div class="form-error" role="alert"></div><button class="button full">Create preview case</button><div id="case-result" role="status"></div></form></div></section>`;
 }
 const policies = {
   shipping: [
@@ -970,6 +983,7 @@ const opsTabs = [
   ["products", "Products & prices"],
   ["cases", "Support & safety"],
   ["reviews", "Reviews & questions"],
+  ["lots", "Lot reports"],
   ["approvals", "Approvals"],
   ["audit", "Audit history"],
   ["analytics", "Analytics"],
@@ -1051,7 +1065,7 @@ function ops(tab = "overview") {
       o.cases.map((c) => [
         c.id,
         `${badge(caseKind(c.kind), c.kind === "safety" ? "warning" : "")}${badge(c.state)}`,
-        escape(c.message),
+        `${escape(c.message)}${c.topic ? `<small>${escape(c.topic)}${c.lot ? " · lot " + escape(c.lot) : ""}</small>` : ""}${(c.media || []).map((m) => `<a class="small-link" href="/api/review-media/${escape(m)}" target="_blank" rel="noopener">Pack photo ${escape(m.slice(4, 10))}</a>`).join("")}`,
         `${escape(c.order_id || "No order")}<small>${escape(c.sla)}</small>`,
         `${["investigating", "escalated", "resolved"].map((s) => `<button class="small-button" data-case-state="${s}" data-id="${c.id}" ${viewer ? "disabled" : ""}>${s}</button>`).join("")}`,
       ]),
@@ -1113,6 +1127,7 @@ function ops(tab = "overview") {
       ]),
     )}`;
   else if (tab === "reviews") content = opsReviews(o, viewer);
+  else if (tab === "lots") content = window.BCCLotsOps ? window.BCCLotsOps.render(o, viewer) : "";
   else return notFound();
   return `<div class="ops-layout"><aside class="ops-sidebar"><p class="kicker">Body Café Co. operations</p><h2>Operations</h2><p>${escape(state.user.name)} ${badge(state.user.role)}</p><nav aria-label="Operations sections">${opsTabs.map(([id, l]) => `<a class="${id === tab ? "active" : ""}" href="/ops${id === "overview" ? "" : "/" + id}">${l}</a>`).join("")}</nav><button class="small-button" data-action="logout">Leave operations</button></aside><section class="ops-content"><div class="ops-heading"><div><p class="kicker">${viewer ? "Read-only" : "Admin"} view</p><h1>${opsTabs.find((x) => x[0] === tab)[1]}</h1></div><button class="small-button" data-action="refresh">Refresh</button></div>${content}</section></div>`;
 }
@@ -1200,7 +1215,7 @@ async function render(scroll = true) {
         : call("learnOffline") ?? `<section class="section-wrap">${empty("Learn is offline", "The ingredient library isn't published right now.", "Shop all seven", "/shop")}</section>`;
     else if (path === "/about") content = call("about") ?? call("story") ?? about();
     else if (path === "/story") content = call("story") ?? story();
-    else if (path === "/reports") content = call("reports") ?? reports();
+    else if (path === "/reports" || path.startsWith("/reports/")) content = call("reports") ?? reports();
     else if (path === "/cart") content = call("cart") ?? cart();
     else if (path === "/checkout") content = call("checkout", fx) ?? checkout();
     else if (path.startsWith("/account")) content = call("account", seg || "orders", fx) ?? account(seg || "orders");
@@ -1482,6 +1497,10 @@ document.addEventListener("submit", async (e) => {
         whatsapp_consent: form.elements.whatsapp_consent.checked,
       });
       navigate("/payment/" + o.id);
+    } else if (form.id === "lot-form") {
+      await window.BCCLots?.submit?.();
+    } else if (form.dataset.lotOps) {
+      await window.BCCLotsOps.submit(form, data, e.submitter);
     } else if (form.id === "report-form") {
       const result = $("#report-result");
       result.innerHTML = '<div class="rr rr-loading" aria-busy="true"><span class="rr-spinner" aria-hidden="true"></span><p>Looking up the record for this lot…</p></div>';
@@ -1523,6 +1542,15 @@ document.addEventListener("submit", async (e) => {
         }
       };
     } else if (form.id === "case-form") {
+      const file = form.elements.photo?.files?.[0];
+      delete data.photo;
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) throw new Error("The photo must be 5 MB or smaller.");
+        const res = await fetch("/api/case-media", { method: "POST", headers: { "Content-Type": file.type || "application/octet-stream", "X-CSRF-Token": state.csrf }, body: file });
+        const up = await res.json();
+        if (!res.ok) throw new Error(up.error || "The photo couldn't be uploaded.");
+        data.media = [up.id];
+      }
       const c = await api("/cases", data);
       $("#case-result").innerHTML =
         `<div class="report-result case-created"><p class="kicker">Case created · saved in this preview only</p><h2>${c.id}</h2><p>Your case is saved locally and no external message was sent. ${c.kind === "safety" ? "It is marked for priority safety review." : ""}</p><a class="text-link" href="/account/cases">Follow your case</a></div>`;

@@ -48,9 +48,25 @@ class HttpTests(unittest.TestCase):
             with self.subTest(item=item):
                 self.assertEqual(self.request('POST','/api/orders',{**payload,'items':[item]})[0],400)
 
-    def test_reports_include_distinct_states(self):
-        for lot,expected in [('DEMO-03-01','sample_match'),('UNKNOWN','not_found'),('DEMO-UNPUBLISHED','unpublished'),('DEMO-WITHDRAWN','withdrawn')]:
-            result=json.loads(self.request('GET','/api/reports?product=vitamin-d3-k2&lot='+lot)[2]);self.assertEqual(result['state'],expected);self.assertIsNone(result['document'])
-        self.assertEqual(self.request('GET','/api/reports?product=vitamin-d3-k2&lot=DEMO-OUTAGE')[0],503)
-
-if __name__=='__main__':unittest.main()
+    def test_lot_lookup_states_and_documents(self):
+        for lot,expected in [('DEMO-03-01','match'),('UNKNOWN','not_found'),('DEMO-01-01','other_product'),('DEMO-UNPUBLISHED','match')]:
+            result=json.loads(self.request('GET','/api/lots?product=vitamin-d3-k2&lot='+lot)[2]);self.assertEqual(result['state'],expected);self.assertIsNone(result.get('current'))
+        self.assertEqual(json.loads(self.request('GET','/api/lots?product=vitamin-d3-k2&lot=DEMO-UNPUBLISHED')[2])['availability'],'under_review')
+        self.assertEqual(self.request('GET','/api/lots?product=vitamin-d3-k2&lot=DEMO-OUTAGE')[0],503)
+        self.assertEqual(self.request('GET','/api/lots?product=vitamin-d3-k2&lot=%20%20')[0],400)
+        self.assertEqual(self.request('GET','/api/reports?product=vitamin-d3-k2&lot=DEMO-03-01')[0],404)
+        self.assertEqual(json.loads(self.request('GET','/api/lots/archive?product=vitamin-d3-k2')[2])['total'],2)
+        self.assertEqual(self.request('GET','/api/lots/documents/DOC-0000000000000000')[0],404)
+    def test_lot_document_upload_is_admin_only_and_private_until_published(self):
+        pdf=b'%PDF-1.4\n%%EOF\n'
+        status,_,_=self.request('POST','/api/admin-lot-document?report=LR-X&title=CoA&kind=original',headers={'Content-Type':'application/pdf'});self.assertIn(status,(400,403))
+        self.assertEqual(self.request('POST','/api/demo/login',{'identity':'admin-a'})[0],200)
+        d=json.loads(self.request('POST','/api/admin/lot_draft',{'product':'omega-3-fish-oil','lot':'DEMO-04-02'})[2])
+        conn=http.client.HTTPConnection('127.0.0.1',self.port)
+        conn.request('POST','/api/admin-lot-document?report='+d['id']+'&title=Certificate&kind=original',b'GIF89a not a pdf',{'Cookie':self.cookie,'X-CSRF-Token':self.csrf,'Content-Type':'application/pdf'});r=conn.getresponse();r.read();conn.close();self.assertEqual(r.status,415)
+        conn=http.client.HTTPConnection('127.0.0.1',self.port)
+        conn.request('POST','/api/admin-lot-document?report='+d['id']+'&title=Certificate&kind=original',pdf,{'Cookie':self.cookie,'X-CSRF-Token':self.csrf,'Content-Type':'application/pdf'});r=conn.getresponse();doc=json.loads(r.read());conn.close()
+        status,headers,body=self.request('GET','/api/lots/documents/'+doc['id'])
+        self.assertEqual((status,headers['Content-Type']),(200,'application/pdf'));self.assertIn('sandbox',headers['Content-Security-Policy'])
+        self.request('POST','/api/logout',{});self.setUp()
+        self.assertEqual(self.request('GET','/api/lots/documents/'+doc['id'])[0],404)

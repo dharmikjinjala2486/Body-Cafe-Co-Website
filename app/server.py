@@ -15,9 +15,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
 
 try:
-    from app import media
+    from app import media, lots
 except ImportError:  # run as a script: python3 app/server.py
-    import media
+    import media, lots
 
 ROOT = Path(__file__).resolve().parent.parent
 PRODUCTS = [
@@ -36,19 +36,23 @@ BUNDLES = [
 
 LEARN_TOPIC=re.compile(r'/learn(/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?')
 CASE_TOPIC=re.compile(r'/(learn(/[a-z0-9-]{1,60})?|story|about)(#[a-z0-9-]{1,40})?')
+LOT_KINDS=('report_publish','report_withdraw','lot_notice','lot_notice_retire')
 
 class Error(Exception):
     def __init__(self, message, status=400):
         super().__init__(message)
         self.status = status
 
-class Store:
+class Store(lots.LotsMixin):
     def __init__(self, path):
         self.path = str(path)
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         # Review photos live beside the database, outside the web root, and are served only through the API.
         self.media_dir = Path(path).parent / (Path(path).stem + '-review-media')
         self.media_dir.mkdir(parents=True, exist_ok=True)
+        # Laboratory documents also live outside the web root; only published versions are served, through the API.
+        self.lot_dir = Path(path).parent / (Path(path).stem + '-lot-documents')
+        self.lot_dir.mkdir(parents=True, exist_ok=True)
         with self.db() as c:
             c.executescript('''
             CREATE TABLE IF NOT EXISTS products(id TEXT PRIMARY KEY, data TEXT NOT NULL);
@@ -72,6 +76,7 @@ class Store:
             CREATE TABLE IF NOT EXISTS theme_feedback(id TEXT PRIMARY KEY, data TEXT NOT NULL, created INTEGER NOT NULL);
             CREATE TABLE IF NOT EXISTS review_reports(id INTEGER PRIMARY KEY, review_id TEXT, user_id TEXT, reason TEXT, note TEXT, state TEXT, created INTEGER, UNIQUE(review_id,user_id));
             ''')
+            self.lots_init(c)
             for i,p in enumerate(PRODUCTS):
                 data = dict(zip(['id','name','subtitle','ingredients','price','color','category'],p))
                 data.update({'preview':True,'published':True,'formula_approved':False,'label_note':'Full formulation, quantities, directions and warnings await approved rear labels.'})
@@ -264,9 +269,12 @@ class Store:
     def case(self,s,data):
         if s['role']!='customer':raise Error('Use a customer session to open a case.',403)
         kind=data.get('kind','general');text=str(data.get('message','')).strip()
-        if kind not in ['general','brand','learn','delivery','return','replacement','safety']:raise Error('Select a valid case type.')
+        if kind not in ['general','brand','learn','report','delivery','return','replacement','safety']:raise Error('Select a valid case type.')
         topic=str(data.get('topic','') or '').strip()
-        if topic and not CASE_TOPIC.fullmatch(topic):raise Error('That page reference is not valid.')
+        if topic and not (CASE_TOPIC.fullmatch(topic) or lots.LOT_TOPIC.fullmatch(topic) or topic=='/reports'):raise Error('That page reference is not valid.')
+        lot_entered=str(data.get('lot','') or '').strip()[:lots.LOT_MAX]
+        media_ids=data.get('media') or []
+        if not isinstance(media_ids,list) or len(media_ids)>2 or not all(isinstance(m,str) and re.fullmatch(r'IMG-[0-9a-f]{16}',m) for m in media_ids):raise Error('Attach at most two photos.')
         feedback=str(data.get('feedback','') or '')
         if feedback and feedback not in ('correction','followup'):raise Error('Choose correction or follow-up.')
         if not 10<=len(text)<=3000:raise Error('Describe the issue in 10–3000 characters.')
@@ -275,6 +283,15 @@ class Store:
             if oid:self.owned_order(c,s,oid)
             cid='CASE-'+secrets.token_hex(4).upper()
             payload={'kind':kind,'message':text,'order_id':oid,'state':'open','owner':'Unassigned','sla':'Priority review' if kind=='safety' else 'Preview target: 1 business day','preview':True,'history':[]}
+            for mid in media_ids:
+                m=c.execute("SELECT * FROM review_media WHERE id=? AND user_id=? AND state='case_uploaded'",(mid,s['user_id'])).fetchone()
+                if not m:raise Error('A photo could not be attached. Upload it again.',409)
+                c.execute("UPDATE review_media SET review_id=?,state='case' WHERE id=?",(cid,mid))
+            if media_ids:payload['media']=media_ids
+            if kind in ('report','safety','general','replacement') and (topic.startswith('/reports') or lot_entered):
+                if topic:payload['topic']=topic
+                if lot_entered:payload['lot']=lot_entered
+                payload['subject']={'report':'Lot report question','safety':'Product safety · lot','replacement':'Product issue · lot'}.get(kind,'Lot question')+' · '+(topic or '/reports')+(' · lot '+lot_entered if lot_entered else '')
             if topic and kind in ('learn','brand'):
                 payload['topic']=topic
                 payload['subject']=({'correction':'Suggested correction','followup':'Follow-up question'}.get(feedback,'Learn question') if kind=='learn' else 'About the brand')+' · '+topic
@@ -316,7 +333,8 @@ class Store:
                 if r['state']!='pending':raise Error('This request has already been resolved.',409)
                 if data.get('decision') not in ['approve','reject']:raise Error('Select approve or reject.')
                 approve=data['decision']=='approve';value=json.loads(r['payload']).get('value')
-                if approve:
+                if r['kind'] in LOT_KINDS:self.lot_resolve(c,s,r,approve)
+                elif approve:
                     if r['kind'] in ['price','publication']:
                         pr=c.execute('SELECT data FROM products WHERE id=?',(r['target'],)).fetchone();p=json.loads(pr['data']);p['price' if r['kind']=='price' else 'published']=value;c.execute('UPDATE products SET data=? WHERE id=?',(json.dumps(p),r['target']))
                     elif r['kind']=='stock':c.execute('UPDATE batches SET available=available+? WHERE id=?',(value,r['target']))
@@ -347,6 +365,7 @@ class Store:
                 if data.get('state') not in ['open','investigating','resolved','escalated']:raise Error('Invalid case state.')
                 p=json.loads(r['data']);p['state']=data['state'];p['owner']=s['name'];p['history'].append({'state':data['state'],'at':int(time.time())});c.execute('UPDATE cases SET data=? WHERE id=?',(json.dumps(p),r['id']));self.log(c,s['user_id'],'case_updated',r['id'])
             elif action in ('review','review_reply','question'):return self.moderate(c,s,action,data)
+            elif action.startswith('lot_'):return self.lot_admin(c,s,action,data)
             else:raise Error('Unknown operation.',404)
         return {'ok':True}
 
@@ -370,6 +389,7 @@ class Store:
                 result['review_media']=[dict(r) for r in c.execute('SELECT * FROM review_media ORDER BY created DESC')]
                 result['review_reports']=[dict(r) for r in c.execute('SELECT * FROM review_reports ORDER BY created DESC')]
                 result['events']=[dict(r) for r in c.execute('SELECT name,COUNT(*) AS count FROM events GROUP BY name')]
+                result.update(self.lot_snapshot(c))
                 result['learn_feedback']=[dict(r) for r in c.execute('SELECT page,SUM(clear) AS clear,SUM(1-clear) AS unclear,COUNT(*) AS total FROM learn_feedback GROUP BY page ORDER BY page')]
             return result
 
@@ -659,6 +679,30 @@ class Store:
             self.log(c, s['user_id'], 'review_media_uploaded', mid)
         return {'id': mid, 'width': w, 'height': h, 'bytes': len(cleaned), 'type': mime}
 
+    def upload_case_media(self, s, raw):
+        """An optional pack photo for a support case. Cleaned exactly like review photos; never public."""
+        if s['role'] != 'customer':
+            raise Error('Use a customer session to add a photo.', 403)
+        try:
+            kind, mime, ext, cleaned, w, h = media.sanitise(raw)
+        except media.MediaError as e:
+            raise Error(str(e), 415 if 'JPEG, PNG or WebP' in str(e) else 400)
+        now = int(time.time())
+        with self.db() as c:
+            for old in c.execute("SELECT * FROM review_media WHERE state='case_uploaded' AND created<?", (now - 86400,)).fetchall():
+                (self.media_dir / (old['id'] + old['ext'])).unlink(missing_ok=True)
+                c.execute('DELETE FROM review_media WHERE id=?', (old['id'],))
+            if c.execute("SELECT COUNT(*) FROM review_media WHERE user_id=? AND state='case_uploaded'", (s['user_id'],)).fetchone()[0] >= 4:
+                raise Error('Remove an unused photo before uploading another.', 429)
+            mid = 'IMG-' + secrets.token_hex(8)
+            path = self.media_dir / (mid + ext)
+            fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, 'wb') as f:
+                f.write(cleaned)
+            c.execute('INSERT INTO review_media VALUES(?,?,?,?,?,?,?,?,?,?,?)', (mid, s['user_id'], None, None, mime, ext, len(cleaned), w, h, 'case_uploaded', now))
+            self.log(c, s['user_id'], 'case_media_uploaded', mid)
+        return {'id': mid, 'width': w, 'height': h, 'bytes': len(cleaned), 'type': mime}
+
     def delete_media(self, s, mid):
         with self.db() as c:
             m = c.execute('SELECT * FROM review_media WHERE id=?', (mid,)).fetchone()
@@ -815,6 +859,16 @@ class Handler(BaseHTTPRequestHandler):
                     if length>media.MAX_BYTES:raise Error('Each photo must be 5 MB or smaller.',413)
                     pid=parse_qs(urlparse(self.path).query).get('product',[''])[0]
                     return self.json(200,self.store.upload_media(s,pid,self.rfile.read(length)),cookie)
+                if path=='/api/case-media':
+                    if length<=0:raise Error('Choose an image to upload.')
+                    if length>media.MAX_BYTES:raise Error('Each photo must be 5 MB or smaller.',413)
+                    return self.json(200,self.store.upload_case_media(s,self.rfile.read(length)),cookie)
+                if path=='/api/admin-lot-document':
+                    # Raw PDF body. Checked from its bytes, hashed and stored privately; public only once its version is published.
+                    if length<=0:raise Error('Choose a PDF to upload.')
+                    if length>lots.PDF_MAX:raise Error('The PDF must be 15 MB or smaller.',413)
+                    q=parse_qs(urlparse(self.path).query);g=lambda k:q.get(k,[''])[0]
+                    return self.json(200,self.store.lot_upload(s,g('report'),self.rfile.read(length),g('title'),g('kind'),g('redacted')=='1',g('note')),cookie)
                 if length<0 or length>20000:raise Error('Request too large or invalid.',413)
                 data=json.loads(self.rfile.read(length) or b'{}')
                 if not isinstance(data,dict):raise Error('Invalid request.')
@@ -837,15 +891,21 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_header('Cache-Control','public, max-age=300' if public else 'private, no-store')
                     if cookie:self.send_header('Set-Cookie',f'bcc_session={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400')
                     self.end_headers();self.wfile.write(body);return
-                elif path=='/api/reports':
-                    q=parse_qs(urlparse(self.path).query);pid=q.get('product',[''])[0];lot=q.get('lot',[''])[0].strip().upper()
-                    if pid not in [p[0] for p in PRODUCTS]:raise Error('Choose a product.')
-                    if lot=='DEMO-OUTAGE':raise Error('Sample service-unavailable state. Please try again.',503)
-                    with self.store.db() as c:r=c.execute('SELECT * FROM batches WHERE id=? AND product=?',(lot,pid)).fetchone()
-                    state='not_found' if not r else 'withdrawn' if r['state']=='quarantined' else 'unpublished' if not r['proof'] else 'sample_match'
-                    if lot=='DEMO-UNPUBLISHED':state='unpublished'
-                    if lot=='DEMO-WITHDRAWN':state='withdrawn'
-                    result={'state':state,'lot':lot,'product':pid,'preview':True,'document':None,'message':'Illustrative record only. No laboratory result or authenticity claim.'}
+                elif path=='/api/lots':
+                    q=parse_qs(urlparse(self.path).query)
+                    result=self.store.lots_lookup(q.get('product',[''])[0],q.get('lot',[''])[0])
+                elif path=='/api/lots/archive':
+                    q=parse_qs(urlparse(self.path).query)
+                    result=self.store.lots_archive(q.get('product',[''])[0],q.get('q',[''])[0])
+                elif re.fullmatch(r'/api/lots/documents/DOC-[0-9a-f]{16}',path):
+                    raw,d=self.store.lots_document(s,path.rsplit('/',1)[1],s['role'] in ['admin','viewer'])
+                    download=parse_qs(urlparse(self.path).query).get('download',[''])[0]=='1'
+                    name=re.sub(r'[^A-Za-z0-9._-]+','-',d['title'])[:60].strip('-') or 'document'
+                    self.send_response(200);self.send_header('Content-Type','application/pdf');self.send_header('Content-Length',str(len(raw)));self.send_header('X-Content-Type-Options','nosniff')
+                    self.send_header('Content-Security-Policy',"sandbox; default-src 'none'");self.send_header('Content-Disposition',('attachment' if download else 'inline')+f'; filename="{name}-{d["id"][4:12]}.pdf"')
+                    self.send_header('Cache-Control','no-cache');self.send_header('X-Document-SHA256',d['sha256'])
+                    if cookie:self.send_header('Set-Cookie',f'bcc_session={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400')
+                    self.end_headers();self.wfile.write(raw);return
                 else:raise Error('Endpoint not found.',404)
             else:
                 if path=='/api/demo/login':result=self.store.login(s,data)
@@ -873,7 +933,7 @@ class Handler(BaseHTTPRequestHandler):
                     result={'ok':True}
                 else:raise Error('Endpoint not found.',404)
             self.json(200,result,cookie)
-        except Error as e:self.json(e.status,{'error':str(e)},cookie)
+        except (Error,lots.LotError) as e:self.json(e.status,{'error':str(e)},cookie)
         except (ValueError,TypeError,KeyError):self.json(400,{'error':'Invalid request data.'},cookie)
         except Exception as e:
             print('API error:',type(e).__name__,flush=True);self.json(500,{'error':'The preview could not complete that action. Please retry.'},cookie)

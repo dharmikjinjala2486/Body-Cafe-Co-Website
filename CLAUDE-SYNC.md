@@ -198,3 +198,8 @@ Imported About then the frozen Learn snapshot from the existing Claude conversat
 ## Story rebuild — 23 October 2026
 
 Imported `body-cafe-co-story-a-h.zip` against `fd6036d4470fb0cbdb21e79fbc5b89f3566865ff`. SHA-256: `6473b0a564ea1fd885381f04ee70f0873853e88f6d64f74ba6f14ddd347759c6`. Archive integrity/safe paths, clean patch application and source overlay equality passed. Story now has its own renderer in A–H, preserving About/Learn/Shop/Standards and product pages. Chapter references are validated on support cases. Independent checks are recorded in `design-review/STORY-RELEASE-2026-10-23.md`.
+
+
+## Lot Reports — 23 October 2026
+
+Imported `body-cafe-co-lot-reports-a-h.zip` (SHA-256 `e4e2c22b78a5922ae62926db56ec707e884c1c0481f7893d3c3e2136417b42c1`), authored against `4c28f6c`, using a clean three-way merge onto `5d97e2a`. This preserves both newer feedback-form commits, including backend storage, Netlify collection/build checks and name-first recap. Archive integrity and paths passed. Imported files match the supplied overlay except `app/server.py` and `deploy/test_hosted_preview.mjs`, where the newer feedback work is retained. Independent verification is in `design-review/LOTS-RELEASE-2026-10-23.md`.
