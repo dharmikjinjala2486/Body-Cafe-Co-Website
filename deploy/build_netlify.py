@@ -28,7 +28,13 @@ def build():
     html = html.replace('<script src="/web/homepage.js">', '<script src="/web/hosted-preview.js"></script>\n<script src="/web/homepage.js">')
     (out / 'index.html').write_text(html, encoding='utf-8')
     (out / 'web/index.html').write_text(html, encoding='utf-8')
-    (out / '_redirects').write_text('/* /index.html 200\n', encoding='utf-8')
+    feedback = (ROOT / 'web/feedback.html').read_text(encoding='utf-8')
+    feedback = feedback.replace('id="theme-feedback"', 'id="theme-feedback" data-submission-mode="netlify"')
+    (out / 'feedback').mkdir()
+    (out / 'feedback/index.html').write_text(feedback, encoding='utf-8')
+    # Keep only one form definition for Netlify's static HTML detection.
+    (out / 'web/feedback.html').unlink()
+    (out / '_redirects').write_text('/feedback /feedback/index.html 200\n/feedback/ /feedback/index.html 200\n/* /index.html 200\n', encoding='utf-8')
     (out / 'robots.txt').write_text('User-agent: *\nDisallow: /\n', encoding='utf-8')
     print('Netlify design preview built in dist/ (no customer data or local backend).')
 

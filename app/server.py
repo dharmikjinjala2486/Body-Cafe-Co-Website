@@ -69,6 +69,7 @@ class Store:
             CREATE TABLE IF NOT EXISTS review_media(id TEXT PRIMARY KEY, user_id TEXT, product TEXT, review_id TEXT, mime TEXT, ext TEXT, bytes INTEGER, width INTEGER, height INTEGER, state TEXT, created INTEGER);
             CREATE TABLE IF NOT EXISTS review_votes(review_id TEXT, user_id TEXT, created INTEGER, PRIMARY KEY(review_id,user_id));
             CREATE TABLE IF NOT EXISTS learn_feedback(id INTEGER PRIMARY KEY, page TEXT, section TEXT, clear INTEGER, session TEXT, created INTEGER);
+            CREATE TABLE IF NOT EXISTS theme_feedback(id TEXT PRIMARY KEY, data TEXT NOT NULL, created INTEGER NOT NULL);
             CREATE TABLE IF NOT EXISTS review_reports(id INTEGER PRIMARY KEY, review_id TEXT, user_id TEXT, reason TEXT, note TEXT, state TEXT, created INTEGER, UNIQUE(review_id,user_id));
             ''')
             for i,p in enumerate(PRODUCTS):
@@ -371,6 +372,51 @@ class Store:
                 result['events']=[dict(r) for r in c.execute('SELECT name,COUNT(*) AS count FROM events GROUP BY name')]
                 result['learn_feedback']=[dict(r) for r in c.execute('SELECT page,SUM(clear) AS clear,SUM(1-clear) AS unclear,COUNT(*) AS total FROM learn_feedback GROUP BY page ORDER BY page')]
             return result
+
+    def theme_feedback(self, data):
+        themes = set('ABCDEFGH')
+        favourite = data.get('favourite')
+        if not isinstance(favourite, str) or favourite not in themes | {'none'}:
+            raise Error('Choose your favourite theme, or none.')
+        if not isinstance(data.get('fit'), str) or data['fit'] not in {'1', '2', '3', '4', '5', 'na'}:
+            raise Error('Rate the fit with our logo and bottles.')
+        runner = data.get('runner-up', '')
+        least = data.get('least', '')
+        if not isinstance(runner, str) or not isinstance(least, str) or runner not in themes | {'', 'none'} or least not in themes | {'', 'none'}:
+            raise Error('Choose a valid theme.')
+        if favourite in themes and favourite in (runner, least):
+            raise Error('Your favourite must differ from your runner-up and least suitable theme.')
+        if runner in themes and runner == least:
+            raise Error('Your runner-up cannot also be the least suitable theme.')
+        allowed = {
+            'reasons': {'Colours', 'Typography', 'Layout', 'Packaging fit', 'Product presentation', 'Motion', 'Distinctiveness', 'Overall mood'},
+            'feelings': {'Premium', 'Approachable', 'Playful', 'Calm', 'Modern', 'Distinctive', 'Trustworthy', 'Generic', 'Clinical', 'Overwhelming'},
+        }
+        payload = {'favourite': favourite, 'runner-up': runner, 'least': least, 'fit': data['fit']}
+        for field, values in allowed.items():
+            selected = data.get(field, [])
+            if not isinstance(selected, list) or len(selected) > 3 or any(not isinstance(v, str) or v not in values for v in selected) or len(set(selected)) != len(selected):
+                raise Error('Choose up to three valid ' + field + '.')
+            payload[field] = selected
+        for field, limit in [('why', 1500), ('improve', 1500), ('least-why', 1000), ('reviewer-name', 80)]:
+            value = data.get(field, '')
+            if not isinstance(value, str) or len(value) > limit:
+                raise Error('Please shorten your ' + field + ' answer.')
+            payload[field] = self.clean_text(value, limit)
+        if len(payload['why'].strip()) < 5:
+            raise Error('Tell us a little about why you made this choice.')
+        if not payload['reviewer-name'].strip():
+            raise Error('Please enter your name.')
+        response_id = data.get('response-id', '')
+        if not isinstance(response_id, str) or not re.fullmatch(r'[A-Za-z0-9-]{10,80}', response_id):
+            raise Error('Refresh the form and try again.')
+        if data.get('bot-field'):
+            raise Error('Could not save this response.')
+        payload['review-version'] = '2026-10-23'
+        with self.db() as c:
+            # Stable IDs make network retries safe without dropping another person's response.
+            c.execute('INSERT OR IGNORE INTO theme_feedback VALUES(?,?,?)', (response_id, json.dumps(payload), int(time.time())))
+        return {'ok': True, 'id': response_id}
 
     def learn_feedback(self,s,data):
         """Anonymous 'Was this clear?' answer for a Learn page. Stores the page, section and answer only; one answer per
@@ -813,6 +859,7 @@ class Handler(BaseHTTPRequestHandler):
                 elif re.fullmatch(r'/api/orders/[^/]+/cancel',path):result=self.store.cancel(s,path.split('/')[3])
                 elif path=='/api/cases':result=self.store.case(s,data)
                 elif path=='/api/learn/feedback':result=self.store.learn_feedback(s,data)
+                elif path=='/api/theme-feedback':result=self.store.theme_feedback(data)
                 elif path=='/api/addresses':result=self.store.address(s,data)
                 elif path=='/api/reviews':result=self.store.review(s,data)
                 elif re.fullmatch(r'/api/reviews/REV-[0-9a-f]{10}/helpful',path):result=self.store.helpful(s,path.split('/')[3])
@@ -839,7 +886,8 @@ class Handler(BaseHTTPRequestHandler):
         path=unquote(urlparse(self.path).path)
         if path.startswith('/api/'):return self.api()
         # Explicit static allowlist: never serve database, requirements, archives or Git metadata.
-        if path.startswith('/web/'):file=ROOT/path.lstrip('/')
+        if path in ('/feedback', '/feedback/'):file=ROOT/'web/feedback.html'
+        elif path.startswith('/web/'):file=ROOT/path.lstrip('/')
         elif path.startswith('/concepts/media/'):file=ROOT/path.lstrip('/')
         elif path.startswith('/assets/brand/logos/') or path.startswith('/assets/brand/fonts/'):file=ROOT/path.lstrip('/')
         elif path.startswith('/concepts/') and path.endswith(('.html','.css','.js')):file=ROOT/path.lstrip('/')

@@ -31,4 +31,16 @@ assert.ok(!fs.existsSync('dist/.local'));
 assert.ok(!fs.existsSync('dist/app'));
 assert.ok(!fs.existsSync('dist/assets/source'));
 assert.ok(!fs.existsSync('dist/web/qa'));
+const feedback = fs.readFileSync('dist/feedback/index.html', 'utf8');
+assert.ok(feedback.includes('data-submission-mode="netlify"'));
+assert.ok(feedback.includes('data-netlify="true"'));
+assert.ok(feedback.includes('https://body-cafe-co-website.netlify.app/?design=a'));
+assert.equal((feedback.match(/id="website-preview"/g) || []).length, 1);
+for (const field of ['form-name', 'response-id', 'review-version', 'favourite', 'runner-up', 'fit', 'reasons', 'feelings', 'why', 'improve', 'least', 'least-why', 'reviewer-name', 'bot-field']) {
+  assert.ok(feedback.includes(`name="${field}"`), `Static Netlify field missing: ${field}`);
+}
+for (const theme of 'ABCDEFGH') assert.ok(feedback.includes(`name="favourite" value="${theme}"`));
+assert.ok(!fs.existsSync('dist/web/feedback.html'));
+assert.ok(fs.existsSync('dist/web/feedback-media/logo.svg'));
+assert.ok(fs.readFileSync('dist/_redirects', 'utf8').includes('/feedback /feedback/index.html 200'));
 console.log('Hosted preview API and publish-boundary checks passed.');
