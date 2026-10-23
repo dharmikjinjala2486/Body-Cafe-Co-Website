@@ -1,0 +1,225 @@
+/* Body Café Co. — sign-in, account, order and payment for A–H (markup in account.js). Part 1: shared structure.
+   Parts 2–9: each direction's look, scoped to `.ac-<direction>`. Also the small checkout/support continuity note. */
+
+/* ===================================================================================================== 1. SHARED */
+.ac {
+  --pad: clamp(16px, 4.5vw, 64px); --max: 1240px; --gap: clamp(18px, 3vw, 40px);
+  --bg: #fff; --ink: #2d2926; --muted: #5d5853; --line: rgb(45 41 38 / .16); --panel: #f6f4f0; --field: #fff;
+  --btn: var(--ink); --btn-ink: #fff; --radius: 0px; --btn-radius: 0px; --ok: #24613a; --bad: #9b2b17; --warn: #7a5200;
+  --text: "Aileron", "Helvetica Neue", Arial, sans-serif; --display: var(--text); --label: var(--text);
+  background: var(--bg); color: var(--ink); font-family: var(--text); font-size: 17px; line-height: 1.55; overflow-x: clip; padding-bottom: clamp(40px, 6vw, 96px);
+}
+.ac *, .ac *::before, .ac *::after { box-sizing: border-box; }
+.ac :where(h1, h2, h3, p, ul, ol, dl, dd, address, fieldset) { margin: 0; padding: 0; }
+.ac :where(ul, ol) { list-style: none; }
+.ac address { font-style: normal; }
+.ac fieldset { border: 0; min-width: 0; display: grid; gap: 8px; }
+.ac legend { font-weight: 700; padding: 0; margin-bottom: 4px; }
+.ac a { color: inherit; text-underline-offset: 4px; }
+.ac img { display: block; max-width: 100%; height: auto; }
+.ac [hidden] { display: none !important; }
+.ac :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.ac :where(button, input, select) { font: inherit; color: inherit; }
+.ac-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ac-head { max-width: var(--max); margin: 0 auto; padding: clamp(24px, 4vw, 56px) var(--pad) clamp(14px, 2vw, 24px); display: grid; gap: 8px; }
+.ac-signout { justify-self: start; }
+.ac-k { font-family: var(--label); font-size: 12px; letter-spacing: .09em; text-transform: uppercase; font-weight: 600; }
+.ac .ac-h1 { font-family: var(--display); font-size: clamp(34px, 4.6vw, 66px); line-height: 1.02; letter-spacing: -.035em; font-weight: 600; outline: 0; }
+.ac .ac-h2 { font-family: var(--display); font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; letter-spacing: -.02em; font-weight: 600; }
+.ac .ac-h3 { font-family: var(--display); font-size: 19px; line-height: 1.25; font-weight: 600; }
+.ac-lede { font-size: clamp(17px, 1.4vw, 20px); max-width: 60ch; }
+.ac-small, .ac-hint { font-size: 14px; color: var(--muted); }
+.ac-hint { display: block; }
+.ac-err { color: var(--bad); font-weight: 600; font-size: 14px; }
+.ac-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ac-chip { display: inline-block; padding: 2px 10px; border: 1px solid currentColor; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.ac-chip.is-ok { color: var(--ok); } .ac-chip.is-bad { color: var(--bad); } .ac-chip.is-warn { color: var(--warn); } .ac-chip.is-muted { color: var(--muted); }
+.ac .ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 20px; background: var(--btn); color: var(--btn-ink); border: 1px solid var(--btn); border-radius: var(--btn-radius); font-weight: 700; text-decoration: none; cursor: pointer; font-size: 16px; }
+.ac .ac-btn:disabled { opacity: .55; cursor: progress; }
+.ac .ac-quiet { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; border: 1px solid var(--line); background: var(--field); border-radius: var(--btn-radius); text-decoration: none; cursor: pointer; font-size: 15px; font-weight: 600; color: var(--ink); }
+.ac-link { font-weight: 700; text-decoration: underline; min-height: 44px; display: inline-flex; align-items: center; }
+.ac-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ac-body { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: grid; gap: clamp(22px, 3vw, 36px); align-content: start; min-width: 0; }
+.ac-order-grid .ac-body { padding: 0; }
+.ac-nav { max-width: var(--max); margin: 0 auto 20px; padding: 0 var(--pad); }
+.ac-nav ul { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); }
+.ac-nav ul::-webkit-scrollbar { display: none; }
+.ac-nav a { display: inline-flex; align-items: center; min-height: 46px; padding: 8px 14px; text-decoration: none; white-space: nowrap; color: var(--muted); border-bottom: 3px solid transparent; }
+.ac-nav a[aria-current] { color: var(--ink); font-weight: 700; border-bottom-color: var(--ink); }
+.ac-callout { max-width: var(--max); margin: 0 auto 20px; padding: 14px var(--pad); display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; justify-content: space-between; background: var(--panel); border-left: 4px solid var(--ink); }
+.ac-body .ac-callout { margin: 0; padding: 14px 18px; }
+
+/* Forms */
+.ac-form { display: grid; gap: 8px; align-content: start; }
+.ac-form label, .ac-field > label { font-weight: 600; font-size: 15px; }
+.ac .ac-form input:not([type=checkbox]):not([type=radio]):not([type=file]), .ac .ac-form select { min-height: 48px; padding: 10px 12px; border: 1px solid var(--ink); border-radius: var(--btn-radius); background: var(--field); width: 100%; }
+.ac .ac-form input[aria-invalid="true"] { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
+.ac-field { display: grid; gap: 4px; min-width: 0; }
+.ac-field.is-wide { grid-column: 1 / -1; }
+.ac-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; }
+.ac-check { display: flex; gap: 10px; align-items: center; min-height: 44px; font-weight: 500; }
+.ac-check input { width: 20px; height: 20px; accent-color: var(--ink); }
+.ac-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
+.ac-dl { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.ac-dl > div { display: grid; grid-template-columns: 180px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.ac-dl dt { color: var(--muted); font-size: 14px; }
+.ac-dl small { display: block; color: var(--muted); font-size: 13px; }
+.ac-sec { display: grid; gap: 12px; align-content: start; }
+.ac-head-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 12px; }
+.ac-inline-form { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; margin-bottom: 16px; }
+
+/* Sign-in */
+.ac-signin { max-width: var(--max); margin: 0 auto; padding: clamp(24px, 4vw, 56px) var(--pad); display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--gap); align-items: start; }
+.ac-signin.is-embedded { padding-block: 8px 28px; }
+.ac-si-intro { display: grid; gap: 14px; }
+.ac-ticks { display: grid; gap: 8px; }
+.ac-ticks li { padding-left: 26px; position: relative; font-size: 15px; }
+.ac-ticks li::before { content: "✓"; position: absolute; left: 0; font-weight: 700; }
+.ac-si-steps { padding: clamp(18px, 2.4vw, 30px); background: var(--field); border: 1px solid var(--line); border-radius: var(--radius); display: grid; gap: 10px; }
+.ac .ac-phone { display: flex; align-items: stretch; border: 1px solid var(--ink); border-radius: var(--btn-radius); background: var(--field); overflow: hidden; }
+.ac .ac-phone .ac-cc { display: grid; place-items: center; padding: 0 12px; border-right: 1px solid var(--line); font-weight: 700; background: var(--panel); }
+.ac .ac-form .ac-phone input { border: 0; border-radius: 0; font-size: 20px; letter-spacing: .06em; }
+.ac .ac-form .ac-code { font-family: SpaceMono, ui-monospace, monospace; font-size: 30px; letter-spacing: .55em; text-align: left; padding-left: 16px; background-image: repeating-linear-gradient(90deg, transparent 0 calc(1ch + .55em - 2px), var(--line) 0 calc(1ch + .55em)); background-position: 14px 80%; background-size: calc(6 * (1ch + .55em)) 2px; background-repeat: no-repeat; }
+.ac-dest { font-size: 15px; }
+.ac-preview { padding: 10px 14px; border: 1.5px dashed var(--ink); border-radius: var(--radius); background: var(--panel); }
+.ac-preview-code strong { font-family: SpaceMono, ui-monospace, monospace; font-size: 22px; letter-spacing: .2em; }
+
+/* Account blocks */
+.ac-overview { display: grid; gap: 22px; }
+.ac-nexts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; margin-top: 12px; }
+.ac-next { display: grid; gap: 8px; align-content: start; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--field); }
+.ac-next .ac-btn { justify-self: start; }
+.ac-strip { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
+.ac-empty { display: grid; gap: 10px; justify-items: start; padding: clamp(20px, 3vw, 36px); background: var(--panel); border-radius: var(--radius); }
+.ac-orders, .ac-cases, .ac-revs, .ac-addrs, .ac-items { display: grid; border-top: 1px solid var(--line); }
+.ac-order a { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto 20px; gap: 6px 16px; align-items: center; padding: 14px 4px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.ac-order a:hover strong { text-decoration: underline; }
+.ac-order small { display: block; color: var(--muted); font-size: 14px; }
+.ac-thumbs { display: flex; }
+.ac-thumbs img { width: 40px; aspect-ratio: 3 / 4; object-fit: contain; margin-right: -8px; filter: drop-shadow(0 3px 4px rgb(0 0 0 / .15)); }
+.ac-order-st { display: flex; flex-wrap: wrap; gap: 4px; justify-content: end; }
+.ac-addr { display: grid; gap: 8px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.ac-addr .ac-chip { justify-self: start; }
+.ac-case { display: grid; gap: 6px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.ac-case .ac-chip { justify-self: start; }
+.ac-hist { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); }
+.ac-answer { padding: 10px 14px; background: var(--panel); border-left: 3px solid var(--ink); }
+.ac-rev { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.ac-rev img { width: 44px; aspect-ratio: 3 / 4; object-fit: contain; }
+.ac-rev small { display: block; color: var(--muted); font-size: 13px; }
+
+/* Order and payment */
+.ac-order-grid { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: grid; grid-template-columns: minmax(0, 7fr) minmax(280px, 4fr); gap: var(--gap); align-items: start; }
+.ac-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.ac-steps li { display: grid; gap: 2px; padding: 10px 12px; border-top: 4px solid var(--line); }
+.ac-steps li.is-done { border-top-color: var(--ink); }
+.ac-steps li.is-cancel { border-top-color: var(--bad); }
+.ac-step-n { font-weight: 800; }
+.ac-steps small { color: var(--muted); font-size: 13px; }
+.ac-item { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.ac-item img { width: 56px; aspect-ratio: 3 / 4; object-fit: contain; border-top: 3px solid var(--ac-cap); background: var(--panel); }
+.ac-item-main { display: grid; gap: 3px; }
+.ac-item-main small { color: var(--muted); font-size: 14px; }
+.ac-lot { font-size: 14px; }
+.ac-lot a { font-family: SpaceMono, ui-monospace, monospace; font-weight: 700; }
+.ac-summary { position: sticky; top: 90px; display: grid; gap: 10px; padding: clamp(16px, 2vw, 24px); background: var(--field); border: 1px solid var(--line); border-radius: var(--radius); }
+.ac-sum { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.ac-sum.is-total { border-top: 2px solid var(--ink); font-size: 19px; }
+.ac-amount { display: flex; gap: 12px; align-items: baseline; font-size: 20px; }
+.ac-amount strong { font-size: clamp(30px, 4vw, 44px); font-variant-numeric: tabular-nums; }
+.ac-sim { display: grid; gap: 8px; padding: 14px 16px; border: 1.5px dashed var(--line); border-radius: var(--radius); }
+
+/* Checkout and support continuity note (inside each direction's own form) */
+.ac-co-note { padding: 10px 14px; margin-bottom: 14px; border-left: 3px solid currentColor; background: rgb(127 127 127 / .08); font-size: 15px; }
+.ac-co-note a { font-weight: 700; text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .ac-signin, .ac-order-grid, .ac-cols { grid-template-columns: 1fr; }
+  .ac-summary { position: static; }
+  .ac-order a { grid-template-columns: minmax(0, 1fr) 20px; }
+  .ac-thumbs { grid-column: 1; }
+  .ac-order-st { justify-content: start; }
+  .ac-order a > span:not(.ac-arr) { grid-column: 1; }
+  .ac-order .ac-arr { grid-column: 2; grid-row: 1 / span 3; }
+}
+@media (max-width: 600px) {
+  .ac { font-size: 16px; }
+  .ac-grid { grid-template-columns: 1fr; }
+  .ac-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ac-dl > div { grid-template-columns: 1fr; gap: 2px; }
+  .ac-inline-form { grid-template-columns: 1fr; }
+  .ac-rev { grid-template-columns: 40px minmax(0, 1fr); }
+  .ac-rev > :last-child { grid-column: 2; justify-self: start; }
+  .ac .ac-form .ac-code { font-size: 26px; letter-spacing: .45em; }
+}
+@media (prefers-reduced-motion: reduce) { .ac *, .ac *::before, .ac *::after { transition: none !important; animation: none !important; } }
+
+/* ===================================================================================================== 2. A — State of Play */
+.ac-a { --bg: #f1f2ef; --ink: #142bc5; --muted: #3b4785; --line: rgb(20 43 197 / .28); --field: #fff; --panel: #e4e8f6; --btn: #142bc5; --btn-ink: #f1f2ef; --display: Anton, "Aileron", sans-serif; --label: SpaceMono, monospace; --ok: #1d5c33; --bad: #a3271a; }
+.ac-a .ac-h1, .ac-a .ac-h2, .ac-a .ac-h3 { text-transform: uppercase; font-weight: 400; letter-spacing: 0; }
+.ac-a .ac-h1 { font-size: clamp(48px, 7vw, 108px); line-height: .9; }
+.ac-a .ac-k { background: var(--ink); color: #ecff54; justify-self: start; padding: 2px 8px; font-weight: 400; }
+.ac-a .ac-btn { font-family: SpaceMono, monospace; text-transform: uppercase; font-weight: 400; font-size: 14px; box-shadow: 4px 4px 0 #ecff54; }
+.ac-a .ac-si-steps, .ac-a .ac-summary, .ac-a .ac-next { border: 2px solid var(--ink); box-shadow: 8px 8px 0 #ecff54; }
+.ac-a .ac-nav a[aria-current] { background: #ecff54; color: #101a6b; }
+.ac-a .ac-lot a { background: #ecff54; color: #101a6b; padding: 0 4px; }
+
+/* ===================================================================================================== 3. B — Expressive everyday */
+.ac-b { --bg: #f2ecdf; --ink: #2e2926; --muted: #4a423c; --line: rgb(46 41 38 / .22); --field: #fffdf8; --panel: #e3cbe7; --radius: 24px; --btn-radius: 999px; }
+.ac-b .ac-h1, .ac-b .ac-h2, .ac-b .ac-h3 { font-weight: 800; letter-spacing: -.05em; }
+.ac-b .ac-head { max-width: none; background: #d9c3e6; border-bottom: 1.5px solid var(--ink); padding-inline: max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))); margin-bottom: 18px; }
+.ac-b .ac-k { justify-self: start; padding: 3px 12px; border: 1.5px solid var(--ink); border-radius: 999px; background: #fffdf8; text-transform: none; letter-spacing: 0; }
+.ac-b .ac-si-steps, .ac-b .ac-summary, .ac-b .ac-next { border: 1.5px solid var(--ink); background: #fffdf8; }
+.ac-b .ac-nav ul { border: 0; gap: 6px; }
+.ac-b .ac-nav a { border: 1.5px solid var(--ink); border-radius: 999px; background: #fffdf8; }
+.ac-b .ac-nav a[aria-current] { background: var(--ink); color: #fffdf8; }
+
+/* ===================================================================================================== 4. C — Everyday Elsewhere */
+.ac-c { --bg: #fff2c7; --ink: #40291e; --muted: #5e4337; --line: rgb(64 41 30 / .24); --field: #fffaf0; --panel: #fff8df; --display: Gloock, Georgia, serif; --btn: #40291e; --btn-ink: #fff2c7; --btn-radius: 999px; --radius: 16px; --bad: #a32a17; }
+.ac-c .ac-h1, .ac-c .ac-h2, .ac-c .ac-h3 { font-weight: 400; letter-spacing: -.02em; }
+.ac-c .ac-h1 { color: #b4311c; }
+.ac-c .ac-k { color: #193fa8; }
+.ac-c .ac-si-steps, .ac-c .ac-summary { border: 8px solid #fff8df; box-shadow: 6px 6px 0 rgb(64 41 30 / .12); }
+.ac-c .ac-btn { box-shadow: 4px 4px 0 #b4311c; }
+.ac-c .ac-nav a[aria-current] { border-bottom-color: #b4311c; color: #b4311c; }
+
+/* ===================================================================================================== 5. D — The Other Side */
+.ac-d { --bg: #091321; --ink: #f7e9c5; --muted: #c6c9c8; --line: rgb(216 179 123 / .32); --panel: #122033; --field: #0d1828; --btn: #d8b37b; --btn-ink: #091321; --label: SpaceMono, monospace; --ok: #8fd19e; --bad: #ff9b85; --warn: #f2c66d; }
+.ac-d .ac-k { color: #d8b37b; font-weight: 400; }
+.ac-d .ac-h1, .ac-d .ac-h2, .ac-d .ac-h3 { font-weight: 300; letter-spacing: -.045em; }
+.ac-d .ac-btn { font-family: SpaceMono, monospace; text-transform: uppercase; font-size: 14px; }
+.ac-d .ac-si-steps, .ac-d .ac-summary { background: radial-gradient(ellipse 70% 60% at 50% 0%, rgb(247 233 197 / .1), transparent 70%), #0d1828; border-bottom: 10px solid #122033; }
+.ac-d .ac-nav a[aria-current] { color: #d8b37b; border-bottom-color: #d8b37b; }
+
+/* ===================================================================================================== 6. E — Fan Deck */
+.ac-e { --bg: #fff; --panel: #f2f0eb; --btn-radius: 3px; --radius: 6px; --label: "Lemon Milk", "Aileron", sans-serif; }
+.ac-e .ac-h1 { font: 700 clamp(32px, 4.2vw, 60px)/.98 "Lemon Milk", sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.ac-e .ac-h2, .ac-e .ac-h3 { font-weight: 300; letter-spacing: -.035em; }
+.ac-e .ac-k { font-size: 10px; letter-spacing: .14em; font-weight: 400; }
+.ac-e .ac-head { border-bottom: 12px solid; border-image: linear-gradient(90deg, #aa472e 0 14.28%, #777d51 0 28.56%, #35306f 0 42.84%, #84919b 0 57.12%, #b184b9 0 71.4%, #07566a 0 85.68%, #9c9274 0) 1; margin-bottom: 18px; }
+.ac-e .ac-si-steps, .ac-e .ac-summary { background: #f2f0eb; border: 0; box-shadow: inset 0 10px 0 #2d2926; padding-top: 30px; }
+.ac-e .ac-next { border-left: 8px solid #35306f; }
+
+/* ===================================================================================================== 7. F — Edition */
+.ac-f { --bg: #f3f0ea; --line: rgb(45 41 38 / .22); --panel: #ebe6dc; --field: #fbfaf7; --btn-radius: 999px; --label: "Lemon Milk", "Aileron", sans-serif; }
+.ac-f .ac-k { font: 400 10px/1.5 "Lemon Milk", sans-serif; letter-spacing: .2em; border-bottom: 1px solid var(--ink); padding-bottom: 10px; }
+.ac-f .ac-h1, .ac-f .ac-h2, .ac-f .ac-h3 { font-weight: 200; letter-spacing: -.055em; }
+.ac-f .ac-h1 { font-size: clamp(46px, 6.6vw, 98px); }
+.ac-f .ac-lede { font-style: italic; font-weight: 300; }
+.ac-f .ac-si-steps, .ac-f .ac-summary { background: transparent; border: 0; border-block: 1px solid var(--ink); border-radius: 0; padding-inline: 0; }
+
+/* ===================================================================================================== 8. G — Darkroom */
+.ac-g { --bg: #000; --ink: #fff; --muted: #c9c9c9; --line: rgb(255 255 255 / .26); --panel: #121212; --field: #000; --btn: #fff; --btn-ink: #000; --ok: #9fe0b0; --bad: #ff9e8a; --warn: #f5d27a; }
+.ac-g .ac-h1, .ac-g .ac-h2, .ac-g .ac-h3 { font-weight: 200; letter-spacing: -.05em; }
+.ac-g .ac-h1 { font-size: clamp(46px, 6.4vw, 96px); }
+.ac-g .ac-k { letter-spacing: .16em; font-size: 11px; font-weight: 400; border-block: 1px solid currentColor; padding: 4px 0; justify-self: start; }
+.ac-g .ac-btn { text-transform: uppercase; letter-spacing: .12em; font-size: 13px; }
+.ac-g .ac-si-steps, .ac-g .ac-summary { background: #fff; color: #000; --ink: #000; --muted: #4a4a4a; --line: rgb(0 0 0 / .2); --btn: #000; --btn-ink: #fff; --field: #fff; --panel: #f2f2f2; --ok: #1d5c33; --bad: #a3271a; --warn: #7a5200; }
+.ac-g img { filter: grayscale(1); }
+
+/* ===================================================================================================== 9. H — Folio */
+.ac-h { --bg: #fff; --ink: #111; --muted: #555; --line: rgb(0 0 0 / .16); --panel: #f6f6f6; --btn: #111; }
+.ac-h .ac-h1, .ac-h .ac-h2, .ac-h .ac-h3 { font-weight: 300; letter-spacing: -.035em; }
+.ac-h .ac-k { font-style: italic; text-transform: none; letter-spacing: 0; font-size: 14px; font-weight: 400; }
+.ac-h .ac-si-steps, .ac-h .ac-summary { border: 0; border-left: 1px solid var(--ink); border-radius: 0; }
+.ac-h .ac-nav a[aria-current] { border-bottom-width: 1px; font-style: italic; }

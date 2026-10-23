@@ -250,7 +250,7 @@ async def interactions(pg, d, t):
        cart: JSON.parse(localStorage.getItem('bcc-cart')), count: [...document.querySelectorAll('[data-cart-count]')].map(x => x.textContent),
        announce: document.querySelector('[data-sp-announce]').textContent, path: location.pathname, y: scrollY }})""")
     check("Adding" in busy, f"{t} loading state ({busy})")
-    check(res["cart"] == [{"id": first["id"], "quantity": 1}], f"{t} one add despite double click {res['cart']}")
+    check([{k: x[k] for k in ("id", "quantity")} for x in res["cart"]] == [{"id": first["id"], "quantity": 1}], f"{t} one add despite double click {res['cart']}")
     check(res["count"] and all(c == "1" for c in res["count"]), f"{t} bag count updated {res['count']}")
     check("Added" in res["label"] and "Added to your bag" in res["msg"] and first["name"] in res["announce"], f"{t} success state {res}")
     check(res["path"] == "/shop" and abs(res["y"] - y_before) < 5, f"{t} stays in place after add")
@@ -258,7 +258,7 @@ async def interactions(pg, d, t):
     await pg.click(btn)
     await pg.wait_for_timeout(500)
     cart = await pg.evaluate("JSON.parse(localStorage.getItem('bcc-cart'))")
-    check(cart == [{"id": first["id"], "quantity": 2}], f"{t} second deliberate add {cart}")
+    check([{k: x[k] for k in ("id", "quantity")} for x in cart] == [{"id": first["id"], "quantity": 2}], f"{t} second deliberate add {cart}")
     # Quantity limit error
     await pg.evaluate(f"localStorage.setItem('bcc-cart', JSON.stringify([{{id:'{first['id']}', quantity:10}}]))")
     await pg.reload(wait_until="networkidle")

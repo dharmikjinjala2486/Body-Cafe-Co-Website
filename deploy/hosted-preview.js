@@ -40,9 +40,39 @@
     if (owner.product !== product) return {...base, state: 'other_product', other_products: [owner.product]};
     return {...base, ...empty, availability: 'unavailable'};
   }
+  /* The bag works in the shared preview with the same sample rules as the local API (prices and stock from the
+     published catalogue snapshot). Checkout stays unavailable here. */
+  async function quote(data) {
+    const c = await loadCatalog();
+    const items = Array.isArray(data.items) ? data.items.slice(0, 30) : [];
+    const code = String(data.discount || '').trim().toUpperCase();
+    const changes = [];
+    const lines = items.map((it) => {
+      const p = c.products.find((x) => x.id === it.id);
+      if (!p) { changes.push({id: it.id, kind: 'unknown'}); return {id: it.id, name: null, quantity: it.quantity, status: 'unknown', available: 0, max: 0, unit_price: null, line_total: 0}; }
+      const max = p.published ? Math.min(10, p.stock || 0) : 0;
+      const status = max === 0 ? 'unavailable' : it.quantity > max ? 'reduced' : 'ok';
+      const payable = status === 'unavailable' ? 0 : Math.min(it.quantity, max);
+      const changed = Number.isInteger(it.price) && it.price !== p.price;
+      if (status !== 'ok') changes.push({id: p.id, kind: status, from: it.quantity, to: payable});
+      if (changed) changes.push({id: p.id, kind: 'price', from: it.price, to: p.price});
+      return {id: p.id, name: p.name, quantity: it.quantity, payable_quantity: payable, status, available: p.stock, max, limit: 10, unit_price: p.price, line_total: p.price * payable, color: p.color, price_changed: changed, seen_price: it.price ?? null};
+    });
+    const subtotal = lines.reduce((n, x) => n + x.line_total, 0);
+    const ok = code === 'PREVIEW10', discount = code && ok ? Math.floor((subtotal + 5) / 10) : 0;
+    const shipping = subtotal === 0 || subtotal - discount >= 1499 ? 0 : 75;
+    return {lines, changes, subtotal, discount, discount_applied: ok ? {code, label: 'PREVIEW10 · sample 10% off', condition: 'Sample code for testing the preview. 10% off the subtotal, rounded to the nearest rupee.', amount: discount} : null,
+      discount_error: code && !ok ? 'That code isn’t valid. Check it, or remove it to continue.' : null, shipping,
+      shipping_rule: {fee: 75, free_from: 1499, note: 'Sample delivery rule: ₹75, free when the subtotal after discount is ₹1,499 or more. Not an approved shipping policy.'},
+      tax_note: 'Sample prices include illustrative tax. Actual GST awaits approved rates.', total: subtotal - discount + shipping,
+      count: lines.reduce((n, x) => n + (x.payable_quantity || 0), 0), ready: lines.length > 0 && lines.every((x) => x.status === 'ok' && !x.price_changed) && !(code && !ok), sample: true};
+  }
   window.BCCStaticPreview = {
     async api(path, data) {
+      if (path === '/bag/quote' && data) return quote(data);
+      if (path === '/bag' && data) return {ok: true, account: false};
       if (data !== undefined) throw new Error('This shared design preview does not save orders, sign-ins or support requests.');
+      if (path === '/bag') return {items: [], account: false};
       if (path === '/session') return {user: {id: 'design-preview', name: 'Guest', role: 'customer', mobile: ''}, csrf: '', preview: true};
       if (path === '/catalog') return loadCatalog();
       if (path === '/account') return {orders: [], cases: [], addresses: [], reviews: []};

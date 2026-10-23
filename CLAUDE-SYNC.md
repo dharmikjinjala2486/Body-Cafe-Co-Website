@@ -203,3 +203,8 @@ Imported `body-cafe-co-story-a-h.zip` against `fd6036d4470fb0cbdb21e79fbc5b89f35
 ## Lot Reports — 23 October 2026
 
 Imported `body-cafe-co-lot-reports-a-h.zip` (SHA-256 `e4e2c22b78a5922ae62926db56ec707e884c1c0481f7893d3c3e2136417b42c1`), authored against `4c28f6c`, using a clean three-way merge onto `5d97e2a`. This preserves both newer feedback-form commits, including backend storage, Netlify collection/build checks and name-first recap. Archive integrity and paths passed. Imported files match the supplied overlay except `app/server.py` and `deploy/test_hosted_preview.mjs`, where the newer feedback work is retained. Independent verification is in `design-review/LOTS-RELEASE-2026-10-23.md`.
+
+
+## Account/Cart and Support/Policies — 23 October 2026
+
+Applied sequentially over clean `3ad38b1`: `body-cafe-co-account-cart-a-h.zip` SHA-256 `d0d60624837c977923d571e96ea8bdbd62f352611ca48349be78015a76f35350`, then frozen `body-cafe-co-support-policies-a-h.zip` SHA-256 `d5ff6505ecff22a062ecaa7643bb4a0763d2b0caa67d026a25764d6d17b58993`. Both patches apply cleanly. Archive integrity and paths checked; combined files match the Support overlay. Existing feedback and Lot Reports work remains. See independent checks and publication limits in `design-review/ACCOUNT-SUPPORT-RELEASE-2026-10-23.md`.

@@ -44,7 +44,7 @@
       '<footer class="e-footer">' + stripe(ctx, "e-stripe-foot") + '<div class="e-foot-grid"><div class="e-foot-brand"><img src="/web/media/brand-original.svg" alt="Body Café Co." width="456" height="443"><p>Seven everyday supplements, each with its own cap colour.</p></div>' +
       '<div><h2>Shop</h2><a href="/shop">All seven</a>' + ctx.published.map(function (p) { return '<a href="/products/' + p.id + '"><i style="background:' + p.color + '" aria-hidden="true"></i>' + ctx.escape(p.name) + "</a>"; }).join("") + "</div>" +
       '<div><h2>Read</h2><a href="/about">About</a><a href="/story">Story</a><a href="/standards">Standards</a><a href="/learn">Learn</a><a href="/reports">Lot reports</a></div>' +
-      '<div><h2>Help</h2><a href="/help">Help centre</a><a href="/contact">Contact</a><a href="/account">Your account</a><a href="/settings">Preferences</a>' + S.policyOrder.map(function (k) { return '<a href="/policies/' + k + '">' + S.policies[k].title + "</a>"; }).join("") + "</div></div>" +
+      S.careGroups().map(function (g) { return '<div><h2>' + g.group + '</h2>' + g.items.map(function (x) { return '<a href="' + x[1] + '">' + x[0] + '</a>'; }).join('') + '</div>'; }).join('') + "</div>" +
       '<p class="e-foot-legal"><span>© ' + new Date().getFullYear() + " Body Café Co.</span><span>Preview store. Prices are samples, packaging is a draft and lot reports are demonstration records.</span><a href=\"/preview/states\">Design states</a></p></footer></div>";
   }
 

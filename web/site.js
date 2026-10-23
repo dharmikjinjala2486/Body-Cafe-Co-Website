@@ -383,7 +383,7 @@
   /* ---------- Policies ---------- */
   var policies = {
     shipping: {
-      title: "Shipping & delivery",
+      title: "Shipping & Delivery",
       plain: "Delivery fees, serviceable pincodes and delivery dates aren't final. The preview uses an illustrative delivery charge and never promises a date.",
       sections: [
         ["How orders will ship", "Orders are planned to ship from one active warehouse, with two delivery partners named in the working plan: Vayuvega and Shipneer.", "Working direction"],
@@ -393,7 +393,7 @@
       ],
     },
     returns: {
-      title: "Returns & refunds",
+      title: "Returns & Refunds",
       plain: "Return eligibility, timing and remedies haven't been decided. If something's wrong with an order, open a support case and we'll keep it on record.",
       sections: [
         ["What's decided", "Returns and replacements will be handled through support cases, so every request has an ID and a record.", "Working direction"],
@@ -403,7 +403,7 @@
       ],
     },
     cancellation: {
-      title: "Cancellation",
+      title: "Cancellations",
       plain: "The working direction allows cancellation before shipment begins. Exactly where that line falls, and who approves it, is still being confirmed.",
       sections: [
         ["Working direction", "Orders can be cancelled before shipment is initiated.", "Working direction"],
@@ -413,7 +413,7 @@
       ],
     },
     privacy: {
-      title: "Privacy & your choices",
+      title: "Privacy",
       plain: "The preview keeps session, order, address and support records in a local database. No marketing provider receives them, and optional choices start unticked.",
       sections: [
         ["What the preview stores", "Session, order, address and support data, in a local SQLite database. No marketing provider receives this data.", "Preview behaviour"],
@@ -423,7 +423,7 @@
       ],
     },
     terms: {
-      title: "Terms of the preview",
+      title: "Terms",
       plain: "This website is a working preview, not a live offer for sale. Prices, stock, reports and transactions are all illustrative.",
       sections: [
         ["Not a live store", "This website is a local functional preview, not a live offer for sale. All prices, stock, reports and transactions are illustrative.", "Preview behaviour"],
@@ -506,5 +506,12 @@
     sourceList: sourceList,
     noteSummary: noteSummary,
     guideMatches: guideMatches,
+    /* Footer support and policy groups, identical in every direction (labels and order come from support-content.js).
+       Each theme renders them with its own column markup: careGroups().map(g => g.group / g.items[[label, href]]). */
+    careGroups: function () {
+      var C = window.BCCSupportContent;
+      var groups = C ? C.LINKS : [];
+      return groups.map(function (g, i) { return { group: g.group, items: i === 0 ? g.items.concat([["Your account", "/account"]]) : g.items }; });
+    },
   };
 })();

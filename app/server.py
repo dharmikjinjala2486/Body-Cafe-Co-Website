@@ -15,9 +15,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
 
 try:
-    from app import media, lots
+    from app import media, lots, account, support
+    from app.errors import Error
 except ImportError:  # run as a script: python3 app/server.py
-    import media, lots
+    import media, lots, account, support
+    from errors import Error
 
 ROOT = Path(__file__).resolve().parent.parent
 PRODUCTS = [
@@ -35,15 +37,10 @@ BUNDLES = [
 ]
 
 LEARN_TOPIC=re.compile(r'/learn(/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?')
-CASE_TOPIC=re.compile(r'/(learn(/[a-z0-9-]{1,60})?|story|about)(#[a-z0-9-]{1,40})?')
+CASE_TOPIC=re.compile(r'/(learn(/[a-z0-9-]{1,60})?|story|about|help/[a-z]{2,20}/[a-z0-9-]{2,60}|policies/(shipping|returns|cancellation|privacy|terms)|products/[a-z0-9-]{1,60})(#[a-z0-9-]{1,40})?')
 LOT_KINDS=('report_publish','report_withdraw','lot_notice','lot_notice_retire')
 
-class Error(Exception):
-    def __init__(self, message, status=400):
-        super().__init__(message)
-        self.status = status
-
-class Store(lots.LotsMixin):
+class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
     def __init__(self, path):
         self.path = str(path)
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -77,6 +74,8 @@ class Store(lots.LotsMixin):
             CREATE TABLE IF NOT EXISTS review_reports(id INTEGER PRIMARY KEY, review_id TEXT, user_id TEXT, reason TEXT, note TEXT, state TEXT, created INTEGER, UNIQUE(review_id,user_id));
             ''')
             self.lots_init(c)
+            self.account_init(c)
+            self.support_init(c)
             for i,p in enumerate(PRODUCTS):
                 data = dict(zip(['id','name','subtitle','ingredients','price','color','category'],p))
                 data.update({'preview':True,'published':True,'formula_approved':False,'label_note':'Full formulation, quantities, directions and warnings await approved rear labels.'})
@@ -106,7 +105,8 @@ class Store(lots.LotsMixin):
         c.execute('INSERT INTO audit(actor,action,target,created) VALUES(?,?,?,?)',(actor,action,target,int(time.time())))
 
     def expire(self,c):
-        rows=c.execute("SELECT * FROM reservations WHERE state='held' AND expires<=?",(int(time.time()),)).fetchall()
+        # A reservation whose payment is still being confirmed is kept until the payment's outcome is known.
+        rows=c.execute("SELECT * FROM reservations WHERE state='held' AND expires<=? AND order_id NOT IN (SELECT order_id FROM payments WHERE status='processing')",(int(time.time()),)).fetchall()
         for r in rows:
             c.execute('UPDATE batches SET available=available+? WHERE id=?',(r['quantity'],r['batch']))
             c.execute("UPDATE reservations SET state='expired' WHERE id=?",(r['id'],))
@@ -144,38 +144,6 @@ class Store(lots.LotsMixin):
             self.log(c,uid,'preview_login',uid)
         return {'ok':True}
 
-    def otp(self,s,data):
-        mobile=str(data.get('mobile','')).strip()
-        if not re.fullmatch(r'[6-9][0-9]{9}',mobile):raise Error('Enter a valid 10-digit Indian mobile number.')
-        now=int(time.time())
-        with self.db() as c:
-            previous=c.execute('SELECT * FROM otps WHERE mobile=?',(mobile,)).fetchone()
-            if previous and now-previous['sent']<20:raise Error('Please wait 20 seconds before requesting another preview code.',429)
-            code=f'{secrets.randbelow(1000000):06d}'
-            c.execute('INSERT OR REPLACE INTO otps VALUES(?,?,?,?,?)',(mobile,hashlib.sha256(code.encode()).hexdigest(),now+300,0,now))
-        return {'preview_code':code,'expires_in':300,'message':'Local preview code. No SMS was sent.'}
-
-    def verify(self,s,data):
-        mobile=str(data.get('mobile',''));code=str(data.get('code',''))
-        invalid=False
-        with self.db() as c:
-            r=c.execute('SELECT * FROM otps WHERE mobile=?',(mobile,)).fetchone()
-            if not r or r['expires']<time.time() or r['attempts']>=5:raise Error('Code expired or unavailable. Request a new preview code.')
-            if not hmac.compare_digest(r['digest'],hashlib.sha256(code.encode()).hexdigest()):
-                c.execute('UPDATE otps SET attempts=attempts+1 WHERE mobile=?',(mobile,));invalid=True
-            else:
-                uid='customer-'+hashlib.sha256(mobile.encode()).hexdigest()[:20]
-                c.execute('INSERT OR IGNORE INTO users VALUES(?,?,?,?)',(uid,'Customer',mobile,'customer'))
-                # Only merge this guest session's orders whose checkout mobile matches verified mobile.
-                if s['user_id'].startswith('guest-'):
-                    for order in c.execute('SELECT * FROM orders WHERE user_id=?',(s['user_id'],)).fetchall():
-                        if json.loads(order['data']).get('contact',{}).get('mobile')==mobile:
-                            c.execute('UPDATE orders SET user_id=? WHERE id=?',(uid,order['id']))
-                c.execute('UPDATE sessions SET user_id=? WHERE id=?',(uid,s['id']))
-                c.execute('DELETE FROM otps WHERE mobile=?',(mobile,))
-        if invalid:raise Error('The preview code does not match.')
-        return {'ok':True}
-
     def order(self,s,data):
         if s['role']!='customer':raise Error('Use a customer session to place a preview order.',403)
         if data.get('adult') is not True:raise Error('Confirm that the purchaser is 18 or older.')
@@ -200,8 +168,12 @@ class Store(lots.LotsMixin):
             merged[pid]=merged.get(pid,0)+qty
             if merged[pid]>10:raise Error('Maximum preview quantity is 10 per product.')
         oid='BCC-'+secrets.token_hex(4).upper();now=int(time.time());lines=[];allocations=[]
+        key=str(data.get('idempotency_key','') or '')
         with self.db() as c:
             self.expire(c)
+            # The same checkout submitted twice (double click, retry after a network error) returns the first order.
+            existing=self.order_existing(c,s,key)
+            if existing:return existing
             for pid,qty in merged.items():
                 r=c.execute('SELECT data FROM products WHERE id=?',(pid,)).fetchone()
                 if not r:raise Error('Product not found.',404)
@@ -225,6 +197,7 @@ class Store(lots.LotsMixin):
             c.execute('INSERT INTO orders VALUES(?,?,?,?,?)',(oid,s['user_id'],'pending',json.dumps(payload),now))
             for batch,qty in allocations:c.execute('INSERT INTO reservations VALUES(?,?,?,?,?,?)',(secrets.token_hex(12),oid,batch,qty,now+900,'held'))
             c.execute('INSERT INTO payments VALUES(?,?,?,?)',('PAY-'+secrets.token_hex(8),oid,'pending',payload['total']))
+            self.order_key_record(c,s,key,oid)
             self.log(c,s['user_id'],'reservation_created',oid)
         return {'id':oid,**payload,'state':'pending'}
 
@@ -233,30 +206,13 @@ class Store(lots.LotsMixin):
         if not r or (r['user_id']!=s['user_id'] and s['role'] not in ['admin','viewer']):raise Error('Order not found.',404)
         return r,json.loads(r['data'])
 
-    def pay(self,s,oid,data):
-        with self.db() as c:
-            self.expire(c);r,p=self.owned_order(c,s,oid)
-            if r['user_id']!=s['user_id']:raise Error('Use the purchasing customer session.',403)
-            if r['state']=='paid':return {'id':oid,'state':'paid','idempotent':True}
-            if r['state']!='pending':raise Error('This payment reservation is no longer active. Start a new checkout.',409)
-            if data.get('outcome') not in ['success','failure']:raise Error('Choose a preview payment outcome.')
-            if data['outcome']=='failure':
-                c.execute("UPDATE payments SET status='failed' WHERE order_id=?",(oid,));self.log(c,s['user_id'],'preview_payment_failed',oid)
-                return {'id':oid,'state':'pending','payment':'failed','message':'No money moved. Retry while the reservation is active.'}
-            invalid=c.execute("SELECT r.id FROM reservations r JOIN batches b ON r.batch=b.id WHERE r.order_id=? AND (b.state!='released' OR b.proof!=1 OR b.expiry<=?)",(oid,int(time.time()))).fetchone()
-            if invalid:raise Error('A reserved lot is no longer released. Contact preview support or cancel this order.',409)
-            c.execute("UPDATE reservations SET state='consumed' WHERE order_id=? AND state='held'",(oid,))
-            c.execute("UPDATE payments SET status='captured' WHERE order_id=?",(oid,))
-            p['history'].append({'state':'paid','at':int(time.time())})
-            c.execute("UPDATE orders SET state='paid',data=? WHERE id=?",(json.dumps(p),oid));self.log(c,s['user_id'],'preview_payment_captured',oid)
-        return {'id':oid,'state':'paid','message':'Preview payment only. No money moved.'}
-
     def cancel(self,s,oid):
         with self.db() as c:
             self.expire(c);r,p=self.owned_order(c,s,oid)
             if r['user_id']!=s['user_id']:raise Error('Use the purchasing customer session.',403)
             if r['state']=='cancelled':return {'ok':True,'idempotent':True}
             if r['state'] not in ['pending','paid']:raise Error('Shipment has started or the reservation expired. Open a support case.',409)
+            if self.payment_status(c,oid)=='processing':raise Error('We’re still confirming your payment. Check its status first, then you can cancel.',409,reason='processing')
             for held in c.execute("SELECT * FROM reservations WHERE order_id=? AND state IN ('held','consumed')",(oid,)).fetchall():
                 c.execute('UPDATE batches SET available=available+? WHERE id=?',(held['quantity'],held['batch']))
                 c.execute("UPDATE reservations SET state='released' WHERE id=?",(held['id'],))
@@ -269,7 +225,7 @@ class Store(lots.LotsMixin):
     def case(self,s,data):
         if s['role']!='customer':raise Error('Use a customer session to open a case.',403)
         kind=data.get('kind','general');text=str(data.get('message','')).strip()
-        if kind not in ['general','brand','learn','report','delivery','return','replacement','safety']:raise Error('Select a valid case type.')
+        if kind not in ['general','brand','learn','report','delivery','return','replacement','safety','cancellation','product','business']:raise Error('Select a valid case type.',field='kind')
         topic=str(data.get('topic','') or '').strip()
         if topic and not (CASE_TOPIC.fullmatch(topic) or lots.LOT_TOPIC.fullmatch(topic) or topic=='/reports'):raise Error('That page reference is not valid.')
         lot_entered=str(data.get('lot','') or '').strip()[:lots.LOT_MAX]
@@ -277,12 +233,18 @@ class Store(lots.LotsMixin):
         if not isinstance(media_ids,list) or len(media_ids)>2 or not all(isinstance(m,str) and re.fullmatch(r'IMG-[0-9a-f]{16}',m) for m in media_ids):raise Error('Attach at most two photos.')
         feedback=str(data.get('feedback','') or '')
         if feedback and feedback not in ('correction','followup'):raise Error('Choose correction or follow-up.')
-        if not 10<=len(text)<=3000:raise Error('Describe the issue in 10–3000 characters.')
+        if not 10<=len(text)<=3000:raise Error('Describe the issue in 10–3000 characters.',field='message')
+        contact=support.contact_details(data,s) if isinstance(data.get('contact'),dict) else None
         with self.db() as c:
             oid=str(data.get('order_id','')).strip()
-            if oid:self.owned_order(c,s,oid)
+            if oid:
+                try:self.owned_order(c,s,oid)
+                except Error:raise Error('We couldn’t find that order in this account or browser session. Check the reference, or leave it blank.',404,field='order_id')
             cid='CASE-'+secrets.token_hex(4).upper()
-            payload={'kind':kind,'message':text,'order_id':oid,'state':'open','owner':'Unassigned','sla':'Priority review' if kind=='safety' else 'Preview target: 1 business day','preview':True,'history':[]}
+            payload={'kind':kind,'message':text,'order_id':oid,'state':'open','owner':'Unassigned','sla':'Priority review' if kind=='safety' else 'Response time not yet confirmed','preview':True,'queue':support.QUEUES.get(kind,'General'),'history':[{'state':'open','at':int(time.time()),'note':'Case received'}]}
+            if contact:payload['contact']=contact
+            if topic and 'topic' not in payload and topic.startswith(('/help/','/policies/','/products/')):payload['topic']=topic
+            if kind=='product' and topic.startswith('/products/'):payload['topic']=topic;payload['subject']='Product question · '+topic
             for mid in media_ids:
                 m=c.execute("SELECT * FROM review_media WHERE id=? AND user_id=? AND state='case_uploaded'",(mid,s['user_id'])).fetchone()
                 if not m:raise Error('A photo could not be attached. Upload it again.',409)
@@ -363,7 +325,7 @@ class Store(lots.LotsMixin):
                 r=c.execute('SELECT * FROM cases WHERE id=?',(data.get('id'),)).fetchone()
                 if not r:raise Error('Case not found.',404)
                 if data.get('state') not in ['open','investigating','resolved','escalated']:raise Error('Invalid case state.')
-                p=json.loads(r['data']);p['state']=data['state'];p['owner']=s['name'];p['history'].append({'state':data['state'],'at':int(time.time())});c.execute('UPDATE cases SET data=? WHERE id=?',(json.dumps(p),r['id']));self.log(c,s['user_id'],'case_updated',r['id'])
+                p=json.loads(r['data']);p['state']=data['state'];p['owner']=s['name'];note=str(data.get('note','') or '').strip()[:2000];p['history'].append({'state':data['state'],'at':int(time.time()),**({'note':note,'from':'Body Café Co.'} if note else {})});c.execute('UPDATE cases SET data=? WHERE id=?',(json.dumps(p),r['id']));self.log(c,s['user_id'],'case_updated',r['id'])
             elif action in ('review','review_reply','question'):return self.moderate(c,s,action,data)
             elif action.startswith('lot_'):return self.lot_admin(c,s,action,data)
             else:raise Error('Unknown operation.',404)
@@ -390,6 +352,7 @@ class Store(lots.LotsMixin):
                 result['review_reports']=[dict(r) for r in c.execute('SELECT * FROM review_reports ORDER BY created DESC')]
                 result['events']=[dict(r) for r in c.execute('SELECT name,COUNT(*) AS count FROM events GROUP BY name')]
                 result.update(self.lot_snapshot(c))
+                result['help_feedback']=self.help_feedback_summary(c)
                 result['learn_feedback']=[dict(r) for r in c.execute('SELECT page,SUM(clear) AS clear,SUM(1-clear) AS unclear,COUNT(*) AS total FROM learn_feedback GROUP BY page ORDER BY page')]
             return result
 
@@ -449,14 +412,6 @@ class Store(lots.LotsMixin):
             c.execute('DELETE FROM learn_feedback WHERE session=? AND page=? AND section=?',(s['id'],page,section))
             c.execute('INSERT INTO learn_feedback(page,section,clear,session,created) VALUES(?,?,?,?,?)',(page,section,1 if data['clear'] else 0,s['id'],int(time.time())))
         return {'ok':True}
-
-    def address(self,s,data):
-        if s['role']!='customer':raise Error('Use a customer session.',403)
-        if not re.fullmatch(r'[1-9][0-9]{5}',str(data.get('pincode',''))):raise Error('Enter a valid pincode.')
-        if not all(2<=len(str(data.get(k,'')))<=200 for k in ['name','address','city','state']):raise Error('Complete the address.')
-        with self.db() as c:
-            aid='ADDR-'+secrets.token_hex(5);clean={k:str(data[k])[:200] for k in ['name','address','city','state','pincode']};c.execute('INSERT INTO addresses VALUES(?,?,?)',(aid,s['user_id'],json.dumps(clean)))
-        return {'id':aid}
 
     # ---------- Reviews ----------
     # Eligibility: a signed-in customer (OTP-verified mobile) whose own order containing this product was delivered.
@@ -877,7 +832,12 @@ class Handler(BaseHTTPRequestHandler):
                 elif path=='/api/catalog':
                     with self.store.db() as c:flags=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0])
                     result={'products':self.store.products(),'bundles':BUNDLES,'flags':flags,'preview':True}
-                elif path=='/api/account':result=self.store.snapshot(s)
+                elif path=='/api/account':result=self.store.account_view(s)
+                elif path=='/api/bag':result=self.store.bag_get(s)
+                elif re.fullmatch(r'/api/orders/BCC-[0-9A-F]{8}/status',path):result=self.store.order_status(s,path.split('/')[3])
+                elif re.fullmatch(r'/api/orders/BCC-[0-9A-F]{8}/cancel-check',path):result=self.store.cancel_check(s,path.split('/')[3])
+                elif re.fullmatch(r'/api/cases/CASE-[0-9A-F]{8}',path):result=self.store.case_view(s,path.split('/')[3])
+                elif path=='/api/account/export':result=self.store.data_export(s)
                 elif path=='/api/admin':
                     if s['role'] not in ['admin','viewer']:raise Error('An operations session is required.',403)
                     result=self.store.snapshot(s)
@@ -909,18 +869,26 @@ class Handler(BaseHTTPRequestHandler):
                 else:raise Error('Endpoint not found.',404)
             else:
                 if path=='/api/demo/login':result=self.store.login(s,data)
-                elif path=='/api/logout':
-                    with self.store.db() as c:c.execute('DELETE FROM sessions WHERE id=?',(s['id'],))
-                    result={'ok':True}
+                elif path=='/api/logout':result=self.store.logout(s,data)
                 elif path=='/api/auth/otp':result=self.store.otp(s,data)
                 elif path=='/api/auth/verify':result=self.store.verify(s,data)
                 elif path=='/api/orders':result=self.store.order(s,data)
                 elif re.fullmatch(r'/api/orders/[^/]+/pay',path):result=self.store.pay(s,path.split('/')[3],data)
                 elif re.fullmatch(r'/api/orders/[^/]+/cancel',path):result=self.store.cancel(s,path.split('/')[3])
                 elif path=='/api/cases':result=self.store.case(s,data)
+                elif re.fullmatch(r'/api/cases/CASE-[0-9A-F]{8}/reply',path):result=self.store.case_reply(s,path.split('/')[3],data)
+                elif re.fullmatch(r'/api/orders/BCC-[0-9A-F]{8}/return',path):result=self.store.return_request(s,path.split('/')[3],data)
+                elif path=='/api/privacy-requests':result=self.store.privacy_request(s,data)
+                elif path=='/api/help/feedback':result=self.store.help_feedback(s,data)
                 elif path=='/api/learn/feedback':result=self.store.learn_feedback(s,data)
                 elif path=='/api/theme-feedback':result=self.store.theme_feedback(data)
-                elif path=='/api/addresses':result=self.store.address(s,data)
+                elif path=='/api/addresses':result=self.store.address_save(s,data)
+                elif re.fullmatch(r'/api/addresses/ADDR-[0-9a-f]{10}/(delete|default)',path):result=self.store.address_action(s,path.split('/')[3],path.split('/')[4])
+                elif path=='/api/bag':result=self.store.bag_save(s,data)
+                elif path=='/api/bag/quote':result=self.store.bag_quote(s,data)
+                elif path=='/api/profile':result=self.store.profile_update(s,data)
+                elif path=='/api/preferences':result=self.store.preferences(s,data)
+                elif re.fullmatch(r'/api/orders/[^/]+/reconcile',path):result=self.store.reconcile(s,path.split('/')[3],data)
                 elif path=='/api/reviews':result=self.store.review(s,data)
                 elif re.fullmatch(r'/api/reviews/REV-[0-9a-f]{10}/helpful',path):result=self.store.helpful(s,path.split('/')[3])
                 elif re.fullmatch(r'/api/reviews/REV-[0-9a-f]{10}/report',path):result=self.store.report(s,path.split('/')[3],data)
@@ -933,7 +901,7 @@ class Handler(BaseHTTPRequestHandler):
                     result={'ok':True}
                 else:raise Error('Endpoint not found.',404)
             self.json(200,result,cookie)
-        except (Error,lots.LotError) as e:self.json(e.status,{'error':str(e)},cookie)
+        except (Error,lots.LotError) as e:self.json(e.status,{'error':str(e),**getattr(e,'extra',{})},cookie)
         except (ValueError,TypeError,KeyError):self.json(400,{'error':'Invalid request data.'},cookie)
         except Exception as e:
             print('API error:',type(e).__name__,flush=True);self.json(500,{'error':'The preview could not complete that action. Please retry.'},cookie)

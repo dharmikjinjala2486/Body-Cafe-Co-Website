@@ -49,7 +49,7 @@ function readCart() {
   try {
     const x = JSON.parse(localStorage.getItem("bcc-cart") || "[]");
     return Array.isArray(x)
-      ? x.filter((i) => typeof i.id === "string" && Number.isInteger(i.quantity) && i.quantity > 0 && i.quantity <= 10)
+      ? x.filter((i) => typeof i.id === "string" && Number.isInteger(i.quantity) && i.quantity > 0 && i.quantity <= 10).map((i) => ({ id: i.id, quantity: i.quantity, ...(Number.isInteger(i.price) ? { price: i.price } : {}) }))
       : [];
   } catch {
     return [];
@@ -124,7 +124,12 @@ async function api(path, data) {
     body: data === undefined ? undefined : JSON.stringify(data),
   });
   const value = await res.json();
-  if (!res.ok) throw new Error(value.error || "Please try again.");
+  if (!res.ok) {
+    const err = new Error(value.error || "Please try again.");
+    err.data = value;
+    err.status = res.status;
+    throw err;
+  }
   return value;
 }
 /* The product page (web/product-page.js) reuses these instead of duplicating sign-in, API and cart logic. */
@@ -144,6 +149,14 @@ window.BCCApp = {
   /* Shop: add without the toast (the card confirms), and record in-place URL changes. */
   addToBag: (id, quantity = 1) => add(id, quantity, { quiet: true }),
   bagCount: () => count(),
+  /* The bag module (web/bag.js) and account module (web/account.js) share these. */
+  cart: () => state.cart.map((i) => ({ ...i })),
+  setCart(items) { state.cart = items.filter((i) => i.quantity > 0).map((i) => ({ id: i.id, quantity: Math.min(10, i.quantity), ...(typeof i.price === "number" ? { price: i.price } : {}) })); try { saveCart(); } catch {} renderHeaderCount(); },
+  reloadCart() { state.cart = readCart(); renderHeaderCount(); },
+  renderCount: () => renderHeaderCount(),
+  navigate: (href) => navigate(href),
+  session: () => session(),
+  account: () => state.account,
   routeChanged: () => { renderedRoute = location.pathname + location.search; },
 };
 async function session() {
@@ -187,7 +200,7 @@ function add(id, quantity = 1, { quiet = false } = {}) {
   const qty = (existing?.quantity || 0) + quantity;
   if (qty > Math.min(10, p.stock)) return fail("That's more than the preview stock allows.");
   if (existing) existing.quantity = qty;
-  else state.cart.push({ id, quantity });
+  else state.cart.push({ id, quantity, price: p.price });
   try {
     saveCart();
   } catch {
@@ -196,13 +209,14 @@ function add(id, quantity = 1, { quiet = false } = {}) {
     return fail("Your bag couldn't be saved in this browser. Please try again.");
   }
   event("cart_add");
+  window.BCCBag?.sync?.();
   renderHeaderCount(true);
   const message = `Added ${p.name} to your bag.`;
   if (!quiet) toast(message);
   return { ok: true, message, count: count() };
 }
 function renderHeaderCount(bump = false) {
-  document.querySelectorAll(".bag-link").forEach((a) => a.setAttribute("aria-label", `Cart, ${count()} items`));
+  document.querySelectorAll(".bag-link").forEach((a) => a.setAttribute("aria-label", `${/^Bag\b/.test(a.getAttribute("aria-label") || "") ? "Bag" : "Cart"}, ${count()} items`));
   document.querySelectorAll("[data-cart-count]").forEach((x) => {
     x.textContent = count();
     x.toggleAttribute("data-empty", !count());
@@ -683,6 +697,9 @@ function enhance() {
   window.BCCLearn?.enhance?.();
   window.BCCStory?.enhance?.();
   window.BCCLots?.enhance?.();
+  window.BCCBag?.enhance?.();
+  window.BCCAccount?.enhance?.();
+  window.BCCSupport?.enhance?.();
 }
 function cart() {
   return `<section class="section-wrap">${heading("", "Your bag")}${
@@ -881,7 +898,7 @@ function casePhoto(kind) {
   if (!(t.startsWith("/reports") || ["report", "safety", "replacement"].includes(kind))) return "";
   return `<div class="field case-photo"><label for="case-photo">Photo of the pack (optional)</label><span class="field-hint" id="hint-case-photo">JPEG, PNG or WebP, up to 5 MB. Location data is removed. Only you and our support team can see it.</span><input id="case-photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="hint-case-photo"></div>`;
 }
-const caseKind = (k) => ({ product_question: "Product question", brand: "About the brand", learn: "Learn guide", report: "Lot report" })[k] || k;
+const caseKind = (k) => ({ product_question: "Product question", product: "Product question", brand: "About the brand", learn: "Learn guide", report: "Lot report", replacement: "Problem with an item", "return": "Return or refund", delivery: "Delivery", cancellation: "Cancellation", business: "Business enquiry", privacy: "Privacy request", safety: "Product safety", general: "General" })[k] || k;
 function caseCard(c) {
   const answer = c.public && c.public.answer ? `<div class="case-answer"><p class="kicker">Answer from Body Café Co.${c.public.state === "published" ? " · also published on the product page" : ""}</p><p>${escape(c.public.answer)}</p></div>` : "";
   return `<article class="case-card"><div>${badge(caseKind(c.kind), c.kind === "safety" ? "warning" : "")}${badge(c.state)}</div><h3>${c.id}</h3>${c.subject ? `<p><strong>${escape(c.subject)}</strong></p>` : ""}<p>${escape(c.message)}</p>${c.topic && c.topic.startsWith("/reports/") ? `<a class="text-link" href="${escape(c.topic)}">Open the lot record</a>` : ""}${(c.media || []).length ? `<p class="micro">${c.media.length} pack photo${c.media.length > 1 ? "s" : ""} attached</p>` : ""}${answer}<small>${escape(c.owner)} · ${escape(c.sla)}</small>${c.order_id ? `<a class="text-link" href="/orders/${c.order_id}">${c.order_id}</a>` : ""}</article>`;
@@ -1061,15 +1078,15 @@ function ops(tab = "overview") {
     )}`;
   else if (tab === "cases")
     content = `<p>Case IDs, ownership and state changes stay in the ledger. A safety case must be assessed; quarantine can be initiated immediately by an Admin.</p>${table(
-      ["Case", "Type / state", "Message", "Order / SLA", "Actions"],
+      ["Case", "Type / state", "Message", "Queue / order / contact", "Actions"],
       o.cases.map((c) => [
         c.id,
         `${badge(caseKind(c.kind), c.kind === "safety" ? "warning" : "")}${badge(c.state)}`,
-        `${escape(c.message)}${c.topic ? `<small>${escape(c.topic)}${c.lot ? " · lot " + escape(c.lot) : ""}</small>` : ""}${(c.media || []).map((m) => `<a class="small-link" href="/api/review-media/${escape(m)}" target="_blank" rel="noopener">Pack photo ${escape(m.slice(4, 10))}</a>`).join("")}`,
-        `${escape(c.order_id || "No order")}<small>${escape(c.sla)}</small>`,
-        `${["investigating", "escalated", "resolved"].map((s) => `<button class="small-button" data-case-state="${s}" data-id="${c.id}" ${viewer ? "disabled" : ""}>${s}</button>`).join("")}`,
+        `${c.subject ? `<strong>${escape(c.subject)}</strong><br>` : ""}${escape(c.message)}${c.request ? `<small>Request: ${escape(c.request.type)} · ${escape(c.request.reason || c.request.kind || "")}${c.request.remedy ? " · wants " + escape(c.request.remedy) : ""}${(c.request.items || []).map((i) => " · " + escape(i.name) + " × " + i.quantity).join("")}</small>` : ""}${c.topic ? `<small>${escape(c.topic)}${c.lot ? " · lot " + escape(c.lot) : ""}</small>` : ""}${(c.history || []).filter((x) => x.state === "customer_reply").map((x) => `<small>Customer added: ${escape(x.message)}</small>`).join("")}${(c.media || []).map((m) => `<a class="small-link" href="/api/review-media/${escape(m)}" target="_blank" rel="noopener">Pack photo ${escape(m.slice(4, 10))}</a>`).join("")}`,
+        `${escape(c.queue || "General")}<small>${escape(c.order_id || "No order")} · ${escape(c.sla)}</small>${c.contact ? `<small>${escape(c.contact.name)}${c.contact.mobile ? " · +91 " + escape(c.contact.mobile) : ""}${c.contact.email ? " · " + escape(c.contact.email) : ""}</small>` : ""}`,
+        `<label class="micro" for="note-${c.id}">Reply shown to the customer (optional)</label><input id="note-${c.id}" class="small-input" data-case-note="${c.id}" maxlength="2000" ${viewer ? "disabled" : ""}>${["investigating", "escalated", "resolved"].map((s) => `<button class="small-button" data-case-state="${s}" data-id="${c.id}" ${viewer ? "disabled" : ""}>${s}</button>`).join("")}`,
       ]),
-    )}`;
+    )}<h2>Help Centre answers</h2><p class="micro">“Did this answer your question?” — one answer per browser session per article.</p>${(o.help_feedback || []).length ? table(["Article", "Yes", "No"], o.help_feedback.map((f) => [escape(f.article), String(f.yes), String(f.no)])) : "<p>No answers yet.</p>"}`;
   else if (tab === "approvals")
     content = `<p>No self-approval. Switch to the other preview Admin to approve a request. Real production identities must enforce the same separation.</p><div class="identity-tools">${["admin-a", "admin-b", "viewer"].map((id) => `<button class="small-button" data-demo-login="${id}">${id}</button>`).join("")}</div>${table(
       ["Request", "Change", "Creator", "State", "Decision"],
@@ -1192,7 +1209,7 @@ async function render(scroll = true) {
   try {
     let content;
     const fx = fixtureState(path);
-    if (!fx && (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/"))) state.account = await api("/account");
+    if (!fx && (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/") || path === "/checkout" || path === "/contact" || path === "/settings")) state.account = await api("/account");
     if (path.startsWith("/ops") && ["admin", "viewer"].includes(state.user.role)) state.ops = await api("/admin");
     if (version !== renderVersion) return;
     // Each customer route asks the active direction for its own composition, falling back to the shared template.
@@ -1202,7 +1219,7 @@ async function render(scroll = true) {
     const sampleOrder = () => (fx && /^SAMPLE-/.test(seg || "") ? Object.assign(window.BCCSite.fixtures.order(fx, state.catalog), { id: seg }) : null);
     if (window.BCCStaticPreview && path.startsWith("/ops"))
       content = `<section class="section article">${heading("Shared design preview", "Operations aren't available here", "The operations preview needs the local application. Browse the customer designs instead.")}${link("Continue shopping", "/shop")}</section>`;
-    else if (window.BCCStaticPreview && !fx && /^\/(checkout|account|orders|payment|contact)(\/|$)/.test(path))
+    else if (window.BCCStaticPreview && !fx && /^\/(checkout|account|orders|payment|sign-in)(\/|$)/.test(path))
       content = call("unavailable", path) ?? `<section class="section article">${heading("Shared design preview", "Explore the design", "You can browse all eight designs, inspect product details and try the sample bag and lot lookup. Ordering, sign-in and support submissions are not enabled on this shared preview.")}${link("Continue shopping", "/shop")}</section>`;
     else if (path === "/") content = call("home") ?? home();
     else if (path === "/shop") content = call("shop") ?? shop();
@@ -1217,15 +1234,16 @@ async function render(scroll = true) {
     else if (path === "/story") content = call("story") ?? story();
     else if (path === "/reports" || path.startsWith("/reports/")) content = call("reports") ?? reports();
     else if (path === "/cart") content = call("cart") ?? cart();
+    else if (path === "/sign-in") content = call("signIn") ?? notFound();
     else if (path === "/checkout") content = call("checkout", fx) ?? checkout();
-    else if (path.startsWith("/account")) content = call("account", seg || "orders", fx) ?? account(seg || "orders");
+    else if (path.startsWith("/account")) content = call("account", seg || "overview", fx) ?? account(seg || "orders");
     else if (path.startsWith("/orders/")) {
       const o = sampleOrder() || state.account?.orders.find((x) => x.id === seg);
       content = call("order", o, fx) ?? orderDetail(o);
     } else if (path.startsWith("/payment/")) {
       const o = sampleOrder() || state.account?.orders.find((x) => x.id === seg);
       content = call("payment", o, fx) ?? payment(o);
-    } else if (path === "/help") content = call("help") ?? help();
+    } else if (path === "/help" || path.startsWith("/help/")) content = call("help") ?? help();
     else if (path === "/contact") content = call("contact", fx) ?? contact();
     else if (path.startsWith("/policies/")) content = call("policy", seg) ?? policy(seg);
     else if (path === "/settings") content = call("settings") ?? settings();
@@ -1278,7 +1296,7 @@ async function render(scroll = true) {
       try {
         pref = JSON.parse(localStorage.getItem("bcc-preferences") || "{}");
       } catch {}
-      for (const k of ["email", "whatsapp", "analytics"]) $(`#preferences-form [name=${k}]`).checked = !!pref[k];
+      for (const k of ["email", "whatsapp", "analytics"]) { const el = $(`#preferences-form [name=${k}]`); if (el) el.checked = !!pref[k]; }
     }
   } catch (e) {
     $("#app").innerHTML = shell(
@@ -1317,6 +1335,8 @@ document.addEventListener("click", async (e) => {
   if (
     anchor &&
     !anchor.hasAttribute("data-design-link") &&
+    !anchor.hasAttribute("download") &&
+    /^https?:$/.test(anchor.protocol) &&
     anchor.origin === location.origin &&
     !anchor.pathname.startsWith("/concepts/") &&
     !anchor.getAttribute("href").startsWith("#") &&
@@ -1431,7 +1451,7 @@ document.addEventListener("click", async (e) => {
     else if (button.dataset.release) await opsAction("request", { kind: "release", target: button.dataset.release, value: true });
     else if (button.dataset.refund) await opsAction("request", { kind: "refund", target: button.dataset.refund });
     else if (button.dataset.approval) await opsAction("approve", { id: button.dataset.approval, decision: button.dataset.decision });
-    else if (button.dataset.caseState) await opsAction("case", { id: button.dataset.id, state: button.dataset.caseState });
+    else if (button.dataset.caseState) await opsAction("case", { id: button.dataset.id, state: button.dataset.caseState, note: document.querySelector(`[data-case-note="${button.dataset.id}"]`)?.value || "" });
     else if (button.dataset.flag)
       await opsAction("request", { kind: "flags", target: button.dataset.flag, value: button.dataset.value === "true" });
     else if (button.dataset.action === "menu") {
@@ -1440,6 +1460,7 @@ document.addEventListener("click", async (e) => {
     } else if (button.dataset.action === "search") $("#search-dialog").showModal();
     else if (button.dataset.action === "close-search") $("#search-dialog").close();
     else if (button.dataset.action === "logout") {
+      window.BCCAccount?.signedOut?.();
       await api("/logout", {});
       await session();
       navigate("/account");
@@ -1488,14 +1509,28 @@ document.addEventListener("submit", async (e) => {
         : "Enter a 6-digit Indian pincode that doesn't start with 0.";
       if (!valid) form.elements.pincode.focus();
     } else if (form.id === "checkout-form") {
-      const o = await api("/orders", {
+      // One order per checkout: the key travels with every submission of this bag, so a double click or a retry
+      // after a network error returns the order already created instead of making a second one.
+      const sig = JSON.stringify(state.cart.map((i) => [i.id, i.quantity]));
+      let ck = {};
+      try { ck = JSON.parse(sessionStorage.getItem("bcc-checkout-key") || "{}"); } catch {}
+      if (ck.sig !== sig || !ck.key) ck = { sig, key: (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)) };
+      try { sessionStorage.setItem("bcc-checkout-key", JSON.stringify(ck)); } catch {}
+      const submit = (key) => api("/orders", {
         ...data,
         contact: Object.fromEntries(["name", "mobile", "email", "pincode", "address", "city", "state"].map((k) => [k, data[k] || ""])),
         items: state.cart,
         adult: form.elements.adult.checked,
         email_consent: form.elements.email_consent.checked,
         whatsapp_consent: form.elements.whatsapp_consent.checked,
+        idempotency_key: key,
       });
+      let o = await submit(ck.key);
+      if (o.idempotent && ["expired", "cancelled"].includes(o.state)) {
+        ck.key = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+        try { sessionStorage.setItem("bcc-checkout-key", JSON.stringify(ck)); } catch {}
+        o = await submit(ck.key);
+      }
       navigate("/payment/" + o.id);
     } else if (form.id === "lot-form") {
       await window.BCCLots?.submit?.();
@@ -1556,6 +1591,7 @@ document.addEventListener("submit", async (e) => {
         `<div class="report-result case-created"><p class="kicker">Case created · saved in this preview only</p><h2>${c.id}</h2><p>Your case is saved locally and no external message was sent. ${c.kind === "safety" ? "It is marked for priority safety review." : ""}</p><a class="text-link" href="/account/cases">Follow your case</a></div>`;
       keepDesignOnLinks();
       form.reset();
+      window.BCCAccount?.contactSent?.();
     } else if (form.id === "address-form") {
       await api("/addresses", data);
       await render(false);

@@ -1,0 +1,180 @@
+/* Body Café Co. — the bag for A–H (markup in bag.js). Part 1: shared structure. Parts 2–9: each direction's look,
+   scoped to `.bg-<direction>`. Nothing here reaches any other route. */
+
+/* ===================================================================================================== 1. SHARED */
+.bg {
+  --pad: clamp(16px, 4.5vw, 64px); --max: 1240px; --gap: clamp(18px, 3vw, 40px);
+  --bg: #fff; --ink: #2d2926; --muted: #5d5853; --line: rgb(45 41 38 / .16); --panel: #f6f4f0; --field: #fff;
+  --btn: var(--ink); --btn-ink: #fff; --radius: 0px; --btn-radius: 0px; --accent: var(--ink); --ok: #24613a; --bad: #9b2b17; --warn: #7a5200;
+  --text: "Aileron", "Helvetica Neue", Arial, sans-serif; --display: var(--text); --label: var(--text);
+  background: var(--bg); color: var(--ink); font-family: var(--text); font-size: 17px; line-height: 1.55; overflow-x: clip;
+  padding-bottom: clamp(40px, 6vw, 96px);
+}
+.bg *, .bg *::before, .bg *::after { box-sizing: border-box; }
+.bg :where(h1, h2, h3, p, ul, ol) { margin: 0; padding: 0; }
+.bg :where(ul, ol) { list-style: none; }
+.bg a { color: inherit; text-underline-offset: 4px; }
+.bg img { display: block; max-width: 100%; height: auto; }
+.bg [hidden] { display: none !important; }
+.bg :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.bg :where(button, input) { font: inherit; color: inherit; }
+.bg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.bg-head { max-width: var(--max); margin: 0 auto; padding: clamp(24px, 4vw, 56px) var(--pad) clamp(14px, 2vw, 24px); display: grid; gap: 8px; }
+.bg-kicker { font-family: var(--label); font-size: 12px; letter-spacing: .09em; text-transform: uppercase; font-weight: 600; }
+.bg .bg-h1 { font-family: var(--display); font-size: clamp(36px, 5vw, 72px); line-height: 1; letter-spacing: -.035em; font-weight: 600; }
+.bg-h1 em { font-style: inherit; }
+.bg-body { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: grid; gap: 16px; }
+.bg-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(300px, 4fr); gap: var(--gap); align-items: start; }
+.bg-count-line { font-family: var(--label); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--line); outline: 0; }
+.bg-lines { display: grid; }
+.bg-lines[aria-busy="true"] { opacity: .85; }
+.bg-line { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.bg-line.is-out { opacity: .8; }
+.bg-thumb { display: block; background: var(--panel); border-radius: var(--radius); padding: 8px; border-top: 4px solid var(--bg-cap); }
+.bg-thumb img { width: 100%; aspect-ratio: 3 / 4; object-fit: contain; }
+.bg-line-main { display: grid; gap: 4px; min-width: 0; }
+.bg-line-main h3 { font-family: var(--display); font-size: 20px; line-height: 1.2; }
+.bg-line-main h3 a { text-decoration: none; } .bg-line-main h3 a:hover { text-decoration: underline; }
+.bg-meta { font-size: 14px; color: var(--muted); }
+.bg-av { font-size: 14px; font-weight: 600; } .bg-av.is-ok { color: var(--ok); } .bg-av.is-out { color: var(--bad); }
+.bg-line-actions { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 4px; }
+.bg .bg-quiet { min-height: 44px; padding: 0; border: 0; background: none; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; font-size: 15px; color: var(--ink); }
+.bg .bg-quiet:disabled { opacity: .5; cursor: not-allowed; }
+.bg-line-end { display: grid; gap: 10px; justify-items: end; }
+.bg .bg-qty { display: inline-grid; grid-template-columns: 44px 40px 44px; align-items: center; border: 1px solid var(--ink); border-radius: var(--btn-radius); background: var(--field); }
+.bg .bg-qty button { height: 44px; border: 0; background: transparent; font-size: 20px; cursor: pointer; }
+.bg .bg-qty button:disabled { opacity: .35; cursor: not-allowed; }
+.bg .bg-qty output { text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+.bg-line-total { font-size: 18px; font-variant-numeric: tabular-nums; }
+.bg .bg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 18px; background: var(--btn); color: var(--btn-ink); border: 1px solid var(--btn); border-radius: var(--btn-radius); font-weight: 700; text-decoration: none; cursor: pointer; font-size: 15px; }
+.bg-notice, .bg-undo { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; padding: 12px 16px; border: 1px solid var(--line); border-left: 4px solid var(--warn); background: var(--panel); border-radius: var(--radius); font-size: 15px; }
+.bg-notice ul { list-style: disc; padding-left: 20px; flex-basis: 100%; }
+.bg-notice.is-error { border-left-color: var(--bad); }
+.bg-undo { border-left-color: var(--ink); }
+.bg-summary { position: sticky; top: 90px; display: grid; gap: 10px; padding: clamp(16px, 2vw, 24px); background: var(--field); border: 1px solid var(--line); border-radius: var(--radius); }
+.bg .bg-sum-h { font-family: var(--display); font-size: 22px; line-height: 1.2; }
+.bg-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.bg-row small { display: block; font-size: 12.5px; color: var(--muted); max-width: 30ch; }
+.bg-row.is-disc strong { color: var(--ok); }
+.bg-row.is-total { border-top: 2px solid var(--ink); font-size: 20px; }
+.bg-disc summary, .bg-pin summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.bg-disc-form, .bg-pin-form { display: grid; gap: 6px; padding-bottom: 8px; }
+.bg-disc-form label, .bg-pin-form label { font-size: 14px; font-weight: 600; }
+.bg .bg-inline { display: flex; gap: 6px; }
+.bg .bg-inline input { flex: 1; min-width: 0; min-height: 44px; padding: 8px 12px; border: 1px solid var(--ink); border-radius: var(--btn-radius); background: var(--bg); text-transform: uppercase; }
+.bg .bg-pin-form input { text-transform: none; }
+.bg .bg-inline input[aria-invalid="true"] { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
+.bg .bg-inline button { min-height: 44px; padding: 8px 14px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg); border-radius: var(--btn-radius); cursor: pointer; font-weight: 600; }
+.bg-err { color: var(--bad); font-weight: 600; font-size: 14px; }
+.bg .bg-checkout { display: flex; justify-content: space-between; align-items: center; min-height: 54px; padding: 12px 20px; background: var(--btn); color: var(--btn-ink); border-radius: var(--btn-radius); text-decoration: none; font-weight: 800; font-size: 18px; }
+.bg .bg-checkout.is-blocked { opacity: .55; cursor: not-allowed; }
+.bg-why { font-size: 14px; color: var(--bad); font-weight: 600; outline: 0; }
+.bg-link { font-weight: 600; text-decoration: underline; min-height: 44px; display: inline-flex; align-items: center; }
+.bg-policy { font-size: 14px; color: var(--muted); }
+.bg-saved { margin-top: 28px; display: grid; gap: 8px; }
+.bg .bg-sec-h { font-family: var(--display); font-size: 24px; line-height: 1.15; }
+.bg-count { font-size: 14px; color: var(--muted); }
+.bg-saved ul { display: grid; border-top: 1px solid var(--line); }
+.bg-saved li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.bg-saved li img { width: 44px; aspect-ratio: 3 / 4; object-fit: contain; border-top: 3px solid var(--bg-cap); background: var(--panel); }
+.bg-saved small { display: block; color: var(--muted); font-size: 13px; }
+.bg-empty { display: grid; gap: 12px; justify-items: start; padding: clamp(24px, 4vw, 48px); background: var(--panel); border-radius: var(--radius); }
+.bg-caps { display: flex; gap: 6px; }
+.bg-caps span { width: 22px; height: 22px; border-radius: 50%; background: var(--bg-cap); }
+.bg-bar { display: none; }
+@media (max-width: 900px) {
+  .bg-grid { grid-template-columns: 1fr; }
+  .bg-summary { position: static; }
+  /* A compact total-and-checkout bar, sticky within the page flow so it never covers content. */
+  .bg-bar { display: flex; position: sticky; z-index: 30; bottom: 0; margin: 16px calc(-1 * var(--pad, 16px)) 0; gap: 12px; align-items: center; justify-content: space-between; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); box-shadow: 0 -6px 18px rgb(0 0 0 / .08); }
+  .bg-bar.is-away { visibility: hidden; }
+  .bg-bar small { display: block; font-size: 12px; color: var(--muted); }
+  .bg-bar strong { font-size: 20px; }
+  .bg-bar .bg-checkout { min-height: 48px; padding: 8px 18px; font-size: 16px; gap: 10px; }
+}
+@media (max-width: 600px) {
+  .bg { font-size: 16px; }
+  .bg-line { grid-template-columns: 64px minmax(0, 1fr); }
+  .bg-line-end { grid-column: 1 / -1; grid-template-columns: auto auto; justify-content: space-between; align-items: center; }
+  .bg-saved li { grid-template-columns: 40px minmax(0, 1fr); }
+  .bg-saved li button { grid-column: 2; justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) { .bg *, .bg *::before, .bg *::after { transition: none !important; animation: none !important; } }
+
+/* ===================================================================================================== 2. A — State of Play */
+.bg-a { --bg: #f1f2ef; --ink: #142bc5; --muted: #3b4785; --line: rgb(20 43 197 / .28); --field: #fff; --panel: #e4e8f6; --btn: #142bc5; --btn-ink: #f1f2ef; --display: Anton, "Aileron", sans-serif; --label: SpaceMono, monospace; --ok: #1d5c33; --bad: #a3271a; }
+.bg-a .bg-h1, .bg-a .bg-sum-h, .bg-a .bg-sec-h, .bg-a .bg-line-main h3 { text-transform: uppercase; font-weight: 400; letter-spacing: 0; }
+.bg-a .bg-h1 { font-size: clamp(54px, 8vw, 120px); line-height: .88; }
+.bg-a .bg-head { background-image: linear-gradient(rgb(20 43 197 / .07) 1px, transparent 1px), linear-gradient(90deg, rgb(20 43 197 / .07) 1px, transparent 1px); background-size: 26px 26px; max-width: none; padding-inline: max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))); border-bottom: 2px solid var(--ink); margin-bottom: 20px; }
+.bg-a .bg-summary { border: 2px solid var(--ink); box-shadow: 8px 8px 0 #ecff54; }
+.bg-a .bg-checkout, .bg-a .bg-btn { font-family: SpaceMono, monospace; text-transform: uppercase; font-weight: 400; font-size: 15px; }
+.bg-a .bg-qty { border-width: 2px; }
+.bg-a .bg-row.is-total strong { background: #ecff54; color: #101a6b; padding: 0 6px; }
+.bg-a .bg-thumb { border: 2px solid var(--ink); border-top-width: 6px; }
+
+/* ===================================================================================================== 3. B — Expressive everyday */
+.bg-b { --bg: #f2ecdf; --ink: #2e2926; --muted: #4a423c; --line: rgb(46 41 38 / .22); --field: #fffdf8; --panel: #e3cbe7; --radius: 24px; --btn-radius: 999px; }
+.bg-b .bg-head { max-width: none; background: #d9c3e6; border-bottom: 1.5px solid var(--ink); padding-inline: max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))); margin-bottom: 20px; }
+.bg-b .bg-h1, .bg-b .bg-sum-h, .bg-b .bg-sec-h { font-weight: 800; letter-spacing: -.05em; }
+.bg-b .bg-kicker { justify-self: start; padding: 4px 14px; border: 1.5px solid var(--ink); border-radius: 999px; background: #fffdf8; text-transform: none; letter-spacing: 0; font-size: 14px; }
+.bg-b .bg-line { padding: 16px; margin-bottom: 10px; border: 1.5px solid var(--ink); border-radius: 24px; background: #fffdf8; }
+.bg-b .bg-thumb { border-radius: 18px; border-top: 0; background: color-mix(in srgb, var(--bg-cap) 22%, #fffdf8); }
+.bg-b .bg-summary { border: 1.5px solid var(--ink); border-radius: 28px; background: #d8ddbb; }
+.bg-b .bg-notice, .bg-b .bg-undo { border: 1.5px solid var(--ink); }
+
+/* ===================================================================================================== 4. C — Everyday Elsewhere */
+.bg-c { --bg: #fff2c7; --ink: #40291e; --muted: #5e4337; --line: rgb(64 41 30 / .24); --field: #fffaf0; --panel: #fff8df; --display: Gloock, Georgia, serif; --btn: #40291e; --btn-ink: #fff2c7; --btn-radius: 999px; --radius: 16px; --red: #b4311c; --bad: #a32a17; }
+.bg-c .bg-h1, .bg-c .bg-sum-h, .bg-c .bg-sec-h, .bg-c .bg-line-main h3 { font-weight: 400; letter-spacing: -.02em; }
+.bg-c .bg-h1 em { font-style: italic; color: var(--red); }
+.bg-c .bg-kicker { color: #193fa8; }
+.bg-c .bg-summary { border: 8px solid #fff8df; box-shadow: 6px 6px 0 rgb(64 41 30 / .12); }
+.bg-c .bg-checkout { box-shadow: 4px 4px 0 var(--red); }
+.bg-c .bg-thumb { border-radius: 999px 999px 14px 14px; border-top: 0; background: linear-gradient(#f3b46e, #e98f5c); }
+.bg-c .bg-line { border-bottom-style: dashed; }
+
+/* ===================================================================================================== 5. D — The Other Side */
+.bg-d { --bg: #091321; --ink: #f7e9c5; --muted: #c6c9c8; --line: rgb(216 179 123 / .32); --panel: #122033; --field: #0d1828; --btn: #d8b37b; --btn-ink: #091321; --label: SpaceMono, monospace; --ok: #8fd19e; --bad: #ff9b85; --warn: #f2c66d; }
+.bg-d .bg-kicker { color: #d8b37b; font-weight: 400; }
+.bg-d .bg-h1, .bg-d .bg-sum-h, .bg-d .bg-sec-h, .bg-d .bg-line-main h3 { font-weight: 300; letter-spacing: -.045em; }
+.bg-d .bg-thumb { background: radial-gradient(ellipse at 50% 30%, rgb(247 233 197 / .16), transparent 70%), #0d1828; border: 1px solid var(--line); border-bottom: 8px solid #122033; border-top: 1px solid var(--line); }
+.bg-d .bg-checkout, .bg-d .bg-btn { font-family: SpaceMono, monospace; text-transform: uppercase; font-size: 14px; }
+.bg-d .bg-inline input { background: #091321; }
+.bg-d .bg-inline button { background: #d8b37b; color: #091321; border-color: #d8b37b; }
+
+/* ===================================================================================================== 6. E — Fan Deck */
+.bg-e { --bg: #fff; --panel: #f2f0eb; --btn-radius: 3px; --radius: 6px; --label: "Lemon Milk", "Aileron", sans-serif; }
+.bg-e .bg-h1 { font: 700 clamp(34px, 4.4vw, 64px)/.98 "Lemon Milk", sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.bg-e .bg-kicker, .bg-e .bg-count-line { font-size: 10px; letter-spacing: .14em; font-weight: 400; }
+.bg-e .bg-line { border-left: 10px solid var(--bg-cap); padding-left: 14px; }
+.bg-e .bg-thumb { border-top: 0; }
+.bg-e .bg-summary { background: #f2f0eb; border: 0; box-shadow: inset 0 10px 0 #2d2926; padding-top: 30px; }
+.bg-e .bg-sum-h, .bg-e .bg-sec-h { font-weight: 300; letter-spacing: -.035em; }
+
+/* ===================================================================================================== 7. F — Edition */
+.bg-f { --bg: #f3f0ea; --line: rgb(45 41 38 / .22); --panel: #ebe6dc; --field: #fbfaf7; --btn-radius: 999px; --label: "Lemon Milk", "Aileron", sans-serif; }
+.bg-f .bg-kicker, .bg-f .bg-count-line { font: 400 10px/1.5 "Lemon Milk", sans-serif; letter-spacing: .2em; border-bottom: 1px solid var(--ink); padding-bottom: 10px; }
+.bg-f .bg-h1, .bg-f .bg-sum-h, .bg-f .bg-sec-h, .bg-f .bg-line-main h3 { font-weight: 200; letter-spacing: -.055em; }
+.bg-f .bg-h1 { font-size: clamp(48px, 7vw, 104px); }
+.bg-f .bg-meta { font-style: italic; }
+.bg-f .bg-summary { background: transparent; border: 0; border-block: 1px solid var(--ink); border-radius: 0; padding-inline: 0; }
+.bg-f .bg-row.is-total { border-top: 3px double var(--ink); }
+
+/* ===================================================================================================== 8. G — Darkroom */
+.bg-g { --bg: #000; --ink: #fff; --muted: #c9c9c9; --line: rgb(255 255 255 / .26); --panel: #121212; --field: #000; --btn: #fff; --btn-ink: #000; --ok: #9fe0b0; --bad: #ff9e8a; --warn: #f5d27a; }
+.bg-g .bg-h1, .bg-g .bg-sum-h, .bg-g .bg-sec-h, .bg-g .bg-line-main h3 { font-weight: 200; letter-spacing: -.05em; }
+.bg-g .bg-h1 { font-size: clamp(48px, 7vw, 100px); }
+.bg-g .bg-kicker { letter-spacing: .16em; font-weight: 400; font-size: 11px; }
+.bg-g .bg-thumb img, .bg-g .bg-saved img { filter: grayscale(1) contrast(1.05); transition: filter .4s; }
+.bg-g .bg-line:hover .bg-thumb img, .bg-g .bg-line:focus-within .bg-thumb img { filter: none; }
+.bg-g .bg-summary { background: #fff; color: #000; --ink: #000; --muted: #4a4a4a; --line: rgb(0 0 0 / .2); --btn: #000; --btn-ink: #fff; --bg: #fff; --ok: #1d5c33; --bad: #a3271a; border: 0; }
+.bg-g .bg-checkout, .bg-g .bg-btn { text-transform: uppercase; letter-spacing: .12em; font-size: 13px; }
+
+/* ===================================================================================================== 9. H — Folio */
+.bg-h { --bg: #fff; --ink: #111; --muted: #555; --line: rgb(0 0 0 / .16); --panel: #f6f6f6; --btn: #111; }
+.bg-h .bg-h1, .bg-h .bg-sum-h, .bg-h .bg-sec-h, .bg-h .bg-line-main h3 { font-weight: 300; letter-spacing: -.035em; }
+.bg-h .bg-kicker { font-weight: 400; letter-spacing: .06em; font-size: 11px; }
+.bg-h .bg-lines { counter-reset: line; }
+.bg-h .bg-line { counter-increment: line; }
+.bg-h .bg-line-main h3::before { content: "§ " counter(line) "  "; font-style: italic; font-size: 14px; color: var(--muted); }
+.bg-h .bg-summary { border: 0; border-left: 1px solid var(--ink); border-radius: 0; }
+.bg-h .bg-thumb { border: 1px solid var(--line); background: #fff; }

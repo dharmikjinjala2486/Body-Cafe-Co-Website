@@ -168,18 +168,19 @@ def run_design(b, d, w):
     pg.click('#collection .st-ask a'); pg.wait_for_load_state("networkidle"); pg.wait_for_timeout(300)
     check(f"{tag} ask goes to contact", "/contact" in pg.url and "kind=brand" in pg.url and f"design={d}" in pg.url, pg.url)
     check(f"{tag} ask carries chapter", f"topic=%2Fstory%23{cur}" in pg.url or f"topic=/story#{cur}" in pg.url, f"{cur} {pg.url}")
-    form = pg.locator("#case-form")
+    form = pg.locator("[data-su-contact]")
     if STATIC:
         # The hosted preview replaces the contact form with an honest "not available in this preview" notice.
         check(f"{tag} static contact renders", pg.locator("main h1").count() == 1)
     else:
-        check(f"{tag} contact shows topic", form.count() == 1 and pg.locator(".case-topic").count() == 1 and f"/story#{cur}" in pg.inner_text(".case-topic"))
-        check(f"{tag} contact kind brand", pg.eval_on_selector("#case-kind", "s=>s.value") == "brand")
+        check(f"{tag} contact shows topic", form.count() == 1 and pg.locator("[data-su-context]").count() == 1 and f"/story#{cur}" in pg.inner_text("[data-su-context]"))
+        check(f"{tag} contact kind brand", pg.eval_on_selector("#su-topic", "s=>s.value") == "brand")
     if not STATIC and form.count():
-        pg.fill("#case-message", "How did the name Body Cafe Co. come about?")
-        pg.click("#case-form button[type=submit], #case-form button:not([type])")
-        pg.wait_for_timeout(900)
-        res = pg.inner_text("#case-result") if pg.locator("#case-result").count() else ""
+        pg.fill("#su-name", "QA Person"); pg.fill("#su-mobile", "9876543210")
+        pg.fill("#su-message", "How did the name Body Cafe Co. come about?")
+        pg.click("[data-su-submit]")
+        pg.wait_for_timeout(1200)
+        res = pg.inner_text("[data-su-done]") if pg.locator("[data-su-done]").count() else ""
         cid = re.search(r"CASE-[0-9A-F]{8}", res + pg.inner_text("main"))
         check(f"{tag} case created", bool(cid), res[:120])
         if cid:

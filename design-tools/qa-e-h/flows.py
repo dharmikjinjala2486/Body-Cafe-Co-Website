@@ -62,11 +62,11 @@ async def run(b, d, w):
   ok("pdp lot → reports", "/reports" in pg.url)
   # cart
   await pg.goto(f"{BASE}/cart?design={d}", wait_until="networkidle")
-  inc = pg.locator("[data-change='1'], [data-change='+1']").first
+  inc = pg.locator("[data-bg-qty][data-d='1']").first
   if await inc.count():
     await inc.click(); await pg.wait_for_timeout(400)
   ok("cart increase → 4", await count(pg) == 4)
-  rm = pg.locator("[data-remove]").first
+  rm = pg.locator("[data-bg-remove]").first
   await rm.click(); await pg.wait_for_timeout(400)
   ok("cart remove", await count(pg) < 4)
   # checkout
@@ -82,22 +82,25 @@ async def run(b, d, w):
   await f.locator("button[type=submit]").click(); await pg.wait_for_timeout(1200)
   ok("checkout → payment", "/payment/" in pg.url)
   if "/payment/" in pg.url:
-    await pg.locator("[data-pay=success]").click(); await pg.wait_for_timeout(1200)
+    await pg.locator("[data-ac-pay=success]").click(); await pg.wait_for_timeout(1200)
     ok("pay → order/paid", "/orders/" in pg.url or "received" in (await pg.content()).lower())
   # account otp
   await pg.goto(f"{BASE}/account?design={d}", wait_until="networkidle")
-  if await pg.locator("#otp-form").count():
-    await pg.fill("#login-mobile", "9876543210"); await pg.locator("#otp-form button[type=submit]").click(); await pg.wait_for_timeout(600)
-    code = re.search(r"(\d{6})", await pg.locator("#otp-result").inner_text())
+  if await pg.locator("[data-ac-mobile]").count():
+    # A distinct number per design and width keeps repeated runs inside the hourly code limit.
+    await pg.fill("#ac-mobile", str(9400000000 + "efgh".find(d) * 10 + (1 if w == 390 else 0)))
+    await pg.locator("[data-ac-mobile] button[type=submit]").click(); await pg.wait_for_timeout(700)
+    code = re.search(r"(\d{6})", await pg.locator("[data-ac-preview]").inner_text())
     if code:
-      await pg.fill("#verify-code", code.group(1)); await pg.locator("#verify-button").click(); await pg.wait_for_timeout(1000)
+      await pg.fill("#ac-code", code.group(1)); await pg.locator("[data-ac-code] button[type=submit]").click(); await pg.wait_for_timeout(1200)
     ok("otp sign in", await pg.locator("[data-action=logout]").count() >= 1)
   else:
     ok("account signed in", True)
   # contact case
   await pg.goto(f"{BASE}/contact?design={d}", wait_until="networkidle")
-  await pg.fill("#case-message", "Question about my preview order please."); await pg.locator("#case-form button").last.click(); await pg.wait_for_timeout(800)
-  ok("case created", (await pg.locator("#case-result").inner_text()).strip() != "" or "case" in pg.url)
+  await pg.select_option("#su-topic", "general"); await pg.fill("#su-name", "Test Person"); await pg.fill("#su-mobile", "9876543210")
+  await pg.fill("#su-message", "Question about my preview order please."); await pg.locator("[data-su-submit]").click(); await pg.wait_for_timeout(1000)
+  ok("case created", "CASE-" in (await pg.locator("[data-su-done]").inner_text()))
   # search
   await pg.goto(f"{BASE}/?design={d}", wait_until="networkidle")
   await pg.locator("[data-action=search]").first.click(); await pg.wait_for_timeout(300)

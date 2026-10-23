@@ -29,6 +29,18 @@ assert.equal((await api('/questions?product=iron-bisglycinate')).questions.lengt
 await assert.rejects(api('/reviews', {product: 'iron-bisglycinate', rating: 5}), /does not save/);
 await assert.rejects(api('/questions', {product: 'iron-bisglycinate', question: 'Synthetic question text'}), /does not save/);
 assert.ok(catalog.products.every((p) => p.rating && p.rating.count === 0));
+const bagQuote = await api('/bag/quote', {items: [{id: 'iron-bisglycinate', quantity: 2, price: 1}], discount: 'preview10'});
+assert.equal(bagQuote.lines[0].payable_quantity, 2);
+assert.equal(bagQuote.lines[0].price_changed, true);
+assert.equal(bagQuote.ready, false);
+assert.ok(bagQuote.discount_applied && bagQuote.discount > 0);
+assert.equal(bagQuote.total, bagQuote.subtotal - bagQuote.discount + bagQuote.shipping);
+assert.equal((await api('/bag/quote', {items: [{id: 'nope', quantity: 1}]})).lines[0].status, 'unknown');
+assert.equal((await api('/bag/quote', {items: [], discount: 'BAD'})).discount_error.length > 0, true);
+assert.equal((await api('/bag')).account, false);
+for (const [path, body] of [['/help/feedback', {article: 'track-order', helpful: true}], ['/cases', {kind: 'general', message: 'Synthetic support text'}], ['/privacy-requests', {request: 'access'}], ['/preferences', {email: true}]])
+  await assert.rejects(api(path, body), /does not save/);
+await assert.rejects(api('/account/export'), /connected store/);
 assert.ok(fs.existsSync('dist/index.html'));
 assert.ok(fs.readFileSync('dist/_redirects', 'utf8').includes('/* /index.html 200'));
 assert.ok(!fs.existsSync('dist/.local'));

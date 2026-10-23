@@ -1,3 +1,7 @@
+# Account, Cart, Support and Policies — 23 October 2026
+
+Claude’s Account/Cart and Support/Policies packages are integrated across A–H. They add a server-quoted bag, preview sign-in and account journeys, Help search, contextual private cases and replies, preferences, and clearly marked draft policies. Netlify keeps backend-dependent actions unavailable. See [Account/Cart](ACCOUNT-CART-IMPLEMENTATION.md), [Support/Policies](SUPPORT-POLICIES-IMPLEMENTATION.md) and [independent release checks](design-review/ACCOUNT-SUPPORT-RELEASE-2026-10-23.md).
+
 # Lot Reports across A–H — 23 October 2026
 
 Claude’s Lot Reports rebuild is integrated over the latest feedback-form release. It adds exact product/lot lookup, stable record links, separate document/test/notice states and a two-admin publishing workflow in the local backend. Netlify displays demonstration records; no real laboratory reports are supplied. See [implementation](LOT-REPORTS-IMPLEMENTATION.md) and [release checks](design-review/LOTS-RELEASE-2026-10-23.md).
