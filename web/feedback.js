@@ -26,16 +26,53 @@
     const runner = form.elements['runner-up'];
     const least = form.elements.least;
     for (const field of [runner, least]) {
-      for (const option of field.options) option.disabled = option.value === selected;
-      if (field.value === selected && selected) field.value = '';
+      for (const option of field.options) option.disabled = selected !== 'none' && option.value === selected;
+      if (field.value === selected && selected && selected !== 'none') field.value = '';
     }
     // A runner-up cannot also be the least suitable theme.
     for (const option of least.options) {
       if (option.value && option.value !== 'none' && option.value === runner.value) option.disabled = true;
     }
     if (least.value && least.value !== 'none' && least.value === runner.value) least.value = '';
+    updateRecap();
+  }
+  function updateRecap() {
+    const selected = favourite();
+    const runner = form.elements['runner-up'].value;
+    const fit = form.elements.fit.value;
+    document.querySelector('#recap-favourite').textContent = !selected ? 'Still deciding' : selected === 'none' ? 'None feels right yet' : `Theme ${selected}`;
+    document.querySelector('#recap-runner').textContent = !runner ? 'Not chosen' : runner === 'none' ? 'No second choice' : `Theme ${runner}`;
+    document.querySelector('#recap-fit').textContent = !fit ? 'Not rated' : fit === 'na' ? 'Not applicable' : `${fit} out of 5`;
+    const completed = [form.elements['reviewer-name'].value.trim().length > 0, Boolean(selected), Boolean(fit), form.elements.why.value.trim().length >= 5].filter(Boolean).length;
+    document.querySelector('#answer-progress').value = completed;
+    document.querySelector('#answer-count').textContent = completed === 4 ? 'All set. Your perspective is ready to send.' : `${completed} of 4 required answers ready`;
   }
   form.addEventListener('change', updateChoices);
+  form.addEventListener('input', updateRecap);
+  const steps = [...document.querySelectorAll('[data-journey]')];
+  const sections = ['brand', 'themes', 'your-take'].map(id => document.getElementById(id));
+  let scrollPending = false;
+  function updateJourney() {
+    const threshold = Math.min(innerHeight * 0.4, 260);
+    let current = 1;
+    sections.forEach((section, index) => {
+      if (section.getBoundingClientRect().top <= threshold) current = index + 1;
+    });
+    document.querySelector('.review-progress').dataset.step = current;
+    document.querySelector('#journey-progress').value = current;
+    document.querySelector('#journey-status').textContent = `Step ${current} of 3`;
+    steps.forEach((step, index) => {
+      if (index + 1 === current) step.setAttribute('aria-current', 'step');
+      else step.removeAttribute('aria-current');
+      step.classList.toggle('is-past', index + 1 < current);
+    });
+    scrollPending = false;
+  }
+  addEventListener('scroll', () => {
+    if (!scrollPending) { scrollPending = true; requestAnimationFrame(updateJourney); }
+  }, {passive: true});
+  addEventListener('resize', updateJourney);
+  addEventListener('pageshow', () => { updateChoices(); updateJourney(); });
   document.querySelector('#website-preview').addEventListener('click', () => {
     document.querySelector('#preview-note').textContent = 'Preview opens in one tab. Use its A–H tabs, then come back here to share your thoughts.';
   });
@@ -80,7 +117,11 @@
       form.hidden = true;
       const success = document.querySelector('#success');
       success.hidden = false;
-      if (local) document.querySelector('#success-note').textContent = 'Your feedback is saved to the local preview server. Thank you for helping us find our look.';
+      const reviewer = String(data.get('reviewer-name')).trim();
+      document.querySelector('#success-note').textContent = local
+        ? `Thanks, ${reviewer}. Your feedback is saved to the local preview server. Your perspective is part of what comes next.`
+        : `Thanks, ${reviewer}. Your feedback is in. You've helped shape what comes next for Body Café Co. Thank you for bringing your own point of view.`;
+      document.querySelector('#answer-count').textContent = 'Feedback received. Thank you.';
       success.focus();
       success.scrollIntoView({block: 'center'});
     } catch (error) {
@@ -91,4 +132,5 @@
     }
   });
   updateChoices();
+  updateJourney();
 })();
