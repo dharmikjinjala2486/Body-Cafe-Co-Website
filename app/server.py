@@ -35,6 +35,7 @@ BUNDLES = [
 ]
 
 LEARN_TOPIC=re.compile(r'/learn(/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?')
+CASE_TOPIC=re.compile(r'/(learn(/[a-z0-9-]{1,60})?|story|about)(#[a-z0-9-]{1,40})?')
 
 class Error(Exception):
     def __init__(self, message, status=400):
@@ -264,7 +265,7 @@ class Store:
         kind=data.get('kind','general');text=str(data.get('message','')).strip()
         if kind not in ['general','brand','learn','delivery','return','replacement','safety']:raise Error('Select a valid case type.')
         topic=str(data.get('topic','') or '').strip()
-        if topic and not LEARN_TOPIC.fullmatch(topic):raise Error('That page reference is not valid.')
+        if topic and not CASE_TOPIC.fullmatch(topic):raise Error('That page reference is not valid.')
         feedback=str(data.get('feedback','') or '')
         if feedback and feedback not in ('correction','followup'):raise Error('Choose correction or follow-up.')
         if not 10<=len(text)<=3000:raise Error('Describe the issue in 10–3000 characters.')

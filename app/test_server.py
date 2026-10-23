@@ -24,6 +24,12 @@ class CommerceTests(unittest.TestCase):
         for bad in ['https://evil.example','/shop','/learn/../admin','/learn/x y']:
             with self.assertRaises(Error):self.store.case(self.customer,{'kind':'learn','topic':bad,'message':'A follow-up question about this guide.'})
         with self.assertRaises(Error):self.store.case(self.customer,{'kind':'learn','feedback':'praise','message':'A follow-up question about this guide.'})
+    def test_story_questions_keep_their_chapter_reference(self):
+        c=self.store.case(self.customer,{'kind':'brand','topic':'/story#name','message':'Where did the name Body Cafe Co. come from?'})
+        self.assertEqual(c['topic'],'/story#name');self.assertEqual(c['subject'],'About the brand · /story#name')
+        self.assertEqual(self.store.case(self.customer,{'kind':'brand','topic':'/about','message':'A question about the brand page.'})['topic'],'/about')
+        for bad in ['/story/x','/storyteller','/about#Bad','/story#'+'a'*41,'//story']:
+            with self.assertRaises(Error):self.store.case(self.customer,{'kind':'brand','topic':bad,'message':'A question about the story page.'})
     def test_learn_feedback_is_validated_and_counted_once_per_session(self):
         self.store.learn_feedback(self.customer,{'page':'/learn/serving-sizes','section':'units','clear':True})
         self.store.learn_feedback(self.customer,{'page':'/learn/serving-sizes','section':'units','clear':False})

@@ -678,6 +678,7 @@ function enhance() {
   window.BCCShop?.enhance?.();
   window.BCCAbout?.enhance?.();
   window.BCCLearn?.enhance?.();
+  window.BCCStory?.enhance?.();
 }
 function cart() {
   return `<section class="section-wrap">${heading("", "Your bag")}${
@@ -864,7 +865,7 @@ function account(tab) {
 /* A Learn page reference (?topic=/learn/…#section) travels with the case, so support knows which guide it's about. */
 function caseTopic() {
   const t = new URL(location.href).searchParams.get("topic") || "";
-  if (!/^\/learn(\/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?$/.test(t)) return "";
+  if (!/^\/(learn(\/[a-z0-9-]{1,60})?|story|about)(#[a-z0-9-]{1,40})?$/.test(t)) return "";
   return `<input type="hidden" name="topic" value="${escape(t)}"><p class="micro case-topic">About: <a href="${escape(t)}">${escape(t)}</a></p>`;
 }
 const caseKind = (k) => ({ product_question: "Product question", brand: "About the brand", learn: "Learn guide" })[k] || k;

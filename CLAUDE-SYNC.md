@@ -193,3 +193,8 @@ Imported `body-cafe-co-shop-a-h.zip` from the existing Standards/product convers
 ## About and Learn — 23 October 2026
 
 Imported About then the frozen Learn snapshot from the existing Claude conversation over baseline `3216b09`. About ZIP SHA-256: `959a82ae2703adf42efd2650767dd17faf41ee0e40cdb06967126ce36dff445f`; Learn ZIP SHA-256: `9b1b2f52813d7e7a0f61804f37e40b2564a0bac7790c5899233350ce90ad2576`. Archive integrity/paths, clean patch applicability and source overlay equality passed. About adds a dedicated eight-section page and brand support cases. Learn adds the hub, guides, glossary and validated feedback/case references. The server creates the feedback table on startup. Independent checks and remaining review status are in `design-review/ABOUT-LEARN-RELEASE-2026-10-23.md`.
+
+
+## Story rebuild — 23 October 2026
+
+Imported `body-cafe-co-story-a-h.zip` against `fd6036d4470fb0cbdb21e79fbc5b89f3566865ff`. SHA-256: `6473b0a564ea1fd885381f04ee70f0873853e88f6d64f74ba6f14ddd347759c6`. Archive integrity/safe paths, clean patch application and source overlay equality passed. Story now has its own renderer in A–H, preserving About/Learn/Shop/Standards and product pages. Chapter references are validated on support cases. Independent checks are recorded in `design-review/STORY-RELEASE-2026-10-23.md`.

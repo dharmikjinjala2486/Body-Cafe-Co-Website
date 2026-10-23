@@ -1,3 +1,7 @@
+# Story across A–H — 23 October 2026
+
+Claude’s dedicated Story page is integrated across all eight designs, with shared chapters, object tabs, image viewer, reading progress and chapter-linked support. Five chapters use available brand copy; founder chapters and historical components remain hidden until genuine approved material is supplied. See [implementation](STORY-IMPLEMENTATION.md) and [release checks](design-review/STORY-RELEASE-2026-10-23.md).
+
 # About and Learn across A–H — 23 October 2026
 
 Claude’s dedicated About page and Learn knowledge hub are integrated across all eight designs. Learn includes seven product guides, five foundation guides, a glossary, search, local saved reading and preview-backend feedback. The hosted static preview disables server-dependent submissions. See [About](ABOUT-IMPLEMENTATION.md), [Learn](LEARN-IMPLEMENTATION.md) and [independent release checks](design-review/ABOUT-LEARN-RELEASE-2026-10-23.md). Guides disclose their pending specialist review; research findings remain in the internal review pack.
