@@ -1,0 +1,66 @@
+@media screen {
+/* Variant A: a shared reading scale, retaining Anton headlines and Aileron body copy. */
+body[data-theme="a"]{
+ --a-type-page:clamp(40px,5.2vw,76px);
+ --a-type-section:clamp(32px,4vw,60px);
+ --a-type-card:clamp(21px,2vw,28px);
+ --a-type-body:17px;--a-type-small:14px;--a-type-caption:13px;--a-type-label:12px;
+}
+/* Page and section hierarchy, including the older customer-route templates. */
+body[data-theme="a"] :is(.pp-h1,.sp-h1,.ab-h1,.lr-h1,.st-h1,.sx-h1,.lt-h1,.ac-h1,.bg-h1,.su-h1,.r-page-head h1,.ta-page h1){font-size:var(--a-type-page);line-height:1.1;letter-spacing:-.015em}
+body[data-theme="a"] :is(.r-section-head h2,.r-home-care h2,.r-home-report h2,.r-footer-top h2,.atelier-lab>header h2,.atelier-layers>header h2,.sp-head h2,.pp-head h2,.ab-head h2,.lr-head h2,.st-head h2,.sx-head h2,.lt-head h2){font-size:var(--a-type-section);line-height:1.12;letter-spacing:-.015em}
+body[data-theme="a"] :is(.ac-h2,.su-h2){font-size:clamp(24px,2.6vw,34px);line-height:1.2;letter-spacing:-.01em}
+body[data-theme="a"] :is(.r-product-info h3,.sp-name){font-size:var(--a-type-card);line-height:1.2;letter-spacing:0}
+body[data-theme="a"] :is(.r-main h3,.ac-h3,.su-h3){line-height:1.3}
+/* Comfortable body copy, without changing labels, prices, notices or form controls. */
+body[data-theme="a"] :is(.r-product-info>p,.r-principle-notes p,.r-home-care details p,.hf-voices-body>p,.atelier-lab>header>p,.atelier-caption p,.sp-sub,.sp-fmt p,.sp-sec-help p,.pp-p,.pp-facts dd,.pp-list,.pp-checks,.ab-p,.ab-body>p,.lr-asec p,.lr-asec li,.lr-body>p,.st-body p,.st-body li,.sx-p,.sx-body>p,.lt-body>p,.su-article-main>p,.su-faq-body p,.su-policy-body p,.su-policy-body li){font-size:var(--a-type-body);line-height:1.75;letter-spacing:0}
+body[data-theme="a"] :is(.r-principle-notes p,.r-home-care details p,.hf-voices-body>p,.sp-sub,.pp-p,.ab-p,.lr-asec p,.st-body p,.sx-p,.su-article-main>p,.su-policy-body p){max-width:65ch}
+body[data-theme="a"] :is(.pp-lead,.ab-lead,.ab-lede,.lr-lede,.lr-summary,.st-lead,.lt-lede,.ac-lede,.su-lede,.sp-lede){line-height:1.65;letter-spacing:0;max-width:58ch}
+body[data-theme="a"] :is(.lr-asec p+p,.st-body p+p){margin-top:1em}
+/* Small labels keep the direction's uppercase style, with less tracking and more leading. */
+body[data-theme="a"] :is(.r-label,.r-pending,.atelier-eyebrow,.sp-kicker,.sp-k,.sp-legend,.sp-meta,.sp-facts dt,.sp-sort label,.pp-k,.pp-eyebrow,.pp-sub-h,.pp-aside-k,.pp-sources-k,.pp-price-note,.pp-pack dt,.pp-facts dt,.pp-stock,.pp-demo,.pp-verified,.ab-kicker,.ab-k,.ab-nav-k,.ab-role,.lr-kicker,.lr-k,.lr-toc-k,.lr-tag,.lr-prod-k,.lr-src-k,.st-kicker,.st-k,.st-nav-k,.sx-kicker,.sx-k,.sx-index-k,.sx-status-k,.sx-picker-k,.sx-panel-k,.sx-state,.lt-kicker,.lt-k,.lt-doc-k,.lt-notice-k,.ac-k,.bg-kicker,.su-k){font-size:var(--a-type-label);line-height:1.6;letter-spacing:.045em}
+body[data-theme="a"] :is(.r-small,.r-sample,.hf-note,.hf-voices-small,.sp-note,.sp-rating,.sp-msg,.pp-micro,.pp-caption,.pp-crumbs,.pp-pack dd,.pp-facts dt,.ab-small,.ab-cap,.lr-small,.lr-meta,.lr-help,.st-small,.st-fig figcaption,.sx-note,.sx-caption,.lt-small,.lt-note,.lt-hint,.ac-small,.ac-hint,.ac-err,.bg-meta,.bg-msg,.su-small,.su-hint,.su-err){font-size:var(--a-type-small);line-height:1.65;letter-spacing:0}
+body[data-theme="a"] :is(.r-add,.r-button,.r-link,.sp-add,.sp-view,.sp-opt,.sp-chip,.pp-quick a){font-size:14px;line-height:1.5;letter-spacing:.02em}
+body[data-theme="a"] :is(.r-product-code,.r-art-caption,.r-product-bottom small,.sp-num,.sp-price>span,.sp-facts dd){font-size:var(--a-type-label);line-height:1.55;letter-spacing:.02em}
+body[data-theme="a"] :is(.r-principle-notes h3,.r-home-care summary){line-height:1.4}
+body[data-theme="a"] .r-statement{font-size:clamp(28px,2.7vw,42px);line-height:1.25;letter-spacing:-.01em}
+/* Shared navigation, footer and field labels. Inputs keep the separate field-layout fixes. */
+body[data-theme="a"] .r-nav a{font-size:14px;letter-spacing:0}
+body[data-theme="a"] .r-nav sup{font-size:10px;line-height:1.4}
+body[data-theme="a"] :is(.r-tools>a,.r-header .menu-button){font-size:14px;line-height:1.5}
+body[data-theme="a"] .r-footer-links h3{font-size:12px;line-height:1.5;letter-spacing:.045em}
+body[data-theme="a"] .r-footer-links .r-link{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+body[data-theme="a"] .r-footer-bottom{font-size:12px;line-height:1.65}
+body[data-theme="a"] #main :is(.su-field,.ac-field,.field)>label{font-size:14px;line-height:1.5;letter-spacing:0}
+/* Preserve the opening display composition; clarify its supporting typography. */
+body[data-theme="a"] .live-type h1{line-height:1.01}
+body[data-theme="a"] .live-type-after h2{line-height:1.06}
+body[data-theme="a"] :is(.live-kicker,.live-top,.live-selected .live-kicker){font-size:11px;line-height:1.65;letter-spacing:.04em}
+body[data-theme="a"] :is(.live-motion,.live-shop,.live-object-link,.live-burst){font-size:13px;line-height:1.5}
+body[data-theme="a"] :is(.live-type p,.live-type-after p){font-size:15px;line-height:1.7}
+body[data-theme="a"] .live-selected h2{line-height:1.2}
+body[data-theme="a"] :is(.live-index small,.live-switch button,.live-continue,.live-draft,.live-gesture){font-size:10px;line-height:1.6;letter-spacing:.025em}
+@media(max-width:700px){
+ body[data-theme="a"]{--a-type-page:clamp(38px,10vw,48px);--a-type-section:clamp(30px,8vw,40px);--a-type-card:clamp(20px,5.2vw,24px);--a-type-body:16px}
+ body[data-theme="a"] :is(.r-art-caption,.r-product-code){font-size:10px;line-height:1.45}
+ body[data-theme="a"] :is(.live-top,.live-kicker,.live-selected .live-kicker){font-size:10px}
+ body[data-theme="a"] .live-top>span{max-width:170px}
+ body[data-theme="a"] :is(.live-motion,.live-object-link,.live-burst){font-size:12px}
+ body[data-theme="a"] .live-selected h2{font-size:22px}
+ body[data-theme="a"] .live-type-after p{font-size:14px}
+ body[data-theme="a"] .live-gesture{font-size:8px}
+ body[data-theme="a"] .live-continue{font-size:11px}
+ body[data-theme="a"] .ta-page h1.ta-title{font-size:var(--a-type-page)!important}
+ body[data-theme="a"] .ta-page :is(h2.ta-title,h2.ta-title-md){font-size:var(--a-type-section)!important}
+}
+/* Reading diagrams and captions remain legible on narrow screens. */
+body[data-theme="a"] :is(.st-lineup a,.r-edit-art span,.lr-label-title small,.sx-prove dl dt){font-size:12px;line-height:1.6}
+body[data-theme="a"] :is(.lr-walk,.lr-walk-grid,.lr-walk-side,.lr-label-x,.lr-label-grid){min-width:0;max-width:100%}
+body[data-theme="a"] .lr-walk-side>.lr-btn{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+body[data-theme="a"] .r-report-graphic>span{font-size:12px;line-height:1.6}
+body[data-theme="a"] .hf-note{font-size:14px!important;line-height:1.7}
+@media(max-width:700px){body[data-theme="a"] .live-bottom .live-continue{font-size:11px}}
+body[data-theme="a"] :is(.lr-walk-grid,.lr-label-grid)>*{min-width:0}
+@media(max-width:700px){body[data-theme="a"] :is(.lr-walk-grid,.lr-label-grid){grid-template-columns:minmax(0,1fr)}}
+
+}

@@ -1,0 +1,251 @@
+TURN THE BOTTLE OVER
+
+Your batch. Its record.
+
+Every pack carries a lot number: the code for the manufacturing batch it came from. Choose your product, enter that number and see the record for your batch, what was tested, and the documents behind it.
+
+I
+Match
+Confirm the exact product and lot.
+II
+Understand
+Read the plain-language summary.
+III
+Inspect
+Check the detailed results and original documents.
+No. 2 Find your lot report
+1. Your product
+Iron Bisglycinate
+L-Theanine
+Vitamin D3 + K2
+Omega-3 Fish Oil
+Myo & D-Chiro Inositol
+Creatine Chews
+Psyllium Husk
+2. Lot number
+Exactly as printed on the pack. Spaces at either end and letter case don’t matter; every other character does.
+Find the record
+→
+
+No account, email or marketing consent needed. This preview has demonstration records only: try DEMO-0N-01 for any product, where N is its place in the collection.
+
+Other demonstration states
+3. Where is my lot number?
++
+The matching record
+
+Record found: Vitamin D3 + K2, lot DEMO-WITHDRAWN. Not available yet. This batch has a confirmed notice.
+
+NO. 4 · MATCH
+
+Vitamin D3 + K2
+Lot
+DEMO-WITHDRAWN
+
+Demonstration record. Batch dates and product version are illustrative design entries. No laboratory result or document is attached.
+
+Copy record link
+Ask about this lot
+
+BATCH WITHDRAWAL · DEMONSTRATION
+
+Demonstration: how a confirmed batch notice appears
+
+This is not a real notice. If a batch were withdrawn, the approved instructions would appear here, with a direct route to Product safety support.
+
+Contact Product safety support
+DOCUMENT
+Not available yet
+There's no published report for this lot yet. That isn't a test result either way.
+TEST ASSESSMENT
+Cannot be assessed
+No published results for this lot.
+BATCH NOTICE
+1 confirmed notice
+Read the instructions above.
+
+NO. 4 · RECORD DETAILS
+
+The record
+Product
+Vitamin D3 + K2
+Lot
+DEMO-WITHDRAWN
+Formulation / product version
+DEMO-v1
+Manufactured
+1 October 2026
+Expiry
+30 September 2028
+Material tested
+Not documented
+Laboratory report number
+Not documented
+Laboratory sample reference
+Not documented
+Sampled
+Not documented
+Tested
+Not documented
+Report issued by the laboratory
+Not documented
+Published here
+Not published
+Commissioned by
+Not documented
+
+NO. 5 · UNDERSTAND
+
+Results explained
+
+There's no published report for this lot yet. That isn't a test result either way.
+
+NO. 6 · INSPECT
+
+Results, documents and laboratory
+RESULTS
+
+No results are transcribed for this record.
+
+SOURCE DOCUMENTS
+
+No public source document for this lot yet.
+
+ISSUING LABORATORY
+
+No issuing laboratory is recorded.
+
+NO. 7
+
+Understand this report
+Lot (batch)
+Units made together under the same conditions. A report describes one lot, not the product forever.
+Sample
+The portion of a lot (or of an ingredient) that was actually tested. Results concern that sample and the tests listed.
+Reported result
+Shown exactly as the laboratory wrote it, with its unit. “<0.05” means below 0.05, the lowest level that test could report, not zero.
+Not detected (ND) and LOD / LOQ
+“Not detected” means below the test's detection limit (LOD). Results below the quantification limit (LOQ) are often written with “<”.
+Specification
+The stated limit a result is read against, with where that limit comes from. Without one, a result can't be called a pass.
+Assessment
+Whether a result meets its stated specification. Shown only when the report or our approved review states the specification and its source.
+Method
+The named procedure used. Different methods can detect different levels.
+Laboratory accreditation
+An independent body's recognition of a laboratory's competence for specific tests (its scope). It applies to the laboratory and those tests, not to Body Café Co. or our products.
+Version and superseded
+If a report is corrected or replaced, the new version is published and the older one stays listed as superseded, with the reason.
+What a report can’t tell you
+A report describes a sample from one lot and the tests listed. It doesn't cover tests that weren't done.
+It doesn't authenticate an individual pack. A lot number can be copied; no QR code or lookup on this page proves a bottle is genuine.
+It isn't a diagnosis, a safety guarantee for every person, or a promise of results.
+
+Read the guide: understanding reports →
+Glossary →
+How packs link to lots →
+
+NO. 8
+
+Browse published lots
+
+Every lot with a public record, including older and replaced versions with their current status. The newest lot here isn’t necessarily the one a new order will receive.
+
+Product
+All products
+Iron Bisglycinate
+L-Theanine
+Vitamin D3 + K2
+Omega-3 Fish Oil
+Myo & D-Chiro Inositol
+Creatine Chews
+Psyllium Husk
+Lot contains
+Filter
+
+No published lot records yet. 14 demonstration lots are listed so you can try the lookup.
+
+No laboratory reports have been published yet.
+
+DEMONSTRATION LOTS
+
+No laboratory document is connected to these.
+
+Iron Bisglycinate
+DEMO-01-01
+Not available yet Demonstration
+→
+Iron Bisglycinate
+DEMO-01-02
+Not available yet Demonstration
+→
+L-Theanine
+DEMO-02-01
+Not available yet Demonstration
+→
+L-Theanine
+DEMO-02-02
+Not available yet Demonstration
+→
+Vitamin D3 + K2
+DEMO-03-01
+Not available yet Demonstration
+→
+Vitamin D3 + K2
+DEMO-03-02
+Not available yet Demonstration
+→
+Omega-3 Fish Oil
+DEMO-04-01
+Not available yet Demonstration
+→
+Omega-3 Fish Oil
+DEMO-04-02
+Not available yet Demonstration
+→
+Myo & D-Chiro Inositol
+DEMO-05-01
+Not available yet Demonstration
+→
+Myo & D-Chiro Inositol
+DEMO-05-02
+Not available yet Demonstration
+→
+Creatine Chews
+DEMO-06-01
+Not available yet Demonstration
+→
+Creatine Chews
+DEMO-06-02
+Not available yet Demonstration
+→
+Psyllium Husk
+DEMO-07-01
+Not available yet Demonstration
+→
+Psyllium Husk
+DEMO-07-02
+Not available yet Demonstration
+→
+
+NO. 9
+
+Questions or a missing report?
+Do I need an account to see a report?
++
+My lot number doesn't match. Is my pack fake?
++
+Is the newest lot the one I'll receive?
++
+Why does a report say “not assessed”?
++
+Can you tell me when a report is published?
++
+What if a batch has a problem?
++
+Ask about this lot
+A support case with the product and lot attached. You can add a photo of the pack.
+Request a missing report
+Tell us which product and lot you’re looking for.
+Product safety
+For a concern about a product you have. Flagged for priority review.

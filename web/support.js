@@ -160,9 +160,11 @@
   }
   function channelList() {
     var ch = C.BUSINESS.channels;
-    return '<ul class="su-channels">' + Object.keys(ch).map(function (k) {
+    return '<ul class="su-channels">' + Object.keys(ch).filter(function (k) { return k !== "whatsapp" || ch[k].live; }).map(function (k) {
       var c = ch[k];
-      return '<li class="' + (c.live ? "is-live" : "is-off") + '"><strong>' + h(c.label) + "</strong><span>" + h(c.detail) + "</span>" + (c.live ? '<span class="su-chip is-ok">Available</span>' : '<span class="su-chip">Not yet available</span>') + "</li>";
+      var available = c.live && (k !== "web" || !isStatic());
+      var status = !available ? "Not available in this preview" : k === "web" ? "Local preview" : "Contact link";
+      return '<li class="' + (available ? "is-live" : "is-off") + '"><strong>' + h(c.label) + "</strong><span>" + (c.href ? '<a href="' + h(c.href) + '">' + h(c.detail) + "</a>" : h(c.detail)) + '</span><span class="su-chip' + (available ? " is-ok" : "") + '">' + status + "</span></li>";
     }).join("") + "</ul>";
   }
   function contactInfo() {
@@ -174,7 +176,7 @@
       '<p class="su-small">You can also contact the National Consumer Helpline: 1915 or 1800-11-4000, or consumerhelpline.gov.in.</p></section></div>';
   }
   function field(id, label, input, hint, err) {
-    return '<div class="su-field"><label for="' + id + '">' + label + "</label>" + (hint ? '<span class="su-hint" id="' + id + '-hint">' + hint + "</span>" : "") + input + '<p class="su-err" id="' + id + '-err" hidden></p></div>';
+    return '<div class="su-field"><label for="' + id + '">' + label + "</label>" + input + (hint ? '<span class="su-hint" id="' + id + '-hint">' + hint + "</span>" : "") + '<p class="su-err" id="' + id + '-err" hidden></p></div>';
   }
   function contactForm(ctx) {
     var cx = contactContext(), u = A().user(), acct = A().account && A().account(), signed = isCustomer(u);

@@ -1,0 +1,587 @@
+[
+  {
+    "d": "b",
+    "route": "/",
+    "text": "Iron Bisglycinate",
+    "cls": "sr-only",
+    "size": "16px",
+    "color": "rgb(46, 41, 38)",
+    "bg": [
+      170.0,
+      71.0,
+      46.0
+    ],
+    "ratio": 2.5,
+    "required": 4.5
+  },
+  {
+    "d": "b",
+    "route": "/",
+    "text": "L-Theanine",
+    "cls": "sr-only",
+    "size": "16px",
+    "color": "rgb(46, 41, 38)",
+    "bg": [
+      119.0,
+      125.0,
+      81.0
+    ],
+    "ratio": 3.31,
+    "required": 4.5
+  },
+  {
+    "d": "b",
+    "route": "/",
+    "text": "Vitamin D3 + K2",
+    "cls": "sr-only",
+    "size": "16px",
+    "color": "rgb(46, 41, 38)",
+    "bg": [
+      53.0,
+      48.0,
+      111.0
+    ],
+    "ratio": 1.23,
+    "required": 4.5
+  },
+  {
+    "d": "b",
+    "route": "/",
+    "text": "Omega-3 Fish Oil",
+    "cls": "sr-only",
+    "size": "16px",
+    "color": "rgb(46, 41, 38)",
+    "bg": [
+      132.0,
+      145.0,
+      155.0
+    ],
+    "ratio": 4.45,
+    "required": 4.5
+  },
+  {
+    "d": "b",
+    "route": "/",
+    "text": "Creatine Chews",
+    "cls": "sr-only",
+    "size": "16px",
+    "color": "rgb(46, 41, 38)",
+    "bg": [
+      7.0,
+      86.0,
+      106.0
+    ],
+    "ratio": 1.74,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "01",
+    "cls": "",
+    "size": "8px",
+    "color": "rgb(255, 242, 199)",
+    "bg": [
+      255.0,
+      242.0,
+      199.0
+    ],
+    "ratio": 1.0,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "Arrive",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(255, 242, 199)",
+    "bg": [
+      255.0,
+      242.0,
+      199.0
+    ],
+    "ratio": 1.0,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "IMAGINARY SCENERY \u00b7 DRAFT BOTTLES \u00b7 SAMPLE PRICES",
+    "cls": "cin-draft",
+    "size": "6px",
+    "color": "rgb(255, 242, 199)",
+    "bg": [
+      255.0,
+      242.0,
+      199.0
+    ],
+    "ratio": 1.0,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "sample",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(116, 75, 76)",
+    "bg": [
+      247.0,
+      175.0,
+      114.0
+    ],
+    "ratio": 3.97,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "sample",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(116, 75, 76)",
+    "bg": [
+      247.0,
+      175.0,
+      114.0
+    ],
+    "ratio": 3.97,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "sample",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(116, 75, 76)",
+    "bg": [
+      247.0,
+      175.0,
+      114.0
+    ],
+    "ratio": 3.97,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "sample",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(116, 75, 76)",
+    "bg": [
+      247.0,
+      175.0,
+      114.0
+    ],
+    "ratio": 3.97,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "sample",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(116, 75, 76)",
+    "bg": [
+      247.0,
+      175.0,
+      114.0
+    ],
+    "ratio": 3.97,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "sample",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(116, 75, 76)",
+    "bg": [
+      247.0,
+      175.0,
+      114.0
+    ],
+    "ratio": 3.97,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/",
+    "text": "sample",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(116, 75, 76)",
+    "bg": [
+      247.0,
+      175.0,
+      114.0
+    ],
+    "ratio": 3.97,
+    "required": 4.5
+  },
+  {
+    "d": "c",
+    "route": "/shop",
+    "text": "on the shelf",
+    "cls": "",
+    "size": "8px",
+    "color": "rgb(94, 67, 55)",
+    "bg": [
+      25.0,
+      63.0,
+      168.0
+    ],
+    "ratio": 1.01,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "02",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.953333,
+      0.89898,
+      0.885255
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.953333,
+      0.89898,
+      0.885255
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "03",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.925333,
+      0.928627,
+      0.904471
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.925333,
+      0.928627,
+      0.904471
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "04",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.889098,
+      0.886353,
+      0.920941
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.889098,
+      0.886353,
+      0.920941
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "05",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.932471,
+      0.939608,
+      0.945098
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.932471,
+      0.939608,
+      0.945098
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "06",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.957177,
+      0.932471,
+      0.961569
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.957177,
+      0.932471,
+      0.961569
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "07",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.863843,
+      0.907216,
+      0.918196
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.863843,
+      0.907216,
+      0.918196
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "08",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.945647,
+      0.940157,
+      0.923686
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.945647,
+      0.940157,
+      0.923686
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "09",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.953333,
+      0.89898,
+      0.885255
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.953333,
+      0.89898,
+      0.885255
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "10",
+    "cls": "sx-k-n",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.925333,
+      0.928627,
+      0.904471
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "e",
+    "route": "/standards",
+    "text": "/ 10",
+    "cls": "sx-of",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      0.925333,
+      0.928627,
+      0.904471
+    ],
+    "ratio": 1.45,
+    "required": 4.5
+  },
+  {
+    "d": "f",
+    "route": "/standards",
+    "text": "Fig. 01",
+    "cls": "",
+    "size": "10px",
+    "color": "rgb(45, 41, 38)",
+    "bg": [
+      53.0,
+      48.0,
+      111.0
+    ],
+    "ratio": 1.24,
+    "required": 4.5
+  },
+  {
+    "d": "h",
+    "route": "/",
+    "text": "2",
+    "cls": "h-count",
+    "size": "11px",
+    "color": "rgb(228, 233, 239)",
+    "bg": [
+      255.0,
+      255.0,
+      255.0
+    ],
+    "ratio": 1.22,
+    "required": 4.5
+  },
+  {
+    "d": "h",
+    "route": "/shop",
+    "text": "2",
+    "cls": "h-count",
+    "size": "11px",
+    "color": "rgb(228, 233, 239)",
+    "bg": [
+      255.0,
+      255.0,
+      255.0
+    ],
+    "ratio": 1.22,
+    "required": 4.5
+  },
+  {
+    "d": "h",
+    "route": "/help",
+    "text": "2",
+    "cls": "h-count",
+    "size": "11px",
+    "color": "rgb(228, 233, 239)",
+    "bg": [
+      255.0,
+      255.0,
+      255.0
+    ],
+    "ratio": 1.22,
+    "required": 4.5
+  },
+  {
+    "d": "h",
+    "route": "/standards",
+    "text": "2",
+    "cls": "h-count",
+    "size": "11px",
+    "color": "rgb(228, 233, 239)",
+    "bg": [
+      255.0,
+      255.0,
+      255.0
+    ],
+    "ratio": 1.22,
+    "required": 4.5
+  }
+]

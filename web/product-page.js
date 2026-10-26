@@ -25,7 +25,7 @@
      1. CONTENT
      ==================================================================================================== */
   var PENDING = "Awaiting approved label";
-  var DRAFT = "Draft packaging. Front-of-pack design mockup; wording printed on the pack is label artwork, not a claim made on this site.";
+  var DRAFT = "Front of the bottle · Studio product image.";
   var IMG_W = { "creatine-chews": 716, "iron-bisglycinate": 774, "l-theanine": 774, "myo-d-chiro-inositol": 716, "omega-3-fish-oil": 715, "psyllium-husk": 714, "vitamin-d3-k2": 667 };
 
   /* Product-specific facts that are confirmed. Fields left out are shown as awaiting the approved label.
@@ -45,7 +45,7 @@
   function images(p) {
     var name = p.name;
     var list = [
-      { kind: "front", src: "/web/media/" + p.id + ".webp", w: IMG_W[p.id] || 715, h: 1000, alt: name + ", front of the bottle (draft packaging)", label: "Front of the bottle", caption: DRAFT },
+      { kind: "front", src: window.BCCBottleAssets.url(p.id), ...window.BCCBottleAssets.dimensions(p.id, IMG_W[p.id] || 715, 1000), alt: name + ", front of the bottle (draft packaging)", label: "Front of the bottle", caption: DRAFT },
       { kind: "cap", src: "/web/media/renders/" + p.id + "-cap.webp", w: 400, h: 400, alt: name + " cap, seen from above", label: "Cap colour, from above", caption: "Each product has its own cap colour. Studio render." },
     ];
     var extra = (FACTS[p.id] && FACTS[p.id].images) || [];
@@ -54,7 +54,7 @@
 
   var COPY = {
     purpose: "An approved purpose statement for this product hasn't been supplied yet, so this page doesn't describe benefits or results.",
-    tax: "Sample price, inclusive of illustrative tax. Final GST rates await approval.",
+    tax: "MRP, inclusive of illustrative tax. Final GST rates await approval.",
     offer: "No offers are running.",
     shipping: "Illustrative ₹75 delivery charge, waived on a sample order subtotal of ₹1,499 or more after any discount.",
     returns: "Return eligibility, timing and remedies haven't been decided yet. If something's wrong with an order, open a support case.",
@@ -127,7 +127,8 @@
     return '<form id="pincode-form" class="pp-pincode" novalidate><label for="pincode">Check delivery to your pincode</label><div class="pp-inline"><input id="pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" pattern="[1-9][0-9]{5}" maxlength="6" placeholder="6-digit pincode" required aria-describedby="pincode-help pincode-result"><button type="submit">Check</button></div><p id="pincode-help" class="pp-micro">' + COPY.delivery + '</p><p id="pincode-result" class="pp-micro pp-result" role="status"></p></form>';
   }
   function packFacts(m) {
-    return '<dl class="pp-pack"><div><dt>Format</dt><dd>' + m.format + "</dd></div><div><dt>Pack quantity</dt><dd class=\"is-pending\">" + PENDING + "</dd></div><div><dt>Serving size</dt><dd class=\"is-pending\">" + PENDING + "</dd></div><div><dt>Servings per pack</dt><dd class=\"is-pending\">" + PENDING + "</dd></div></dl>";
+    var pack = window.BCCDemo && window.BCCDemo.packInfo(m.id);
+    return '<dl class="pp-pack"><div><dt>Format</dt><dd>' + m.format + "</dd></div><div><dt>Pack quantity</dt><dd" + (pack ? ' data-pack-status="demo"' : ' class="is-pending"') + ">" + (pack ? pack.label : PENDING) + "</dd></div><div><dt>Serving size</dt><dd class=\"is-pending\">" + PENDING + "</dd></div><div><dt>Servings per pack</dt><dd class=\"is-pending\">" + PENDING + "</dd></div></dl>";
   }
   function quickLinks() {
     return '<nav class="pp-quick" aria-label="On this page"><a href="#ingredients">Ingredients</a><a href="#use">How to use</a><a href="#reviews">Reviews</a><a href="#quality">Lot report</a></nav>';
@@ -140,7 +141,7 @@
     o = o || {};
     return '<div class="pp-panel" data-pp-panel>' +
       (o.noHead ? "" : titleBlock(m)) +
-      '<div class="pp-pricebox"><p class="pp-price"><span class="pp-price-num">' + m.price + '</span><span class="pp-price-note">Sample price · incl. illustrative tax</span></p>' + ratingLink(m) + "</div>" +
+      '<div class="pp-pricebox"><p class="pp-price"><span class="pp-price-num">' + m.price + '</span><span class="pp-price-note">MRP</span></p>' + ratingLink(m) + "</div>" +
       stockLine(m) + packFacts(m) +
       '<div class="pp-buyrow" data-pp-buy>' + qty(m) + addBtn(m, "pp-add-main") + "</div>" +
       '<p class="pp-micro">One-time purchase. Preview order only: no payment or dispatch.</p>' +
@@ -201,7 +202,7 @@
       factRows(rows, "pp-facts pp-facts-label") +
       '<div class="pp-cols">' +
         '<div>' + sub("What the approved label will state") + '<ul class="pp-list">' + m.confirm.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ul></div>" +
-        '<div>' + sub("Approved label image") + '<p class="pp-p">The approved rear label hasn\'t been supplied, so there\'s no label image yet. When it arrives it will be shown here and in the gallery, and can be enlarged to read.</p></div>' +
+        '<div>' + sub("Rear label") + '<p class="pp-p">The approved rear label is not available in this preview. When supplied, it will appear here and in the gallery, with an option to enlarge it.</p></div>' +
       "</div>" +
       (m.notes.compound ? '<aside class="pp-aside"><p class="pp-aside-k">Reading this ingredient</p><p>' + m.notes.compound + "</p>" + sources(m.notes.sources) + "</aside>" : "");
   }
@@ -248,9 +249,10 @@
       "</div>";
   }
   function productFaqs(m) {
+    var pack = window.BCCDemo && window.BCCDemo.packInfo(m.id);
     return [
       ["How much is in each serving?", "Amounts per serving come from the approved rear label, which hasn't been supplied yet. This page doesn't suggest a dose."],
-      ["How many " + (m.format ? m.format.toLowerCase() : "units") + " are in a pack?", "The pack quantity will come from the approved label. The count printed on the draft packaging image isn't confirmed."],
+      ["How many " + (m.format ? m.format.toLowerCase() : "units") + " are in a pack?", pack ? pack.description : "The pack quantity will come from the approved label. The count printed on the draft packaging image isn't confirmed."],
       ["Where's the lot number on my pack?", "A guide will be added with the final rear label. Your lot number is different from your order number or the barcode."],
       ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved."],
     ];
@@ -267,7 +269,7 @@
   function explore(m, ctx) {
     if (!m.related.length) return "";
     return '<p class="pp-micro">' + COPY.explore + '</p><ul class="pp-related">' + m.related.map(function (r) {
-      return '<li style="--cap:' + r.color + '"><a href="/products/' + r.id + '"><span class="pp-rel-img"><img src="/web/media/' + r.id + '.webp" alt="" width="' + (IMG_W[r.id] || 715) + '" height="1000" loading="lazy" decoding="async"></span><span class="pp-rel-name">' + esc(ctx, r.name) + '</span><span class="pp-rel-meta">' + esc(ctx, ctx.format[r.id] || "") + " · " + ctx.money(r.price) + " sample price</span></a></li>";
+      return '<li style="--cap:' + r.color + '"><a href="/products/' + r.id + '"><span class="pp-rel-img"><img src="' + window.BCCBottleAssets.url(r.id) + '" alt="" width="' + (IMG_W[r.id] || 715) + '" height="1000" loading="lazy" decoding="async"></span><span class="pp-rel-name">' + esc(ctx, r.name) + '</span><span class="pp-rel-meta">' + esc(ctx, ctx.format[r.id] || "") + " · " + ctx.money(r.price) + " listed price</span></a></li>";
     }).join("") + '</ul><p class="pp-p"><a href="/shop">See all seven products</a></p>';
   }
   function sticky(m) {
@@ -427,7 +429,8 @@
     function check() {
       tick = 0;
       var footer = document.querySelector(".site-footer") || [].slice.call(document.querySelectorAll("footer")).filter(function (f) { return !f.closest("[data-pp]"); }).pop();
-      var show = narrow.matches && buy.getBoundingClientRect().bottom < 0 && (!footer || footer.getBoundingClientRect().top > innerHeight);
+      var rect = buy.getBoundingClientRect();
+      var show = narrow.matches && (rect.bottom < 0 || rect.top > innerHeight - 76) && (!footer || footer.getBoundingClientRect().top > innerHeight);
       if (bar.hidden === !show) return;
       bar.hidden = !show;
       document.body.classList.toggle("pp-sticky-on", show);
@@ -435,6 +438,8 @@
     var queue = function () { if (!tick) tick = requestAnimationFrame(check); };
     on(window, "scroll", queue, { passive: true });
     on(window, "resize", queue);
+    on(window, "bcc:mobile-layout", queue);
+    if (window.ResizeObserver) { var layout = new ResizeObserver(queue); layout.observe(root); observers.push(layout); }
     /* The bar's button reuses the page's own Add to bag (and its quantity) instead of duplicating the cart contract. */
     on(bar.querySelector("[data-pp-sticky-add]"), "click", function () { var main = root.querySelector("[data-action=add-product]"); if (main && !main.disabled) main.click(); });
     check();
@@ -567,7 +572,7 @@
         renderSummary(res.summary);
         st.pages = res.pages; st.total = res.total;
         st.items = append ? st.items.concat(res.reviews) : res.reviews;
-        if (!res.summary.count) list.innerHTML = "";
+        if (!res.summary.count) list.innerHTML = window.BCCDemo ? window.BCCDemo.reviewHTML() : "";
         else if (!st.items.length) list.innerHTML = '<p class="pp-p">No published reviews with this rating.</p>';
         else if (append) { list.insertAdjacentHTML("beforeend", res.reviews.map(item).join("")); var first = list.querySelector('[data-review="' + res.reviews[0].id + '"] header'); if (first) { first.setAttribute("tabindex", "-1"); first.focus(); } }
         else list.innerHTML = st.items.map(item).join("");

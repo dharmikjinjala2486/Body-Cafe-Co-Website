@@ -185,6 +185,7 @@
     }).join("");
   }
   function facts(r, p, rec, cur) {
+    if (r.demo && !rec && window.BCCDemo) rec = window.BCCDemo.lotMetadata;
     var d = (rec && rec.dates) || {}, s = (rec && rec.sample) || {};
     var rows = [
       ["Product", h(p ? p.name : r.product)], ["Lot", '<span class="lt-mono">' + h(r.lot) + "</span>"],
@@ -246,9 +247,9 @@
   }
   function renderMatch(v, r) {
     var p = prod(r.product), cur = r.current, rec = cur && cur.record;
-    var demo = r.demo ? '<p class="lt-demo" role="note"><strong>Demonstration record.</strong> ' + (cur ? "Entered to show how a published report works. It is not a real laboratory result for this product." : "No laboratory, result, date or document is connected to it.") + "</p>" : "";
+    var demo = r.demo ? '<p class="lt-demo" role="note"><strong>Demonstration record.</strong> ' + (cur ? "Entered to show how a published report works. It is not a real laboratory result for this product." : "Batch dates and product version are illustrative design entries. No laboratory result or document is attached.") + "</p>" : "";
     var changed = r.changed ? '<p class="lt-searched">You entered “' + h(r.entered) + "”. We searched for <span class=\"lt-mono\">" + h(r.searched) + "</span> (spaces at either end and letter case ignored).</p>" : "";
-    var head = '<div class="lt-match" id="match"><div class="lt-match-id">' + (p ? '<img src="/web/media/' + h(p.id) + '.webp" alt="" width="720" height="1000" class="lt-pack">' : "") +
+    var head = '<div class="lt-match" id="match"><div class="lt-match-id">' + (p ? '<img src="' + window.BCCBottleAssets.url(h(p.id)) + '" alt="" width="720" height="1000" class="lt-pack">' : "") +
       '<div><p class="lt-k">' + v.k(4) + " · " + v.stage.match + '</p><h3 class="lt-match-h" tabindex="-1" id="lt-match-h"><span class="lt-match-p">' + h(p ? p.name : r.product) + '</span><span class="lt-lotno"><span class="lt-sr">Lot </span>' + h(r.lot) + "</span></h3>" + changed + demo +
       '<div class="lt-actions"><button type="button" class="lt-btn is-quiet" data-lt-share>Copy record link</button>' + (cur ? '<button type="button" class="lt-btn is-quiet" data-lt-print>Print summary</button>' : "") + '<a class="lt-btn is-quiet" href="' + askHref("report", r.product, r.lot) + '">Ask about this lot</a></div></div></div>' +
       notices(r) + statusTrio(r) + "</div>";

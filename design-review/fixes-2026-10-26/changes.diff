@@ -1,0 +1,412 @@
+--- before/about.js
++++ after/about.js
+@@ -84,7 +84,7 @@
+     behindNote: "These are our own design files and packaging renders. Photographs of the team at work will be added as they're taken.",
+     talk: {
+       lead: "Questions about who we are, the name or how we work are welcome. Send one to the team and you'll get a case ID to follow.",
+-      contact: "Support runs through cases on this site. WhatsApp, email and phone details will be published once confirmed.",
++      contact: "Open a support case on this site, or find our email, WhatsApp and phone links on Contact. Support hours and reply targets in this preview are illustrative.",
+     },
+   };
+ 
+
+--- before/app.js
++++ after/app.js
+@@ -644,14 +644,33 @@
+   update();
+ }
+ 
++function menuLabel(button, open) {
++  if (!button) return;
++  // Some directions use text, others retain an icon with a visible or sr-only label.
++  const label = button.querySelector("[data-menu-label], span") || button;
++  if (!button.dataset.closedLabel) button.dataset.closedLabel = label.textContent;
++  label.textContent = open ? "Close" : button.dataset.closedLabel;
++}
++function positionMenu() {
++  const nav = $("#mobile-nav");
++  const header = $("[data-action=menu]")?.closest("header");
++  if (nav && header) nav.style.setProperty("--mnav-top", Math.max(0, Math.round(header.getBoundingClientRect().bottom)) + "px");
++}
++window.addEventListener("resize", () => {
++  if (!document.body.classList.contains("menu-open")) return;
++  const button = $("[data-action=menu]");
++  if (!button?.getClientRects().length) closeMenu();
++  else positionMenu();
++});
+ function openMenu() {
+   const nav = $("#mobile-nav");
+   const b = $("[data-action=menu]");
+   if (!nav) return;
++  positionMenu();
+   nav.hidden = false;
+   document.body.classList.add("menu-open");
+   b?.setAttribute("aria-expanded", "true");
+-  b && (b.querySelector("span").textContent = "Close");
++  menuLabel(b, true);
+ }
+ function closeMenu() {
+   const nav = $("#mobile-nav");
+@@ -660,7 +679,7 @@
+   nav.hidden = true;
+   document.body.classList.remove("menu-open");
+   b?.setAttribute("aria-expanded", "false");
+-  b && (b.querySelector("span").textContent = "Menu");
++  menuLabel(b, false);
+ }
+ 
+ /* Run after every render. */
+@@ -1460,7 +1479,10 @@
+     else if (button.dataset.action === "menu") {
+       if ($("#mobile-nav").hidden) openMenu();
+       else closeMenu();
+-    } else if (button.dataset.action === "search") $("#search-dialog").showModal();
++    } else if (button.dataset.action === "search") {
++      closeMenu();
++      $("#search-dialog").showModal();
++    }
+     else if (button.dataset.action === "close-search") $("#search-dialog").close();
+     else if (button.dataset.action === "logout") {
+       window.BCCAccount?.signedOut?.();
+@@ -1638,9 +1660,19 @@
+   }
+ });
+ document.addEventListener("keydown", (e) => {
+-  if (e.key === "Escape" && $("#mobile-nav") && !$("#mobile-nav").hidden) {
++  const nav = $("#mobile-nav");
++  if (!nav || nav.hidden) return;
++  if (e.key === "Escape") {
+     closeMenu();
+     $("[data-action=menu]")?.focus();
++  } else if (e.key === "Tab") {
++    const controls = [$("[data-action=menu]"), ...nav.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled])')]
++      .filter((el) => el?.getClientRects().length && getComputedStyle(el).visibility !== "hidden");
++    const first = controls[0], last = controls[controls.length - 1];
++    if ((e.shiftKey && document.activeElement === first) || (!e.shiftKey && document.activeElement === last)) {
++      e.preventDefault();
++      (e.shiftKey ? last : first)?.focus();
++    }
+   }
+ });
+ window.addEventListener("popstate", () => {
+
+--- before/bag.js
++++ after/bag.js
+@@ -93,10 +93,11 @@
+     var ql = q && q.lines.filter(function (x) { return x.id === i.id; })[0];
+     var max = ql ? ql.max : Math.min(10, p.stock || 0);
+     var status = ql ? ql.status : "checking";
++    var pack = window.BCCDemo && window.BCCDemo.packInfo(p.id);
+     var avail = status === "unavailable" ? '<span class="bg-av is-out">Not available right now</span>' : status === "checking" ? '<span class="bg-av">Checking availability…</span>' : max < 10 ? '<span class="bg-av">Available · up to ' + max + " per order in preview stock</span>" : '<span class="bg-av is-ok">Available · up to 10 per order</span>';
+     return '<li class="bg-line' + (status === "unavailable" ? " is-out" : "") + '" data-bg-line="' + h(p.id) + '" style="--bg-cap:' + h(p.color) + '">' +
+       '<a class="bg-thumb" href="/products/' + h(p.id) + '" tabindex="-1" aria-hidden="true"><img src="' + window.BCCBottleAssets.url(h(p.id)) + '" alt="" width="720" height="1000" loading="lazy" decoding="async"></a>' +
+-      '<div class="bg-line-main"><h3><a href="/products/' + h(p.id) + '">' + h(p.name) + '</a></h3><p class="bg-meta">' + h(FORMAT[p.id] || "") + ' · pack size awaiting approved label</p><p class="bg-meta">MRP ' + money(ql && ql.unit_price != null ? ql.unit_price : p.price) + " each</p>" + avail +
++      '<div class="bg-line-main"><h3><a href="/products/' + h(p.id) + '">' + h(p.name) + '</a></h3><p class="bg-meta">' + h(FORMAT[p.id] || "") + ' · ' + h(pack ? pack.label : "Pack quantity awaiting approved label") + '</p><p class="bg-meta">MRP ' + money(ql && ql.unit_price != null ? ql.unit_price : p.price) + " each</p>" + avail +
+       '<div class="bg-line-actions"><button type="button" class="bg-quiet" data-bg-save="' + h(p.id) + '">Save for later</button><button type="button" class="bg-quiet" data-bg-remove="' + h(p.id) + '">Remove<span class="bg-sr"> ' + h(p.name) + "</span></button></div></div>" +
+       '<div class="bg-line-end"><div class="bg-qty" role="group" aria-label="Quantity for ' + h(p.name) + '"><button type="button" data-bg-qty="' + h(p.id) + '" data-d="-1" aria-label="' + (i.quantity === 1 ? "Remove " + h(p.name) : "Decrease " + h(p.name) + " quantity") + '">−</button><output aria-live="off">' + i.quantity + '</output><button type="button" data-bg-qty="' + h(p.id) + '" data-d="1" aria-label="Increase ' + h(p.name) + ' quantity"' + (i.quantity >= max ? " disabled" : "") + ">+</button></div>" +
+       '<strong class="bg-line-total">' + (ql ? money(ql.line_total) : "—") + "</strong></div></li>";
+
+--- before/creative.css
++++ after/creative.css
+@@ -61,7 +61,7 @@
+ .r-bag [data-cart-count]{background:none!important;color:inherit!important;font-family:var(--r-mono);font-size:13px;width:auto!important;min-width:18px;transform:none!important}
+ .r-bag [data-cart-count]::before{content:'('}.r-bag [data-cart-count]::after{content:')'}
+ body[data-theme] .r-header .menu-button{display:none;border:0;color:inherit;background:none;font-size:13px;padding:10px}
+-body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) #mobile-nav{position:relative;inset:auto;background:var(--r-ink);color:var(--r-bg);padding:28px var(--r-pad);height:auto;max-height:none;z-index:20}
++body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) #mobile-nav{position:relative;inset:auto;background:var(--r-ink);color:var(--r-bg);padding:28px var(--r-pad);height:auto;max-height:calc(100dvh - var(--mnav-top,0px));overflow-y:auto;overscroll-behavior:contain;z-index:20}
+ body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) #mobile-nav[hidden]{display:none}
+ body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .mobile-nav-links{display:grid;gap:0;padding:0;margin:0}
+ body:is([data-theme="a"],[data-theme="c"],[data-theme="d"]) .mobile-nav-links a{display:flex;gap:15px;align-items:center;color:inherit;font:28px/1.3 var(--r-display);padding:12px 0;border-bottom:1px solid #ffffff33;text-decoration:none}
+
+--- before/demo-content.js
++++ after/demo-content.js
+@@ -11,6 +11,34 @@
+     'vitamin-d3-k2':'60 softgels', 'omega-3-fish-oil':'30 softgels',
+     'myo-d-chiro-inositol':'30 capsules', 'creatine-chews':'30 chews',
+     'psyllium-husk':'30 capsules'
++  };
++  function packInfo(id) {
++    const value = packs[id];
++    return value ? {
++      value, status:'demo', label:'Demo pack: ' + value,
++      description:'This design preview uses a demo pack of ' + value + '. The final pack quantity will be confirmed from the approved label.'
++    } : null;
++  }
++  const delivery = 'Demo delivery charge: ₹75, waived when the order subtotal after discounts is ₹1,499 or more. No payment or dispatch takes place in this preview.';
++  const returnWindow = 'For this demonstration, contact us within 7 days of delivery about an unopened return or an order issue. Final return terms are not approved.';
++  // Exact policy/section IDs prevent a delivery-time example appearing under charges or failed delivery.
++  // Unmapped pending sections retain their own explanation rather than a generic contact substitution.
++  const policyExamples = {
++    shipping: {
++      where:'This design preview illustrates delivery within India. Courier serviceability is not connected; the pincode tool checks format only.',
++      processing:'Demo dispatch estimate: 1–2 business days. No order is packed or dispatched in this preview.',
++      charges:delivery,
++      estimates:'Demo delivery estimate: 3–7 business days after dispatch. This is illustrative; no delivery date is promised.',
++      failed:'Delivery attempts and returned-parcel handling are not configured in this preview. Contact support about an order issue; no parcel is dispatched.'
++    },
++    returns: {
++      'change-of-mind':returnWindow,
++      windows:returnWindow,
++      condition:'The demo return example covers unopened items. Keep the pack and lot number when reporting an order issue; final return conditions are not approved.',
++      collection:'Return collection and postage are not connected in this preview. Do not send an item back until support provides instructions.',
++      refunds:'Demo refund estimate: 5–7 business days after approval. Refunds are reviewed before release; no money moves in this preview.',
++      charges:'Delivery-charge adjustments, discounts and part-return calculations are not configured in this preview. Ask support about the specific order.'
++    }
+   };
+   const reviews = [
+     ['Preview customer A', 'The bottle colours make it easy to find the product I’m looking for.'],
+@@ -27,44 +55,42 @@
+       hours:'Monday–Saturday, 10:00–18:00 IST (demo hours)',
+       response:'Within 2 business days (demo target)'
+     });
+-    C.DOCS.version='Preview 0.2';C.DOCS.updated='2026-10-24';
++    C.DOCS.version='Preview 0.3';C.DOCS.updated='2026-10-26';
+     C.DOCS.status='Illustrative policy content for this design preview; not live trading terms.';
+     C.LINKS[0].items.push(['WhatsApp','https://wa.me/918457125489'],[contact.email,'mailto:'+contact.email],[contact.phone,'tel:+918457125489']);
+-    for (const policy of Object.values(C.POLICIES)) {
++    C.POLICIES.shipping.summary[1] = delivery;
++    C.POLICIES.returns.summary[1] = returnWindow;
++    for (const [policyId, policy] of Object.entries(C.POLICIES)) {
+       for (const section of policy.sections) {
+-        if (!section.open) continue;
+-        const entries = {
+-          dispatch:'Orders are prepared within 1–2 business days in this demonstration.',
+-          delivery:'Demonstration delivery estimate: 3–7 business days after dispatch.',
+-          shipping:'Delivery is ₹75, with free delivery on orders of ₹1,499 or more.',
+-          returns:'For this demonstration, contact us within 7 days of delivery about an unopened return or an order issue.',
+-          refund:'Demonstration refund timeline: 5–7 business days after confirmation.',
+-          complaints:'Email care@bodycafeco.com or call +91-8457125489. A demo support lead handles escalations.',
+-          business:'Body Café Co. · Demo office, Ahmedabad, Gujarat, India. Contact care@bodycafeco.com.'
+-        };
+-        const key=Object.keys(entries).find(k=>(section.id+' '+section.h).toLowerCase().includes(k));
+-        section.p=[key?entries[key]:'Contact care@bodycafeco.com or +91-8457125489 for help. This policy entry is illustrative for the design preview.'];
+-        delete section.list;section.open=false;
++        const example = policyExamples[policyId]?.[section.id];
++        if (!example) continue;
++        section.p=[example];
++        delete section.list;
++        section.open=false;
+       }
+     }
+   }
+   if (window.BCCPDP) Object.assign(window.BCCPDP.copy, {
+     purpose:'Explore the ingredient, format and product notes before choosing your everyday essentials.',
+     tax:'MRP. Tax and delivery are shown in the order summary.',
+-    shipping:'Delivery ₹75. Free delivery on orders of ₹1,499 or more after discounts.',
+-    returns:'Demo policy: contact us within 7 days of delivery about an unopened return or an order issue.',
++    shipping:delivery,
++    returns:returnWindow,
+     directions:'Follow the directions printed on your pack. This design preview does not provide a dosage.',
+     storage:'Demo storage entry: keep tightly closed in a cool, dry place away from direct sunlight.',
+     noReviews:'Explore the illustrative feedback below. Fictional feedback is separate from submitted customer reviews.'
+   });
+   if (window.BCCHomeFlow) {
+     Object.assign(window.BCCHomeFlow.VOICES, {
++      title:'Illustrative feedback.<br><em>A preview of the layout.</em>',
++      stamp:'DESIGN<br>EXAMPLE',
+       lead:'“The bottle colours make it easy to find my everyday essentials.”',
+       body:'Preview customer A · Illustrative feedback for this design.',
+       small:'Fictional customer content. Real feedback will appear separately after review.'
+     });
+     window.BCCHomeFlow.FAQ.forEach(f=>{
+-      if(f.q==='Are these the final prices?'){f.q='What prices are shown?';f.a='The listed MRPs follow the current price sheet. Delivery is shown separately in your bag.';}
++      if(f.q==='Are these the final prices?'){f.q='What prices are shown?';f.a='Listed prices are for this design preview. Delivery is shown separately in your bag; no payment is taken.';}
++      if(f.q==='When will my order arrive?')f.a=policyExamples.shipping.estimates;
++      if(f.q==='How do returns work?')f.a=returnWindow;
+       if(f.q==='How can I ask a question?')f.a='Email care@bodycafeco.com, call +91-8457125489, or open a support case.';
+     });
+     const trust=window.BCCHomeFlow.TRUST;
+@@ -72,6 +98,19 @@
+     trust[1].st='Product information';trust[1].p='Find pack details and ingredient notes together on each product page. Follow the directions on your pack.';
+     trust[2].st='Demo origin';trust[2].p='India · BCC demo manufacturing unit. This is an illustrative sourcing entry for the design.';
+     trust[3].st='Demo records';trust[3].p='Try a demonstration lot lookup to explore how a batch record is presented. It contains no laboratory assessment.';
++  }
++  const home = window.BCCEH?.h.HOME;
++  if (home) {
++    home.voicesBody='Published customer reviews require verified delivery and moderation. Fictional design examples are labelled separately.';
++    home.voicesSmall='Product pages include illustrative feedback for reviewing this design. It is not published customer feedback.';
++    home.faq.forEach(f=>{
++      if(f[0]==='Are these the final prices?') {
++        f[0]='What prices are shown?';
++        f[1]='Listed prices are for this design preview. Delivery is shown separately in your bag; no payment is taken.';
++      }
++      if(f[0]==='When will my order arrive?')f[1]=policyExamples.shipping.estimates;
++      if(f[0]==='How do returns work?')f[1]=returnWindow;
++    });
+   }
+   if (window.BCCStandards) {
+     const m=window.BCCStandards.model;
+@@ -85,7 +124,7 @@
+     m.formula.pendingList='Pack details, ingredient notes and directions printed on your pack';
+   }
+   const phrases = new Map([
+-    ['Prices are samples, shown inclusive of illustrative tax; final GST rates await approval. No offers are running. Bottles shown are draft packaging. Pack sizes, servings and directions will come from the approved labels.','MRPs follow the current price sheet. Explore pack details and ingredient notes on each product page.'],
++    ['Prices are samples, shown inclusive of illustrative tax; final GST rates await approval. No offers are running. Bottles shown are draft packaging. Pack sizes, servings and directions will come from the approved labels.','Listed prices and demo pack quantities are for this design preview. Final pack details will be confirmed from approved labels.'],
+     ["Product names, ingredients in view and formats are published for all seven products. Approved rear labels haven't been supplied, so amounts, serving sizes, other ingredients, allergens, directions and cautions aren't published yet. Creatine Chews' complete formulation is still pending.",'Explore all seven products, their formats, pack details and ingredient notes. The additional sourcing entries on this preview are illustrative.'],
+     ['Packaging is a draft. Amounts, directions and cautions will come from approved rear labels; until then, product pages show them as awaiting approval rather than guessing.','Product pages bring together ingredient notes and pack details. Follow the directions and cautions printed on your pack.'],
+     ['The bottles are draft packaging. Amounts, directions and cautions will come from the approved rear labels.','Explore the collection, ingredient notes and pack details. Follow the directions printed on your pack.'],
+@@ -98,20 +137,17 @@
+     ['Sample prices · draft packaging · no live payments','care@bodycafeco.com · +91-8457125489'],
+     ['Draft copy · preview commerce · sample prices','care@bodycafeco.com · +91-8457125489'],
+     ['Draft copy, preview commerce','care@bodycafeco.com · +91-8457125489'],
+-    ['Awaiting approved label','Demo label details'],['awaiting approved label','demo label details'],
+     [' (complete formulation pending)',' (demo formulation entry)'],
+     ['Not yet published','Demo record'],['Not yet approved','Demo entry'],['Not yet confirmed','Demo entry'],['To be confirmed','Demo entry'],['to be confirmed','demo entry'],
+     ['Sample records only','Demo records'],['sample records','demo records'],['sample lot','demo lot'],
+     ['Draft packaging. Front-of-pack design mockup; wording printed on the pack is label artwork, not a claim made on this site.','Front of the bottle · Studio product image.'],
+     ['Draft packaging. Front-of-pack design mockups; wording printed on the pack is label artwork, not a claim made on this site.','The everyday collection · Studio product images.'],
+     ['Sample price · incl. illustrative tax','MRP'],
+-    ['The approved rear label hasn\'t been supplied, so there\'s no label image yet. When it arrives it will be shown here and in the gallery, and can be enlarged to read.','Read the product notes here, and follow the directions and cautions printed on your pack.'],
+-    ['No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved.','MRPs follow the current price sheet. Delivery is calculated separately in your bag.'],
++    ['No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved.','Listed prices are for this design preview. Delivery is shown separately in your bag; no payment is taken.'],
+     ['Are these the final prices?','What prices are shown?'],
+     ['Public email, WhatsApp and phone details will be added once they are confirmed.','Email care@bodycafeco.com or call +91-8457125489.'],
+     ['Sample prices. Serving quantities and full label information will appear after content approval.','Explore the ingredient notes and product details before choosing.'],
+     ['Prices are samples and no money is taken in the preview.','Checkout is simulated in this design preview.'],
+-    ['No reviews yet','Customer feedback'],
+     ['WHAT’S PUBLISHED.','THE DETAILS.'],['WHAT’S PENDING.','IN ONE PLACE.'],
+     ['Know what’s confirmed','Read the product details']
+   ].sort((a,b)=>b[0].length-a[0].length));
+@@ -124,7 +160,7 @@
+     const pid=ctx.path.startsWith('/products/')?ctx.path.split('/')[2]:null;
+     // Fill nonclinical display fields in the preview; retain pack-directed dosage and cautions.
+     const fields={
+-      'Pack quantity':packs[pid]||'30 units', 'Serving size':'Follow pack directions',
++      'Pack quantity':packInfo(pid)?.label, 'Serving size':'Follow pack directions',
+       'Servings per pack':'See pack directions', 'Preparation':'Use as directed on the pack',
+       'Cautions and interactions':S.CARE_NOTE,
+       'Storage':'Keep in a cool, dry place, away from direct sunlight',
+@@ -142,7 +178,10 @@
+       const dt=row.querySelector('dt'),dd=row.querySelector('dd');
+       if(dt&&dd&&fields[dt.textContent.trim()]&&/await|pending|not yet|approved label/i.test(dd.textContent)){
+         const card=row.closest('[data-sp-item]');
+-        dd.textContent=dt.textContent.trim()==='Pack & servings'&&card ? packs[card.dataset.spItem] : fields[dt.textContent.trim()];dd.classList.remove('is-pending');
++        const pack = dt.textContent.trim()==='Pack & servings'&&card ? packInfo(card.dataset.spItem) : null;
++        dd.textContent=pack ? pack.label : fields[dt.textContent.trim()];
++        if (pack) dd.dataset.packStatus=pack.status;
++        dd.classList.remove('is-pending');
+       }
+     });
+     const walk=document.createTreeWalker(t.content,NodeFilter.SHOW_TEXT);
+@@ -152,5 +191,5 @@
+     }
+     return t.innerHTML;
+   }
+-  window.BCCDemo={contact,packs,present,reviewHTML,lotMetadata:{formulation_version:'DEMO-v1',manufactured:'2026-10-01',expiry:'2028-09-30'}};
++  window.BCCDemo={contact,packs,packInfo,present,reviewHTML,lotMetadata:{formulation_version:'DEMO-v1',manufactured:'2026-10-01',expiry:'2028-09-30'}};
+ })();
+
+--- before/home-flow.js
++++ after/home-flow.js
+@@ -54,7 +54,7 @@
+       return `<section class="r-principles hf-trust" ${attr('trust')}><header class="r-section-head">${rTag(rCopy[d].trust[0])}<h2>${rCopy[d].trust[1]}</h2>${rLink('/standards', 'Explore our standards')}</header><div class="r-principle-body"><p class="r-statement">${rCopy[d].trust[2]}</p>${notes}</div></section>`;
+     },
+     lot: (d) => `<section class="r-home-report hf-lot" ${attr('lot')}><div>${rTag('03 / Keep the number on your pack')}<h2>${rCopy[d].lot}</h2><p>${R.what}</p><ol class="hf-steps">${R.steps.map((s, i) => `<li><span>${no(i)}</span><strong>${s[0]}</strong><small>${s[1]}</small></li>`).join('')}</ol><p class="hf-note">${lotMeta}</p>${rButton('/reports', 'Find your lot report')}</div><div class="hf-lot-side"><div class="r-report-graphic" aria-hidden="true"><span>BODY CAFÉ CO.</span><strong>LOT<br>NO.</strong><code>DEMO — 03 — 01</code><span>PRODUCT / LOT / RECORD</span></div><div class="hf-limits"><p class="r-label">What a report can’t tell you</p><ul>${R.limits.map((x) => `<li>${x}</li>`).join('')}</ul></div></div></section>`,
+-    voices: (d) => `<section class="hf-voices" ${attr('voices')} aria-labelledby="hf-voices-title"><header class="r-section-head">${rTag('04 / Customer voices')}<h2 id="hf-voices-title">${rCopy[d].voices}</h2></header><div class="hf-voices-body"><p class="hf-voices-lead">${VOICES.lead}</p><p>${VOICES.body}</p><p class="hf-voices-small"><span class="r-pending">Preview store</span>${VOICES.small}</p></div></section>`,
++    voices: (d) => `<section class="hf-voices" ${attr('voices')} aria-labelledby="hf-voices-title"><header class="r-section-head">${rTag('04 / Customer voices')}<h2 id="hf-voices-title">${VOICES.title || rCopy[d].voices}</h2></header><div class="hf-voices-body"><p class="hf-voices-lead">${VOICES.lead}</p><p>${VOICES.body}</p><p class="hf-voices-small"><span class="r-pending">Preview store</span>${VOICES.small}</p></div></section>`,
+     faq: () => `<section class="r-home-care hf-faq" ${attr('faq')}><div class="hf-faq-heading">${rTag('Before you order')}<h2>Good questions<br><em>welcome here.</em></h2></div><div>${FAQ.map((f) => `<details><summary>${f.q}<span aria-hidden="true">+</span></summary><p>${f.a}</p>${rLink(f.href, f.l)}</details>`).join('')}${rLink('/help', 'Visit the help centre')}</div></section>`
+   };
+ 
+@@ -62,7 +62,7 @@
+   const hcLink = (href, t) => `<a href="${href}">${t} ↗</a>`;
+   const b = {
+     trust: () => `<section id="home-evidence" class="hc-section hc-evidence hf-trust" ${attr('trust')}><div class="hc-heading"><p class="hc-kicker">02 — WHAT YOU CAN CHECK</p><h2>What we can show.<br><em>What’s still to come.</em></h2><p>Everything published now, and everything still waiting for approval, in one place.</p></div><div class="hc-proof-grid">${TRUST.map((t, i) => `<article><span class="hc-index">${no(i)} / ${t.st.toUpperCase()}</span><h3>${t.k}</h3><p>${t.p}</p>${hcLink(t.href, t.l)}</article>`).join('')}</div></section>`,
+-    voices: () => `<section class="hc-section hc-voices" ${attr('voices')} aria-labelledby="hc-voices-title"><p class="hc-kicker">04 — CUSTOMER VOICES</p><div class="hc-split"><h2 id="hc-voices-title">Real people.<br><em>Their own words.</em></h2><div><p class="hc-lede">${VOICES.lead}</p><p>${VOICES.body}</p><p class="hc-small">${VOICES.small}</p></div></div></section>`,
++    voices: () => `<section class="hc-section hc-voices" ${attr('voices')} aria-labelledby="hc-voices-title"><p class="hc-kicker">04 — CUSTOMER VOICES</p><div class="hc-split"><h2 id="hc-voices-title">${VOICES.title || 'Real people.<br><em>Their own words.</em>'}</h2><div><p class="hc-lede">${VOICES.lead}</p><p>${VOICES.body}</p><p class="hc-small">${VOICES.small}</p></div></div></section>`,
+     faq: () => `<section id="home-care" class="hc-section hc-care hf-faq" ${attr('faq')}><div><p class="hc-kicker">BEFORE YOU ORDER</p><h2>Good questions<br><em>welcome here.</em></h2><p>This is a working preview. No payment is taken and no products are dispatched.</p>${hcLink('/help', 'Visit the help centre')}</div><div class="hc-faq">${FAQ.map((f) => `<details><summary>${f.q}<span aria-hidden="true">＋</span></summary><p>${f.a}</p><p class="hf-faq-link">${hcLink(f.href, f.l)}</p></details>`).join('')}</div></section>`,
+     lotExtra: () => `<ol class="hf-steps">${R.steps.map((s, i) => `<li><span>${no(i)}</span><strong>${s[0]}</strong><small>${s[1]}</small></li>`).join('')}</ol><div class="hf-limits"><p class="hf-limits-title">What a report can’t tell you</p><ul>${R.limits.map((x) => `<li>${x}</li>`).join('')}</ul></div><p class="hf-note">${R.locationStatus}</p>`
+   };
+@@ -72,7 +72,7 @@
+   const c = {
+     trust: () => `<section class="hf-c hf-c-trust hf-trust" ${attr('trust')}><header><span class="w-eyebrow">02 / WHAT YOU CAN CHECK</span><h2>Published now.<br><em>Pending, plainly.</em></h2>${go('/standards', 'Our approach')}</header><div class="hf-c-cards">${TRUST.map((t, i) => `<article style="--tilt:${[-1.5, 1, -1, 1.5][i]}deg"><span class="w-eyebrow">${no(i)} / ${t.st}</span><h3>${t.k}</h3><p>${t.p}</p><a href="${t.href}">${t.l} ${arrow}</a></article>`).join('')}</div></section>`,
+     lot: () => `<section class="hf-c hf-c-lot hf-lot" ${attr('lot')}><div><span class="w-eyebrow">03 / KEEP THE NUMBER ON YOUR PACK</span><h2>Every lot.<br><em>Its own record.</em></h2><p>${R.what}</p>${go('/reports', 'Find your lot report')}</div><div><ol class="hf-steps">${R.steps.map((s, i) => `<li><span>${no(i)}</span><strong>${s[0]}</strong><small>${s[1]}</small></li>`).join('')}</ol><div class="hf-limits"><p class="w-eyebrow">What a report can’t tell you</p><ul>${R.limits.map((x) => `<li>${x}</li>`).join('')}</ul></div><p class="hf-note">${lotMeta}</p></div></section>`,
+-    voices: () => `<section class="hf-c hf-c-voices" ${attr('voices')} aria-labelledby="hf-voices-title"><div class="hf-c-bubble" aria-hidden="true"><span>“</span><i>NOTHING<br>MADE UP</i></div><div><span class="w-eyebrow">04 / CUSTOMER VOICES</span><h2 id="hf-voices-title">Real people.<br><em>Their own words.</em></h2><p class="hf-voices-lead">${VOICES.lead}</p><p>${VOICES.body}</p><p class="hf-voices-small">${VOICES.small}</p></div></section>`,
++    voices: () => `<section class="hf-c hf-c-voices" ${attr('voices')} aria-labelledby="hf-voices-title"><div class="hf-c-bubble" aria-hidden="true"><span>“</span><i>${VOICES.stamp || 'CUSTOMER<br>VOICES'}</i></div><div><span class="w-eyebrow">04 / CUSTOMER VOICES</span><h2 id="hf-voices-title">${VOICES.title || 'Real people.<br><em>Their own words.</em>'}</h2><p class="hf-voices-lead">${VOICES.lead}</p><p>${VOICES.body}</p><p class="hf-voices-small">${VOICES.small}</p></div></section>`,
+     faq: () => `<section class="hf-c hf-c-faq hf-faq" ${attr('faq')}><header><span class="w-eyebrow">BEFORE YOU ORDER</span><h2>Good questions<br><em>welcome here.</em></h2>${go('/help', 'Visit the help centre')}</header><div>${FAQ.map((f) => `<details><summary>${f.q}<span aria-hidden="true">+</span></summary><p>${f.a}</p><a href="${f.href}">${f.l} ${arrow}</a></details>`).join('')}</div></section>`
+   };
+ 
+
+--- before/product-page.css
++++ after/product-page.css
+@@ -384,7 +384,8 @@
+ .pp-c :is(.pp-h1, .pp-head h2, .pp-price-num, .pp-rel-name, .pp-rv-num, .pp-rv-avg.is-empty) { font-weight: 400; letter-spacing: -.02em; }
+ .pp-c .pp-h1 { font-size: clamp(46px, 5.4vw, 84px); }
+ .pp-c .pp-head h2 { color: var(--c-red); }
+-.pp-c .pp-stage { border-radius: 999px 999px 18px 18px; border: 10px solid #fff8df; box-shadow: 8px 8px 0 rgb(64 41 30 / .12); }
++.pp-c .pp-stage { border-radius: 999px 999px 18px 18px; border: 10px solid #fff8df; box-shadow: 8px 8px 0 rgb(64 41 30 / .12); overflow: visible; }
++.pp-c .pp-slides { border-radius: inherit; }
+ .pp-c .pp-open { height: clamp(380px, 48vw, 660px); }
+ .pp-c .pp-slide-front img { filter: drop-shadow(0 18px 18px rgb(64 41 30 / .25)); }
+ .pp-c .pp-btn, .pp-c .pp-add { box-shadow: 4px 4px 0 var(--c-red); }
+
+--- before/product-page.js
++++ after/product-page.js
+@@ -127,7 +127,8 @@
+     return '<form id="pincode-form" class="pp-pincode" novalidate><label for="pincode">Check delivery to your pincode</label><div class="pp-inline"><input id="pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" pattern="[1-9][0-9]{5}" maxlength="6" placeholder="6-digit pincode" required aria-describedby="pincode-help pincode-result"><button type="submit">Check</button></div><p id="pincode-help" class="pp-micro">' + COPY.delivery + '</p><p id="pincode-result" class="pp-micro pp-result" role="status"></p></form>';
+   }
+   function packFacts(m) {
+-    return '<dl class="pp-pack"><div><dt>Format</dt><dd>' + m.format + "</dd></div><div><dt>Pack quantity</dt><dd class=\"is-pending\">" + PENDING + "</dd></div><div><dt>Serving size</dt><dd class=\"is-pending\">" + PENDING + "</dd></div><div><dt>Servings per pack</dt><dd class=\"is-pending\">" + PENDING + "</dd></div></dl>";
++    var pack = window.BCCDemo && window.BCCDemo.packInfo(m.id);
++    return '<dl class="pp-pack"><div><dt>Format</dt><dd>' + m.format + "</dd></div><div><dt>Pack quantity</dt><dd" + (pack ? ' data-pack-status="demo"' : ' class="is-pending"') + ">" + (pack ? pack.label : PENDING) + "</dd></div><div><dt>Serving size</dt><dd class=\"is-pending\">" + PENDING + "</dd></div><div><dt>Servings per pack</dt><dd class=\"is-pending\">" + PENDING + "</dd></div></dl>";
+   }
+   function quickLinks() {
+     return '<nav class="pp-quick" aria-label="On this page"><a href="#ingredients">Ingredients</a><a href="#use">How to use</a><a href="#reviews">Reviews</a><a href="#quality">Lot report</a></nav>';
+@@ -201,7 +202,7 @@
+       factRows(rows, "pp-facts pp-facts-label") +
+       '<div class="pp-cols">' +
+         '<div>' + sub("What the approved label will state") + '<ul class="pp-list">' + m.confirm.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ul></div>" +
+-        '<div>' + sub("Approved label image") + '<p class="pp-p">The approved rear label hasn\'t been supplied, so there\'s no label image yet. When it arrives it will be shown here and in the gallery, and can be enlarged to read.</p></div>' +
++        '<div>' + sub("Rear label") + '<p class="pp-p">The approved rear label is not available in this preview. When supplied, it will appear here and in the gallery, with an option to enlarge it.</p></div>' +
+       "</div>" +
+       (m.notes.compound ? '<aside class="pp-aside"><p class="pp-aside-k">Reading this ingredient</p><p>' + m.notes.compound + "</p>" + sources(m.notes.sources) + "</aside>" : "");
+   }
+@@ -248,9 +249,10 @@
+       "</div>";
+   }
+   function productFaqs(m) {
++    var pack = window.BCCDemo && window.BCCDemo.packInfo(m.id);
+     return [
+       ["How much is in each serving?", "Amounts per serving come from the approved rear label, which hasn't been supplied yet. This page doesn't suggest a dose."],
+-      ["How many " + (m.format ? m.format.toLowerCase() : "units") + " are in a pack?", "The pack quantity will come from the approved label. The count printed on the draft packaging image isn't confirmed."],
++      ["How many " + (m.format ? m.format.toLowerCase() : "units") + " are in a pack?", pack ? pack.description : "The pack quantity will come from the approved label. The count printed on the draft packaging image isn't confirmed."],
+       ["Where's the lot number on my pack?", "A guide will be added with the final rear label. Your lot number is different from your order number or the barcode."],
+       ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved."],
+     ];
+
+--- before/site-b.css
++++ after/site-b.css
+@@ -107,7 +107,7 @@
+ body[data-theme="b"] .tb-bag [data-cart-count] { position: static; display: inline-grid; place-items: center; min-width: 30px; height: 30px; padding: 0 8px; border-radius: 999px; background: var(--b-lime); color: var(--b-indigo); font-size: 13px; font-weight: 700; }
+ body[data-theme="b"] .tb-bag [data-cart-count][data-empty] { display: inline-grid; background: var(--paper); color: var(--ink); }
+ body[data-theme="b"] .tb-menu { display: none; }
+-body[data-theme="b"] #mobile-nav.tb-mnav { background: var(--paper); color: var(--ink); padding: 106px var(--b-pad) 32px; }
++body[data-theme="b"] #mobile-nav.tb-mnav { top: var(--mnav-top, 0px); background: var(--paper); color: var(--ink); padding: 24px var(--b-pad) 32px; }
+ body[data-theme="b"] .tb-mnav .mobile-nav-links { display: grid; gap: 8px; margin: 0; padding: 0; }
+ body[data-theme="b"] .tb-mnav .mobile-nav-links a { display: flex; align-items: center; gap: 14px; padding: 10px 0; font-family: var(--text); text-transform: none; font-size: clamp(28px, 8vw, 42px); font-weight: 700; letter-spacing: -0.06em; line-height: 1; text-decoration: none; color: var(--ink); border: 0; }
+ body[data-theme="b"] .tb-mnum { display: inline-grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 50%; font-size: 13px; letter-spacing: 0; box-shadow: inset 0 0 0 2px var(--ink); }
+
+--- before/site-h.css
++++ after/site-h.css
+@@ -61,7 +61,7 @@
+ .eh-h .h-tools { display: flex; align-items: center; gap: 2px; }
+ .eh-h .h-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: none; color: inherit; cursor: pointer; }
+ .eh-h .h-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.4; }
+-.eh-h .h-count { position: absolute; top: 6px; right: 2px; font-size: 11px; font-weight: 600; min-width: 16px; height: 16px; display: grid; place-items: center; border: 1px solid currentColor; background: #fff; }
++.eh-h .h-count { position: absolute; top: 6px; right: 2px; font-size: 11px; font-weight: 600; min-width: 16px; height: 16px; display: grid; place-items: center; border: 1px solid var(--ink); background: var(--ink); color: #fff; }
+ .eh-h .h-lotbtn { display: inline-flex; align-items: center; height: 38px; padding: 0 14px; margin: 0 6px; border: 1px solid var(--ink); text-decoration: none; font-size: 14px; white-space: nowrap; transition: background .2s, color .2s; }
+ .eh-h .h-lotbtn:hover, .eh-h .h-lotbtn[aria-current="page"] { background: var(--ink); color: #fff; }
+ .eh-h .h-menu { display: none; }
+
+--- before/support.js
++++ after/support.js
+@@ -162,7 +162,9 @@
+     var ch = C.BUSINESS.channels;
+     return '<ul class="su-channels">' + Object.keys(ch).filter(function (k) { return k !== "whatsapp" || ch[k].live; }).map(function (k) {
+       var c = ch[k];
+-      return '<li class="' + (c.live ? "is-live" : "is-off") + '"><strong>' + h(c.label) + "</strong><span>" + (c.href ? '<a href="' + h(c.href) + '">' + h(c.detail) + "</a>" : h(c.detail)) + "</span>" + (c.live ? '<span class="su-chip is-ok">Available</span>' : '<span class="su-chip">Not yet available</span>') + "</li>";
++      var available = c.live && (k !== "web" || !isStatic());
++      var status = !available ? "Not available in this preview" : k === "web" ? "Local preview" : "Contact link";
++      return '<li class="' + (available ? "is-live" : "is-off") + '"><strong>' + h(c.label) + "</strong><span>" + (c.href ? '<a href="' + h(c.href) + '">' + h(c.detail) + "</a>" : h(c.detail)) + '</span><span class="su-chip' + (available ? " is-ok" : "") + '">' + status + "</span></li>";
+     }).join("") + "</ul>";
+   }
+   function contactInfo() {

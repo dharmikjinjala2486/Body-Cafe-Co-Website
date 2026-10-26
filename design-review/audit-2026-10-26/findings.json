@@ -1,0 +1,461 @@
+[
+  {
+    "id": "BCC-01",
+    "priority": "P1",
+    "category": "Navigation",
+    "variants": "A/C/D",
+    "title": "Repair mobile menu label contract",
+    "kind": "Confirmed defect",
+    "detail": "Plain-text menu buttons conflict with the controller’s required child span. First destination selection can fail."
+  },
+  {
+    "id": "BCC-02",
+    "priority": "P1",
+    "category": "Navigation",
+    "variants": "B",
+    "title": "Move the mobile drawer below the header",
+    "kind": "Confirmed defect",
+    "detail": "The Shop row at y106–168 is underneath the header at y103.5–175.5 in the sampled phone layout."
+  },
+  {
+    "id": "BCC-03",
+    "priority": "P1",
+    "category": "Product",
+    "variants": "C",
+    "title": "Keep Enlarge outside the image mask",
+    "kind": "Confirmed defect",
+    "detail": "The arched container clips the control; its center does not hit the button."
+  },
+  {
+    "id": "BCC-04",
+    "priority": "P1",
+    "category": "Content",
+    "variants": "All",
+    "title": "Unify pack facts across surfaces",
+    "kind": "Confirmed inconsistency",
+    "detail": "D3+K2 says 60 softgels while its FAQ and bag say the count is pending/unconfirmed."
+  },
+  {
+    "id": "BCC-05",
+    "priority": "P1",
+    "category": "Content",
+    "variants": "All",
+    "title": "Map sample policy copy by exact section ID",
+    "kind": "Confirmed defect",
+    "detail": "Delivery charges and failed-delivery sections receive a delivery-time estimate."
+  },
+  {
+    "id": "BCC-06",
+    "priority": "P1",
+    "category": "Content",
+    "variants": "All",
+    "title": "Align trust headings with demo feedback",
+    "kind": "Confirmed inconsistency",
+    "detail": "Real-people wording and C’s NOTHING MADE UP treatment contradict fictional feedback."
+  },
+  {
+    "id": "BCC-07",
+    "priority": "P1",
+    "category": "Accessibility",
+    "variants": "H",
+    "title": "Increase bag-count contrast",
+    "kind": "Confirmed defect",
+    "detail": "The sampled light count on white is approximately 1.22:1."
+  },
+  {
+    "id": "BCC-08",
+    "priority": "P1",
+    "category": "Content",
+    "variants": "All",
+    "title": "Reconcile public contact status",
+    "kind": "Confirmed inconsistency",
+    "detail": "About says details will be published later; Contact and footers already show direct channels."
+  },
+  {
+    "id": "BCC-09",
+    "priority": "P1",
+    "category": "Content",
+    "variants": "All",
+    "title": "Label missing rear-label imagery directly",
+    "kind": "Confirmed inconsistency",
+    "detail": "An Approved label image heading contains pack-directed text rather than an image or a clear unavailable state."
+  },
+  {
+    "id": "BCC-10",
+    "priority": "P2",
+    "category": "Strategy",
+    "variants": "All",
+    "title": "Choose one primary customer direction",
+    "kind": "Design recommendation",
+    "detail": "Refine B as the flagship candidate and E as the quieter alternative, then test them with the same content."
+  },
+  {
+    "id": "BCC-11",
+    "priority": "P2",
+    "category": "Homepage",
+    "variants": "C",
+    "title": "Identify supplements and expose Shop in chapter one",
+    "kind": "Design recommendation",
+    "detail": "The scenery and cup dominate before the product category and shopping action become clear."
+  },
+  {
+    "id": "BCC-12",
+    "priority": "P2",
+    "category": "Homepage",
+    "variants": "A/D",
+    "title": "Shorten the mandatory cinematic introduction",
+    "kind": "Design recommendation",
+    "detail": "Offer a direct catalogue path throughout the opening story."
+  },
+  {
+    "id": "BCC-13",
+    "priority": "P2",
+    "category": "Product",
+    "variants": "All",
+    "title": "Bring the mobile purchase path higher",
+    "kind": "Measured opportunity",
+    "detail": "The sampled Add to bag controls start around y988–1159 at 390×844."
+  },
+  {
+    "id": "BCC-14",
+    "priority": "P2",
+    "category": "Typography",
+    "variants": "A/C/D",
+    "title": "Enlarge meaningful metadata and motion labels",
+    "kind": "Measured opportunity",
+    "detail": "Several homepage labels compute to 6–10 px in the mobile sample."
+  },
+  {
+    "id": "BCC-15",
+    "priority": "P2",
+    "category": "Typography",
+    "variants": "F/G",
+    "title": "Strengthen display strokes and functional hierarchy",
+    "kind": "Design recommendation",
+    "detail": "Ultra-light headlines are less robust on small screens; use normal-weight functional text."
+  },
+  {
+    "id": "BCC-16",
+    "priority": "P2",
+    "category": "Typography",
+    "variants": "All",
+    "title": "Define reading, display and metadata roles",
+    "kind": "Design recommendation",
+    "detail": "Core and campaign font roles should be explicit, including the About typography explanation."
+  },
+  {
+    "id": "BCC-17",
+    "priority": "P2",
+    "category": "Color",
+    "variants": "All",
+    "title": "Create semantic tokens beside product colors",
+    "kind": "Design recommendation",
+    "detail": "Keep product identity separate from warning, error, success and selected states."
+  },
+  {
+    "id": "BCC-18",
+    "priority": "P2",
+    "category": "Images",
+    "variants": "All",
+    "title": "Build a complete accurate gallery for every SKU",
+    "kind": "Content dependency",
+    "detail": "Supply readable rear labels, format/scale imagery and consistent real-world product photographs."
+  },
+  {
+    "id": "BCC-19",
+    "priority": "P2",
+    "category": "Product",
+    "variants": "All",
+    "title": "Publish approved facts for all seven products",
+    "kind": "Content dependency",
+    "detail": "Exact amounts, complete ingredients, directions, suitability and cautions must come from genuine records."
+  },
+  {
+    "id": "BCC-20",
+    "priority": "P2",
+    "category": "Product",
+    "variants": "D3+K2",
+    "title": "Clarify the additional omega-3 ingredient",
+    "kind": "Content recommendation",
+    "detail": "Product identity should not conceal a third named ingredient behind the short title."
+  },
+  {
+    "id": "BCC-21",
+    "priority": "P2",
+    "category": "Product",
+    "variants": "Omega-3",
+    "title": "Separate total oil and active amounts",
+    "kind": "Content dependency",
+    "detail": "Use the approved EPA/DHA, form, source and allergen facts; no amounts are proposed by this audit."
+  },
+  {
+    "id": "BCC-22",
+    "priority": "P2",
+    "category": "Product",
+    "variants": "Creatine Chews",
+    "title": "Resolve formulation and format information",
+    "kind": "Content dependency",
+    "detail": "Use the approved chew base, active form/amount, sweeteners and flavor, distinct from gummies."
+  },
+  {
+    "id": "BCC-23",
+    "priority": "P2",
+    "category": "Product",
+    "variants": "All",
+    "title": "Make the pincode tool describe its actual capability",
+    "kind": "Content recommendation",
+    "detail": "It checks format rather than serviceability or an arrival date."
+  },
+  {
+    "id": "BCC-24",
+    "priority": "P2",
+    "category": "Evidence",
+    "variants": "All",
+    "title": "Put available evidence before general explanation",
+    "kind": "Design recommendation",
+    "detail": "Standards should show actual record scope/status first, then the educational explanation."
+  },
+  {
+    "id": "BCC-25",
+    "priority": "P2",
+    "category": "Evidence",
+    "variants": "All",
+    "title": "Bring lot input higher on phones",
+    "kind": "Design recommendation",
+    "detail": "The long introduction and seven product chips push the input down."
+  },
+  {
+    "id": "BCC-26",
+    "priority": "P2",
+    "category": "Evidence",
+    "variants": "All",
+    "title": "Replace fictional origin/facility entries for release",
+    "kind": "Content dependency",
+    "detail": "Only supplied and verified records can support actual sourcing claims."
+  },
+  {
+    "id": "BCC-27",
+    "priority": "P2",
+    "category": "Brand",
+    "variants": "All",
+    "title": "Give About and Story distinct purposes",
+    "kind": "Content recommendation",
+    "detail": "About should explain the business now; Story should explain a specific genuine origin."
+  },
+  {
+    "id": "BCC-28",
+    "priority": "P2",
+    "category": "Brand",
+    "variants": "All",
+    "title": "Replace absent-people promises with genuine material",
+    "kind": "Content dependency",
+    "detail": "Names, roles and portraits should be supplied before a prominent Meet the people route promises them."
+  },
+  {
+    "id": "BCC-29",
+    "priority": "P2",
+    "category": "Learn",
+    "variants": "All",
+    "title": "Simplify the hub’s first choices",
+    "kind": "Design recommendation",
+    "detail": "Use products, labels and evidence as the primary paths; keep the extended index secondary."
+  },
+  {
+    "id": "BCC-30",
+    "priority": "P2",
+    "category": "Learn",
+    "variants": "All",
+    "title": "Show the article takeaway before the long contents list",
+    "kind": "Design recommendation",
+    "detail": "Mobile metadata, three actions and the full contents occupy the initial screen."
+  },
+  {
+    "id": "BCC-31",
+    "priority": "P2",
+    "category": "Search",
+    "variants": "All",
+    "title": "Unify product, guide, glossary and help search",
+    "kind": "Observed opportunity",
+    "detail": "Global omega search returned two products and a forms guide, without the dedicated omega guide in that result set."
+  },
+  {
+    "id": "BCC-32",
+    "priority": "P2",
+    "category": "Learn",
+    "variants": "All",
+    "title": "Complete and identify genuine specialist review",
+    "kind": "Content dependency",
+    "detail": "The current guides openly say they have not yet had specialist review."
+  },
+  {
+    "id": "BCC-33",
+    "priority": "P2",
+    "category": "Commerce",
+    "variants": "All",
+    "title": "Use compact checkout and account introductions",
+    "kind": "Design recommendation",
+    "detail": "Bring fields, order status and actions higher; use literal progress labels."
+  },
+  {
+    "id": "BCC-34",
+    "priority": "P2",
+    "category": "Commerce",
+    "variants": "All",
+    "title": "Reconcile delivery, discount and policy summaries",
+    "kind": "Content recommendation",
+    "detail": "One rule should drive bag, product disclosures, checkout and policies."
+  },
+  {
+    "id": "BCC-35",
+    "priority": "P2",
+    "category": "Support",
+    "variants": "All",
+    "title": "Clarify what channel Available means",
+    "kind": "Content recommendation",
+    "detail": "Distinguish a direct link, staffed support and the local case function."
+  },
+  {
+    "id": "BCC-36",
+    "priority": "P2",
+    "category": "Performance",
+    "variants": "All",
+    "title": "Load only the required theme and page modules",
+    "kind": "Source observation",
+    "detail": "The shell references 38 stylesheets and 38 scripts, about 2.36 MB raw before further dependencies/media."
+  },
+  {
+    "id": "BCC-37",
+    "priority": "P2",
+    "category": "Performance",
+    "variants": "A/D",
+    "title": "Defer unselected 3D models",
+    "kind": "Source observation",
+    "detail": "The selected model is followed by the remaining six; seven GLBs total about 8.7 MB on disk."
+  },
+  {
+    "id": "BCC-38",
+    "priority": "P2",
+    "category": "Accessibility",
+    "variants": "All",
+    "title": "Complete keyboard, screen-reader and reflow checks",
+    "kind": "Validation work",
+    "detail": "A route sweep and computed-style scan are not an accessibility conformance audit."
+  },
+  {
+    "id": "BCC-39",
+    "priority": "P2",
+    "category": "Navigation",
+    "variants": "All",
+    "title": "Collapse footer groups on phones",
+    "kind": "Measured opportunity",
+    "detail": "Sampled product footers are roughly 1100–1530 px tall."
+  },
+  {
+    "id": "BCC-40",
+    "priority": "P3",
+    "category": "Homepage",
+    "variants": "All",
+    "title": "Replace repeated curiosity copy with useful distinctions",
+    "kind": "Editorial recommendation",
+    "detail": "Every section should answer a different shopper question."
+  },
+  {
+    "id": "BCC-41",
+    "priority": "P3",
+    "category": "Shop",
+    "variants": "All",
+    "title": "Explain or rename Recommended sorting",
+    "kind": "Editorial recommendation",
+    "detail": "Featured is clearer if order is editorial; seven SKUs do not require elaborate discovery machinery."
+  },
+  {
+    "id": "BCC-42",
+    "priority": "P3",
+    "category": "Bundles",
+    "variants": "All",
+    "title": "Give example pairings a useful comparison purpose",
+    "kind": "Design recommendation",
+    "detail": "Current pairings have no approved savings or joint-use recommendation."
+  },
+  {
+    "id": "BCC-43",
+    "priority": "P3",
+    "category": "Motion",
+    "variants": "All",
+    "title": "Use one meaningful moving focal point at a time",
+    "kind": "Design recommendation",
+    "detail": "Motion should explain selection, a product detail or feedback; keep a useful static view."
+  },
+  {
+    "id": "BCC-44",
+    "priority": "P3",
+    "category": "Motion",
+    "variants": "All",
+    "title": "Validate saved and device reduced-motion behavior",
+    "kind": "Validation work",
+    "detail": "Source supports it; exercise every scene and navigation in a dedicated preference pass."
+  },
+  {
+    "id": "BCC-45",
+    "priority": "P3",
+    "category": "Brand",
+    "variants": "C",
+    "title": "Connect the imaginative world to the visible bottle",
+    "kind": "Design recommendation",
+    "detail": "The opening cup/scenery should help visitors recognize the actual category."
+  },
+  {
+    "id": "BCC-46",
+    "priority": "P3",
+    "category": "Brand",
+    "variants": "E",
+    "title": "Bring a product composition higher",
+    "kind": "Design recommendation",
+    "detail": "Strengthen product appeal alongside the clean color index and typography."
+  },
+  {
+    "id": "BCC-47",
+    "priority": "P3",
+    "category": "Brand",
+    "variants": "H",
+    "title": "Add restrained warmth to the reference system",
+    "kind": "Design recommendation",
+    "detail": "Use selective product color and human imagery without losing reading clarity."
+  },
+  {
+    "id": "BCC-48",
+    "priority": "P3",
+    "category": "Operations",
+    "variants": "Shared",
+    "title": "Prioritize exceptions, filters and readable record summaries",
+    "kind": "Design recommendation",
+    "detail": "Safety cases and withdrawn lots should stand out; mobile tables need useful drill-down."
+  },
+  {
+    "id": "BCC-49",
+    "priority": "P3",
+    "category": "Release",
+    "variants": "All",
+    "title": "Separate reviewer controls from the customer release",
+    "kind": "Release work",
+    "detail": "Keep the preview selector for review; a selected customer direction needs its own clean entry."
+  },
+  {
+    "id": "BCC-50",
+    "priority": "P3",
+    "category": "Release",
+    "variants": "All",
+    "title": "Prepare accurate metadata and indexing",
+    "kind": "Release work",
+    "detail": "Preview noindex is intentional. Set canonicals, sitemap and accurate structured data for the intended release."
+  },
+  {
+    "id": "BCC-51",
+    "priority": "P3",
+    "category": "Validation",
+    "variants": "All",
+    "title": "Measure real-device performance and user tasks",
+    "kind": "Validation work",
+    "detail": "Use Core Web Vitals, comprehension, task success and errors rather than visual votes alone."
+  }
+]

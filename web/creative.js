@@ -10,7 +10,7 @@
   const link = (href,t,cls='') => `<a class="r-link ${cls}" href="${href}"><span>${t}</span><span aria-hidden="true">↗</span></a>`;
   const button = (href,t,cls='') => `<a class="r-button ${cls}" href="${href}"><span>${t}</span><span aria-hidden="true">↗</span></a>`;
   const pending = (t='Awaiting approved label') => `<span class="r-pending">${t}</span>`;
-  const picture = (ctx,p,eager=false) => `<img src="/web/media/${p.id}.webp" alt="${ctx.escape(p.name)} bottle, draft front mockup" width="${ctx.bottleWidth?.[p.id]||720}" height="1000" ${eager?'fetchpriority="high"':'loading="lazy"'} decoding="async">`;
+  const picture = (ctx,p,eager=false) => `<img src="${window.BCCBottleAssets.url(p.id)}" alt="${ctx.escape(p.name)} bottle, draft front mockup" width="${ctx.bottleWidth?.[p.id]||720}" height="1000" ${eager?'fetchpriority="high"':'loading="lazy"'} decoding="async">`;
   const nOf = (ctx,p) => number(ctx.catalog.findIndex(x=>x.id===p.id));
   const sample = text => `<aside class="r-sample" role="note">${pending('DESIGN PREVIEW')}<span>${text}</span></aside>`;
   function chrome(ctx,html) {
@@ -25,9 +25,14 @@
       <main id="main" tabindex="-1" class="r-main r-${d}">${html}</main>
       <footer class="site-footer r-footer"><div class="r-footer-top">${tag('Body Café Co. / '+names[d])}<h2>${d==='a'?'Stay curious.':d==='c'?'Keep the good<br>questions coming.':'There is more<br>to the story.'}</h2>${button('/shop','Explore the collection')}</div><div class="r-footer-links"><div><h3>Discover</h3>${nav.concat([['/reports','Lot reports']]).map(([h,t])=>link(h,t)).join('')}</div>${S.careGroups().map(g=>`<div><h3>${g.group}</h3>${g.items.map(([t,h])=>link(h,t)).join('')}</div>`).join('')}</div><p class="r-footer-word"><img src="/web/media/brand-horizontal.svg" alt="Body Cafe Co." width="1160" height="140"></p><div class="r-footer-bottom"><span>© ${new Date().getFullYear()} Body Café Co.</span><span>Sample prices · draft packaging · no live payments</span><a href="/preview/states">Design states ↗</a></div></footer>`;
   }
+  function cardPicture(ctx,p) {
+    if(ctx.design!=='a')return picture(ctx,p);
+    return `<span class="r-card-bottle" style="--bottle-height:100%;--bottle-top:0%;--bottle-center:50%">${picture(ctx,p)}</span>`;
+  }
+  S.cardBottlePicture = cardPicture;
   function card(ctx,p,i=0) {
     const d=ctx.design, off=!p.published||!p.stock;
-    const main=`<a class="r-product-art" href="/products/${p.id}" style="${ctx.capStyle(p)}"><span class="r-product-code">${d==='c'?'BCC — ':'NO. '}${nOf(ctx,p)}</span>${d==='c'?'<span class="r-record" aria-hidden="true"></span>':''}${picture(ctx,p)}<span class="r-art-caption">${ctx.escape(ctx.format[p.id])}</span><span class="r-art-arrow" aria-hidden="true">↗</span></a>`;
+    const main=`<a class="r-product-art" href="/products/${p.id}" style="${ctx.capStyle(p)}"><span class="r-product-code">${d==='c'?'BCC — ':'NO. '}${nOf(ctx,p)}</span>${d==='c'?'<span class="r-record" aria-hidden="true"></span>':''}${cardPicture(ctx,p)}<span class="r-art-caption">${ctx.escape(ctx.format[p.id])}</span><span class="r-art-arrow" aria-hidden="true">↗</span></a>`;
     return `<article class="r-product r-product-${d}" style="--item:${i};${ctx.capStyle(p)}">${main}<div class="r-product-info"><h3><a href="/products/${p.id}">${ctx.escape(p.name)}</a></h3><p>${ctx.escape(p.subtitle)}</p><div class="r-product-bottom"><p><strong>${ctx.money(p.price)}</strong><small>Sample price</small></p><button class="r-add" data-add="${p.id}" aria-label="Add ${ctx.escape(p.name)} to bag" ${off?'disabled':''}>${off?'Unavailable':'Add + '}</button></div></div></article>`;
   }
   function guideLinks(ctx) {

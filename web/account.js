@@ -57,7 +57,7 @@
     var payKind = o.payment === "captured" ? "ok" : o.payment === "processing" ? "warn" : o.payment === "failed" ? "bad" : "";
     return chip(FUL[o.state] || o.state, o.state === "delivered" ? "ok" : o.state === "cancelled" || o.state === "expired" ? "muted" : "") + chip(PAY[o.payment] || "Payment: " + (o.payment || "unknown"), payKind);
   }
-  function thumb(id) { var p = product(id); return p ? '<img src="/web/media/' + h(p.id) + '.webp" alt="" width="720" height="1000" loading="lazy" decoding="async" style="--ac-cap:' + h(p.color) + '">' : ""; }
+  function thumb(id) { var p = product(id); return p ? '<img src="' + window.BCCBottleAssets.url(h(p.id)) + '" alt="" width="720" height="1000" loading="lazy" decoding="async" style="--ac-cap:' + h(p.color) + '">' : ""; }
 
   /* ---------------- sign-in ---------------- */
   function signInBlock(v, next, embedded) {

@@ -84,7 +84,7 @@
     behindNote: "These are our own design files and packaging renders. Photographs of the team at work will be added as they're taken.",
     talk: {
       lead: "Questions about who we are, the name or how we work are welcome. Send one to the team and you'll get a case ID to follow.",
-      contact: "Support runs through cases on this site. WhatsApp, email and phone details will be published once confirmed.",
+      contact: "Open a support case on this site, or find our email, WhatsApp and phone links on Contact. Support hours and reply targets in this preview are illustrative.",
     },
   };
 
@@ -109,7 +109,7 @@
   function lineup(ctx) {
     return '<figure class="ab-lineup"><div class="ab-lineup-row">' + ctx.published.map(function (p, i) {
       var w = (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720;
-      return '<img src="/web/media/' + p.id + '.webp" alt="" width="' + w + '" height="1000" decoding="async"' + (i < 4 ? ' fetchpriority="high"' : ' loading="lazy"') + ' style="--i:' + i + '">';
+      return '<img src="' + window.BCCBottleAssets.url(p.id) + '" alt="" width="' + w + '" height="1000" decoding="async"' + (i < 4 ? ' fetchpriority="high"' : ' loading="lazy"') + ' style="--i:' + i + '">';
     }).join("") + '</div><figcaption class="ab-cap">The seven, as draft packaging: ' + ctx.published.map(function (p) { return h(p.name); }).join(", ") + ".</figcaption></figure>";
   }
 

@@ -12,7 +12,7 @@
   function arrow() { return '<span aria-hidden="true">↗</span>'; }
   function tlink(href, label, cls) { return '<a class="ta-link ' + (cls || "") + '" href="' + href + '">' + label + " " + arrow() + "</a>"; }
   function btn(href, label) { return '<a class="ta-btn" href="' + href + '"><span>' + label + "</span>" + arrow() + "</a>"; }
-  function photo(p, lazy) { return '<img src="/concepts/media/' + p.id + '.webp" alt="' + p.name.replace(/"/g, "&quot;") + ' bottle, front-of-pack design mockup" width="1196" height="1315" ' + (lazy === false ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async">'; }
+  function photo(p, lazy) { return '<img src="' + window.BCCBottleAssets.url(p.id, '/concepts/media/' + p.id + '.webp') + '" alt="' + p.name.replace(/"/g, "&quot;") + ' bottle, front-of-pack design mockup" width="1196" height="1315" ' + (lazy === false ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async">'; }
   function no(ctx, p) { var i = ctx.catalog.indexOf(p) + 1; return (i < 10 ? "0" : "") + i; }
   function masthead(kicker, a, b, lede, aside) {
     return '<header class="ta-mast">' + '<div class="ta-mast-main">' + eyebrow(kicker) + title(a, b) + (lede ? '<p class="ta-lede">' + lede + "</p>" : "") + "</div>" + (aside ? '<div class="ta-mast-aside">' + aside + "</div>" : "") + "</header>";

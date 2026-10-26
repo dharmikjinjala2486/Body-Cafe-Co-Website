@@ -20,12 +20,12 @@
     gstin: null,
     fssai: null,
     grievanceOfficer: null, // name, designation, email, phone (E-Commerce Rules 2020, rule 4)
-    privacyContact: null,
+    privacyContact: "care@bodycafeco.com",
     channels: {
       web: { live: true, label: "Contact form", detail: "Open a case here. You get a reference straight away and can follow it in your account." },
-      email: { live: false, label: "Email", detail: "Support email not yet available." },
-      whatsapp: { live: false, label: "WhatsApp", detail: "WhatsApp support not yet available." },
-      phone: { live: false, label: "Phone", detail: "Phone support not yet available." },
+      email: { live: true, label: "Email", detail: "care@bodycafeco.com", href: "mailto:care@bodycafeco.com" },
+      whatsapp: { live: true, label: "WhatsApp", detail: "+91-8457125489", href: "https://wa.me/918457125489" },
+      phone: { live: true, label: "Phone", detail: "+91-8457125489", href: "tel:+918457125489" },
     },
     hours: null, // e.g. "Mon–Sat, 10:00–18:00 IST"
     timezone: "India Standard Time (IST, UTC+5:30)",

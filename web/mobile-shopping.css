@@ -1,0 +1,46 @@
+/* Last in the cascade: only the phone shopping flow changes. */
+@media (max-width: 760px) {
+  .pp .ms-product-intro { margin: 0 0 18px; display: grid; gap: 12px; }
+  .pp-g .ms-product-intro { padding: 0 var(--pad); }
+  .pp .ms-product-intro .pp-h1 { font-size: clamp(32px, 9vw, 42px); line-height: 1.06; }
+  .pp .ms-product-intro .pp-sub { font-size: 15px; margin-top: 8px; }
+  :is(.pp-f,.pp-g) .ms-product-intro :is(.pp-h1,.pp-price-num) { font-weight: 400; }
+  .pp .pp-hero-grid { gap: 20px; }
+  .pp .pp-open { height: 250px; --gp: 20px; }
+  .pp .pp-slide-cap .pp-open { --gp: 42px; }
+  .pp .pp-thumb { width: 56px; height: 56px; }
+  .pp .pp-hero > .pp-crumbs { margin-bottom: 14px; }
+  .pp .pp-panel { gap: 14px; }
+  .pp .pp-folio { margin-bottom: 12px; }
+  .pp-e .pp-band { padding-bottom: 30px; }
+  .pp-e .pp-band .pp-pricebox { margin-top: 14px; }
+  .pp .pp-stock, .pp .pp-price-note, .pp .pp-quick a { font-size: 12px; }
+  .ms-home-shop { display: inline-flex; align-items: center; min-height: 44px; font: 600 14px/1.2 var(--font-sans, sans-serif); text-decoration: underline; text-underline-offset: 4px; color: inherit; }
+  .live-top > span, .cin-mast > span { display: none; }
+  body[data-theme] .live-top .live-motion { font-size: 12px; min-height: 44px; }
+  .ms-checkout .ms-checkout-head { min-height: 0; padding: 16px 20px; }
+  .ms-checkout .ms-checkout-head :is(.r-label,.tb-kicker,.x-kicker) { display: none; }
+  .ms-checkout .ms-checkout-head h1 { font-size: 36px; line-height: 1.05; margin: 8px 0; }
+  .ms-checkout .ms-checkout-head p { font-size: 15px; line-height: 1.45; margin: 8px 0 0; max-width: 42ch; }
+  .ms-checkout .r-page-head-mark, .ms-checkout .atelier-reading-trail, .ms-checkout .x-progress { display: none; }
+  .ms-checkout :is(.r-checkout-layout, .tb-co-grid, .x-co-grid) { padding-top: 16px; gap: 20px; }
+  .ms-checkout :is(.r-checkout-summary, .tb-sum, .x-summary) { position: static; padding: 0; grid-row: auto; min-width: 0; }
+  .ms-order-summary > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; min-height: 56px; cursor: pointer; font-size: 15px; font-weight: 600; }
+  .ms-order-summary > summary::after { content: "+"; font-size: 22px; }
+  .ms-order-summary[open] > summary::after { content: "−"; }
+  .ms-order-total { margin-left: auto; white-space: nowrap; }
+  .ms-order-contents { padding: 0 16px 16px; }
+  .ms-checkout .ac-co-note { font-size: 14px; padding: 12px; margin-bottom: 16px; }
+  .ms-checkout form :is(section,.x-co-step) > h2 { font-size: 24px; line-height: 1.2; margin: 0 0 16px; }
+  .ms-checkout form :is(section,.x-co-step) > :is(.r-label,.tb-kicker) { display: none; }
+  .ms-checkout input, .ms-checkout select { font-size: 16px; }
+  .ms-footer-group { border-top: 1px solid currentColor; }
+  .ms-footer-group > summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; cursor: pointer; list-style: none; }
+  .ms-footer-group > summary::-webkit-details-marker { display: none; }
+  .ms-footer-group > summary::after { content: "+"; font: 400 22px/1 sans-serif; }
+  .ms-footer-group[open] > summary::after { content: "−"; }
+  .ms-footer-group > summary :is(h2,h3) { margin: 0; font-size: 14px; line-height: 1.3; font-weight: 600; }
+  .ms-footer-links { padding-bottom: 16px; }
+  .ms-footer-links a { display: flex; align-items: center; min-height: 44px; font-size: 14px; }
+  :is(.r-footer-links,.w-footer-groups,.tb-foot-cols,.f-foot-cols,.h-foot-cols) { gap: 0; }
+}

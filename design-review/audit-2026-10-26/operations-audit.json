@@ -1,0 +1,2619 @@
+[
+  {
+    "route": "/ops",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "OVERVIEW"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Needs attention"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "0Changes awaiting approval ↗"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "0Quarantined lots ↗"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "1Active safety cases ↗"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1640,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nOVERVIEW\nRefresh\nOrders\n4\nCaptured sample value\n₹7,243\nDelivered\n2\nOpen cases\n1\nNeeds attention\n0\nChanges awaiting approval ↗\n0\nQuarantined lots ↗\n1\nActive safety cases ↗\nPreview ledger, durable local records.\n\nExternal payment, courier, identity and Amazon connections are inactive. A successful preview action does not move money or dispatch a product.",
+    "tinyText": [],
+    "title": "Overview — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops",
+    "width": 1470
+  },
+  {
+    "route": "/ops/orders",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "ORDERS"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      },
+      {
+        "href": "/orders/BCC-CCD27723?design=h",
+        "text": "View"
+      },
+      {
+        "href": "/orders/BCC-1E802523?design=h",
+        "text": "View"
+      },
+      {
+        "href": "/orders/BCC-4802D348?design=h",
+        "text": "View"
+      },
+      {
+        "href": "/orders/BCC-24A741FB?design=h",
+        "text": "View"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1640,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nORDERS\nRefresh\nOrder\tState\tSample total\tProvider\tAction\nBCC-CCD27723\tpaid\t₹3,097\tNot assigned\t\nView\nSimulate shipment\nBCC-1E802523\tdelivered\t₹2,198\tShipneer\t\nView\n\nBCC-4802D348\tpaid\t₹874\tNot assigned\t\nView\nSimulate shipment\nBCC-24A741FB\tdelivered\t₹1,074\tShipneer\t\nView",
+    "tinyText": [],
+    "title": "Orders — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/orders",
+    "width": 1470
+  },
+  {
+    "route": "/ops/inventory",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "INVENTORY & BATCHES"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 2224,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nINVENTORY & BATCHES\nRefresh\n\nFEFO selects the earliest-expiring released lot. Reservations decrement available stock atomically. Quarantine immediately prevents new allocation and shipping.\n\nLot / product\tExpiry\tAvailable\tEvidence / state\tActions\nDEMO-07-02\nPsyllium Husk\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-07-01\nPsyllium Husk\n\t14 Apr 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-06-02\nCreatine Chews\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-06-01\nCreatine Chews\n\t14 Apr 2027\t19\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-05-02\nMyo & D-Chiro Inositol\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-05-01\nMyo & D-Chiro Inositol\n\t14 Apr 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-04-02\nOmega-3 Fish Oil\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-04-01\nOmega-3 Fish Oil\n\t14 Apr 2027\t19\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-03-02\nVitamin D3 + K2\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-03-01\nVitamin D3 + K2\n\t14 Apr 2027\t16\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-02-02\nL-Theanine\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-02-01\nL-Theanine\n\t14 Apr 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-01-02\nIron Bisglycinate\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-01-01\nIron Bisglycinate\n\t14 Apr 2027\t19\tSample proof presentreleased\tQuarantineRequest stock addition",
+    "tinyText": [],
+    "title": "Inventory & batches — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/inventory",
+    "width": 1470
+  },
+  {
+    "route": "/ops/products",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "PRODUCTS & PRICES"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1672,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nPRODUCTS & PRICES\nRefresh\n\nAll listed prices are illustrative. Price and publication changes require a different Admin’s approval.\n\nProduct\tSample price\tPublication\tContent readiness\tActions\nIron Bisglycinate\t₹899\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nL-Theanine\t₹1,699\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nVitamin D3 + K2\t₹1,049\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nOmega-3 Fish Oil\t₹1,949\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nMyo & D-Chiro Inositol\t₹1,499\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nCreatine Chews\t₹749\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nPsyllium Husk\t₹949\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish",
+    "tinyText": [],
+    "title": "Products & prices — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/products",
+    "width": 1470
+  },
+  {
+    "route": "/ops/cases",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "SUPPORT & SAFETY"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Help Centre answers"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1640,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nSUPPORT & SAFETY\nRefresh\n\nCase IDs, ownership and state changes stay in the ledger. A safety case must be assessed; quarantine can be initiated immediately by an Admin.\n\nCase\tType / state\tMessage\tQueue / order / contact\tActions\nCASE-1DA8F0CD\tProduct safetyopen\tPreview QA only: check priority routing and case persistence. No actual product incident.\tGeneral\nBCC-24A741FB · Priority review\n\tReply shown to the customer (optional)investigatingescalatedresolved\nHelp Centre answers\n\n“Did this answer your question?” — one answer per browser session per article.\n\nNo answers yet.",
+    "tinyText": [],
+    "title": "Support & safety — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/cases",
+    "width": 1470
+  },
+  {
+    "route": "/ops/reviews",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "REVIEWS & QUESTIONS"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Awaiting moderation (0)",
+      "Product questions (0)",
+      "Published reviews (0)",
+      "Rejected (0)"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1640,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nREVIEWS & QUESTIONS\nRefresh\nModeration rules\n\nPublish verified reviews whatever their rating. Reject only for the listed reasons, and approve or reject each photo. Safety concerns go to a private safety case, not a public reply.\n\nAwaiting moderation (0)\n\nNo reviews are waiting.\n\nProduct questions (0)\n\nNo product questions yet.\n\nPublished reviews (0)\n\nNo reviews are published.\n\nRejected (0)\n\nNone.",
+    "tinyText": [],
+    "title": "Reviews & questions — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/reviews",
+    "width": 1470
+  },
+  {
+    "route": "/ops/lots",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "LOT REPORTS"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Report versions",
+      "Batch notices"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 2159,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nLOT REPORTS\nRefresh\n\nReports are published only after a different Admin approves them. Uploaded PDFs are checked from their bytes, fingerprinted and stored privately until their version is published. Corrections create a new version; the previous one stays public as superseded, with the reason. Quarantine (Inventory) stays internal: customers see a batch notice only once one is approved here.\n\nStart a report version\nProduct\nChoose…\nIron Bisglycinate\nL-Theanine\nVitamin D3 + K2\nOmega-3 Fish Oil\nMyo & D-Chiro Inositol\nCreatine Chews\nPsyllium Husk\nLot (from the batch register)\nChoose…\nDEMO-07-02 · Psyllium Husk\nDEMO-07-01 · Psyllium Husk\nDEMO-06-02 · Creatine Chews\nDEMO-06-01 · Creatine Chews\nDEMO-05-02 · Myo & D-Chiro Inositol\nDEMO-05-01 · Myo & D-Chiro Inositol\nDEMO-04-02 · Omega-3 Fish Oil\nDEMO-04-01 · Omega-3 Fish Oil\nDEMO-03-02 · Vitamin D3 + K2\nDEMO-03-01 · Vitamin D3 + K2\nDEMO-02-02 · L-Theanine\nDEMO-02-01 · L-Theanine\nDEMO-01-02 · Iron Bisglycinate\nDEMO-01-01 · Iron Bisglycinate\nCreate draft\nRequest a batch notice\n\nOnly for a confirmed restriction, withdrawal or instruction. A second Admin must approve it before it appears on the lot record.\n\nProduct\nChoose…\nIron Bisglycinate\nL-Theanine\nVitamin D3 + K2\nOmega-3 Fish Oil\nMyo & D-Chiro Inositol\nCreatine Chews\nPsyllium Husk\nLot\nChoose…\nDEMO-07-02 · Psyllium Husk\nDEMO-07-01 · Psyllium Husk\nDEMO-06-02 · Creatine Chews\nDEMO-06-01 · Creatine Chews\nDEMO-05-02 · Myo & D-Chiro Inositol\nDEMO-05-01 · Myo & D-Chiro Inositol\nDEMO-04-02 · Omega-3 Fish Oil\nDEMO-04-01 · Omega-3 Fish Oil\nDEMO-03-02 · Vitamin D3 + K2\nDEMO-03-01 · Vitamin D3 + K2\nDEMO-02-02 · L-Theanine\nDEMO-02-01 · L-Theanine\nDEMO-01-02 · Iron Bisglycinate\nDEMO-01-01 · Iron Bisglycinate\nKind\nRelease restriction\nBatch withdrawal\nInstruction for this batch\nTitle\nApproved customer instructions\nRequest notice\nReport versions\n\nNo report versions yet. Laboratory documents haven’t been supplied for any lot.\n\nBatch notices\n\nNo batch notices.\n\nReport-availability alerts need a notification service, which isn’t connected, so no subscription is offered to customers.",
+    "tinyText": [],
+    "title": "Lot reports — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/lots",
+    "width": 1470
+  },
+  {
+    "route": "/ops/approvals",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "APPROVALS"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1640,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nAPPROVALS\nRefresh\n\nNo self-approval. Switch to the other preview Admin to approve a request. Real production identities must enforce the same separation.\n\nadmin-aadmin-bviewer\nRequest\tChange\tCreator\tState\tDecision\nNo records yet.",
+    "tinyText": [],
+    "title": "Approvals — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/approvals",
+    "width": 1470
+  },
+  {
+    "route": "/ops/audit",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "AUDIT HISTORY"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 2270,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nAUDIT HISTORY\nRefresh\n\nAppend-only application audit trail. Database access and production tamper resistance require deployment controls.\n\nTime\tActor\tAction\tRecord\n26 Oct 2026\tviewer\tpreview_login\tviewer\n21 Oct 2026\tviewer\tpreview_login\tviewer\n19 Oct 2026\tguest-0510f05c900ccb527cc2\tpreview_payment_captured\tBCC-CCD27723\n19 Oct 2026\tguest-0510f05c900ccb527cc2\treservation_created\tBCC-CCD27723\n16 Oct 2026\tviewer\tpreview_login\tviewer\n16 Oct 2026\tadmin-b\tpreview_login\tadmin-b\n16 Oct 2026\tadmin-a\tpreview_delivered\tBCC-1E802523\n16 Oct 2026\tadmin-a\tpreview_shipped\tBCC-1E802523\n16 Oct 2026\tadmin-a\tpreview_login\tadmin-a\n16 Oct 2026\tguest-9ac32e5516105530ae09\tpreview_payment_captured\tBCC-1E802523\n16 Oct 2026\tguest-9ac32e5516105530ae09\treservation_created\tBCC-1E802523\n16 Oct 2026\tguest-252000a43d062111688d\tpreview_payment_captured\tBCC-4802D348\n16 Oct 2026\tguest-252000a43d062111688d\tpreview_payment_failed\tBCC-4802D348\n16 Oct 2026\tguest-252000a43d062111688d\treservation_created\tBCC-4802D348\n16 Oct 2026\tadmin-a\tpreview_delivered\tBCC-24A741FB\n16 Oct 2026\tadmin-a\tpreview_shipped\tBCC-24A741FB\n16 Oct 2026\tadmin-a\tpreview_login\tadmin-a\n16 Oct 2026\tcustomer-7619ee8cea49187f3096\tsafety_case_created\tCASE-1DA8F0CD\n16 Oct 2026\tguest-a8864e58573f274d56fc\tpreview_payment_captured\tBCC-24A741FB\n16 Oct 2026\tguest-a8864e58573f274d56fc\tpreview_payment_failed\tBCC-24A741FB\n16 Oct 2026\tguest-a8864e58573f274d56fc\treservation_created\tBCC-24A741FB",
+    "tinyText": [],
+    "title": "Audit history — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/audit",
+    "width": 1470
+  },
+  {
+    "route": "/ops/analytics",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "ANALYTICS"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "First-party events"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1699,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nANALYTICS\nRefresh\nPreview delivered value\n₹3,272\nSample delivery rate\n50%\nCases\n1\nVerified review submissions\n0\nDelivered contribution: awaiting finance inputs.\n\nCOGS, taxes, payment fees, billed shipping, returns and other attributable costs are not approved. Revenue is not presented as contribution.\n\nFirst-party events\nEvent\tCount\ncart_add\t1\ncheckout_start\t2\nproduct_view\t8\nreport_lookup\t5\n\nNo external analytics exports are active. Event records do not contain contact data or support narratives.",
+    "tinyText": [],
+    "title": "Analytics — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/analytics",
+    "width": 1470
+  },
+  {
+    "route": "/ops/channels",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "CHANNELS & INTEGRATIONS"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Razorpay",
+      "Mobile OTP / email",
+      "Microsoft SSO + MFA",
+      "Vayuvega",
+      "Shipneer",
+      "Amazon FBA",
+      "WhatsApp / email support",
+      "Unit authenticity"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1734,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nCHANNELS & INTEGRATIONS\nRefresh\nRazorpay\nNot connected\n\nServer signatures, webhooks and settlement reconciliation required.\n\nMobile OTP / email\nPreview codes only\n\nProvider credentials, rate limits and email fallback required.\n\nMicrosoft SSO + MFA\nNot connected\n\nOrganisational tenant and real users required.\n\nVayuvega\nPreview assignment only\n\nContract, serviceability, booking and reconciliation integration required.\n\nShipneer\nPreview assignment only\n\nContract, serviceability, booking and reconciliation integration required.\n\nAmazon FBA\nAgency boundary pending\n\nFBA-only scope; Amazon stock and bulk replenishment stay distinct from D2C.\n\nWhatsApp / email support\nNot connected\n\nBusiness contacts, sender configuration and consented communication required.\n\nUnit authenticity\nScope unresolved\n\nLot lookup is separate from a concealed unit code.\n\nRelease readiness\n\nKeep independent D2C and Amazon acceptance checklists; the later direction requests a coordinated public launch. No channel is marked ready from this preview.",
+    "tinyText": [],
+    "title": "Channels & integrations — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/channels",
+    "width": 1470
+  },
+  {
+    "route": "/ops/flags",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "FEATURE FLAGS"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 900,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 1640,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nFEATURE FLAGS\nRefresh\n\nThese provisional flags demonstrate governed configuration. Turning a flag on does not create an external integration or approve missing content.\n\nFlag\tCurrent state\tAction\ningredient_library\tOn\tRequest disable\nreferrals\tOff\tRequest enable\namazon_sync\tOff\tRequest enable",
+    "tinyText": [],
+    "title": "Feature flags — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/flags",
+    "width": 1470
+  },
+  {
+    "route": "/ops",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "OVERVIEW"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Needs attention"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "0Changes awaiting approval ↗"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "0Quarantined lots ↗"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "1Active safety cases ↗"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 2770,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nOVERVIEW\nRefresh\nOrders\n4\nCaptured sample value\n₹7,243\nDelivered\n2\nOpen cases\n1\nNeeds attention\n0\nChanges awaiting approval ↗\n0\nQuarantined lots ↗\n1\nActive safety cases ↗\nPreview ledger, durable local records.\n\nExternal payment, courier, identity and Amazon connections are inactive. A successful preview action does not move money or dispatch a product.",
+    "tinyText": [],
+    "title": "Overview — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops",
+    "width": 390
+  },
+  {
+    "route": "/ops/orders",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "ORDERS"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      },
+      {
+        "href": "/orders/BCC-CCD27723?design=c",
+        "text": "View"
+      },
+      {
+        "href": "/orders/BCC-1E802523?design=c",
+        "text": "View"
+      },
+      {
+        "href": "/orders/BCC-4802D348?design=c",
+        "text": "View"
+      },
+      {
+        "href": "/orders/BCC-24A741FB?design=c",
+        "text": "View"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "",
+        "tag": "TABLE",
+        "text": "Order\tState\tSample total\tProvider\tAction\nBCC-CCD27723\tpaid\t₹3,097\tNot ",
+        "w": 615,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "THEAD",
+        "text": "Order\tState\tSample total\tProvider\tAction\n",
+        "w": 615,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "Order\tState\tSample total\tProvider\tAction",
+        "w": 615,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Provider",
+        "w": 91,
+        "x": 355
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Action",
+        "w": 185,
+        "x": 446
+      },
+      {
+        "cls": "",
+        "tag": "TBODY",
+        "text": "BCC-CCD27723\tpaid\t₹3,097\tNot assigned\t\nView\nSimulate shipment\nBCC-1E80",
+        "w": 615,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "BCC-CCD27723\tpaid\t₹3,097\tNot assigned\t\nView\nSimulate shipment",
+        "w": 615,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Not assigned",
+        "w": 91,
+        "x": 355
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "View\nSimulate shipment",
+        "w": 185,
+        "x": 446
+      },
+      {
+        "cls": "small-link",
+        "tag": "A",
+        "text": "View",
+        "w": 62,
+        "x": 462
+      },
+      {
+        "cls": "",
+        "tag": "SPAN",
+        "text": "View",
+        "w": 31,
+        "x": 477
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "Simulate shipment",
+        "w": 147,
+        "x": 462
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "BCC-1E802523\tdelivered\t₹2,198\tShipneer\t\nView",
+        "w": 615,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Shipneer",
+        "w": 91,
+        "x": 355
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "View",
+        "w": 185,
+        "x": 446
+      }
+    ],
+    "pageHeight": 2301,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nORDERS\nRefresh\nOrder\tState\tSample total\tProvider\tAction\nBCC-CCD27723\tpaid\t₹3,097\tNot assigned\t\nView\nSimulate shipment\nBCC-1E802523\tdelivered\t₹2,198\tShipneer\t\nView\n\nBCC-4802D348\tpaid\t₹874\tNot assigned\t\nView\nSimulate shipment\nBCC-24A741FB\tdelivered\t₹1,074\tShipneer\t\nView",
+    "tinyText": [],
+    "title": "Orders — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/orders",
+    "width": 390
+  },
+  {
+    "route": "/ops/inventory",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "INVENTORY & BATCHES"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "",
+        "tag": "TABLE",
+        "text": "Lot / product\tExpiry\tAvailable\tEvidence / state\tActions\nDEMO-07-02\nPsy",
+        "w": 691,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "THEAD",
+        "text": "Lot / product\tExpiry\tAvailable\tEvidence / state\tActions\n",
+        "w": 691,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "Lot / product\tExpiry\tAvailable\tEvidence / state\tActions",
+        "w": 691,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Evidence / state",
+        "w": 187,
+        "x": 308
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Actions",
+        "w": 211,
+        "x": 495
+      },
+      {
+        "cls": "",
+        "tag": "TBODY",
+        "text": "DEMO-07-02\nPsyllium Husk\n\t16 Oct 2027\t20\tSample proof presentreleased\t",
+        "w": 691,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "DEMO-07-02\nPsyllium Husk\n\t16 Oct 2027\t20\tSample proof presentreleased\t",
+        "w": 691,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Sample proof presentreleased",
+        "w": 187,
+        "x": 308
+      },
+      {
+        "cls": "badge ",
+        "tag": "SPAN",
+        "text": "Sample proof present",
+        "w": 149,
+        "x": 324
+      },
+      {
+        "cls": "badge ",
+        "tag": "SPAN",
+        "text": "released",
+        "w": 73,
+        "x": 324
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "QuarantineRequest stock addition",
+        "w": 211,
+        "x": 495
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "Quarantine",
+        "w": 101,
+        "x": 511
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "Request stock addition",
+        "w": 173,
+        "x": 511
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "DEMO-07-01\nPsyllium Husk\n\t14 Apr 2027\t20\tSample proof presentreleased\t",
+        "w": 691,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Sample proof presentreleased",
+        "w": 187,
+        "x": 308
+      }
+    ],
+    "pageHeight": 3612,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nINVENTORY & BATCHES\nRefresh\n\nFEFO selects the earliest-expiring released lot. Reservations decrement available stock atomically. Quarantine immediately prevents new allocation and shipping.\n\nLot / product\tExpiry\tAvailable\tEvidence / state\tActions\nDEMO-07-02\nPsyllium Husk\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-07-01\nPsyllium Husk\n\t14 Apr 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-06-02\nCreatine Chews\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-06-01\nCreatine Chews\n\t14 Apr 2027\t19\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-05-02\nMyo & D-Chiro Inositol\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-05-01\nMyo & D-Chiro Inositol\n\t14 Apr 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-04-02\nOmega-3 Fish Oil\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-04-01\nOmega-3 Fish Oil\n\t14 Apr 2027\t19\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-03-02\nVitamin D3 + K2\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-03-01\nVitamin D3 + K2\n\t14 Apr 2027\t16\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-02-02\nL-Theanine\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-02-01\nL-Theanine\n\t14 Apr 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-01-02\nIron Bisglycinate\n\t16 Oct 2027\t20\tSample proof presentreleased\tQuarantineRequest stock addition\nDEMO-01-01\nIron Bisglycinate\n\t14 Apr 2027\t19\tSample proof presentreleased\tQuarantineRequest stock addition",
+    "tinyText": [],
+    "title": "Inventory & batches — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/inventory",
+    "width": 390
+  },
+  {
+    "route": "/ops/products",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "PRODUCTS & PRICES"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "",
+        "tag": "TABLE",
+        "text": "Product\tSample price\tPublication\tContent readiness\tActions\nIron Bisgly",
+        "w": 837,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "THEAD",
+        "text": "Product\tSample price\tPublication\tContent readiness\tActions\n",
+        "w": 837,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "Product\tSample price\tPublication\tContent readiness\tActions",
+        "w": 837,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Publication",
+        "w": 170,
+        "x": 249
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Content readiness",
+        "w": 230,
+        "x": 419
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Actions",
+        "w": 205,
+        "x": 648
+      },
+      {
+        "cls": "",
+        "tag": "TBODY",
+        "text": "Iron Bisglycinate\t₹899\tPublished preview\tApproved rear label pending\tR",
+        "w": 837,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "Iron Bisglycinate\t₹899\tPublished preview\tApproved rear label pending\tR",
+        "w": 837,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Published preview",
+        "w": 170,
+        "x": 249
+      },
+      {
+        "cls": "badge ",
+        "tag": "SPAN",
+        "text": "Published preview",
+        "w": 132,
+        "x": 265
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Approved rear label pending",
+        "w": 230,
+        "x": 419
+      },
+      {
+        "cls": "badge ",
+        "tag": "SPAN",
+        "text": "Approved rear label pending",
+        "w": 192,
+        "x": 435
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Request price changeRequest unpublish",
+        "w": 205,
+        "x": 648
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "Request price change",
+        "w": 167,
+        "x": 664
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "Request unpublish",
+        "w": 148,
+        "x": 664
+      }
+    ],
+    "pageHeight": 2789,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nPRODUCTS & PRICES\nRefresh\n\nAll listed prices are illustrative. Price and publication changes require a different Admin’s approval.\n\nProduct\tSample price\tPublication\tContent readiness\tActions\nIron Bisglycinate\t₹899\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nL-Theanine\t₹1,699\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nVitamin D3 + K2\t₹1,049\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nOmega-3 Fish Oil\t₹1,949\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nMyo & D-Chiro Inositol\t₹1,499\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nCreatine Chews\t₹749\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish\nPsyllium Husk\t₹949\tPublished preview\tApproved rear label pending\tRequest price changeRequest unpublish",
+    "tinyText": [],
+    "title": "Products & prices — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/products",
+    "width": 390
+  },
+  {
+    "route": "/ops/cases",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "SUPPORT & SAFETY"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Help Centre answers"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "",
+        "tag": "TABLE",
+        "text": "Case\tType / state\tMessage\tQueue / order / contact\tActions\nCASE-1DA8F0C",
+        "w": 700,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "THEAD",
+        "text": "Case\tType / state\tMessage\tQueue / order / contact\tActions\n",
+        "w": 700,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "Case\tType / state\tMessage\tQueue / order / contact\tActions",
+        "w": 700,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Queue / order / contact",
+        "w": 189,
+        "x": 377
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Actions",
+        "w": 150,
+        "x": 566
+      },
+      {
+        "cls": "",
+        "tag": "TBODY",
+        "text": "CASE-1DA8F0CD\tProduct safetyopen\tPreview QA only: check priority routi",
+        "w": 700,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "CASE-1DA8F0CD\tProduct safetyopen\tPreview QA only: check priority routi",
+        "w": 700,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "General\nBCC-24A741FB · Priority review",
+        "w": 189,
+        "x": 377
+      },
+      {
+        "cls": "",
+        "tag": "SMALL",
+        "text": "BCC-24A741FB · Priority review",
+        "w": 157,
+        "x": 393
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Reply shown to the customer (optional)investigatingescalatedresolved",
+        "w": 150,
+        "x": 566
+      },
+      {
+        "cls": "micro",
+        "tag": "LABEL",
+        "text": "Reply shown to the customer (optional)",
+        "w": 95,
+        "x": 582
+      },
+      {
+        "cls": "small-input",
+        "tag": "INPUT",
+        "text": "",
+        "w": 118,
+        "x": 582
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "investigating",
+        "w": 112,
+        "x": 582
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "escalated",
+        "w": 91,
+        "x": 582
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "resolved",
+        "w": 84,
+        "x": 582
+      }
+    ],
+    "pageHeight": 2447,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nSUPPORT & SAFETY\nRefresh\n\nCase IDs, ownership and state changes stay in the ledger. A safety case must be assessed; quarantine can be initiated immediately by an Admin.\n\nCase\tType / state\tMessage\tQueue / order / contact\tActions\nCASE-1DA8F0CD\tProduct safetyopen\tPreview QA only: check priority routing and case persistence. No actual product incident.\tGeneral\nBCC-24A741FB · Priority review\n\tReply shown to the customer (optional)investigatingescalatedresolved\nHelp Centre answers\n\n“Did this answer your question?” — one answer per browser session per article.\n\nNo answers yet.",
+    "tinyText": [],
+    "title": "Support & safety — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/cases",
+    "width": 390
+  },
+  {
+    "route": "/ops/reviews",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "REVIEWS & QUESTIONS"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Awaiting moderation (0)",
+      "Product questions (0)",
+      "Published reviews (0)",
+      "Rejected (0)"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 2465,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nREVIEWS & QUESTIONS\nRefresh\nModeration rules\n\nPublish verified reviews whatever their rating. Reject only for the listed reasons, and approve or reject each photo. Safety concerns go to a private safety case, not a public reply.\n\nAwaiting moderation (0)\n\nNo reviews are waiting.\n\nProduct questions (0)\n\nNo product questions yet.\n\nPublished reviews (0)\n\nNo reviews are published.\n\nRejected (0)\n\nNone.",
+    "tinyText": [],
+    "title": "Reviews & questions — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/reviews",
+    "width": 390
+  },
+  {
+    "route": "/ops/lots",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "LOT REPORTS"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Report versions",
+      "Batch notices"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 3406,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nLOT REPORTS\nRefresh\n\nReports are published only after a different Admin approves them. Uploaded PDFs are checked from their bytes, fingerprinted and stored privately until their version is published. Corrections create a new version; the previous one stays public as superseded, with the reason. Quarantine (Inventory) stays internal: customers see a batch notice only once one is approved here.\n\nStart a report version\nProduct\nChoose…\nIron Bisglycinate\nL-Theanine\nVitamin D3 + K2\nOmega-3 Fish Oil\nMyo & D-Chiro Inositol\nCreatine Chews\nPsyllium Husk\nLot (from the batch register)\nChoose…\nDEMO-07-02 · Psyllium Husk\nDEMO-07-01 · Psyllium Husk\nDEMO-06-02 · Creatine Chews\nDEMO-06-01 · Creatine Chews\nDEMO-05-02 · Myo & D-Chiro Inositol\nDEMO-05-01 · Myo & D-Chiro Inositol\nDEMO-04-02 · Omega-3 Fish Oil\nDEMO-04-01 · Omega-3 Fish Oil\nDEMO-03-02 · Vitamin D3 + K2\nDEMO-03-01 · Vitamin D3 + K2\nDEMO-02-02 · L-Theanine\nDEMO-02-01 · L-Theanine\nDEMO-01-02 · Iron Bisglycinate\nDEMO-01-01 · Iron Bisglycinate\nCreate draft\nRequest a batch notice\n\nOnly for a confirmed restriction, withdrawal or instruction. A second Admin must approve it before it appears on the lot record.\n\nProduct\nChoose…\nIron Bisglycinate\nL-Theanine\nVitamin D3 + K2\nOmega-3 Fish Oil\nMyo & D-Chiro Inositol\nCreatine Chews\nPsyllium Husk\nLot\nChoose…\nDEMO-07-02 · Psyllium Husk\nDEMO-07-01 · Psyllium Husk\nDEMO-06-02 · Creatine Chews\nDEMO-06-01 · Creatine Chews\nDEMO-05-02 · Myo & D-Chiro Inositol\nDEMO-05-01 · Myo & D-Chiro Inositol\nDEMO-04-02 · Omega-3 Fish Oil\nDEMO-04-01 · Omega-3 Fish Oil\nDEMO-03-02 · Vitamin D3 + K2\nDEMO-03-01 · Vitamin D3 + K2\nDEMO-02-02 · L-Theanine\nDEMO-02-01 · L-Theanine\nDEMO-01-02 · Iron Bisglycinate\nDEMO-01-01 · Iron Bisglycinate\nKind\nRelease restriction\nBatch withdrawal\nInstruction for this batch\nTitle\nApproved customer instructions\nRequest notice\nReport versions\n\nNo report versions yet. Laboratory documents haven’t been supplied for any lot.\n\nBatch notices\n\nNo batch notices.\n\nReport-availability alerts need a notification service, which isn’t connected, so no subscription is offered to customers.",
+    "tinyText": [],
+    "title": "Lot reports — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/lots",
+    "width": 390
+  },
+  {
+    "route": "/ops/approvals",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "APPROVALS"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "",
+        "tag": "TABLE",
+        "text": "Request\tChange\tCreator\tState\tDecision\nNo records yet.",
+        "w": 419,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "THEAD",
+        "text": "Request\tChange\tCreator\tState\tDecision\n",
+        "w": 419,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "Request\tChange\tCreator\tState\tDecision",
+        "w": 419,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Decision",
+        "w": 92,
+        "x": 343
+      },
+      {
+        "cls": "",
+        "tag": "TBODY",
+        "text": "No records yet.",
+        "w": 419,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "No records yet.",
+        "w": 419,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "No records yet.",
+        "w": 419,
+        "x": 16
+      }
+    ],
+    "pageHeight": 2133,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nAPPROVALS\nRefresh\n\nNo self-approval. Switch to the other preview Admin to approve a request. Real production identities must enforce the same separation.\n\nadmin-aadmin-bviewer\nRequest\tChange\tCreator\tState\tDecision\nNo records yet.",
+    "tinyText": [],
+    "title": "Approvals — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/approvals",
+    "width": 390
+  },
+  {
+    "route": "/ops/audit",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "AUDIT HISTORY"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "",
+        "tag": "TABLE",
+        "text": "Time\tActor\tAction\tRecord\n26 Oct 2026\tviewer\tpreview_login\tviewer\n26 Oc",
+        "w": 587,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "THEAD",
+        "text": "Time\tActor\tAction\tRecord\n",
+        "w": 587,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "Time\tActor\tAction\tRecord",
+        "w": 587,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Action",
+        "w": 215,
+        "x": 283
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Record",
+        "w": 105,
+        "x": 498
+      },
+      {
+        "cls": "",
+        "tag": "TBODY",
+        "text": "26 Oct 2026\tviewer\tpreview_login\tviewer\n26 Oct 2026\tviewer\tpreview_log",
+        "w": 587,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "26 Oct 2026\tviewer\tpreview_login\tviewer",
+        "w": 587,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "preview_login",
+        "w": 215,
+        "x": 283
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "viewer",
+        "w": 105,
+        "x": 498
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "26 Oct 2026\tviewer\tpreview_login\tviewer",
+        "w": 587,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "preview_login",
+        "w": 215,
+        "x": 283
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "viewer",
+        "w": 105,
+        "x": 498
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "21 Oct 2026\tviewer\tpreview_login\tviewer",
+        "w": 587,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "preview_login",
+        "w": 215,
+        "x": 283
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "viewer",
+        "w": 105,
+        "x": 498
+      }
+    ],
+    "pageHeight": 4147,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nAUDIT HISTORY\nRefresh\n\nAppend-only application audit trail. Database access and production tamper resistance require deployment controls.\n\nTime\tActor\tAction\tRecord\n26 Oct 2026\tviewer\tpreview_login\tviewer\n26 Oct 2026\tviewer\tpreview_login\tviewer\n21 Oct 2026\tviewer\tpreview_login\tviewer\n19 Oct 2026\tguest-0510f05c900ccb527cc2\tpreview_payment_captured\tBCC-CCD27723\n19 Oct 2026\tguest-0510f05c900ccb527cc2\treservation_created\tBCC-CCD27723\n16 Oct 2026\tviewer\tpreview_login\tviewer\n16 Oct 2026\tadmin-b\tpreview_login\tadmin-b\n16 Oct 2026\tadmin-a\tpreview_delivered\tBCC-1E802523\n16 Oct 2026\tadmin-a\tpreview_shipped\tBCC-1E802523\n16 Oct 2026\tadmin-a\tpreview_login\tadmin-a\n16 Oct 2026\tguest-9ac32e5516105530ae09\tpreview_payment_captured\tBCC-1E802523\n16 Oct 2026\tguest-9ac32e5516105530ae09\treservation_created\tBCC-1E802523\n16 Oct 2026\tguest-252000a43d062111688d\tpreview_payment_captured\tBCC-4802D348\n16 Oct 2026\tguest-252000a43d062111688d\tpreview_payment_failed\tBCC-4802D348\n16 Oct 2026\tguest-252000a43d062111688d\treservation_created\tBCC-4802D348\n16 Oct 2026\tadmin-a\tpreview_delivered\tBCC-24A741FB\n16 Oct 2026\tadmin-a\tpreview_shipped\tBCC-24A741FB\n16 Oct 2026\tadmin-a\tpreview_login\tadmin-a\n16 Oct 2026\tcustomer-7619ee8cea49187f3096\tsafety_case_created\tCASE-1DA8F0CD\n16 Oct 2026\tguest-a8864e58573f274d56fc\tpreview_payment_captured\tBCC-24A741FB\n16 Oct 2026\tguest-a8864e58573f274d56fc\tpreview_payment_failed\tBCC-24A741FB\n16 Oct 2026\tguest-a8864e58573f274d56fc\treservation_created\tBCC-24A741FB",
+    "tinyText": [],
+    "title": "Audit history — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/audit",
+    "width": 390
+  },
+  {
+    "route": "/ops/analytics",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "ANALYTICS"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "First-party events"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 2730,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nANALYTICS\nRefresh\nPreview delivered value\n₹3,272\nSample delivery rate\n50%\nCases\n1\nVerified review submissions\n0\nDelivered contribution: awaiting finance inputs.\n\nCOGS, taxes, payment fees, billed shipping, returns and other attributable costs are not approved. Revenue is not presented as contribution.\n\nFirst-party events\nEvent\tCount\ncart_add\t1\ncheckout_start\t2\nproduct_view\t8\nreport_lookup\t5\n\nNo external analytics exports are active. Event records do not contain contact data or support narratives.",
+    "tinyText": [],
+    "title": "Analytics — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/analytics",
+    "width": 390
+  },
+  {
+    "route": "/ops/channels",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "CHANNELS & INTEGRATIONS"
+    ],
+    "headings": [
+      "OPERATIONS",
+      "Razorpay",
+      "Mobile OTP / email",
+      "Microsoft SSO + MFA",
+      "Vayuvega",
+      "Shipneer",
+      "Amazon FBA",
+      "WhatsApp / email support",
+      "Unit authenticity"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 3461,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nCHANNELS & INTEGRATIONS\nRefresh\nRazorpay\nNot connected\n\nServer signatures, webhooks and settlement reconciliation required.\n\nMobile OTP / email\nPreview codes only\n\nProvider credentials, rate limits and email fallback required.\n\nMicrosoft SSO + MFA\nNot connected\n\nOrganisational tenant and real users required.\n\nVayuvega\nPreview assignment only\n\nContract, serviceability, booking and reconciliation integration required.\n\nShipneer\nPreview assignment only\n\nContract, serviceability, booking and reconciliation integration required.\n\nAmazon FBA\nAgency boundary pending\n\nFBA-only scope; Amazon stock and bulk replenishment stay distinct from D2C.\n\nWhatsApp / email support\nNot connected\n\nBusiness contacts, sender configuration and consented communication required.\n\nUnit authenticity\nScope unresolved\n\nLot lookup is separate from a concealed unit code.\n\nRelease readiness\n\nKeep independent D2C and Amazon acceptance checklists; the later direction requests a coordinated public launch. No channel is marked ready from this preview.",
+    "tinyText": [],
+    "title": "Channels & integrations — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/channels",
+    "width": 390
+  },
+  {
+    "route": "/ops/flags",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "\"Lemon Milk\", \"Arial Black\", system-ui, sans-serif"
+    ],
+    "h1": [
+      "FEATURE FLAGS"
+    ],
+    "headings": [
+      "OPERATIONS"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/ops",
+        "text": "Overview"
+      },
+      {
+        "href": "/ops/orders",
+        "text": "Orders"
+      },
+      {
+        "href": "/ops/inventory",
+        "text": "Inventory & batches"
+      },
+      {
+        "href": "/ops/products",
+        "text": "Products & prices"
+      },
+      {
+        "href": "/ops/cases",
+        "text": "Support & safety"
+      },
+      {
+        "href": "/ops/reviews",
+        "text": "Reviews & questions"
+      },
+      {
+        "href": "/ops/lots",
+        "text": "Lot reports"
+      },
+      {
+        "href": "/ops/approvals",
+        "text": "Approvals"
+      },
+      {
+        "href": "/ops/audit",
+        "text": "Audit history"
+      },
+      {
+        "href": "/ops/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/ops/channels",
+        "text": "Channels & integrations"
+      },
+      {
+        "href": "/ops/flags",
+        "text": "Feature flags"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "",
+        "tag": "TABLE",
+        "text": "Flag\tCurrent state\tAction\ningredient_library\tOn\tRequest disable\nreferr",
+        "w": 437,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "THEAD",
+        "text": "Flag\tCurrent state\tAction\n",
+        "w": 437,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "Flag\tCurrent state\tAction",
+        "w": 437,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TH",
+        "text": "Action",
+        "w": 168,
+        "x": 285
+      },
+      {
+        "cls": "",
+        "tag": "TBODY",
+        "text": "ingredient_library\tOn\tRequest disable\nreferrals\tOff\tRequest enable\nama",
+        "w": 437,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "ingredient_library\tOn\tRequest disable",
+        "w": 437,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Request disable",
+        "w": 168,
+        "x": 285
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "Request disable",
+        "w": 130,
+        "x": 301
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "referrals\tOff\tRequest enable",
+        "w": 437,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Request enable",
+        "w": 168,
+        "x": 285
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "Request enable",
+        "w": 128,
+        "x": 301
+      },
+      {
+        "cls": "",
+        "tag": "TR",
+        "text": "amazon_sync\tOff\tRequest enable",
+        "w": 437,
+        "x": 16
+      },
+      {
+        "cls": "",
+        "tag": "TD",
+        "text": "Request enable",
+        "w": 168,
+        "x": 285
+      },
+      {
+        "cls": "small-button",
+        "tag": "BUTTON",
+        "text": "Request enable",
+        "w": 128,
+        "x": 301
+      }
+    ],
+    "pageHeight": 2258,
+    "pendingImages": 0,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "Body Café Co. operations\n\nOPERATIONS\n\nPreview Viewer viewer\n\nOverview\nOrders\nInventory & batches\nProducts & prices\nSupport & safety\nReviews & questions\nLot reports\nApprovals\nAudit history\nAnalytics\nChannels & integrations\nFeature flags\nLeave operations\n\nRead-only view\n\nFEATURE FLAGS\nRefresh\n\nThese provisional flags demonstrate governed configuration. Turning a flag on does not create an external integration or approve missing content.\n\nFlag\tCurrent state\tAction\ningredient_library\tOn\tRequest disable\nreferrals\tOff\tRequest enable\namazon_sync\tOff\tRequest enable",
+    "tinyText": [],
+    "title": "Feature flags — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/ops/flags",
+    "width": 390
+  }
+]

@@ -35,7 +35,7 @@ class HttpTests(unittest.TestCase):
         for path,data in [('/api/cases',{'message':'A sample support question.'}),('/api/admin/quarantine',{'batch':'DEMO-01-01','reason':'Viewer attempt'}),('/api/auth/otp',{'mobile':'9876543210'})]:self.assertEqual(self.request('POST',path,data)[0],403)
     def test_checkout_contract_and_duplicate_payment(self):
         payload={'adult':True,'items':[{'id':'iron-bisglycinate','quantity':1}],'discount':'PREVIEW10','contact':{'name':'Preview Customer','mobile':'9876543210','address':'123 Sample Street','city':'Surat','state':'Gujarat','pincode':'395001'}}
-        status,_,body=self.request('POST','/api/orders',payload);self.assertEqual(status,200);order=json.loads(body);self.assertEqual(order['total'],794);oid=order['id']
+        status,_,body=self.request('POST','/api/orders',payload);self.assertEqual(status,200);order=json.loads(body);self.assertEqual(order['total'],884);oid=order['id']
         self.assertEqual(self.request('POST',f'/api/orders/{oid}/pay',{'outcome':'failure'})[0],200)
         self.assertEqual(self.request('POST',f'/api/orders/{oid}/pay',{'outcome':'success'})[0],200)
         result=json.loads(self.request('POST',f'/api/orders/{oid}/pay',{'outcome':'success'})[2]);self.assertTrue(result['idempotent'])

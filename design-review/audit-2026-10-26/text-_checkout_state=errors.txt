@@ -1,0 +1,90 @@
+DESIGN PREVIEW
+Synthetic checkout. Controls are disabled. No order, payment or personal record is created.
+
+CHECKOUT / USE SAMPLE DETAILS ONLY
+
+A few details.
+Then you’re set.
+
+Check out as a guest. Use sample details only: no payment is taken and no messages are sent.
+
+✳
+01 / Where it goes.
+02 / Nothing charged here.
+03 / Your choices.
+
+Checking out as a guest. No account needed. If you have one, you can sign in first; what you’ve typed here is kept.
+
+01 / DELIVERY DETAILS
+
+Where it goes.
+Full name
+As it should appear on the parcel
+
+Enter your name.
+
+Mobile number
+10-digit Indian mobile, for delivery updates
+
+Enter a 10-digit Indian mobile number.
+
+Email (optional)
+For an order receipt, if you'd like one
+Pincode
+6 digits
+
+Enter a valid six-digit pincode.
+
+Address
+House or flat, street and area
+City
+State
+Need a GST invoice?
+
+02 / PAYMENT
+
+Nothing charged here.
+Prepaid · preview payment
+UPI, cards, wallets and net banking are planned with Razorpay. Nothing is charged in the preview.
+Cash on deliveryPolicy pending
+
+Cash on delivery isn't available yet. How the ₹150 COD amount and courier charge would work is still being decided.
+
+03 / CONFIRM
+
+Your choices.
+I confirm the purchaser is 18 or older.
+
+Confirm the purchaser is 18 or older.
+
+I'd like optional email updates.
+I'd like optional WhatsApp updates.
+
+Marketing choices are separate and start unticked. See privacy and the working terms.
+
+Before you place the order: Shipping & Delivery · Returns & Refunds · Cancellations
+
+Create preview order
+
+A 15-minute preview stock reservation starts when this order is created.
+
+YOUR SELECTION / PRICES
+
+Vitamin D3 + K2
+Qty 1 · ₹1,049 each
+₹1,049
+Omega-3 Fish Oil
+Qty 1 · ₹1,949 each
+₹1,949
+Sample discount code
+Apply
+Subtotal
+₹2,998
+Discount
+—
+Sample delivery
+Free
+Total
+₹2,998
+
+We use these details only to fulfil and support this preview order. Marketing choices are separate and start unticked.

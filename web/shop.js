@@ -42,23 +42,23 @@
 
   var COPY = {
     lede: "Seven everyday supplements in capsules, softgels and chews. Each one shows its ingredient and format up front, and links to its label details and lot record.",
-    note: "Prices are samples, shown inclusive of illustrative tax; final GST rates await approval. No offers are running. Bottles shown are draft packaging. Pack sizes, servings and directions will come from the approved labels.",
+    note: "MRPs follow the current price sheet. Explore pack details and ingredient notes on each product page.",
     emptyTitle: "No products match these filters.",
     emptyText: "Try a different format, turn off “In stock only”, or show the whole collection.",
     formatsTitle: "Capsules, softgels and chews",
     formatsLede: "Format changes how you take a product, not what its label has to tell you. No format is better for everyone.",
     formats: {
-      capsules: "A shell holding a dry fill, swallowed whole. The shell material will be listed on each approved label.",
-      softgels: "A soft, sealed shell holding a liquid fill, swallowed whole. Both of ours carry oil-based ingredients.",
-      chews: "Chewable tablets, chewed before swallowing. Flavour and full formulation will be listed on the approved label.",
+      capsules: "A shell holding a dry fill, swallowed whole. Check the pack for the full ingredient and shell information.",
+      softgels: "A soft, sealed shell holding a liquid fill, swallowed whole. Our softgel products carry oil-based ingredients.",
+      chews: "Chewable tablets, chewed before swallowing. Read the pack for the full formulation and flavour details.",
     },
     formatsUnsure: "If you're unsure which format suits you, read the approved label and ask a pharmacist or doctor.",
     standardsTitle: "Standards and lot reports",
-    standardsText: "Every product page separates what's confirmed now from what the approved rear label will add. The lot number on a pack connects it to the record for its manufacturing batch.",
+    standardsText: "Explore ingredient notes, formats and pack details on every product page. The lot number on a pack connects it to the record for its manufacturing batch.",
     standardsDemo: "Lot records in this preview are demonstrations. No laboratory document is connected yet.",
     helpTitle: "Need a hand?",
     helpText: "Questions about a product, an order or a delivery? Open a support case and we'll keep the whole conversation in one place.",
-    helpPolicy: "Delivery charges and return terms are still being approved; the policy pages show where things stand.",
+    helpPolicy: "Find delivery charges, demonstration timelines and return information on the policy pages.",
   };
 
   function formatId(ctx, p) {
@@ -150,14 +150,15 @@
   }
 
   function ratingLine(x) {
-    if (!x.rating) return '<p class="sp-rating is-empty">No reviews yet</p>';
+    if (!x.rating) return '<p class="sp-rating is-empty">Illustrative feedback</p>';
     var a = Number(x.rating.average), c = x.rating.count;
     return '<p class="sp-rating"><span class="sp-star" aria-hidden="true">★</span> <span>' + a.toFixed(1) + '<span class="sr-only"> out of 5</span> · ' + c + " review" + (c === 1 ? "" : "s") + "</span></p>";
   }
   function card(v, ctx, x, st, shown, lead, eager) {
     var p = x.p, href = "/products/" + p.id, w = (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720;
     var num = v.num ? v.num(x.i, ctx.published.length) : "No. " + pad(x.i + 1);
-    var img = '<img src="/web/media/' + p.id + '.webp" alt="" width="' + w + '" height="1000" decoding="async"' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + ">";
+    var img = '<img src="' + window.BCCBottleAssets.url(p.id) + '" alt="" width="' + w + '" height="1000" decoding="async"' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + ">";
+    if (ctx.design === "a") img = S.cardBottlePicture(ctx, p);
     return '<li class="sp-card" data-sp-item="' + p.id + '" data-format="' + x.fid + '" data-price="' + x.price + '" data-i="' + x.i + '" data-available="' + x.available + '"' +
       (shown ? "" : " hidden") + (lead ? " data-lead" : "") + ' style="' + ctx.capStyle(p) + '">' +
       '<a class="sp-media" href="' + href + '" tabindex="-1" aria-hidden="true">' + (v.deco ? v.deco(x) : "") + '<span class="sp-plate">' + img + '<span class="sp-fallback">' + h(p.name) + "</span></span></a>" +
@@ -165,9 +166,9 @@
       '<p class="sp-meta"><span class="sp-num">' + num + '</span><span class="sp-format">' + h(x.format) + "</span></p>" +
       '<h3 class="sp-name"><a href="' + href + '">' + h(p.name) + "</a></h3>" +
       '<p class="sp-sub">' + h(x.sub) + "</p>" +
-      '<dl class="sp-facts"><div><dt>Format</dt><dd>' + h(x.format) + '</dd></div><div><dt>Pack &amp; servings</dt><dd class="is-pending">' + PENDING + "</dd></div></dl>" +
+      '<dl class="sp-facts"><div><dt>Format</dt><dd>' + h(x.format) + '</dd></div><div><dt>Pack &amp; servings</dt><dd>' + ((window.BCCDemo && window.BCCDemo.packs[p.id]) || PENDING) + "</dd></div></dl>" +
       ratingLine(x) +
-      '<div class="sp-buy"><p class="sp-price"><strong>' + ctx.money(p.price) + '</strong> <span>Sample price</span></p>' +
+      '<div class="sp-buy"><p class="sp-price"><strong>' + ctx.money(p.price) + '</strong> <span>MRP</span></p>' +
       '<p class="sp-avail" data-state="' + (x.available ? "in" : "out") + '"><span class="sp-dot" aria-hidden="true"></span>' + (x.available ? "In stock" : "Out of stock") + "</p></div>" +
       '<div class="sp-actions"><a class="sp-view" href="' + href + '">View product<span class="sr-only">: ' + h(p.name) + "</span></a>" +
       '<button type="button" class="sp-add" data-sp-add="' + p.id + '"' + (x.available ? "" : " disabled") + ' aria-describedby="sp-msg-' + p.id + '"><span class="sp-add-l">' + (x.available ? "Add to bag" : "Out of stock") + '</span><span class="sr-only">: ' + h(p.name) + "</span></button></div>" +

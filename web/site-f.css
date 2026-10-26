@@ -290,3 +290,63 @@ body.menu-open[data-theme="f"] .f-header { z-index: 70; }
 .eh-f .f-pdp-sec .x-subhead { margin-top: 32px; }
 .eh-f .has-rhythm > li:nth-child(1) .f-item-field img, .eh-f .has-rhythm > li:nth-child(5) .f-item-field img { height: 72%; margin-bottom: 6%; }
 @media (max-width: 760px) { .eh-f .has-rhythm > li:nth-child(1) .f-item-field img, .eh-f .has-rhythm > li:nth-child(5) .f-item-field img { height: 88%; margin-bottom: -6%; } }
+
+/* Edition · clearer choices and a visual guide to lot records. */
+.eh-f .f-con-list { grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.eh-f .f-con-list > li { border-bottom: 1px solid var(--line); min-width: 0; }
+.eh-f .f-con-item { padding: 0 22px 22px; gap: 10px; }
+.eh-f .f-con-media { height: clamp(210px, 23vw, 310px); margin: 4px -8px 10px; background: var(--surface); }
+.eh-f .f-con-item strong { font-size: clamp(23px, 2.1vw, 32px); min-height: 2.3em; }
+.eh-f .f-con-description { font-size: 15px; color: var(--muted); line-height: 1.5; min-height: 3em; }
+.eh-f .f-con-meta { font-family: var(--f-label); font-size: 10px; letter-spacing: .09em; text-transform: uppercase; }
+.eh-f .f-con-price { font-size: 21px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.eh-f .f-con-price small { font-size: 12px; color: var(--muted); }
+.eh-f .f-con-explore { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 14px; margin-top: 8px; border-top: 1px solid var(--line); font-size: 15px; }
+.eh-f .f-con-item:hover .f-con-explore { text-decoration: underline; text-underline-offset: 5px; }
+.eh-f .f-con-add { margin: 0 22px 22px; }
+.eh-f .f-trust { grid-template-columns: 1fr; gap: 40px; }
+.eh-f .f-trust-head { max-width: 760px; }
+.eh-f .f-trust-cols article { display: flex; flex-direction: column; padding: 24px 28px 0 0; }
+.eh-f .f-trust-cols article + article { padding-left: 28px; }
+.eh-f .f-trust-cols h3 { font-size: clamp(26px, 2.6vw, 38px); line-height: 1.12; max-width: 15ch; }
+.eh-f .f-trust-cols article > p:not(.f-folio) { color: var(--muted); font-size: 17px; line-height: 1.6; max-width: 38ch; }
+.eh-f .f-trust-status { display: block; margin: auto 0 18px; padding-top: 12px; color: var(--muted); font-size: 12px; }
+.eh-f .f-trust-cols .x-link { align-self: flex-start; font-size: 15px; }
+.eh-f .f-lot { align-items: center; }
+.eh-f .f-lot-demo { display: inline-block; max-width: 40ch; border-left: 2px solid #c7bba7; padding: 8px 0 8px 16px; font-size: 14px; line-height: 1.5; color: #e1d9ca; }
+.eh-f .f-lot-visual { margin: 0; min-width: 0; padding: 24px; border: 1px solid var(--line); background: rgb(255 255 255 / .03); }
+.eh-f .f-lot-diagram { display: grid; grid-template-columns: minmax(0, 1fr) minmax(100px, .6fr); align-items: center; }
+.eh-f .f-lot-diagram svg { width: 100%; height: auto; max-height: 350px; }
+.eh-f .f-lot-callout { display: grid; gap: 10px; font-size: 14px; line-height: 1.45; }
+.eh-f .f-lot-callout strong { font-weight: 400; font-size: clamp(17px, 1.7vw, 25px); }
+.eh-f .f-lot-callout > span:last-child { color: var(--muted); max-width: 15ch; }
+.eh-f .f-lot-visual figcaption { color: var(--muted); font-size: 12px; padding-top: 16px; border-top: 1px solid var(--line); }
+.eh-f .f-lot-steps { grid-column: 1 / -1; padding-top: 8px; }
+.eh-f #contents, .eh-f .f-lot { scroll-margin-top: 95px; }
+@media (max-width: 1000px) {
+  .eh-f .f-con-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .eh-f .f-con-list > li { display: flex; align-items: stretch; }
+  .eh-f .f-con-item { display: flex; flex-direction: column; padding: 12px 14px 16px; gap: 8px; }
+  .eh-f .f-con-top { padding-bottom: 6px; }
+  .eh-f .f-con-media { height: 170px; margin: 0 0 8px; padding: 12px 0; }
+  .eh-f .f-con-item strong { font-size: 23px; min-height: 0; }
+  .eh-f .f-con-description { font-size: 14px; min-height: 0; }
+  .eh-f .f-con-meta { margin-top: auto; padding-top: 12px; line-height: 1.5; }
+  .eh-f .f-con-explore { font-size: 14px; }
+  .eh-f .f-con-add { margin: 0 14px 18px; font-size: 13px; padding: 0 8px; }
+  .eh-f .f-trust-cols article, .eh-f .f-trust-cols article + article { padding: 24px 0 0; }
+  .eh-f .f-trust-status { margin-top: 0; }
+  .eh-f .f-lot-visual { padding: 16px; }
+  .eh-f .f-lot-diagram { grid-template-columns: minmax(0, 1fr) 100px; }
+  .eh-f .f-lot-callout { font-size: 12px; }
+}
+@media (max-width: 360px) {
+  .eh-f .f-con-list { grid-template-columns: 1fr; }
+  .eh-f .f-con-media { height: 220px; }
+}
+/* Keep entered codes readable against the dark lot panel. */
+.eh-f #home-lot :is(input, select) { color: #f3f0ea; background-color: transparent; caret-color: #f3f0ea; }
+.eh-f #home-lot input::placeholder { color: #c7bfb1; opacity: 1; }
+.eh-f #home-lot select option { color: #2d2926; background-color: #f3f0ea; }

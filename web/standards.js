@@ -217,7 +217,7 @@
   function inView(p) { return String(p.ingredients || "").split(";")[0]; }
   function bottle(ctx, p, cls, alt, eager) {
     var w = (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 715;
-    return '<img class="' + (cls || "sx-bottle") + '" src="/web/media/' + p.id + '.webp" alt="' + (alt === "" ? "" : ctx.escape(p.name) + ", draft packaging") + '" width="' + w + '" height="1000" ' + (eager ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async">';
+    return '<img class="' + (cls || "sx-bottle") + '" src="' + window.BCCBottleAssets.url(p.id) + '" alt="' + (alt === "" ? "" : ctx.escape(p.name) + ", draft packaging") + '" width="' + w + '" height="1000" ' + (eager ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async">';
   }
   function link(href, text, cls) { return '<a class="' + (cls || "sx-link") + '" href="' + href + '">' + text + "</a>"; }
   function btn(href, text, cls) { return '<a class="' + (cls || "sx-btn") + '" href="' + href + '"><span>' + text + '</span><span class="sx-arrow" aria-hidden="true">' + (href.charAt(0) === "#" ? "↓" : "→") + "</span></a>"; }

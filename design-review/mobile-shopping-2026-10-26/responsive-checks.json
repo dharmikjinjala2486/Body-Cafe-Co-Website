@@ -1,0 +1,50 @@
+[
+  {
+    "d": "a",
+    "expanded": true,
+    "restored": true,
+    "desktopHeading": "CHECK. CONFIRM.CONTINUE."
+  },
+  {
+    "d": "b",
+    "expanded": true,
+    "restored": true,
+    "desktopHeading": "Nearly there. Nothing is charged."
+  },
+  {
+    "d": "c",
+    "expanded": true,
+    "restored": false,
+    "desktopHeading": "Checkout"
+  },
+  {
+    "d": "d",
+    "expanded": true,
+    "restored": true,
+    "desktopHeading": "A clearer view.Before you continue."
+  },
+  {
+    "d": "e",
+    "expanded": true,
+    "restored": true,
+    "desktopHeading": "Checkout"
+  },
+  {
+    "d": "f",
+    "expanded": true,
+    "restored": true,
+    "desktopHeading": "Checkout"
+  },
+  {
+    "d": "g",
+    "expanded": true,
+    "restored": true,
+    "desktopHeading": "Checkout"
+  },
+  {
+    "d": "h",
+    "expanded": true,
+    "restored": true,
+    "desktopHeading": "Checkout"
+  }
+]

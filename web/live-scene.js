@@ -67,7 +67,7 @@ export function mount(root){
  const loading=root.querySelector('.live-loading');
  function controls(){
   const p=data[selected];root.dataset.selected=String(selected);root.querySelector('[data-live-name]').textContent=p.name;root.querySelector('[data-live-format]').textContent=p.format;root.querySelector('[data-live-no]').textContent=String(selected+1).padStart(2,'0');
-  root.querySelector('[data-live-link]').href='/products/'+p.id+'?design='+d;fallback.src='/web/media/'+p.id+'.webp';fallback.alt=p.name+', draft front mockup';
+  root.querySelector('[data-live-link]').href='/products/'+p.id+'?design='+d;fallback.src=window.BCCBottleAssets.url(p.id);fallback.alt=p.name+', draft front mockup';
   root.querySelectorAll('[data-live-pick]').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===selected)));
  }
  function pick(i){selected=((i%7)+7)%7;targetYaw=-selected*step+Math.round((targetYaw+selected*step)/TAU)*TAU;targetDrag=0;controls();if(assets[selected])root.classList.add('live-ready');else root.classList.remove('live-ready');invalidate();}

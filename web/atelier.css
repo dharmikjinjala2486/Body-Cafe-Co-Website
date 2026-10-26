@@ -108,3 +108,17 @@ body[data-theme="d"] .r-account-nav [aria-current]{border-left:2px solid #c6b38f
 body[data-theme="d"] .r-home-care details[open]{background:#c6b38f0a;padding-inline:18px}
 body[data-theme="a"] .r-home-care details[open]{background:#eaf15c;padding-inline:18px}
 @media(max-width:700px){body[data-theme="c"] .r-account-nav{padding:10px 15px}body[data-theme="d"] .r-account-nav [aria-current]{border-left:0;border-bottom:2px solid #c6b38f;padding-left:0}}
+
+/* A: align the actual bottle artwork rather than its uneven transparent canvas. */
+body[data-theme="a"] .atelier-fan{container-type:inline-size;height:clamp(250px,25vw,400px)}
+body[data-theme="a"] .atelier-fan button{left:calc(var(--i) * 14.28%);width:14.28%;height:calc(20cqw + 55px);bottom:35px;transform:translateY(calc(var(--i) * 2px)) rotate(calc((var(--i) - 3) * 2deg))}
+body[data-theme="a"] .atelier-fan button>.r-card-bottle{position:absolute;inset:55px 0 0;display:block;width:auto;height:auto;border:0;border-radius:0;background:none;transform:none;pointer-events:none}
+body[data-theme="a"] .atelier-fan button[aria-pressed="true"],body[data-theme="a"] .atelier-fan button:hover{transform:translateY(-20px) rotate(0deg) scale(1.06);z-index:10}
+@media(max-width:700px){
+ body[data-theme="a"] .atelier-fan{display:flex;align-items:flex-end;gap:8px;height:255px;padding:35px 12px 25px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scroll-snap-type:x proximity}
+ body[data-theme="a"] .atelier-fan button{position:relative;left:auto;bottom:auto;flex:0 0 100px;width:100px;height:195px;transform:rotate(calc((var(--i) - 3) * 1deg));scroll-snap-align:center}
+ body[data-theme="a"] .atelier-fan button>.r-card-bottle{inset:45px 0 0}
+ body[data-theme="a"] .atelier-fan button[aria-pressed="true"],body[data-theme="a"] .atelier-fan button:hover{transform:translateY(-12px) rotate(0deg) scale(1.04)}
+}
+
+body[data-theme="a"] .atelier-fan .r-card-bottle img{filter:drop-shadow(8px 16px 7px #151a2225);pointer-events:none}

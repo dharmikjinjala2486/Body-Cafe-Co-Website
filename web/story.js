@@ -82,7 +82,10 @@
     }).join("") + '</ol><div class="st-progress" aria-hidden="true"><span data-st-progress></span></div></nav>';
   }
   function objectsTable() {
-    var all = OBJECTS.concat(founder().objects || []);
+    var all = OBJECTS.concat(founder().objects || []).map(function (o) {
+      if (o.id !== "bottle" || o.src !== "/web/media/l-theanine.webp") return o;
+      return Object.assign({}, o, {src: window.BCCBottleAssets.url("l-theanine")}, window.BCCBottleAssets.dimensions("l-theanine", o.w, o.h));
+    });
     return '<div class="st-objects" data-st-objects><h3 class="st-sub-h">The objects that tell our story</h3><p class="st-sub-lede">Select an object to see it and what it means. These are our own design files and packaging renders.</p>' +
       '<div class="st-obj-row" role="tablist" aria-label="Objects">' + all.map(function (o, i) {
         return '<button type="button" role="tab" id="st-tab-' + o.id + '" aria-controls="st-obj-' + o.id + '" aria-selected="' + (i === 0) + '" tabindex="' + (i === 0 ? 0 : -1) + '" data-st-obj="' + o.id + '"><img src="' + h(o.src) + '" alt="" width="' + o.w + '" height="' + o.h + '" loading="lazy" decoding="async"><span>' + h(o.name) + "</span></button>";
@@ -142,7 +145,7 @@
     out.push(chapter(v, "collection", num(), "Making the first collection",
       (seven ? '<p class="st-lead">' + h(seven.body) + "</p>" : "") +
       '<ul class="st-formats">' + Object.keys(groups).map(function (k) { var c = groups[k].length; return "<li><strong>" + h(k) + "</strong><span>" + (c === 1 ? "One product: " : (words[c] || c).replace(/^./, function (x) { return x.toUpperCase(); }) + " products: ") + groups[k].map(function (p) { return '<a href="/products/' + p.id + '">' + h(p.name) + "</a>"; }).join(", ") + "</span></li>"; }).join("") + "</ul>" +
-      '<div class="st-lineup">' + ctx.published.map(function (p) { return '<a href="/products/' + p.id + '" style="' + ctx.capStyle(p) + '"><img src="/web/media/' + p.id + '.webp" alt="' + h(p.name) + ', draft packaging" width="' + ((ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720) + '" height="1000" loading="lazy" decoding="async"><span>' + h(p.name) + "</span></a>"; }).join("") + "</div>" +
+      '<div class="st-lineup">' + ctx.published.map(function (p) { return '<a href="/products/' + p.id + '" style="' + ctx.capStyle(p) + '"><img src="' + window.BCCBottleAssets.url(p.id) + '" alt="' + h(p.name) + ', draft packaging" width="' + ((ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720) + '" height="1000" loading="lazy" decoding="async"><span>' + h(p.name) + "</span></a>"; }).join("") + "</div>" +
       '<p class="st-small">The bottles are draft packaging. Amounts, directions and cautions will come from the approved rear labels.</p>' + changed(f) + packaging(f) + timeline(f) +
       '<p class="st-more">' + arrow("/shop", "Meet the seven") + arrow("/learn", "Learn about each one") + "</p>"));
     if (has.lessons) out.push(chapter(v, "lessons", num(), "What the journey taught us", '<ol class="st-lessons">' + f.lessons.map(function (l) { return "<li><h3>" + h(l.title) + "</h3><p>" + h(l.text) + "</p>" + (l.link ? arrow(l.link[0], h(l.link[1])) : "") + "</li>"; }).join("") + "</ol>"));

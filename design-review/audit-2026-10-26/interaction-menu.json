@@ -1,0 +1,114 @@
+[
+  {
+    "d": "a",
+    "opened": {
+      "expanded": "true",
+      "menu": "01\nSHOP\n↗\n02\nSTANDARDS\n↗\n03\nABOUT\n↗\n04\nLEARN\n↗\n05\nSTORY\n↗\n06\nLOT REPORT\n↗\n07\nSEARCH\n↗\n08\nACCOUNT\n↗\n09\nCART\n↗",
+      "toast": "Cannot set properties of null (setting 'textContent')"
+    },
+    "result": {
+      "h1": "PLAY\nWITH YOUR\nEVERYDAY.",
+      "menuHidden": false,
+      "toast": "Cannot set properties of null (setting 'textContent')",
+      "url": "http://127.0.0.1:4174/?design=a"
+    }
+  },
+  {
+    "d": "b",
+    "opened": {
+      "expanded": "true",
+      "menu": "01\nShop\n02\nStandards\n03\nAbout\n04\nLearn\n05\nStory\n06\nLot report\n07\nSearch\nAccount\nCart (\n2\n)",
+      "toast": ""
+    },
+    "result": {
+      "h1": "Your body.\nYour curiosity.\nYour café.",
+      "menuHidden": false,
+      "toast": "",
+      "url": "http://127.0.0.1:4174/?design=b"
+    }
+  },
+  {
+    "d": "c",
+    "opened": {
+      "expanded": "true",
+      "menu": "SHOP ↗\nSTANDARDS ↗\nABOUT ↗\nLEARN ↗\nSTORY ↗\nLOT REPORT ↗\nSEARCH ↗\nACCOUNT ↗\nCART ↗",
+      "toast": "Cannot set properties of null (setting 'textContent')"
+    },
+    "result": {
+      "h1": "Step into\nthe unexpected.",
+      "menuHidden": false,
+      "toast": "Cannot set properties of null (setting 'textContent')",
+      "url": "http://127.0.0.1:4174/?design=c"
+    }
+  },
+  {
+    "d": "d",
+    "opened": {
+      "expanded": "true",
+      "menu": "01\nSHOP\n↗\n02\nSTANDARDS\n↗\n03\nABOUT\n↗\n04\nLEARN\n↗\n05\nSTORY\n↗\n06\nLOT REPORT\n↗\n07\nSEARCH\n↗\n08\nACCOUNT\n↗\n09\nCART\n↗",
+      "toast": "Cannot set properties of null (setting 'textContent')"
+    },
+    "result": {
+      "h1": "A little more\nthan meets the eye.",
+      "menuHidden": false,
+      "toast": "Cannot set properties of null (setting 'textContent')",
+      "url": "http://127.0.0.1:4174/?design=d"
+    }
+  },
+  {
+    "d": "e",
+    "opened": {
+      "expanded": "true",
+      "menu": "Find a lot report\n01\nShop all seven\n02\nStandards\n03\nAbout\n04\nLearn\n05\nStory\n06\nSearch\n07\nHelp centre\n01\nIron Bisglycinate\n02\nL-Theanine\n03\nVitamin D3 + K2\n04\nOmega-3 Fish Oil\n05\nMyo & D-Chiro Inositol\n06\nCreatine Chews\n07\nPsyllium Husk\n\nAccount\nBag (2)",
+      "toast": ""
+    },
+    "result": {
+      "h1": "YOUR BATCH. ITS RECORD.",
+      "menuHidden": true,
+      "toast": "",
+      "url": "http://127.0.0.1:4174/reports?design=e"
+    }
+  },
+  {
+    "d": "f",
+    "opened": {
+      "expanded": "true",
+      "menu": "CONTENTS\n\n01\nShop the collection\n02\nStandards\n03\nAbout\n04\nLearn\n05\nStory\n06\nLot reports\n07\nSearch\n08\nHelp\n\nAccount\nBag (2)",
+      "toast": ""
+    },
+    "result": {
+      "h1": "Meet the collection",
+      "menuHidden": true,
+      "toast": "",
+      "url": "http://127.0.0.1:4174/shop?design=f"
+    }
+  },
+  {
+    "d": "g",
+    "opened": {
+      "expanded": "true",
+      "menu": "Shop\nStandards\nAbout\nLearn\nStory\nLot report\nSearch\nHelp\n\nACCOUNT\nBAG (2)",
+      "toast": ""
+    },
+    "result": {
+      "h1": "Nothing to hide.\nEverything in view.",
+      "menuHidden": false,
+      "toast": "",
+      "url": "http://127.0.0.1:4174/?design=g"
+    }
+  },
+  {
+    "d": "h",
+    "opened": {
+      "expanded": "true",
+      "menu": "Contents\n\nI\nShop\nII\nStandards\nIII\nAbout\nIV\nLearn\nV\nStory\nVI\nLot report\nVII\nSearch\nVIII\nHelp\n\nAccount\nBag (2)",
+      "toast": ""
+    },
+    "result": {
+      "h1": "Seven supplements, each with its notes in the margin.",
+      "menuHidden": false,
+      "toast": "",
+      "url": "http://127.0.0.1:4174/?design=h"
+    }
+  }
+]

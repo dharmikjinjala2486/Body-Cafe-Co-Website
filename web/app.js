@@ -100,7 +100,7 @@ const shortName = {
 const product = (id) => state.catalog.find((p) => p.id === id);
 const image = (p, cls = "", eager = false) =>
   p
-    ? `<img class="bottle ${cls}" src="/web/media/${p.id}.webp" alt="${escape(p.name)} bottle" width="${bottleWidth[p.id] || 720}" height="1000" decoding="async" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'}>`
+    ? `<img class="bottle ${cls}" src="${window.BCCBottleAssets.url(p.id)}" alt="${escape(p.name)} bottle" width="${bottleWidth[p.id] || 720}" height="1000" decoding="async" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'}>`
     : "";
 /* Text colour that reads on a given cap colour. */
 function onCap(hex) {
@@ -271,11 +271,14 @@ function designLinks() {
 }
 function previewBar() {
   const options = DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d)).map(([d, number, label]) => `<option value="${d}"${activeDesign === d ? " selected" : ""}>${number} · ${label}</option>`).join("");
-  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Shared design preview. Ordering and sign-in are unavailable." : "Preview store. Prices are samples and no payment is taken."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><label class="preview-design-mobile">Design<select data-design-select aria-label="Choose design direction">${options}</select></label><a href="/ops">Operations preview</a></div>`;
+  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Design preview · Dummy content · Ordering and sign-in unavailable." : "Design preview · Dummy content · No payment is taken."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><label class="preview-design-mobile">Design<select data-design-select aria-label="Choose design direction">${options}</select></label><a href="/ops">Operations preview</a></div>`;
 }
 function shell(content) {
   const t = theme();
-  if (t && t.chrome && !location.pathname.startsWith("/ops")) return previewBar() + t.chrome(siteCtx(), content);
+  if (t && t.chrome && !location.pathname.startsWith("/ops")) {
+    const html = t.chrome(siteCtx(), content);
+    return previewBar() + (window.BCCDemo ? window.BCCDemo.present(html, siteCtx()) : html);
+  }
   const mobile = state.user?.mobile;
   const path = location.pathname;
   const nav = [
@@ -330,7 +333,7 @@ function menuBoard(list) {
     )
     .join(
       "",
-    )}</ul><p class="menu-note">All prices are samples. Pack sizes, serving quantities, directions and approved product purposes are awaiting final labels. Final prices, GST and delivery are confirmed before launch.</p><div class="menu-peek" aria-hidden="true">${list.map((p) => `<img src="/web/media/${p.id}.webp" alt="" data-peek-img="${p.id}" width="${bottleWidth[p.id]}" height="1000" loading="lazy">`).join("")}</div></section>`;
+    )}</ul><p class="menu-note">All prices are samples. Pack sizes, serving quantities, directions and approved product purposes are awaiting final labels. Final prices, GST and delivery are confirmed before launch.</p><div class="menu-peek" aria-hidden="true">${list.map((p) => `<img src="${window.BCCBottleAssets.url(p.id)}" alt="" data-peek-img="${p.id}" width="${bottleWidth[p.id]}" height="1000" loading="lazy">`).join("")}</div></section>`;
 }
 function homeLot() {
   return `<section id="home-report" class="lot-band" aria-labelledby="lot-title"><div class="lot-inner"><div class="lot-copy"><h2 id="lot-title" class="display">Turn the bottle over.</h2><p>Understand the evidence before you choose. Already have a bottle? Its lot number connects a pack to the corresponding batch record.</p>${window.BCCHome.example()}</div><form id="home-lot" class="lot-form"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">${state.catalog.map((p, i) => `<option value="${p.id}" data-sample="DEMO-${String(i + 1).padStart(2, "0")}-01">${escape(p.name)}</option>`).join("")}</select><label for="home-lot-number">Lot number</label><div class="lot-input"><input id="home-lot-number" name="lot" placeholder="DEMO-01-01" maxlength="60" required autocomplete="off"><button class="button on-dark" type="submit">Look up</button></div><p class="micro">Demonstration only. Try <button type="button" class="link-button" data-fill-lot>the sample lot</button> for the product you picked. No real laboratory document is connected.</p></form></div></section>`;
@@ -641,14 +644,33 @@ function headerState() {
   update();
 }
 
+function menuLabel(button, open) {
+  if (!button) return;
+  // Some directions use text, others retain an icon with a visible or sr-only label.
+  const label = button.querySelector("[data-menu-label], span") || button;
+  if (!button.dataset.closedLabel) button.dataset.closedLabel = label.textContent;
+  label.textContent = open ? "Close" : button.dataset.closedLabel;
+}
+function positionMenu() {
+  const nav = $("#mobile-nav");
+  const header = $("[data-action=menu]")?.closest("header");
+  if (nav && header) nav.style.setProperty("--mnav-top", Math.max(0, Math.round(header.getBoundingClientRect().bottom)) + "px");
+}
+window.addEventListener("resize", () => {
+  if (!document.body.classList.contains("menu-open")) return;
+  const button = $("[data-action=menu]");
+  if (!button?.getClientRects().length) closeMenu();
+  else positionMenu();
+});
 function openMenu() {
   const nav = $("#mobile-nav");
   const b = $("[data-action=menu]");
   if (!nav) return;
+  positionMenu();
   nav.hidden = false;
   document.body.classList.add("menu-open");
   b?.setAttribute("aria-expanded", "true");
-  b && (b.querySelector("span").textContent = "Close");
+  menuLabel(b, true);
 }
 function closeMenu() {
   const nav = $("#mobile-nav");
@@ -657,7 +679,7 @@ function closeMenu() {
   nav.hidden = true;
   document.body.classList.remove("menu-open");
   b?.setAttribute("aria-expanded", "false");
-  b && (b.querySelector("span").textContent = "Menu");
+  menuLabel(b, false);
 }
 
 /* Run after every render. */
@@ -700,6 +722,7 @@ function enhance() {
   window.BCCBag?.enhance?.();
   window.BCCAccount?.enhance?.();
   window.BCCSupport?.enhance?.();
+  window.BCCMobileShopping?.enhance?.();
 }
 function cart() {
   return `<section class="section-wrap">${heading("", "Your bag")}${
@@ -1457,7 +1480,10 @@ document.addEventListener("click", async (e) => {
     else if (button.dataset.action === "menu") {
       if ($("#mobile-nav").hidden) openMenu();
       else closeMenu();
-    } else if (button.dataset.action === "search") $("#search-dialog").showModal();
+    } else if (button.dataset.action === "search") {
+      closeMenu();
+      $("#search-dialog").showModal();
+    }
     else if (button.dataset.action === "close-search") $("#search-dialog").close();
     else if (button.dataset.action === "logout") {
       window.BCCAccount?.signedOut?.();
@@ -1635,9 +1661,19 @@ document.addEventListener("change", (e) => {
   }
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && $("#mobile-nav") && !$("#mobile-nav").hidden) {
+  const nav = $("#mobile-nav");
+  if (!nav || nav.hidden) return;
+  if (e.key === "Escape") {
     closeMenu();
     $("[data-action=menu]")?.focus();
+  } else if (e.key === "Tab") {
+    const controls = [$("[data-action=menu]"), ...nav.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled])')]
+      .filter((el) => el?.getClientRects().length && getComputedStyle(el).visibility !== "hidden");
+    const first = controls[0], last = controls[controls.length - 1];
+    if ((e.shiftKey && document.activeElement === first) || (!e.shiftKey && document.activeElement === last)) {
+      e.preventDefault();
+      (e.shiftKey ? last : first)?.focus();
+    }
   }
 });
 window.addEventListener("popstate", () => {

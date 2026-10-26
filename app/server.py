@@ -23,13 +23,13 @@ except ImportError:  # run as a script: python3 app/server.py
 
 ROOT = Path(__file__).resolve().parent.parent
 PRODUCTS = [
-    ('iron-bisglycinate','Iron Bisglycinate','Iron, with the details in view.','Iron bisglycinate',799,'#aa472e','Daily essentials'),
-    ('l-theanine','L-Theanine','Get to know your everyday ingredient.','L-Theanine',899,'#777d51','Daily essentials'),
-    ('vitamin-d3-k2','Vitamin D3 + K2','With Omega-3 as triglycerides.','Vitamin D3, Vitamin K2 and Omega-3 as triglycerides',999,'#35306f','Daily essentials'),
-    ('omega-3-fish-oil','Omega-3 Fish Oil','A closer look at your Omega-3.','Omega-3 fish oil',1199,'#84919b','Daily essentials'),
-    ('myo-d-chiro-inositol','Myo & D-Chiro Inositol','Two ingredients. All the details.','Myo-inositol and D-chiro inositol',1299,'#b184b9','Ingredient pairs'),
-    ('creatine-chews','Creatine Chews','Meet creatine in a chew.','Creatine; complete formulation pending',1099,'#07566a','Chews'),
-    ('psyllium-husk','Psyllium Husk','Make room for a little curiosity.','Psyllium husk',699,'#9c9274','Daily essentials'),
+    ('iron-bisglycinate','Iron Bisglycinate','Iron, with the details in view.','Iron bisglycinate',899,'#aa472e','Daily essentials'),
+    ('l-theanine','L-Theanine','Get to know your everyday ingredient.','L-Theanine',1699,'#777d51','Daily essentials'),
+    ('vitamin-d3-k2','Vitamin D3 + K2','With Omega-3 as triglycerides.','Vitamin D3, Vitamin K2 and Omega-3 as triglycerides',1049,'#35306f','Daily essentials'),
+    ('omega-3-fish-oil','Omega-3 Fish Oil','A closer look at your Omega-3.','Omega-3 fish oil',1949,'#84919b','Daily essentials'),
+    ('myo-d-chiro-inositol','Myo & D-Chiro Inositol','Two ingredients. All the details.','Myo-inositol and D-chiro inositol',1499,'#b184b9','Ingredient pairs'),
+    ('creatine-chews','Creatine Chews','Meet creatine in a chew.','Creatine; complete formulation pending',749,'#07566a','Chews'),
+    ('psyllium-husk','Psyllium Husk','Make room for a little curiosity.','Psyllium husk',949,'#9c9274','Daily essentials'),
 ]
 BUNDLES = [
     {'id':'daily-edit','name':'The daily edit','description':'An example collection of D3 + K2 and Omega-3.','items':['vitamin-d3-k2','omega-3-fish-oil']},
@@ -82,6 +82,15 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
                 c.execute('INSERT OR IGNORE INTO products VALUES(?,?)',(p[0],json.dumps(data)))
                 for j,days in enumerate([180,365]):
                     c.execute('INSERT OR IGNORE INTO batches VALUES(?,?,?,?,?,?)',(f'DEMO-{i+1:02d}-{j+1:02d}',p[0],int(time.time())+days*86400,20,'released',1))
+            # One-time price-sheet update; preserve later deliberate operations edits.
+            price_version = 'price-sheet-2026-10-24'
+            if not c.execute('SELECT 1 FROM settings WHERE id=?', (price_version,)).fetchone():
+                for p in PRODUCTS:
+                    row = c.execute('SELECT data FROM products WHERE id=?', (p[0],)).fetchone()
+                    data = json.loads(row['data'])
+                    data['price'] = p[4]
+                    c.execute('UPDATE products SET data=? WHERE id=?', (json.dumps(data), p[0]))
+                c.execute('INSERT INTO settings VALUES(?,?)', (price_version, 'true'))
             for uid,name,role in [('admin-a','Preview Admin A','admin'),('admin-b','Preview Admin B','admin'),('viewer','Preview Viewer','viewer')]:
                 c.execute('INSERT OR IGNORE INTO users VALUES(?,?,?,?)',(uid,name,'',role))
             c.execute('INSERT OR IGNORE INTO settings VALUES(?,?)',('flags',json.dumps({'ingredient_library':True,'referrals':False,'amazon_sync':False})))

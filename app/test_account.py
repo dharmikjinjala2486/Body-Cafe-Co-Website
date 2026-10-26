@@ -29,8 +29,8 @@ class AccountTests(unittest.TestCase):
         return self.store.order(s, {'items': [{'id': 'l-theanine', 'quantity': 1}], 'adult': True, 'method': 'prepaid', 'contact': CONTACT, **extra})
 
     def test_quote_explains_stock_price_and_discount(self):
-        q = self.store.bag_quote(self.guest, {'items': [{'id': 'l-theanine', 'quantity': 2, 'price': 899}], 'discount': ''})
-        self.assertTrue(q['ready']); self.assertEqual(q['subtotal'], 1798); self.assertEqual(q['shipping'], 0); self.assertTrue(q['sample'])
+        q = self.store.bag_quote(self.guest, {'items': [{'id': 'l-theanine', 'quantity': 2, 'price': 1699}], 'discount': ''})
+        self.assertTrue(q['ready']); self.assertEqual(q['subtotal'], 3398); self.assertEqual(q['shipping'], 0); self.assertTrue(q['sample'])
         q = self.store.bag_quote(self.guest, {'items': [{'id': 'psyllium-husk', 'quantity': 1, 'price': 600}]})
         self.assertFalse(q['ready']); self.assertTrue(q['lines'][0]['price_changed']); self.assertEqual(q['shipping'], 75)
         self.assertEqual(q['changes'][0]['kind'], 'price')
@@ -40,7 +40,7 @@ class AccountTests(unittest.TestCase):
         q = self.store.bag_quote(self.guest, {'items': [{'id': 'iron-bisglycinate', 'quantity': 1}]})
         self.assertEqual(q['lines'][0]['status'], 'unavailable'); self.assertEqual(q['subtotal'], 0); self.assertEqual(q['shipping'], 0)
         q = self.store.bag_quote(self.guest, {'items': [{'id': 'l-theanine', 'quantity': 1}], 'discount': 'preview10'})
-        self.assertEqual(q['discount'], 90); self.assertEqual(q['discount_applied']['code'], 'PREVIEW10')
+        self.assertEqual(q['discount'], 170); self.assertEqual(q['discount_applied']['code'], 'PREVIEW10')
         q = self.store.bag_quote(self.guest, {'items': [{'id': 'l-theanine', 'quantity': 1}], 'discount': 'FREE50'})
         self.assertEqual(q['discount'], 0); self.assertTrue(q['discount_error']); self.assertFalse(q['ready'])
         with self.assertRaises(Error): self.store.bag_quote(self.guest, {'items': [{'id': 'l-theanine', 'quantity': 1}, {'id': 'l-theanine', 'quantity': 1}]})
@@ -49,7 +49,7 @@ class AccountTests(unittest.TestCase):
         self.assertEqual(self.store.bag_get(self.guest), {'items': [], 'account': False})
         self.assertFalse(self.store.bag_save(self.guest, {'items': [{'id': 'l-theanine', 'quantity': 1}]})['account'])
         a, _ = self.sign_in(self.guest)
-        self.store.bag_save(a, {'items': [{'id': 'l-theanine', 'quantity': 3, 'price': 899}]})
+        self.store.bag_save(a, {'items': [{'id': 'l-theanine', 'quantity': 3, 'price': 1699}]})
         self.assertEqual(self.store.bag_get(a)['items'][0]['quantity'], 3)
         other, _ = self.sign_in(self.store.session('')[0], '9123456789')
         self.assertEqual(self.store.bag_get(other)['items'], [])

@@ -243,7 +243,7 @@
     },
     contact: {
       lede: "Every case gets an ID and stays in your account. The preview sends no external messages.",
-      channels: [["WhatsApp", "Business number to be confirmed"], ["Email", "Support address to be confirmed"], ["Phone", "Initial phone support planned; number and hours to be confirmed"]],
+      channels: [["WhatsApp", "+91-8457125489"], ["Email", "care@bodycafeco.com"], ["Phone", "+91-8457125489"]],
       privacy: "Share only what we need to help: your order ID and a short description. Please don't include medical records, card numbers or passwords.",
       safety: "Choose Product safety for a dedicated priority case. In this preview the case stays local; no safety outreach or recall starts automatically.",
     },

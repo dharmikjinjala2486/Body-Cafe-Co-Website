@@ -106,3 +106,21 @@ body[data-concept="b"] .hf-faq .hf-faq-link a{font-weight:700;color:#35306f}
 .hf-voices .hf-voices-body .hf-voices-lead{font-size:clamp(22px,2.2vw,32px);color:inherit}
 body[data-theme="a"] .hf-voices .r-pending{background:transparent;border:1px solid currentColor;color:#142bc5}
 @media (max-width:700px){.hf-voices .hf-voices-body .hf-voices-lead{font-size:22px}}
+
+/* Let the left copy accompany its own right-hand column during native scrolling. */
+.hf-faq-heading{display:contents}
+.hf-faq-heading>.r-label{grid-column:1/-1;margin:0}
+@media(min-width:701px) and (min-height:600px){
+ body[data-theme="a"] .hf-trust-heading{position:sticky;top:32px;align-self:start}
+ body[data-theme="a"] .hf-faq>.hf-faq-heading{display:block;position:sticky;top:32px;align-self:start}
+ body[data-theme="a"] .hf-faq-heading>.r-label{margin:0 0 22px}
+ body[data-theme="a"] .hf-faq-heading>h2{margin:0}
+}
+
+/* The complete A trust introduction shares one sticky containing block. */
+body[data-theme="a"] .hf-trust-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8vw;align-items:start}
+body[data-theme="a"] .hf-trust-heading{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin:0}
+body[data-theme="a"] .hf-trust-heading>.r-label{margin:0}
+body[data-theme="a"] .hf-trust-heading>.r-statement{margin:0}
+body[data-theme="a"] .hf-trust-heading>.r-link{justify-self:start}
+@media(max-width:700px){body[data-theme="a"] .hf-trust-layout{grid-template-columns:1fr;gap:30px}}

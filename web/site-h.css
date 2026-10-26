@@ -61,7 +61,7 @@
 .eh-h .h-tools { display: flex; align-items: center; gap: 2px; }
 .eh-h .h-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: none; color: inherit; cursor: pointer; }
 .eh-h .h-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.4; }
-.eh-h .h-count { position: absolute; top: 6px; right: 2px; font-size: 11px; font-weight: 600; min-width: 16px; height: 16px; display: grid; place-items: center; border: 1px solid currentColor; background: #fff; }
+.eh-h .h-count { position: absolute; top: 6px; right: 2px; font-size: 11px; font-weight: 600; min-width: 16px; height: 16px; display: grid; place-items: center; border: 1px solid var(--ink); background: var(--ink); color: #fff; }
 .eh-h .h-lotbtn { display: inline-flex; align-items: center; height: 38px; padding: 0 14px; margin: 0 6px; border: 1px solid var(--ink); text-decoration: none; font-size: 14px; white-space: nowrap; transition: background .2s, color .2s; }
 .eh-h .h-lotbtn:hover, .eh-h .h-lotbtn[aria-current="page"] { background: var(--ink); color: #fff; }
 .eh-h .h-menu { display: none; }

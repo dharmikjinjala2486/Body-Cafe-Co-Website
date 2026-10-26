@@ -1,0 +1,32 @@
+/* Shared field layout: modern surfaces own their spacing through grid/flex gaps.
+   Older direction styles apply margins and border rules to every input in the body. */
+#main :is(.su,.ac,.pp,.lt,.lr,.bg,.sp) :is(input,select,textarea){margin:0;min-width:0;box-sizing:border-box}
+#main :is(.su,.ac,.pp,.lt,.lr,.bg,.sp) label{margin-bottom:0}
+#main :is(.su-field,.ac-field){min-width:0;align-content:start}
+#main :is(.su-two,.ac-grid){align-items:start}
+#main .su-field>label small{display:inline;font-size:.9em;letter-spacing:normal}
+/* Keep the country code and input inside a single, consistently sized control. */
+#main .su .su-phone{display:flex;align-items:stretch;min-width:0;min-height:52px;border:1px solid var(--muted);background:var(--field);border-radius:min(var(--radius),12px)}
+#main .su .su-phone>span{flex:none;align-self:stretch;border:0;border-right:1px solid var(--line);border-radius:min(var(--radius),12px) 0 0 min(var(--radius),12px)}
+#main .su .su-phone>input{flex:1;width:0;min-width:0;min-height:50px;border:0;background:transparent;align-self:stretch}
+#main .su .su-phone:focus-within{outline:2px solid var(--ink);outline-offset:2px}
+#main .su .su-phone:has([aria-invalid="true"]){border-color:var(--bad)}
+#main .su .su-phone>input:focus-visible{outline:none;box-shadow:none;border:0!important}
+#main .su .su-form :is(input:not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea){font:inherit;border-color:var(--muted);background-color:var(--field);color:var(--ink)}
+#main .su .su-form :is(input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=tel]),select){min-height:52px}
+#main .su .su-form input[readonly]{background-color:var(--panel)}
+#main .su .su-form [aria-invalid="true"]{border-color:var(--bad)}
+#main .su .su-phone>input{border:0;background:transparent}
+#main .ac .ac-phone{min-width:0;min-height:52px}
+#main .ac .ac-phone .ac-cc{flex:none}
+#main .ac .ac-phone input{flex:1;width:0;min-width:0;align-self:stretch}
+#main .ac .ac-phone:focus-within{outline:2px solid var(--ink);outline-offset:2px}
+#main .ac .ac-phone input:focus-visible{box-shadow:none;outline:none}
+/* Select arrows need room independent of each direction's input padding. */
+#main :is(.su,.ac,.pp,.lt,.lr,.bg,.sp) select{padding-right:42px}
+#main :is(.su,.ac,.pp,.lt,.lr,.bg,.sp) textarea{display:block;max-width:100%;resize:vertical}
+#main :is(.su-search,.lr-search,.pp-inline,.bg-inline){align-items:stretch}
+#search-form input{margin:0;min-width:0}
+@media(max-width:700px){
+ #main :is(.su,.ac,.pp,.lt,.lr,.bg,.sp) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea),#search-form input{font-size:16px}
+}

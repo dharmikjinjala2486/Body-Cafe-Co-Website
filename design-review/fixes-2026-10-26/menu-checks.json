@@ -1,0 +1,232 @@
+[
+  {
+    "w": 320,
+    "d": "a",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=a"
+  },
+  {
+    "w": 320,
+    "d": "b",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=b"
+  },
+  {
+    "w": 320,
+    "d": "c",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=c"
+  },
+  {
+    "w": 320,
+    "d": "d",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=d"
+  },
+  {
+    "w": 320,
+    "d": "e",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=e"
+  },
+  {
+    "w": 320,
+    "d": "f",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=f"
+  },
+  {
+    "w": 320,
+    "d": "g",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=g"
+  },
+  {
+    "w": 320,
+    "d": "h",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=h"
+  },
+  {
+    "w": 390,
+    "d": "a",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=a"
+  },
+  {
+    "w": 390,
+    "d": "b",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=b"
+  },
+  {
+    "w": 390,
+    "d": "c",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=c"
+  },
+  {
+    "w": 390,
+    "d": "d",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=d"
+  },
+  {
+    "w": 390,
+    "d": "e",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=e"
+  },
+  {
+    "w": 390,
+    "d": "f",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=f"
+  },
+  {
+    "w": 390,
+    "d": "g",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=g"
+  },
+  {
+    "w": 390,
+    "d": "h",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=h"
+  },
+  {
+    "w": 768,
+    "d": "a",
+    "desktopNavigation": true
+  },
+  {
+    "w": 768,
+    "d": "b",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=b"
+  },
+  {
+    "w": 768,
+    "d": "c",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=c"
+  },
+  {
+    "w": 768,
+    "d": "d",
+    "desktopNavigation": true
+  },
+  {
+    "w": 768,
+    "d": "e",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=e"
+  },
+  {
+    "w": 768,
+    "d": "f",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=f"
+  },
+  {
+    "w": 768,
+    "d": "g",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=g"
+  },
+  {
+    "w": 768,
+    "d": "h",
+    "expanded": "true",
+    "label": "Close",
+    "toast": "",
+    "closed": true,
+    "overflow": 0,
+    "url": "http://127.0.0.1:4174/shop?design=h"
+  }
+]

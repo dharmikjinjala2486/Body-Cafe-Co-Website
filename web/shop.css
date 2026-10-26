@@ -483,3 +483,7 @@
   .sp-f .sp-card[data-lead] .sp-name { font-size: 24px; }
   .sp-g .sp-card { align-items: stretch; } .sp-g .sp-plate { aspect-ratio: auto; min-height: 220px; }
 }
+
+/* Match actual bottle bounds, not transparent source canvas sizes. */
+.sp-a .sp-plate .r-card-bottle{position:absolute;inset:9% 0 7%;display:block;pointer-events:none}
+.sp-a .sp-plate .r-card-bottle img{position:absolute;inset:auto;width:auto;max-width:none;height:var(--bottle-height);top:var(--bottle-top);left:50%;translate:calc(-1 * var(--bottle-center)) 0;rotate:none;object-fit:fill;transform-origin:var(--bottle-center) 50%}

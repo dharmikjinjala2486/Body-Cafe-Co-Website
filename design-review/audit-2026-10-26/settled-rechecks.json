@@ -1,0 +1,1248 @@
+[
+  {
+    "design": "d",
+    "route": "/account/cases",
+    "viewport": "desktop",
+    "brokenImages": [],
+    "fonts": [
+      "Aileron, sans-serif",
+      "SpaceMono, monospace",
+      "Aileron, Arial, sans-serif",
+      "Aileron, \"Helvetica Neue\", Arial, sans-serif",
+      "Anton, Aileron, sans-serif"
+    ],
+    "h1": [
+      "Your account"
+    ],
+    "headings": [
+      "Sign in or create your account",
+      "Your support cases"
+    ],
+    "height": 730,
+    "links": [
+      {
+        "href": "/checkout?design=d",
+        "text": "check out as a guest"
+      },
+      {
+        "href": "/account?design=d",
+        "text": "Overview"
+      },
+      {
+        "href": "/account/orders?design=d",
+        "text": "Orders"
+      },
+      {
+        "href": "/account/support?design=d",
+        "text": "Support"
+      },
+      {
+        "href": "/account/preferences?design=d",
+        "text": "Preferences"
+      },
+      {
+        "href": "/contact?design=d",
+        "text": "Open a case"
+      }
+    ],
+    "overflow": [],
+    "pageHeight": 2047,
+    "pendingImages": 0,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "ACCOUNT · AFTER HOURS\n\nYour account\n\nYou’re not signed in. Orders and support cases from this browser session are listed here. Sign in to keep them with your account.\n\nSIGN IN · AFTER HOURS\n\nSign in or create your account\n\nUse your mobile number. We check it with a one-time code so only you can see your orders, addresses and cases.\n\nReturning? You’ll go straight back to your account.\nNew number? Verifying it creates your account. Orders you placed as a guest in this browser with the same number join it.\nYour bag and any details you’ve typed are kept.\nMobile number\n10-digit Indian mobile number\n+91\nSEND CODE\n\nSign-in is optional for checkout. You can also check out as a guest.\n\nOverview\nOrders\nSupport\nPreferences\nYour support cases\nOPEN A CASE\n\nNo cases yet. A case keeps the whole conversation, with your order attached, in one place.",
+    "tinyText": [
+      {
+        "size": "9px",
+        "text": "01"
+      },
+      {
+        "size": "9px",
+        "text": "02"
+      },
+      {
+        "size": "9px",
+        "text": "03"
+      },
+      {
+        "size": "9px",
+        "text": "04"
+      },
+      {
+        "size": "9px",
+        "text": "05"
+      },
+      {
+        "size": "9px",
+        "text": "2"
+      },
+      {
+        "size": "10px",
+        "text": "Discover"
+      },
+      {
+        "size": "10px",
+        "text": "Customer care"
+      },
+      {
+        "size": "10px",
+        "text": "Orders & delivery"
+      },
+      {
+        "size": "10px",
+        "text": "Privacy & legal"
+      },
+      {
+        "size": "10px",
+        "text": "© 2026 Body Café Co."
+      },
+      {
+        "size": "10px",
+        "text": "care@bodycafeco.com · +91-8457125489"
+      }
+    ],
+    "title": "Your account — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/account/cases?design=d",
+    "width": 1470
+  },
+  {
+    "design": "h",
+    "route": "/products/l-theanine",
+    "viewport": "desktop",
+    "brokenImages": [
+      ""
+    ],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, sans-serif",
+      "Aileron, sans-serif"
+    ],
+    "h1": [
+      "L-Theanine"
+    ],
+    "headings": [
+      "Overview",
+      "Ingredients and product facts",
+      "WHAT THE APPROVED LABEL WILL STATE",
+      "APPROVED LABEL IMAGE",
+      "How to use and cautions",
+      "WHAT TO CHECK ON THE LABEL",
+      "Quality, sourcing and lot report",
+      "FIND A LOT REPORT",
+      "Customer reviews",
+      "Review L-Theanine",
+      "Preview customer A",
+      "Preview customer B",
+      "Questions and answers",
+      "COMMON QUESTIONS",
+      "ANSWERED QUESTIONS",
+      "ASK A QUESTION ABOUT L-THEANINE",
+      "Other products to explore"
+    ],
+    "height": 730,
+    "links": [
+      {
+        "href": "/?design=h",
+        "text": "Home"
+      },
+      {
+        "href": "/shop?design=h",
+        "text": "Shop"
+      },
+      {
+        "href": "#reviews",
+        "text": "No reviews yet"
+      },
+      {
+        "href": "/policies/shipping?design=h",
+        "text": "Shipping policy"
+      },
+      {
+        "href": "/policies/returns?design=h",
+        "text": "Returns policy"
+      },
+      {
+        "href": "#ingredients",
+        "text": "Ingredients"
+      },
+      {
+        "href": "#use",
+        "text": "How to use"
+      },
+      {
+        "href": "#reviews",
+        "text": "Reviews"
+      },
+      {
+        "href": "#quality",
+        "text": "Lot report"
+      },
+      {
+        "href": "/contact?kind=safety&design=h",
+        "text": "Report a safety concern privately"
+      },
+      {
+        "href": "/reports?product=l-theanine&design=h",
+        "text": "open the lot lookup for this product"
+      },
+      {
+        "href": "/standards?design=h#evidence",
+        "text": "How we approach quality and evidence"
+      },
+      {
+        "href": "/learn/understanding-reports?design=h",
+        "text": "What a lot report shows"
+      },
+      {
+        "href": "/contact?design=h",
+        "text": "contact support privately"
+      },
+      {
+        "href": "/products/vitamin-d3-k2?design=h",
+        "text": "Vitamin D3 + K2Softgels · ₹1,049 listed price"
+      },
+      {
+        "href": "/products/omega-3-fish-oil?design=h",
+        "text": "Omega-3 Fish OilSoftgels · ₹1,949 listed price"
+      },
+      {
+        "href": "/products/myo-d-chiro-inositol?design=h",
+        "text": "Myo & D-Chiro InositolCapsules · ₹1,499 listed price"
+      },
+      {
+        "href": "/shop?design=h",
+        "text": "See all seven products"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "pp-slide pp-slide-cap",
+        "tag": "LI",
+        "text": "",
+        "w": 659,
+        "x": 1330
+      },
+      {
+        "cls": "pp-open",
+        "tag": "BUTTON",
+        "text": "",
+        "w": 659,
+        "x": 1330
+      },
+      {
+        "cls": "",
+        "tag": "IMG",
+        "text": "",
+        "w": 439,
+        "x": 1440
+      }
+    ],
+    "pageHeight": 6653,
+    "pendingImages": 3,
+    "scrollWidth": 1470,
+    "smallButtons": [],
+    "text": "HOME\nSHOP\nL-THEANINE\n‹\n\n1 / 2\n\n›\nEnlarge\n\nFront of the bottle · Studio product image.\n\n02 / 07\nCAPSULES\n\nL-Theanine\n\nGet to know your everyday ingredient.\n\n₹1,699\nMRP\n\nNo reviews yet\n\nIN STOCK IN THE PREVIEW\n\nFORMAT\nCapsules\nPACK QUANTITY\n30 capsules\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nQuantity\n1\n2\n3\n4\n5\nAdd to bag\n\nOne-time purchase. Preview order only: no payment or dispatch.\n\nCheck delivery to your pincode\nCheck\n\nThe check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.\n\nDelivery, returns and tax\nINGREDIENTS\nHOW TO USE\nREVIEWS\nLOT REPORT\n\n§ 2 · OVERVIEW\n\nOverview\n\nL-Theanine is an amino acid. The “L-” is part of its name and tells you which form it is.\n\nFORMAT\nCapsules\nINGREDIENT IN VIEW\nL-Theanine\nCOLLECTION\nDaily essentials\nPURCHASE\nOne-time purchase\n\nPurpose. Explore the ingredient, format and product notes before choosing your everyday essentials.\n\n§ 3 · INGREDIENTS AND PRODUCT FACTS\n\nIngredients and product facts\n\nWhat's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.\n\nINGREDIENTS AND FORMS\nIn view: L-Theanine. The complete list with each ingredient's form comes from the approved label.\nAMOUNT PER SERVING\nRefer to your pack\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nOTHER INGREDIENTS AND CAPSULE OR SOFTGEL SHELL\nDemo label entry — refer to your pack\nNUTRITION INFORMATION\nRefer to your pack\nALLERGENS\nRead the full allergen statement on your pack\nDIETARY SUITABILITY\nCheck the ingredients and cautions on your pack\nMANUFACTURER AND LICENCE DETAILS\nDemo manufacturer entry; no licence number claimed\nWHAT THE APPROVED LABEL WILL STATE\nActive amount per serving\nDosage form\nAny substantiated caffeine or free-from statements\nComplete ingredient list, allergens, storage and manufacturer details\nAPPROVED LABEL IMAGE\n\nRead the product notes here, and follow the directions and cautions printed on your pack.\n\n§ 4 · HOW TO USE AND CAUTIONS\n\nHow to use and cautions\n\nApproved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.\n\nRECOMMENDED USE\nFollow the directions printed on your pack. This design preview does not provide a dosage.\nPREPARATION\nUse as directed on the pack\nAGE\nPurchases are limited to adults: checkout asks you to confirm you're 18 or older.\nSUITABILITY\nDemo label details\nCAUTIONS AND INTERACTIONS\nIf you have a health condition, are pregnant or breastfeeding, or take regular medication, speak with a qualified health professional before adding a supplement. Nothing on this site is a diagnosis or personal advice.\nALLERGENS\nRead the full allergen statement on your pack\nSTORAGE\nDemo storage entry: keep tightly closed in a cool, dry place away from direct sunlight.\nWHAT TO CHECK ON THE LABEL\nAmount per serving\nThe amount of L-theanine in one serving, with its unit.\nDosage form\nHow it's presented, and how many units make a serving.\nFree-from statements\nStatements such as caffeine-free belong on a label only when they're substantiated.\nOther ingredients\nCapsule shell material and any other added ingredients.\n\nSomething wrong with a product? Report a safety concern privately. It opens a priority support case, separate from reviews.\n\n§ 5 · QUALITY, SOURCING AND LOT REPORT\n\nQuality, sourcing and lot report\n\nSourcing, testing and documents are shown here only when they're confirmed for this product.\n\nINGREDIENT SOURCING\nIndia — demo origin\nMANUFACTURER\nBCC demo manufacturing unit\nTESTING PERFORMED\nNo test results published\nSUPPORTING DOCUMENTS\nNone published\nCERTIFICATIONS\nNone claimed\nFIND A LOT REPORT\n\nEnter the lot number printed on your pack of L-Theanine. It's different from the barcode and your order number.\n\nLot number on your pack\nFind a lot report\n\nDEMONSTRATION RECORD Try the demo lot DEMO-02-01, or open the lot lookup for this product.\n\nA lot report describes the sample tested from one manufacturing lot. It doesn't authenticate an individual pack or promise a health outcome. Preview records are demonstrations. No laboratory document is connected.\n\nHow we approach quality and evidence · What a lot report shows\n\n§ 6 · CUSTOMER REVIEWS\n\nCustomer reviews\n\nNo reviews yet\n\nExplore the illustrative feedback below. Fictional feedback is separate from submitted customer reviews.\n\nWrite a review\n\nReviews come from signed-in customers whose order containing this product was delivered. Every review and photo is checked by our moderators before it appears, whatever its rating.\n\nIllustrative feedback · fictional customers\n\nPreview customer A\n\n“The bottle colours make it easy to find the product I’m looking for.”\n\nPreview customer B\n\n“I like being able to read the ingredient notes before choosing a bottle.”\n\n§ 7 · QUESTIONS AND ANSWERS\n\nQuestions and answers\nCOMMON QUESTIONS\nHow much is in each serving?\nHow many capsules are in a pack?\nWhere's the lot number on my pack?\nWhat prices are shown?\nANSWERED QUESTIONS\n\nNo questions have been answered publicly for this product yet.\n\nASK A QUESTION ABOUT L-THEANINE\n\nQuestions are answered by Body Café Co. support. An answer is published here only after review, and only from approved product information. We don't give personal medical advice. For an order, delivery or account issue, contact support privately instead.\n\nYour question\n\n10–600 characters. Please don't include order numbers, contact details or health information.\n\nSend question\n\n§ 8 · OTHER PRODUCTS TO EXPLORE\n\nOther products to explore\n\nShown for browsing. Products aren't recommended to be taken together.\n\nVitamin D3 + K2\nSoftgels · ₹1,049 listed price\nOmega-3 Fish Oil\nSoftgels · ₹1,949 listed price\nMyo & D-Chiro Inositol\nCapsules · ₹1,499 listed price\n\nSee all seven products",
+    "tinyText": [],
+    "title": "L-Theanine — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/products/l-theanine?design=h",
+    "width": 1470
+  },
+  {
+    "design": "b",
+    "route": "/products/vitamin-d3-k2",
+    "viewport": "mobile390",
+    "brokenImages": [
+      ""
+    ],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "Aileron, \"Helvetica Neue\", Arial, sans-serif",
+      "Aileron, sans-serif"
+    ],
+    "h1": [
+      "Vitamin D3 + K2"
+    ],
+    "headings": [
+      "Overview",
+      "Ingredients and product facts",
+      "WHAT THE APPROVED LABEL WILL STATE",
+      "APPROVED LABEL IMAGE",
+      "How to use and cautions",
+      "WHAT TO CHECK ON THE LABEL",
+      "Quality, sourcing and lot report",
+      "FIND A LOT REPORT",
+      "Customer reviews",
+      "Review Vitamin D3 + K2",
+      "Preview customer A",
+      "Preview customer B",
+      "Questions and answers",
+      "COMMON QUESTIONS",
+      "ANSWERED QUESTIONS",
+      "ASK A QUESTION ABOUT VITAMIN D3 + K2",
+      "Other products to explore"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/?design=b",
+        "text": "Home"
+      },
+      {
+        "href": "/shop?design=b",
+        "text": "Shop"
+      },
+      {
+        "href": "#reviews",
+        "text": "No reviews yet"
+      },
+      {
+        "href": "/policies/shipping?design=b",
+        "text": "Shipping policy"
+      },
+      {
+        "href": "/policies/returns?design=b",
+        "text": "Returns policy"
+      },
+      {
+        "href": "#ingredients",
+        "text": "Ingredients"
+      },
+      {
+        "href": "#use",
+        "text": "How to use"
+      },
+      {
+        "href": "#reviews",
+        "text": "Reviews"
+      },
+      {
+        "href": "#quality",
+        "text": "Lot report"
+      },
+      {
+        "href": "https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/",
+        "text": "NIH Office of Dietary Supplements — Vitamin D: Fact Sheet for Health Professionals"
+      },
+      {
+        "href": "https://ods.od.nih.gov/factsheets/VitaminK-HealthProfessional/",
+        "text": "NIH Office of Dietary Supplements — Vitamin K: Fact Sheet for Health Professionals"
+      },
+      {
+        "href": "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+        "text": "NIH Office of Dietary Supplements — Omega-3 Fatty Acids: Fact Sheet for Health Professionals"
+      },
+      {
+        "href": "/contact?kind=safety&design=b",
+        "text": "Report a safety concern privately"
+      },
+      {
+        "href": "/reports?product=vitamin-d3-k2&design=b",
+        "text": "open the lot lookup for this product"
+      },
+      {
+        "href": "/standards?design=b#evidence",
+        "text": "How we approach quality and evidence"
+      },
+      {
+        "href": "/learn/understanding-reports?design=b",
+        "text": "What a lot report shows"
+      },
+      {
+        "href": "/contact?design=b",
+        "text": "contact support privately"
+      },
+      {
+        "href": "/products/omega-3-fish-oil?design=b",
+        "text": "Omega-3 Fish OilSoftgels · ₹1,949 listed price"
+      },
+      {
+        "href": "/products/myo-d-chiro-inositol?design=b",
+        "text": "Myo & D-Chiro InositolCapsules · ₹1,499 listed price"
+      },
+      {
+        "href": "/products/creatine-chews?design=b",
+        "text": "Creatine ChewsChewable tablets · ₹749 listed price"
+      },
+      {
+        "href": "/shop?design=b",
+        "text": "See all seven products"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "pp-slide pp-slide-cap",
+        "tag": "LI",
+        "text": "",
+        "w": 355,
+        "x": 372
+      },
+      {
+        "cls": "pp-open",
+        "tag": "BUTTON",
+        "text": "",
+        "w": 355,
+        "x": 372
+      },
+      {
+        "cls": "",
+        "tag": "IMG",
+        "text": "",
+        "w": 275,
+        "x": 412
+      }
+    ],
+    "pageHeight": 11713,
+    "pendingImages": 4,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "HOME\nSHOP\nVITAMIN D3 + K2\n‹\n\n1 / 2\n\n›\nEnlarge\n\nFront of the bottle · Studio product image.\n\n03 / 07\nSOFTGELS\n\nVitamin D3 + K2\n\nWith Omega-3 as triglycerides.\n\n₹1,049\nMRP\n\nNo reviews yet\n\nIN STOCK IN THE PREVIEW\n\nFORMAT\nSoftgels\nPACK QUANTITY\n60 softgels\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nQuantity\n1\n2\n3\n4\n5\nAdd to bag\n\nOne-time purchase. Preview order only: no payment or dispatch.\n\nCheck delivery to your pincode\nCheck\n\nThe check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.\n\nDelivery, returns and tax\nINGREDIENTS\nHOW TO USE\nREVIEWS\nLOT REPORT\n\nWhat is it?\n\n02\nOVERVIEW\n\nOverview\n\nThis is a formula with three named parts: vitamin D3, vitamin K2 and omega-3 as triglycerides. Each needs its own amount, unit and form.\n\nFORMAT\nSoftgels\nINGREDIENT IN VIEW\nVitamin D3, Vitamin K2 and Omega-3 as triglycerides\nCOLLECTION\nDaily essentials\nPURCHASE\nOne-time purchase\n\nPurpose. Explore the ingredient, format and product notes before choosing your everyday essentials.\n\nWhat's inside?\n\n03\nINGREDIENTS AND PRODUCT FACTS\n\nIngredients and product facts\n\nWhat's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.\n\nINGREDIENTS AND FORMS\nIn view: Vitamin D3, Vitamin K2 and Omega-3 as triglycerides. The complete list with each ingredient's form comes from the approved label.\nAMOUNT PER SERVING\nRefer to your pack\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nOTHER INGREDIENTS AND CAPSULE OR SOFTGEL SHELL\nDemo label entry — refer to your pack\nNUTRITION INFORMATION\nRefer to your pack\nALLERGENS\nRead the full allergen statement on your pack\nDIETARY SUITABILITY\nCheck the ingredients and cautions on your pack\nMANUFACTURER AND LICENCE DETAILS\nDemo manufacturer entry; no licence number claimed\nWHAT THE APPROVED LABEL WILL STATE\nVitamin D3 amount and units\nVitamin K2 amount and form\nServing size and dietary source\nComplete ingredient list, allergens, storage and manufacturer details\nAPPROVED LABEL IMAGE\n\nRead the product notes here, and follow the directions and cautions printed on your pack.\n\nREADING THIS INGREDIENT\n\nVitamin D appears in supplements as D2 or D3, and vitamin K as K1 or K2 forms such as MK-4 and MK-7, according to NIH's Office of Dietary Supplements. Naming the form is part of naming the ingredient.\n\nSOURCES\n\nNIH Office of Dietary Supplements — Vitamin D: Fact Sheet for Health Professionals\nNIH Office of Dietary Supplements — Vitamin K: Fact Sheet for Health Professionals\nNIH Office of Dietary Supplements — Omega-3 Fatty Acids: Fact Sheet for Health Professionals\n\nHow do I take it?\n\n04\nHOW TO USE AND CAUTIONS\n\nHow to use and cautions\n\nApproved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.\n\nRECOMMENDED USE\nFollow the directions printed on your pack. This design preview does not provide a dosage.\nPREPARATION\nUse as directed on the pack\nAGE\nPurchases are limited to adults: checkout asks you to confirm you're 18 or older.\nSUITABILITY\nDemo label details\nCAUTIONS AND INTERACTIONS\nIf you have a health condition, are pregnant or breastfeeding, or take regular medication, speak with a qualified health professional before adding a supplement. Nothing on this site is a diagnosis or personal advice.\nALLERGENS\nRead the full allergen statement on your pack\nSTORAGE\nDemo storage entry: keep tightly closed in a cool, dry place away from direct sunlight.\nWHAT TO CHECK ON THE LABEL\nVitamin D3 amount and unit\nIn mcg or IU. For vitamin D, 1 mcg equals 40 IU, so convert before comparing.\nVitamin K2 form and amount\nK2 comes as menaquinones such as MK-4 or MK-7. The label should say which, and how much.\nOmega-3 amounts\nOmega-3 is included as triglycerides. Look for the amount, ideally with EPA and DHA stated.\nServing and source\nServing size, and the dietary source of each ingredient.\n\nSomething wrong with a product? Report a safety concern privately. It opens a priority support case, separate from reviews.\n\nHow can I check it?\n\n05\nQUALITY, SOURCING AND LOT REPORT\n\nQuality, sourcing and lot report\n\nSourcing, testing and documents are shown here only when they're confirmed for this product.\n\nINGREDIENT SOURCING\nIndia — demo origin\nMANUFACTURER\nBCC demo manufacturing unit\nTESTING PERFORMED\nNo test results published\nSUPPORTING DOCUMENTS\nNone published\nCERTIFICATIONS\nNone claimed\nFIND A LOT REPORT\n\nEnter the lot number printed on your pack of Vitamin D3 + K2. It's different from the barcode and your order number.\n\nLot number on your pack\nFind a lot report\n\nDEMONSTRATION RECORD Try the demo lot DEMO-03-01, or open the lot lookup for this product.\n\nA lot report describes the sample tested from one manufacturing lot. It doesn't authenticate an individual pack or promise a health outcome. Preview records are demonstrations. No laboratory document is connected.\n\nHow we approach quality and evidence · What a lot report shows\n\nWhat do customers say?\n\n06\nCUSTOMER REVIEWS\n\nCustomer reviews\n\nNo reviews yet\n\nExplore the illustrative feedback below. Fictional feedback is separate from submitted customer reviews.\n\nWrite a review\n\nReviews come from signed-in customers whose order containing this product was delivered. Every review and photo is checked by our moderators before it appears, whatever its rating.\n\nIllustrative feedback · fictional customers\n\nPreview customer A\n\n“The bottle colours make it easy to find the product I’m looking for.”\n\nPreview customer B\n\n“I like being able to read the ingredient notes before choosing a bottle.”\n\nStill wondering?\n\n07\nQUESTIONS AND ANSWERS\n\nQuestions and answers\nCOMMON QUESTIONS\nHow much is in each serving?\nHow many softgels are in a pack?\nWhere's the lot number on my pack?\nWhat prices are shown?\nANSWERED QUESTIONS\n\nNo questions have been answered publicly for this product yet.\n\nASK A QUESTION ABOUT VITAMIN D3 + K2\n\nQuestions are answered by Body Café Co. support. An answer is published here only after review, and only from approved product information. We don't give personal medical advice. For an order, delivery or account issue, contact support privately instead.\n\nYour question\n\n10–600 characters. Please don't include order numbers, contact details or health information.\n\nSend question\n\nWhat else is there?\n\n08\nOTHER PRODUCTS TO EXPLORE\n\nOther products to explore\n\nShown for browsing. Products aren't recommended to be taken together.\n\nOmega-3 Fish Oil\nSoftgels · ₹1,949 listed price\nMyo & D-Chiro Inositol\nCapsules · ₹1,499 listed price\nCreatine Chews\nChewable tablets · ₹749 listed price\n\nSee all seven products",
+    "tinyText": [
+      {
+        "size": "10px",
+        "text": "Demonstration record"
+      }
+    ],
+    "title": "Vitamin D3 + K2 — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/products/vitamin-d3-k2?design=b",
+    "width": 390
+  },
+  {
+    "design": "b",
+    "route": "/products/myo-d-chiro-inositol",
+    "viewport": "mobile390",
+    "brokenImages": [
+      ""
+    ],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, system-ui, sans-serif",
+      "Aileron, \"Helvetica Neue\", Arial, sans-serif",
+      "Aileron, sans-serif"
+    ],
+    "h1": [
+      "Myo & D-Chiro Inositol"
+    ],
+    "headings": [
+      "Overview",
+      "Ingredients and product facts",
+      "WHAT THE APPROVED LABEL WILL STATE",
+      "APPROVED LABEL IMAGE",
+      "How to use and cautions",
+      "WHAT TO CHECK ON THE LABEL",
+      "Quality, sourcing and lot report",
+      "FIND A LOT REPORT",
+      "Customer reviews",
+      "Review Myo & D-Chiro Inositol",
+      "Preview customer A",
+      "Preview customer B",
+      "Questions and answers",
+      "COMMON QUESTIONS",
+      "ANSWERED QUESTIONS",
+      "ASK A QUESTION ABOUT MYO & D-CHIRO INOSITOL",
+      "Other products to explore"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/?design=b",
+        "text": "Home"
+      },
+      {
+        "href": "/shop?design=b",
+        "text": "Shop"
+      },
+      {
+        "href": "#reviews",
+        "text": "No reviews yet"
+      },
+      {
+        "href": "/policies/shipping?design=b",
+        "text": "Shipping policy"
+      },
+      {
+        "href": "/policies/returns?design=b",
+        "text": "Returns policy"
+      },
+      {
+        "href": "#ingredients",
+        "text": "Ingredients"
+      },
+      {
+        "href": "#use",
+        "text": "How to use"
+      },
+      {
+        "href": "#reviews",
+        "text": "Reviews"
+      },
+      {
+        "href": "#quality",
+        "text": "Lot report"
+      },
+      {
+        "href": "/contact?kind=safety&design=b",
+        "text": "Report a safety concern privately"
+      },
+      {
+        "href": "/reports?product=myo-d-chiro-inositol&design=b",
+        "text": "open the lot lookup for this product"
+      },
+      {
+        "href": "/standards?design=b#evidence",
+        "text": "How we approach quality and evidence"
+      },
+      {
+        "href": "/learn/understanding-reports?design=b",
+        "text": "What a lot report shows"
+      },
+      {
+        "href": "/contact?design=b",
+        "text": "contact support privately"
+      },
+      {
+        "href": "/products/creatine-chews?design=b",
+        "text": "Creatine ChewsChewable tablets · ₹749 listed price"
+      },
+      {
+        "href": "/products/psyllium-husk?design=b",
+        "text": "Psyllium HuskCapsules · ₹949 listed price"
+      },
+      {
+        "href": "/products/iron-bisglycinate?design=b",
+        "text": "Iron BisglycinateCapsules · ₹899 listed price"
+      },
+      {
+        "href": "/shop?design=b",
+        "text": "See all seven products"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "pp-slide pp-slide-cap",
+        "tag": "LI",
+        "text": "",
+        "w": 355,
+        "x": 372
+      },
+      {
+        "cls": "pp-open",
+        "tag": "BUTTON",
+        "text": "",
+        "w": 355,
+        "x": 372
+      },
+      {
+        "cls": "",
+        "tag": "IMG",
+        "text": "",
+        "w": 275,
+        "x": 412
+      }
+    ],
+    "pageHeight": 11220,
+    "pendingImages": 4,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "HOME\nSHOP\nMYO & D-CHIRO INOSITOL\n‹\n\n1 / 2\n\n›\nEnlarge\n\nFront of the bottle · Studio product image.\n\n05 / 07\nCAPSULES\n\nMyo & D-Chiro Inositol\n\nTwo ingredients. All the details.\n\n₹1,499\nMRP\n\nNo reviews yet\n\nIN STOCK IN THE PREVIEW\n\nFORMAT\nCapsules\nPACK QUANTITY\n30 capsules\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nQuantity\n1\n2\n3\n4\n5\nAdd to bag\n\nOne-time purchase. Preview order only: no payment or dispatch.\n\nCheck delivery to your pincode\nCheck\n\nThe check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.\n\nDelivery, returns and tax\nINGREDIENTS\nHOW TO USE\nREVIEWS\nLOT REPORT\n\nWhat is it?\n\n02\nOVERVIEW\n\nOverview\n\nTwo related ingredients in one product: myo-inositol and D-chiro inositol. A fair comparison needs both amounts, not just the combined total.\n\nFORMAT\nCapsules\nINGREDIENT IN VIEW\nMyo-inositol and D-chiro inositol\nCOLLECTION\nIngredient pairs\nPURCHASE\nOne-time purchase\n\nPurpose. Explore the ingredient, format and product notes before choosing your everyday essentials.\n\nWhat's inside?\n\n03\nINGREDIENTS AND PRODUCT FACTS\n\nIngredients and product facts\n\nWhat's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.\n\nINGREDIENTS AND FORMS\nIn view: Myo-inositol and D-chiro inositol. The complete list with each ingredient's form comes from the approved label.\nAMOUNT PER SERVING\nRefer to your pack\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nOTHER INGREDIENTS AND CAPSULE OR SOFTGEL SHELL\nDemo label entry — refer to your pack\nNUTRITION INFORMATION\nRefer to your pack\nALLERGENS\nRead the full allergen statement on your pack\nDIETARY SUITABILITY\nCheck the ingredients and cautions on your pack\nMANUFACTURER AND LICENCE DETAILS\nDemo manufacturer entry; no licence number claimed\nWHAT THE APPROVED LABEL WILL STATE\nAmount of each ingredient and their ratio\nServing size and units per pack\nComplete ingredient list, allergens, storage and manufacturer details\nAPPROVED LABEL IMAGE\n\nRead the product notes here, and follow the directions and cautions printed on your pack.\n\nHow do I take it?\n\n04\nHOW TO USE AND CAUTIONS\n\nHow to use and cautions\n\nApproved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.\n\nRECOMMENDED USE\nFollow the directions printed on your pack. This design preview does not provide a dosage.\nPREPARATION\nUse as directed on the pack\nAGE\nPurchases are limited to adults: checkout asks you to confirm you're 18 or older.\nSUITABILITY\nDemo label details\nCAUTIONS AND INTERACTIONS\nIf you have a health condition, are pregnant or breastfeeding, or take regular medication, speak with a qualified health professional before adding a supplement. Nothing on this site is a diagnosis or personal advice.\nALLERGENS\nRead the full allergen statement on your pack\nSTORAGE\nDemo storage entry: keep tightly closed in a cool, dry place away from direct sunlight.\nWHAT TO CHECK ON THE LABEL\nEach ingredient's amount\nMyo-inositol and D-chiro inositol stated separately, with units.\nRatio\nAny ratio should follow from the two stated amounts on the approved label, not from the front of a pack.\nServing size\nHow many units make a serving.\nUnits per pack\nThe total count, to work out servings per pack.\n\nSomething wrong with a product? Report a safety concern privately. It opens a priority support case, separate from reviews.\n\nHow can I check it?\n\n05\nQUALITY, SOURCING AND LOT REPORT\n\nQuality, sourcing and lot report\n\nSourcing, testing and documents are shown here only when they're confirmed for this product.\n\nINGREDIENT SOURCING\nIndia — demo origin\nMANUFACTURER\nBCC demo manufacturing unit\nTESTING PERFORMED\nNo test results published\nSUPPORTING DOCUMENTS\nNone published\nCERTIFICATIONS\nNone claimed\nFIND A LOT REPORT\n\nEnter the lot number printed on your pack of Myo & D-Chiro Inositol. It's different from the barcode and your order number.\n\nLot number on your pack\nFind a lot report\n\nDEMONSTRATION RECORD Try the demo lot DEMO-05-01, or open the lot lookup for this product.\n\nA lot report describes the sample tested from one manufacturing lot. It doesn't authenticate an individual pack or promise a health outcome. Preview records are demonstrations. No laboratory document is connected.\n\nHow we approach quality and evidence · What a lot report shows\n\nWhat do customers say?\n\n06\nCUSTOMER REVIEWS\n\nCustomer reviews\n\nNo reviews yet\n\nExplore the illustrative feedback below. Fictional feedback is separate from submitted customer reviews.\n\nWrite a review\n\nReviews come from signed-in customers whose order containing this product was delivered. Every review and photo is checked by our moderators before it appears, whatever its rating.\n\nIllustrative feedback · fictional customers\n\nPreview customer A\n\n“The bottle colours make it easy to find the product I’m looking for.”\n\nPreview customer B\n\n“I like being able to read the ingredient notes before choosing a bottle.”\n\nStill wondering?\n\n07\nQUESTIONS AND ANSWERS\n\nQuestions and answers\nCOMMON QUESTIONS\nHow much is in each serving?\nHow many capsules are in a pack?\nWhere's the lot number on my pack?\nWhat prices are shown?\nANSWERED QUESTIONS\n\nNo questions have been answered publicly for this product yet.\n\nASK A QUESTION ABOUT MYO & D-CHIRO INOSITOL\n\nQuestions are answered by Body Café Co. support. An answer is published here only after review, and only from approved product information. We don't give personal medical advice. For an order, delivery or account issue, contact support privately instead.\n\nYour question\n\n10–600 characters. Please don't include order numbers, contact details or health information.\n\nSend question\n\nWhat else is there?\n\n08\nOTHER PRODUCTS TO EXPLORE\n\nOther products to explore\n\nShown for browsing. Products aren't recommended to be taken together.\n\nCreatine Chews\nChewable tablets · ₹749 listed price\nPsyllium Husk\nCapsules · ₹949 listed price\nIron Bisglycinate\nCapsules · ₹899 listed price\n\nSee all seven products",
+    "tinyText": [
+      {
+        "size": "10px",
+        "text": "Demonstration record"
+      }
+    ],
+    "title": "Myo & D-Chiro Inositol — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/products/myo-d-chiro-inositol?design=b",
+    "width": 390
+  },
+  {
+    "design": "c",
+    "route": "/products/iron-bisglycinate",
+    "viewport": "mobile390",
+    "brokenImages": [
+      ""
+    ],
+    "fonts": [
+      "Aileron, Arial, sans-serif",
+      "Aileron, \"Helvetica Neue\", Arial, sans-serif",
+      "Gloock, Georgia, serif",
+      "Gloock, serif",
+      "Aileron, sans-serif"
+    ],
+    "h1": [
+      "Iron Bisglycinate"
+    ],
+    "headings": [
+      "Overview",
+      "Ingredients and product facts",
+      "WHAT THE APPROVED LABEL WILL STATE",
+      "APPROVED LABEL IMAGE",
+      "How to use and cautions",
+      "WHAT TO CHECK ON THE LABEL",
+      "Quality, sourcing and lot report",
+      "FIND A LOT REPORT",
+      "Customer reviews",
+      "Review Iron Bisglycinate",
+      "Preview customer A",
+      "Preview customer B",
+      "Questions and answers",
+      "COMMON QUESTIONS",
+      "ANSWERED QUESTIONS",
+      "ASK A QUESTION ABOUT IRON BISGLYCINATE",
+      "Other products to explore"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/?design=c",
+        "text": "Home"
+      },
+      {
+        "href": "/shop?design=c",
+        "text": "Shop"
+      },
+      {
+        "href": "#reviews",
+        "text": "No reviews yet"
+      },
+      {
+        "href": "/policies/shipping?design=c",
+        "text": "Shipping policy"
+      },
+      {
+        "href": "/policies/returns?design=c",
+        "text": "Returns policy"
+      },
+      {
+        "href": "#ingredients",
+        "text": "Ingredients"
+      },
+      {
+        "href": "#use",
+        "text": "How to use"
+      },
+      {
+        "href": "#reviews",
+        "text": "Reviews"
+      },
+      {
+        "href": "#quality",
+        "text": "Lot report"
+      },
+      {
+        "href": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/",
+        "text": "NIH Office of Dietary Supplements — Iron: Fact Sheet for Health Professionals"
+      },
+      {
+        "href": "/contact?kind=safety&design=c",
+        "text": "Report a safety concern privately"
+      },
+      {
+        "href": "/reports?product=iron-bisglycinate&design=c",
+        "text": "open the lot lookup for this product"
+      },
+      {
+        "href": "/standards?design=c#evidence",
+        "text": "How we approach quality and evidence"
+      },
+      {
+        "href": "/learn/understanding-reports?design=c",
+        "text": "What a lot report shows"
+      },
+      {
+        "href": "/contact?design=c",
+        "text": "contact support privately"
+      },
+      {
+        "href": "/products/l-theanine?design=c",
+        "text": "L-TheanineCapsules · ₹1,699 listed price"
+      },
+      {
+        "href": "/products/vitamin-d3-k2?design=c",
+        "text": "Vitamin D3 + K2Softgels · ₹1,049 listed price"
+      },
+      {
+        "href": "/products/omega-3-fish-oil?design=c",
+        "text": "Omega-3 Fish OilSoftgels · ₹1,949 listed price"
+      },
+      {
+        "href": "/shop?design=c",
+        "text": "See all seven products"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "pp-slide pp-slide-cap",
+        "tag": "LI",
+        "text": "",
+        "w": 335,
+        "x": 362
+      },
+      {
+        "cls": "pp-open",
+        "tag": "BUTTON",
+        "text": "",
+        "w": 335,
+        "x": 362
+      },
+      {
+        "cls": "",
+        "tag": "IMG",
+        "text": "",
+        "w": 255,
+        "x": 402
+      }
+    ],
+    "pageHeight": 10866,
+    "pendingImages": 4,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "HOME\nSHOP\nIRON BISGLYCINATE\n‹\n\n1 / 2\n\n›\nEnlarge\n\nFront of the bottle · Studio product image.\n\n01 / 07\nCAPSULES\n\nIron Bisglycinate\n\nIron, with the details in view.\n\n₹899\nMRP\n\nNo reviews yet\n\nIN STOCK IN THE PREVIEW\n\nFORMAT\nCapsules\nPACK QUANTITY\n60 capsules\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nQuantity\n1\n2\n3\n4\n5\nAdd to bag\n\nOne-time purchase. Preview order only: no payment or dispatch.\n\nCheck delivery to your pincode\nCheck\n\nThe check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.\n\nDelivery, returns and tax\nINGREDIENTS\nHOW TO USE\nREVIEWS\nLOT REPORT\n02\n\nCHAPTER 02 · OVERVIEW\n\nOverview\n\nIron bisglycinate is iron bound to the amino acid glycine. As with any iron compound, the key number is how much iron itself a serving provides.\n\nFORMAT\nCapsules\nINGREDIENT IN VIEW\nIron bisglycinate\nCOLLECTION\nDaily essentials\nPURCHASE\nOne-time purchase\n\nPurpose. Explore the ingredient, format and product notes before choosing your everyday essentials.\n\n03\n\nCHAPTER 03 · INGREDIENTS AND PRODUCT FACTS\n\nIngredients and product facts\n\nWhat's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.\n\nINGREDIENTS AND FORMS\nIn view: Iron bisglycinate. The complete list with each ingredient's form comes from the approved label.\nAMOUNT PER SERVING\nRefer to your pack\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nOTHER INGREDIENTS AND CAPSULE OR SOFTGEL SHELL\nDemo label entry — refer to your pack\nNUTRITION INFORMATION\nRefer to your pack\nALLERGENS\nRead the full allergen statement on your pack\nDIETARY SUITABILITY\nCheck the ingredients and cautions on your pack\nMANUFACTURER AND LICENCE DETAILS\nDemo manufacturer entry; no licence number claimed\nWHAT THE APPROVED LABEL WILL STATE\nElemental iron per serving, listed separately from the compound weight\nDosage form and count\nComplete ingredient list, allergens, storage and manufacturer details\nAPPROVED LABEL IMAGE\n\nRead the product notes here, and follow the directions and cautions printed on your pack.\n\nREADING THIS INGREDIENT\n\nDifferent iron compounds contain different proportions of iron by weight. NIH's Office of Dietary Supplements, for example, lists ferrous fumarate at 33% elemental iron and ferrous sulfate at 20%. That's why compound weight and elemental iron should never be confused.\n\nSOURCES\n\nNIH Office of Dietary Supplements — Iron: Fact Sheet for Health Professionals\n04\n\nCHAPTER 04 · HOW TO USE AND CAUTIONS\n\nHow to use and cautions\n\nApproved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.\n\nRECOMMENDED USE\nFollow the directions printed on your pack. This design preview does not provide a dosage.\nPREPARATION\nUse as directed on the pack\nAGE\nPurchases are limited to adults: checkout asks you to confirm you're 18 or older.\nSUITABILITY\nDemo label details\nCAUTIONS AND INTERACTIONS\nIf you have a health condition, are pregnant or breastfeeding, or take regular medication, speak with a qualified health professional before adding a supplement. Nothing on this site is a diagnosis or personal advice.\nALLERGENS\nRead the full allergen statement on your pack\nSTORAGE\nDemo storage entry: keep tightly closed in a cool, dry place away from direct sunlight.\nWHAT TO CHECK ON THE LABEL\nElemental iron per serving\nThe amount of iron itself, stated separately from the weight of the bisglycinate compound.\nServing size and count\nHow many units make a serving, and how many units are in the pack.\nForm named in full\n“Iron (as iron bisglycinate)” tells you more than “Iron”.\nWarnings\nIron products carry warnings and storage instructions; read them on the approved label.\n\nSomething wrong with a product? Report a safety concern privately. It opens a priority support case, separate from reviews.\n\n05\n\nCHAPTER 05 · QUALITY, SOURCING AND LOT REPORT\n\nQuality, sourcing and lot report\n\nSourcing, testing and documents are shown here only when they're confirmed for this product.\n\nINGREDIENT SOURCING\nIndia — demo origin\nMANUFACTURER\nBCC demo manufacturing unit\nTESTING PERFORMED\nNo test results published\nSUPPORTING DOCUMENTS\nNone published\nCERTIFICATIONS\nNone claimed\nFIND A LOT REPORT\n\nEnter the lot number printed on your pack of Iron Bisglycinate. It's different from the barcode and your order number.\n\nLot number on your pack\nFind a lot report\n\nDEMONSTRATION RECORD Try the demo lot DEMO-01-01, or open the lot lookup for this product.\n\nA lot report describes the sample tested from one manufacturing lot. It doesn't authenticate an individual pack or promise a health outcome. Preview records are demonstrations. No laboratory document is connected.\n\nHow we approach quality and evidence · What a lot report shows\n\n06\n\nCHAPTER 06 · CUSTOMER REVIEWS\n\nCustomer reviews\n\nNo reviews yet\n\nExplore the illustrative feedback below. Fictional feedback is separate from submitted customer reviews.\n\nWrite a review\n\nReviews come from signed-in customers whose order containing this product was delivered. Every review and photo is checked by our moderators before it appears, whatever its rating.\n\nIllustrative feedback · fictional customers\n\nPreview customer A\n\n“The bottle colours make it easy to find the product I’m looking for.”\n\nPreview customer B\n\n“I like being able to read the ingredient notes before choosing a bottle.”\n\n07\n\nCHAPTER 07 · QUESTIONS AND ANSWERS\n\nQuestions and answers\nCOMMON QUESTIONS\nHow much is in each serving?\nHow many capsules are in a pack?\nWhere's the lot number on my pack?\nWhat prices are shown?\nANSWERED QUESTIONS\n\nNo questions have been answered publicly for this product yet.\n\nASK A QUESTION ABOUT IRON BISGLYCINATE\n\nQuestions are answered by Body Café Co. support. An answer is published here only after review, and only from approved product information. We don't give personal medical advice. For an order, delivery or account issue, contact support privately instead.\n\nYour question\n\n10–600 characters. Please don't include order numbers, contact details or health information.\n\nSend question\n08\n\nCHAPTER 08 · OTHER PRODUCTS TO EXPLORE\n\nOther products to explore\n\nShown for browsing. Products aren't recommended to be taken together.\n\nL-Theanine\nCapsules · ₹1,699 listed price\nVitamin D3 + K2\nSoftgels · ₹1,049 listed price\nOmega-3 Fish Oil\nSoftgels · ₹1,949 listed price\n\nSee all seven products",
+    "tinyText": [
+      {
+        "size": "9px",
+        "text": "2"
+      },
+      {
+        "size": "10px",
+        "text": "Demonstration record"
+      },
+      {
+        "size": "10px",
+        "text": "BODY CAFÉ CO. / THE EVERYDAY ELSEWHERE"
+      },
+      {
+        "size": "9px",
+        "text": "© 2026 Body Café Co."
+      },
+      {
+        "size": "9px",
+        "text": "Design preview · studio product artwork · listed prices"
+      },
+      {
+        "size": "9px",
+        "text": "Preview states ↗"
+      }
+    ],
+    "title": "Iron Bisglycinate — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/products/iron-bisglycinate?design=c",
+    "width": 390
+  },
+  {
+    "design": "c",
+    "route": "/products/omega-3-fish-oil",
+    "viewport": "mobile390",
+    "brokenImages": [
+      ""
+    ],
+    "fonts": [
+      "Aileron, Arial, sans-serif",
+      "Aileron, \"Helvetica Neue\", Arial, sans-serif",
+      "Gloock, Georgia, serif",
+      "Gloock, serif",
+      "Aileron, sans-serif"
+    ],
+    "h1": [
+      "Omega-3 Fish Oil"
+    ],
+    "headings": [
+      "Overview",
+      "Ingredients and product facts",
+      "WHAT THE APPROVED LABEL WILL STATE",
+      "APPROVED LABEL IMAGE",
+      "How to use and cautions",
+      "WHAT TO CHECK ON THE LABEL",
+      "Quality, sourcing and lot report",
+      "FIND A LOT REPORT",
+      "Customer reviews",
+      "Review Omega-3 Fish Oil",
+      "Preview customer A",
+      "Preview customer B",
+      "Questions and answers",
+      "COMMON QUESTIONS",
+      "ANSWERED QUESTIONS",
+      "ASK A QUESTION ABOUT OMEGA-3 FISH OIL",
+      "Other products to explore"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/?design=c",
+        "text": "Home"
+      },
+      {
+        "href": "/shop?design=c",
+        "text": "Shop"
+      },
+      {
+        "href": "#reviews",
+        "text": "No reviews yet"
+      },
+      {
+        "href": "/policies/shipping?design=c",
+        "text": "Shipping policy"
+      },
+      {
+        "href": "/policies/returns?design=c",
+        "text": "Returns policy"
+      },
+      {
+        "href": "#ingredients",
+        "text": "Ingredients"
+      },
+      {
+        "href": "#use",
+        "text": "How to use"
+      },
+      {
+        "href": "#reviews",
+        "text": "Reviews"
+      },
+      {
+        "href": "#quality",
+        "text": "Lot report"
+      },
+      {
+        "href": "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+        "text": "NIH Office of Dietary Supplements — Omega-3 Fatty Acids: Fact Sheet for Health Professionals"
+      },
+      {
+        "href": "/contact?kind=safety&design=c",
+        "text": "Report a safety concern privately"
+      },
+      {
+        "href": "/reports?product=omega-3-fish-oil&design=c",
+        "text": "open the lot lookup for this product"
+      },
+      {
+        "href": "/standards?design=c#evidence",
+        "text": "How we approach quality and evidence"
+      },
+      {
+        "href": "/learn/understanding-reports?design=c",
+        "text": "What a lot report shows"
+      },
+      {
+        "href": "/contact?design=c",
+        "text": "contact support privately"
+      },
+      {
+        "href": "/products/myo-d-chiro-inositol?design=c",
+        "text": "Myo & D-Chiro InositolCapsules · ₹1,499 listed price"
+      },
+      {
+        "href": "/products/creatine-chews?design=c",
+        "text": "Creatine ChewsChewable tablets · ₹749 listed price"
+      },
+      {
+        "href": "/products/psyllium-husk?design=c",
+        "text": "Psyllium HuskCapsules · ₹949 listed price"
+      },
+      {
+        "href": "/shop?design=c",
+        "text": "See all seven products"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "pp-slide pp-slide-cap",
+        "tag": "LI",
+        "text": "",
+        "w": 335,
+        "x": 362
+      },
+      {
+        "cls": "pp-open",
+        "tag": "BUTTON",
+        "text": "",
+        "w": 335,
+        "x": 362
+      },
+      {
+        "cls": "",
+        "tag": "IMG",
+        "text": "",
+        "w": 255,
+        "x": 402
+      }
+    ],
+    "pageHeight": 10842,
+    "pendingImages": 4,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "HOME\nSHOP\nOMEGA-3 FISH OIL\n‹\n\n1 / 2\n\n›\nEnlarge\n\nFront of the bottle · Studio product image.\n\n04 / 07\nSOFTGELS\n\nOmega-3 Fish Oil\n\nA closer look at your Omega-3.\n\n₹1,949\nMRP\n\nNo reviews yet\n\nIN STOCK IN THE PREVIEW\n\nFORMAT\nSoftgels\nPACK QUANTITY\n30 softgels\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nQuantity\n1\n2\n3\n4\n5\nAdd to bag\n\nOne-time purchase. Preview order only: no payment or dispatch.\n\nCheck delivery to your pincode\nCheck\n\nThe check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.\n\nDelivery, returns and tax\nINGREDIENTS\nHOW TO USE\nREVIEWS\nLOT REPORT\n02\n\nCHAPTER 02 · OVERVIEW\n\nOverview\n\nWith fish oil, the amount of oil and the amount of omega-3s are two different numbers. The useful ones are EPA and DHA.\n\nFORMAT\nSoftgels\nINGREDIENT IN VIEW\nOmega-3 fish oil\nCOLLECTION\nDaily essentials\nPURCHASE\nOne-time purchase\n\nPurpose. Explore the ingredient, format and product notes before choosing your everyday essentials.\n\n03\n\nCHAPTER 03 · INGREDIENTS AND PRODUCT FACTS\n\nIngredients and product facts\n\nWhat's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.\n\nINGREDIENTS AND FORMS\nIn view: Omega-3 fish oil. The complete list with each ingredient's form comes from the approved label.\nAMOUNT PER SERVING\nRefer to your pack\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nOTHER INGREDIENTS AND CAPSULE OR SOFTGEL SHELL\nDemo label entry — refer to your pack\nNUTRITION INFORMATION\nRefer to your pack\nALLERGENS\nRead the full allergen statement on your pack\nDIETARY SUITABILITY\nCheck the ingredients and cautions on your pack\nMANUFACTURER AND LICENCE DETAILS\nDemo manufacturer entry; no licence number claimed\nWHAT THE APPROVED LABEL WILL STATE\nFish-oil quantity, listed separately from EPA and DHA quantities\nSource and allergen details\nComplete ingredient list, allergens, storage and manufacturer details\nAPPROVED LABEL IMAGE\n\nRead the product notes here, and follow the directions and cautions printed on your pack.\n\nREADING THIS INGREDIENT\n\nNIH's Office of Dietary Supplements describes a typical fish oil supplement as about 1,000 mg of fish oil with around 180 mg EPA and 120 mg DHA, and notes that amounts vary widely. Read the actives, not just the total.\n\nSOURCES\n\nNIH Office of Dietary Supplements — Omega-3 Fatty Acids: Fact Sheet for Health Professionals\n04\n\nCHAPTER 04 · HOW TO USE AND CAUTIONS\n\nHow to use and cautions\n\nApproved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.\n\nRECOMMENDED USE\nFollow the directions printed on your pack. This design preview does not provide a dosage.\nPREPARATION\nUse as directed on the pack\nAGE\nPurchases are limited to adults: checkout asks you to confirm you're 18 or older.\nSUITABILITY\nDemo label details\nCAUTIONS AND INTERACTIONS\nIf you have a health condition, are pregnant or breastfeeding, or take regular medication, speak with a qualified health professional before adding a supplement. Nothing on this site is a diagnosis or personal advice.\nALLERGENS\nOmega-3 Fish Oil comes from fish.\nSTORAGE\nDemo storage entry: keep tightly closed in a cool, dry place away from direct sunlight.\nWHAT TO CHECK ON THE LABEL\nFish oil per serving\nThe total amount of oil in a serving.\nEPA and DHA\nStated separately from the fish oil total.\nForm\nTriglycerides, ethyl esters or another form.\nSource and allergens\nThe fish source, the softgel shell material and the allergen statement. Check these first if you avoid fish or other animal products; the approved label will state them.\n\nSomething wrong with a product? Report a safety concern privately. It opens a priority support case, separate from reviews.\n\n05\n\nCHAPTER 05 · QUALITY, SOURCING AND LOT REPORT\n\nQuality, sourcing and lot report\n\nSourcing, testing and documents are shown here only when they're confirmed for this product.\n\nINGREDIENT SOURCING\nIndia — demo origin\nMANUFACTURER\nBCC demo manufacturing unit\nTESTING PERFORMED\nNo test results published\nSUPPORTING DOCUMENTS\nNone published\nCERTIFICATIONS\nNone claimed\nFIND A LOT REPORT\n\nEnter the lot number printed on your pack of Omega-3 Fish Oil. It's different from the barcode and your order number.\n\nLot number on your pack\nFind a lot report\n\nDEMONSTRATION RECORD Try the demo lot DEMO-04-01, or open the lot lookup for this product.\n\nA lot report describes the sample tested from one manufacturing lot. It doesn't authenticate an individual pack or promise a health outcome. Preview records are demonstrations. No laboratory document is connected.\n\nHow we approach quality and evidence · What a lot report shows\n\n06\n\nCHAPTER 06 · CUSTOMER REVIEWS\n\nCustomer reviews\n\nNo reviews yet\n\nExplore the illustrative feedback below. Fictional feedback is separate from submitted customer reviews.\n\nWrite a review\n\nReviews come from signed-in customers whose order containing this product was delivered. Every review and photo is checked by our moderators before it appears, whatever its rating.\n\nIllustrative feedback · fictional customers\n\nPreview customer A\n\n“The bottle colours make it easy to find the product I’m looking for.”\n\nPreview customer B\n\n“I like being able to read the ingredient notes before choosing a bottle.”\n\n07\n\nCHAPTER 07 · QUESTIONS AND ANSWERS\n\nQuestions and answers\nCOMMON QUESTIONS\nHow much is in each serving?\nHow many softgels are in a pack?\nWhere's the lot number on my pack?\nWhat prices are shown?\nANSWERED QUESTIONS\n\nNo questions have been answered publicly for this product yet.\n\nASK A QUESTION ABOUT OMEGA-3 FISH OIL\n\nQuestions are answered by Body Café Co. support. An answer is published here only after review, and only from approved product information. We don't give personal medical advice. For an order, delivery or account issue, contact support privately instead.\n\nYour question\n\n10–600 characters. Please don't include order numbers, contact details or health information.\n\nSend question\n08\n\nCHAPTER 08 · OTHER PRODUCTS TO EXPLORE\n\nOther products to explore\n\nShown for browsing. Products aren't recommended to be taken together.\n\nMyo & D-Chiro Inositol\nCapsules · ₹1,499 listed price\nCreatine Chews\nChewable tablets · ₹749 listed price\nPsyllium Husk\nCapsules · ₹949 listed price\n\nSee all seven products",
+    "tinyText": [
+      {
+        "size": "9px",
+        "text": "2"
+      },
+      {
+        "size": "10px",
+        "text": "Demonstration record"
+      },
+      {
+        "size": "10px",
+        "text": "BODY CAFÉ CO. / THE EVERYDAY ELSEWHERE"
+      },
+      {
+        "size": "9px",
+        "text": "© 2026 Body Café Co."
+      },
+      {
+        "size": "9px",
+        "text": "Design preview · studio product artwork · listed prices"
+      },
+      {
+        "size": "9px",
+        "text": "Preview states ↗"
+      }
+    ],
+    "title": "Omega-3 Fish Oil — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/products/omega-3-fish-oil?design=c",
+    "width": 390
+  },
+  {
+    "design": "d",
+    "route": "/products/psyllium-husk",
+    "viewport": "mobile390",
+    "brokenImages": [
+      ""
+    ],
+    "fonts": [
+      "Aileron, sans-serif",
+      "Aileron, Arial, sans-serif",
+      "Aileron, \"Helvetica Neue\", Arial, sans-serif",
+      "SpaceMono, monospace",
+      "Anton, Aileron, sans-serif"
+    ],
+    "h1": [
+      "Psyllium Husk"
+    ],
+    "headings": [
+      "Overview",
+      "Ingredients and product facts",
+      "WHAT THE APPROVED LABEL WILL STATE",
+      "APPROVED LABEL IMAGE",
+      "How to use and cautions",
+      "WHAT TO CHECK ON THE LABEL",
+      "Quality, sourcing and lot report",
+      "FIND A LOT REPORT",
+      "Customer reviews",
+      "Review Psyllium Husk",
+      "Preview customer A",
+      "Preview customer B",
+      "Questions and answers",
+      "COMMON QUESTIONS",
+      "ANSWERED QUESTIONS",
+      "ASK A QUESTION ABOUT PSYLLIUM HUSK",
+      "Other products to explore"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/?design=d",
+        "text": "Home"
+      },
+      {
+        "href": "/shop?design=d",
+        "text": "Shop"
+      },
+      {
+        "href": "#reviews",
+        "text": "No reviews yet"
+      },
+      {
+        "href": "/policies/shipping?design=d",
+        "text": "Shipping policy"
+      },
+      {
+        "href": "/policies/returns?design=d",
+        "text": "Returns policy"
+      },
+      {
+        "href": "#ingredients",
+        "text": "Ingredients"
+      },
+      {
+        "href": "#use",
+        "text": "How to use"
+      },
+      {
+        "href": "#reviews",
+        "text": "Reviews"
+      },
+      {
+        "href": "#quality",
+        "text": "Lot report"
+      },
+      {
+        "href": "/contact?kind=safety&design=d",
+        "text": "Report a safety concern privately"
+      },
+      {
+        "href": "/reports?product=psyllium-husk&design=d",
+        "text": "open the lot lookup for this product"
+      },
+      {
+        "href": "/standards?design=d#evidence",
+        "text": "How we approach quality and evidence"
+      },
+      {
+        "href": "/learn/understanding-reports?design=d",
+        "text": "What a lot report shows"
+      },
+      {
+        "href": "/contact?design=d",
+        "text": "contact support privately"
+      },
+      {
+        "href": "/products/iron-bisglycinate?design=d",
+        "text": "Iron BisglycinateCapsules · ₹899 listed price"
+      },
+      {
+        "href": "/products/l-theanine?design=d",
+        "text": "L-TheanineCapsules · ₹1,699 listed price"
+      },
+      {
+        "href": "/products/vitamin-d3-k2?design=d",
+        "text": "Vitamin D3 + K2Softgels · ₹1,049 listed price"
+      },
+      {
+        "href": "/shop?design=d",
+        "text": "See all seven products"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "pp-slide pp-slide-cap",
+        "tag": "LI",
+        "text": "",
+        "w": 353,
+        "x": 371
+      },
+      {
+        "cls": "pp-open",
+        "tag": "BUTTON",
+        "text": "",
+        "w": 353,
+        "x": 371
+      },
+      {
+        "cls": "",
+        "tag": "IMG",
+        "text": "",
+        "w": 273,
+        "x": 411
+      }
+    ],
+    "pageHeight": 9867,
+    "pendingImages": 4,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "HOME\nSHOP\nPSYLLIUM HUSK\n‹\n\n1 / 2\n\n›\nEnlarge\n\nFront of the bottle · Studio product image.\n\n07 / 07\nCAPSULES\n\nPsyllium Husk\n\nMake room for a little curiosity.\n\n₹949\nMRP\n\nNo reviews yet\n\nIN STOCK IN THE PREVIEW\n\nFORMAT\nCapsules\nPACK QUANTITY\n30 capsules\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nQuantity\n1\n2\n3\n4\n5\nADD TO BAG\n\nOne-time purchase. Preview order only: no payment or dispatch.\n\nCheck delivery to your pincode\nCHECK\n\nThe check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.\n\nDelivery, returns and tax\nINGREDIENTS\nHOW TO USE\nREVIEWS\nLOT REPORT\n\nROOM 02 · OVERVIEW\n\nOverview\n\nPsyllium husk is a source of fibre. The details that matter most are the form, the serving and how to take it.\n\nFORMAT\nCapsules\nINGREDIENT IN VIEW\nPsyllium husk\nCOLLECTION\nDaily essentials\nPURCHASE\nOne-time purchase\n\nPurpose. Explore the ingredient, format and product notes before choosing your everyday essentials.\n\nROOM 03 · INGREDIENTS AND PRODUCT FACTS\n\nIngredients and product facts\n\nWhat's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.\n\nINGREDIENTS AND FORMS\nIn view: Psyllium husk. The complete list with each ingredient's form comes from the approved label.\nAMOUNT PER SERVING\nRefer to your pack\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nOTHER INGREDIENTS AND CAPSULE OR SOFTGEL SHELL\nDemo label entry — refer to your pack\nNUTRITION INFORMATION\nRefer to your pack\nALLERGENS\nRead the full allergen statement on your pack\nDIETARY SUITABILITY\nCheck the ingredients and cautions on your pack\nMANUFACTURER AND LICENCE DETAILS\nDemo manufacturer entry; no licence number claimed\nWHAT THE APPROVED LABEL WILL STATE\nProduct form and net weight\nServing amount and fibre content\nDirections and approved label warnings\nComplete ingredient list, allergens, storage and manufacturer details\nAPPROVED LABEL IMAGE\n\nRead the product notes here, and follow the directions and cautions printed on your pack.\n\nROOM 04 · HOW TO USE AND CAUTIONS\n\nHow to use and cautions\n\nApproved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.\n\nRECOMMENDED USE\nFollow the directions printed on your pack. This design preview does not provide a dosage.\nPREPARATION\nUse as directed on the pack\nAGE\nPurchases are limited to adults: checkout asks you to confirm you're 18 or older.\nSUITABILITY\nDemo label details\nCAUTIONS AND INTERACTIONS\nIf you have a health condition, are pregnant or breastfeeding, or take regular medication, speak with a qualified health professional before adding a supplement. Nothing on this site is a diagnosis or personal advice.\nALLERGENS\nRead the full allergen statement on your pack\nSTORAGE\nDemo storage entry: keep tightly closed in a cool, dry place away from direct sunlight.\nWHAT TO CHECK ON THE LABEL\nForm and net weight\nHow the product is presented and how much is in the pack.\nServing amount and fibre\nThe amount per serving and the fibre it provides.\nDirections\nHow to take it, including any instructions about water.\nWarnings\nThe approved label's warnings, read in full.\n\nSomething wrong with a product? Report a safety concern privately. It opens a priority support case, separate from reviews.\n\nROOM 05 · QUALITY, SOURCING AND LOT REPORT\n\nQuality, sourcing and lot report\n\nSourcing, testing and documents are shown here only when they're confirmed for this product.\n\nINGREDIENT SOURCING\nIndia — demo origin\nMANUFACTURER\nBCC demo manufacturing unit\nTESTING PERFORMED\nNo test results published\nSUPPORTING DOCUMENTS\nNone published\nCERTIFICATIONS\nNone claimed\nFIND A LOT REPORT\n\nEnter the lot number printed on your pack of Psyllium Husk. It's different from the barcode and your order number.\n\nLot number on your pack\nFIND A LOT REPORT\n\nDEMONSTRATION RECORD Try the demo lot DEMO-07-01, or open the lot lookup for this product.\n\nA lot report describes the sample tested from one manufacturing lot. It doesn't authenticate an individual pack or promise a health outcome. Preview records are demonstrations. No laboratory document is connected.\n\nHow we approach quality and evidence · What a lot report shows\n\nROOM 06 · CUSTOMER REVIEWS\n\nCustomer reviews\n\nNo reviews yet\n\nExplore the illustrative feedback below. Fictional feedback is separate from submitted customer reviews.\n\nWRITE A REVIEW\n\nReviews come from signed-in customers whose order containing this product was delivered. Every review and photo is checked by our moderators before it appears, whatever its rating.\n\nIllustrative feedback · fictional customers\n\nPreview customer A\n\n“The bottle colours make it easy to find the product I’m looking for.”\n\nPreview customer B\n\n“I like being able to read the ingredient notes before choosing a bottle.”\n\nROOM 07 · QUESTIONS AND ANSWERS\n\nQuestions and answers\nCOMMON QUESTIONS\nHow much is in each serving?\nHow many capsules are in a pack?\nWhere's the lot number on my pack?\nWhat prices are shown?\nANSWERED QUESTIONS\n\nNo questions have been answered publicly for this product yet.\n\nASK A QUESTION ABOUT PSYLLIUM HUSK\n\nQuestions are answered by Body Café Co. support. An answer is published here only after review, and only from approved product information. We don't give personal medical advice. For an order, delivery or account issue, contact support privately instead.\n\nYour question\n\n10–600 characters. Please don't include order numbers, contact details or health information.\n\nSEND QUESTION\n\nROOM 08 · OTHER PRODUCTS TO EXPLORE\n\nOther products to explore\n\nShown for browsing. Products aren't recommended to be taken together.\n\nIron Bisglycinate\nCapsules · ₹899 listed price\nL-Theanine\nCapsules · ₹1,699 listed price\nVitamin D3 + K2\nSoftgels · ₹1,049 listed price\n\nSee all seven products",
+    "tinyText": [
+      {
+        "size": "9px",
+        "text": "2"
+      },
+      {
+        "size": "10px",
+        "text": "Demonstration record"
+      },
+      {
+        "size": "10px",
+        "text": "Body Café Co. / The Other Side"
+      },
+      {
+        "size": "9px",
+        "text": "Discover"
+      },
+      {
+        "size": "9px",
+        "text": "Customer care"
+      },
+      {
+        "size": "9px",
+        "text": "Orders & delivery"
+      },
+      {
+        "size": "9px",
+        "text": "Privacy & legal"
+      },
+      {
+        "size": "8px",
+        "text": "© 2026 Body Café Co."
+      },
+      {
+        "size": "8px",
+        "text": "care@bodycafeco.com · +91-8457125489"
+      },
+      {
+        "size": "8px",
+        "text": "Design states ↗"
+      }
+    ],
+    "title": "Psyllium Husk — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/products/psyllium-husk?design=d",
+    "width": 390
+  },
+  {
+    "design": "g",
+    "route": "/products/l-theanine",
+    "viewport": "mobile390",
+    "brokenImages": [
+      ""
+    ],
+    "fonts": [
+      "Aileron, \"Helvetica Neue\", Arial, sans-serif",
+      "Aileron, sans-serif"
+    ],
+    "h1": [
+      "L-Theanine"
+    ],
+    "headings": [
+      "Overview",
+      "Ingredients and product facts",
+      "WHAT THE APPROVED LABEL WILL STATE",
+      "APPROVED LABEL IMAGE",
+      "How to use and cautions",
+      "WHAT TO CHECK ON THE LABEL",
+      "Quality, sourcing and lot report",
+      "FIND A LOT REPORT",
+      "Customer reviews",
+      "Review L-Theanine",
+      "Preview customer A",
+      "Preview customer B",
+      "Questions and answers",
+      "COMMON QUESTIONS",
+      "ANSWERED QUESTIONS",
+      "ASK A QUESTION ABOUT L-THEANINE",
+      "Other products to explore"
+    ],
+    "height": 844,
+    "links": [
+      {
+        "href": "/?design=g",
+        "text": "Home"
+      },
+      {
+        "href": "/shop?design=g",
+        "text": "Shop"
+      },
+      {
+        "href": "#reviews",
+        "text": "No reviews yet"
+      },
+      {
+        "href": "/policies/shipping?design=g",
+        "text": "Shipping policy"
+      },
+      {
+        "href": "/policies/returns?design=g",
+        "text": "Returns policy"
+      },
+      {
+        "href": "#ingredients",
+        "text": "Ingredients"
+      },
+      {
+        "href": "#use",
+        "text": "How to use"
+      },
+      {
+        "href": "#reviews",
+        "text": "Reviews"
+      },
+      {
+        "href": "#quality",
+        "text": "Lot report"
+      },
+      {
+        "href": "/contact?kind=safety&design=g",
+        "text": "Report a safety concern privately"
+      },
+      {
+        "href": "/reports?product=l-theanine&design=g",
+        "text": "open the lot lookup for this product"
+      },
+      {
+        "href": "/standards?design=g#evidence",
+        "text": "How we approach quality and evidence"
+      },
+      {
+        "href": "/learn/understanding-reports?design=g",
+        "text": "What a lot report shows"
+      },
+      {
+        "href": "/contact?design=g",
+        "text": "contact support privately"
+      },
+      {
+        "href": "/products/vitamin-d3-k2?design=g",
+        "text": "Vitamin D3 + K2Softgels · ₹1,049 listed price"
+      },
+      {
+        "href": "/products/omega-3-fish-oil?design=g",
+        "text": "Omega-3 Fish OilSoftgels · ₹1,949 listed price"
+      },
+      {
+        "href": "/products/myo-d-chiro-inositol?design=g",
+        "text": "Myo & D-Chiro InositolCapsules · ₹1,499 listed price"
+      },
+      {
+        "href": "/shop?design=g",
+        "text": "See all seven products"
+      }
+    ],
+    "overflow": [
+      {
+        "cls": "pp-slide pp-slide-cap",
+        "tag": "LI",
+        "text": "",
+        "w": 355,
+        "x": 372
+      },
+      {
+        "cls": "pp-open",
+        "tag": "BUTTON",
+        "text": "",
+        "w": 355,
+        "x": 372
+      },
+      {
+        "cls": "",
+        "tag": "IMG",
+        "text": "",
+        "w": 275,
+        "x": 412
+      }
+    ],
+    "pageHeight": 10586,
+    "pendingImages": 4,
+    "scrollWidth": 390,
+    "smallButtons": [],
+    "text": "HOME\nSHOP\nL-THEANINE\n‹\n\n1 / 2\n\n›\nEnlarge\n\nFront of the bottle · Studio product image.\n\n02 / 07\nCAPSULES\n\nL-Theanine\n\nGet to know your everyday ingredient.\n\n₹1,699\nMRP\n\nNo reviews yet\n\nIN STOCK IN THE PREVIEW\n\nFORMAT\nCapsules\nPACK QUANTITY\n30 capsules\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nQuantity\n1\n2\n3\n4\n5\nADD TO BAG\n\nOne-time purchase. Preview order only: no payment or dispatch.\n\nCheck delivery to your pincode\nCHECK\n\nThe check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.\n\nDelivery, returns and tax\nINGREDIENTS\nHOW TO USE\nREVIEWS\nLOT REPORT\n\nFRAME 02 / 08\nOVERVIEW\n\nOverview\n\nL-Theanine is an amino acid. The “L-” is part of its name and tells you which form it is.\n\nFORMAT\nCapsules\nINGREDIENT IN VIEW\nL-Theanine\nCOLLECTION\nDaily essentials\nPURCHASE\nOne-time purchase\n\nPurpose. Explore the ingredient, format and product notes before choosing your everyday essentials.\n\nFRAME 03 / 08\nINGREDIENTS AND PRODUCT FACTS\n\nIngredients and product facts\n\nWhat's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.\n\nINGREDIENTS AND FORMS\nIn view: L-Theanine. The complete list with each ingredient's form comes from the approved label.\nAMOUNT PER SERVING\nRefer to your pack\nSERVING SIZE\nFollow pack directions\nSERVINGS PER PACK\nSee pack directions\nOTHER INGREDIENTS AND CAPSULE OR SOFTGEL SHELL\nDemo label entry — refer to your pack\nNUTRITION INFORMATION\nRefer to your pack\nALLERGENS\nRead the full allergen statement on your pack\nDIETARY SUITABILITY\nCheck the ingredients and cautions on your pack\nMANUFACTURER AND LICENCE DETAILS\nDemo manufacturer entry; no licence number claimed\nWHAT THE APPROVED LABEL WILL STATE\nActive amount per serving\nDosage form\nAny substantiated caffeine or free-from statements\nComplete ingredient list, allergens, storage and manufacturer details\nAPPROVED LABEL IMAGE\n\nRead the product notes here, and follow the directions and cautions printed on your pack.\n\nFRAME 04 / 08\nHOW TO USE AND CAUTIONS\n\nHow to use and cautions\n\nApproved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.\n\nRECOMMENDED USE\nFollow the directions printed on your pack. This design preview does not provide a dosage.\nPREPARATION\nUse as directed on the pack\nAGE\nPurchases are limited to adults: checkout asks you to confirm you're 18 or older.\nSUITABILITY\nDemo label details\nCAUTIONS AND INTERACTIONS\nIf you have a health condition, are pregnant or breastfeeding, or take regular medication, speak with a qualified health professional before adding a supplement. Nothing on this site is a diagnosis or personal advice.\nALLERGENS\nRead the full allergen statement on your pack\nSTORAGE\nDemo storage entry: keep tightly closed in a cool, dry place away from direct sunlight.\nWHAT TO CHECK ON THE LABEL\nAmount per serving\nThe amount of L-theanine in one serving, with its unit.\nDosage form\nHow it's presented, and how many units make a serving.\nFree-from statements\nStatements such as caffeine-free belong on a label only when they're substantiated.\nOther ingredients\nCapsule shell material and any other added ingredients.\n\nSomething wrong with a product? Report a safety concern privately. It opens a priority support case, separate from reviews.\n\nFRAME 05 / 08\nQUALITY, SOURCING AND LOT REPORT\n\nQuality, sourcing and lot report\n\nSourcing, testing and documents are shown here only when they're confirmed for this product.\n\nINGREDIENT SOURCING\nIndia — demo origin\nMANUFACTURER\nBCC demo manufacturing unit\nTESTING PERFORMED\nNo test results published\nSUPPORTING DOCUMENTS\nNone published\nCERTIFICATIONS\nNone claimed\nFIND A LOT REPORT\n\nEnter the lot number printed on your pack of L-Theanine. It's different from the barcode and your order number.\n\nLot number on your pack\nFIND A LOT REPORT\n\nDEMONSTRATION RECORD Try the demo lot DEMO-02-01, or open the lot lookup for this product.\n\nA lot report describes the sample tested from one manufacturing lot. It doesn't authenticate an individual pack or promise a health outcome. Preview records are demonstrations. No laboratory document is connected.\n\nHow we approach quality and evidence · What a lot report shows\n\nFRAME 06 / 08\nCUSTOMER REVIEWS\n\nCustomer reviews\n\nNo reviews yet\n\nExplore the illustrative feedback below. Fictional feedback is separate from submitted customer reviews.\n\nWRITE A REVIEW\n\nReviews come from signed-in customers whose order containing this product was delivered. Every review and photo is checked by our moderators before it appears, whatever its rating.\n\nIllustrative feedback · fictional customers\n\nPreview customer A\n\n“The bottle colours make it easy to find the product I’m looking for.”\n\nPreview customer B\n\n“I like being able to read the ingredient notes before choosing a bottle.”\n\nFRAME 07 / 08\nQUESTIONS AND ANSWERS\n\nQuestions and answers\nCOMMON QUESTIONS\nHow much is in each serving?\nHow many capsules are in a pack?\nWhere's the lot number on my pack?\nWhat prices are shown?\nANSWERED QUESTIONS\n\nNo questions have been answered publicly for this product yet.\n\nASK A QUESTION ABOUT L-THEANINE\n\nQuestions are answered by Body Café Co. support. An answer is published here only after review, and only from approved product information. We don't give personal medical advice. For an order, delivery or account issue, contact support privately instead.\n\nYour question\n\n10–600 characters. Please don't include order numbers, contact details or health information.\n\nSEND QUESTION\n\nFRAME 08 / 08\nOTHER PRODUCTS TO EXPLORE\n\nOther products to explore\n\nShown for browsing. Products aren't recommended to be taken together.\n\nVitamin D3 + K2\nSoftgels · ₹1,049 listed price\nOmega-3 Fish Oil\nSoftgels · ₹1,949 listed price\nMyo & D-Chiro Inositol\nCapsules · ₹1,499 listed price\n\nSee all seven products",
+    "tinyText": [
+      {
+        "size": "10px",
+        "text": "2"
+      }
+    ],
+    "title": "L-Theanine — Body Café Co.",
+    "unlabelledInputs": [],
+    "unnamedControls": [],
+    "url": "http://127.0.0.1:4174/products/l-theanine?design=g",
+    "width": 390
+  }
+]
