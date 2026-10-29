@@ -578,7 +578,7 @@
     const action = b.dataset.op, id = b.dataset.id, form = b.closest('form');
     try {
       if (action === 'logout') { await A().api('/admin/logout', {}); dirty = false; await A().session(); await A().rerender(); return; }
-      if (action === 'refresh') { await A().refreshCatalog(); await A().rerender(); A().toast('Up to date.'); return; }
+      if (action === 'refresh') { A().invalidateOps(); await A().session(); await A().refreshCatalog(); await A().rerender(); A().toast('Up to date.'); return; }
       if (action === 'close-dialog') { document.getElementById('op-dialog')?.close(); return; }
       if (action === 'editor-tab') { showSection(form, id); return; }
       if (action.startsWith('image-')) {

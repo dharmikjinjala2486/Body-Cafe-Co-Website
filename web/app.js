@@ -1,7 +1,7 @@
 /* Body Café Co. — storefront preview.
    View layer: templates + interaction. Data, cart, checkout, account and ops logic live further down. */
 /* Design direction. A/B homepages are the standalone concepts; C/D homepages and all four product pages live here.
-   Precedence: ?design= in the URL, then this tab's sessionStorage (also written by the A/B concept pages), then C. */
+   Precedence: ?design= in the URL, then this tab's sessionStorage (also written by the A/B concept pages), then B. */
 const DESIGNS = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const DESIGN_LABELS = [
   ["a", "A", "State of Play"],
@@ -16,9 +16,13 @@ const DESIGN_LABELS = [
 const availableDesigns = () => DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
 let activeDesign = "b";
 function syncDesign() {
-  activeDesign = "b";
-  try { sessionStorage.setItem("bcc-design", "b"); } catch {}
-  document.body.dataset.design = "b";
+  const requested = new URL(location.href).searchParams.get("design");
+  let stored = null;
+  try { stored = sessionStorage.getItem("bcc-design"); } catch {}
+  const available = availableDesigns();
+  activeDesign = available.includes(requested) ? requested : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "b";
+  try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
+  document.body.dataset.design = activeDesign;
 }
 syncDesign();
 /* Where "home" is for the active direction: A/B return to their concept homepage. */
@@ -63,6 +67,8 @@ const state = {
   filter: "all",
   otp: null,
   sessionReady: false,
+  sessionScope: "",
+  opsLoadedAt: 0,
 };
 const format = {
   "iron-bisglycinate": "Capsules",
@@ -113,6 +119,7 @@ function onCap(hex) {
 }
 const capStyle = (p) => `--cap:${p.color};--on-cap:${onCap(p.color)}`;
 async function api(path, data) {
+  if (data !== undefined && path.startsWith("/admin/")) state.opsLoadedAt = 0;
   if (window.BCCStaticPreview) return window.BCCStaticPreview.api(path, data);
   const res = await fetch("/api" + path, {
     method: data === undefined ? "GET" : "POST",
@@ -153,6 +160,7 @@ window.BCCApp = {
   renderCount: () => renderHeaderCount(),
   navigate: (href) => navigate(href),
   session: () => session(),
+  invalidateOps: () => { state.opsLoadedAt = 0; },
   account: () => state.account,
   routeChanged: () => { renderedRoute = location.pathname + location.search; },
 };
@@ -161,6 +169,7 @@ async function session() {
   state.user = s.user;
   state.csrf = s.csrf;
   state.sessionReady = true;
+  state.sessionScope = location.pathname.startsWith("/ops") ? "admin" : "customer";
 }
 function toast(text) {
   const t = $("#toast");
@@ -267,7 +276,8 @@ function designLinks() {
     .join("");
 }
 function previewBar() {
-  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Design preview · Ordering and sign-in unavailable." : window.BCCConnectedHosted ? "Store preview · Ordering opens soon." : "Local preview · No live payment or dispatch."}</p><a href="/ops">Admin portal ↗</a></div>`;
+  const options = DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d)).map(([d, number, label]) => `<option value="${d}"${activeDesign === d ? " selected" : ""}>${number} · ${label}</option>`).join("");
+  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Design preview · Ordering and sign-in unavailable." : window.BCCConnectedHosted ? "Store preview · Ordering opens soon." : "Local preview · No live payment or dispatch."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><label class="preview-design-mobile">Design<select data-design-select aria-label="Choose design direction">${options}</select></label><a href="/ops">Admin portal ↗</a></div>`;
 }
 function shell(content) {
   if (location.pathname.startsWith("/ops")) return content;
@@ -1079,12 +1089,16 @@ async function render(scroll = true) {
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
   }
   try {
-    await session();
+    const scope = path.startsWith("/ops") ? "admin" : "customer";
+    if (!state.sessionReady || state.sessionScope !== scope) { await session(); state.opsLoadedAt = 0; }
     let content;
     const fx = fixtureState(path);
     if (!fx && (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/") || path === "/checkout" || path === "/contact" || path === "/settings")) state.account = await api("/account");
     if (path.startsWith("/ops") && ["admin", "viewer"].includes(state.user.role)) {
-      state.ops = await api("/admin");
+      if (!state.ops || Date.now() - state.opsLoadedAt > 30000) {
+        state.ops = await api("/admin");
+        state.opsLoadedAt = Date.now();
+      }
       if (path === "/ops/sales") state.ops.sales = await api("/admin/sales?" + new URL(location.href).searchParams.toString());
     }
     if (version !== renderVersion) return;
@@ -1229,7 +1243,7 @@ document.addEventListener("click", async (e) => {
     !e.shiftKey
   ) {
     e.preventDefault();
-    if ($("#search-dialog").open) $("#search-dialog").close();
+    if ($("#search-dialog")?.open) $("#search-dialog").close();
     const tint = anchor.closest("[style*='--cap']");
     const pid = anchor.pathname.startsWith("/products/") ? product(anchor.pathname.split("/")[2]) : null;
     navigate(anchor.href, pid?.color || (tint ? getComputedStyle(tint).getPropertyValue("--cap").trim() : ""));
@@ -1356,7 +1370,7 @@ document.addEventListener("submit", async (e) => {
   if (error) error.textContent = "";
   try {
     if (["search-form", "page-search"].includes(form.id)) {
-      if ($("#search-dialog").open) $("#search-dialog").close();
+      if ($("#search-dialog")?.open) $("#search-dialog").close();
       navigate("/search?q=" + encodeURIComponent(data.q || ""));
     } else if (form.id === "home-lot") {
       navigate("/reports?product=" + encodeURIComponent(data.product) + "&lot=" + encodeURIComponent(data.lot), "#2d2926");
