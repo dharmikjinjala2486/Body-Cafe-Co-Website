@@ -39,6 +39,16 @@
     link.appendChild(img(key, '', 1600, 1000, false)); container.prepend(link);
   }
   function home(t) {
+    // Use the same transparent framing for all seven homepage bottles.
+    t.querySelectorAll('.tb-coll .tb-arch-photo, .atelier-fan [data-curiosity-pick]').forEach(function (card) {
+      var link = card.getAttribute('href');
+      var id = link ? link.split('/').pop() : JSON.parse(t.querySelector('[data-curiosity-products]').textContent)[Number(card.dataset.curiosityPick)].id;
+      var bottle = card.querySelector('img');
+      if (bottle && productIds[id]) {
+        bottle.src = '/web/media/bottles-normalized/' + id + '.svg';
+        bottle.width = 720; bottle.height = 1040;
+      }
+    });
     var art = t.querySelector('.tb-hero-art');
     if (art) {
       art.classList.add('bi-hero-art'); art.replaceChildren();
@@ -51,14 +61,26 @@
         var a = document.createElement('a'); a.href = '/products/' + p[0]; a.textContent = p[1] + ' ↗'; nav.appendChild(a);
       }); art.appendChild(nav);
     }
-    var voices = t.querySelector('[data-home-section="voices"] .hc-split');
-    if (voices && voices.firstElementChild) {
-      var intro = document.createElement('div'); intro.className = 'bi-voices-intro';
-      voices.insertBefore(intro, voices.firstElementChild); intro.appendChild(intro.nextElementSibling);
-      intro.appendChild(figure('reviews/reviews_conversation', '', 'bi-voices-art', 1600, 900));
-    }
+    var voices = t.querySelector('.bi-voices-heading');
+    if (voices) voices.appendChild(figure('reviews/reviews_conversation', '', 'bi-voices-art', 1600, 900));
     var faq = t.querySelector('[data-home-section="faq"]');
     if (faq && faq.firstElementChild) faq.firstElementChild.appendChild(figure('faq/faq_questions', '', 'bi-faq-art', 1200, 900));
+  }
+  function product(t) {
+    var gallery = t.querySelector('[data-pp-gallery]');
+    var id = location.pathname.split('/').filter(Boolean).pop();
+    if (!gallery || !productIds[id]) return;
+    gallery.setAttribute('data-bottle-id', id);
+    gallery.classList.add('pp-bottle-stage');
+    var front = gallery.querySelector('.pp-slide-front img');
+    if (front) {
+      var bottleSrc = '/web/media/bottles-normalized/' + id + '.svg';
+      front.src = bottleSrc;
+      front.width = 720; front.height = 1040;
+      front.alt = front.alt || id.replaceAll('-', ' ') + ', front-of-pack design mockup';
+      var thumb = gallery.querySelector('[data-pp-thumb="0"] img');
+      if (thumb) { thumb.src = bottleSrc; thumb.width = 720; thumb.height = 1040; }
+    }
   }
   function bundles(t) {
     t.querySelectorAll('a.tb-duo-photos').forEach(function (a) {
@@ -93,7 +115,16 @@
   var productIds = {'iron-bisglycinate':1,'l-theanine':1,'vitamin-d3-k2':1,'omega-3-fish-oil':1,'myo-d-chiro-inositol':1,'creatine-chews':1,'psyllium-husk':1};
   function about(t) {
     var media = t.querySelector('.ab-meet-media');
-    if (media) media.replaceChildren(figure('about/about-seven-colours', 'Seven original product-cap renders across a lilac and sage display.', 'bi-about-identity', 1600, 1000, 'Our seven cap colours. Original studio renders.', true));
+    if (media) {
+      var art = figure('about/about-seven-colours', 'Seven product bottles displayed on their matching coloured stands.', 'bi-about-identity', 1600, 1000, 'Our seven products, each on its cap-colour stand.', true);
+      var lineup = document.createElement('span'); lineup.className = 'bi-about-products'; lineup.setAttribute('aria-hidden', 'true');
+      var stands = [[11.5,70.9],[24.4,67.8],[36.9,65.9],[49.4,64.6],[61.9,65.9],[74.4,67.8],[88,70.9]];
+      ['iron-bisglycinate','l-theanine','vitamin-d3-k2','omega-3-fish-oil','myo-d-chiro-inositol','creatine-chews','psyllium-husk'].forEach(function (id, i) {
+        var mount = document.createElement('span'); mount.className = 'bi-about-bottle'; mount.style.setProperty('--stand-x', stands[i][0] + '%'); mount.style.setProperty('--stand-y', stands[i][1] + '%');
+        var bottle = document.createElement('img'); bottle.src = '/web/media/bottles-normalized/' + id + '.svg'; bottle.alt = ''; bottle.width = 720; bottle.height = 1040; bottle.loading = 'eager'; bottle.decoding = 'async'; mount.appendChild(bottle); lineup.appendChild(mount);
+      });
+      var scene = document.createElement('div'); scene.className = 'bi-about-scene'; art.insertBefore(scene, art.firstChild); scene.appendChild(art.querySelector('img')); scene.appendChild(lineup); media.replaceChildren(art);
+    }
     var why = t.querySelector('#name .ab-body');
     if (why) why.appendChild(figure('about/about_curiosity', 'Abstract arch and speech-bubble forms around a conversation table.', 'bi-about-curiosity', 1600, 1000, 'A conceptual illustration of curiosity and conversation.'));
   }
@@ -105,7 +136,15 @@
     head.classList.add('bi-header-art'); head.appendChild(copy);
     head.appendChild(figure('faq/faq_orders', '', 'bi-help-art', 1200, 900, '', true));
   }
-  var decorators = {home:home,bundles:bundles,learn:learn,about:about,help:help};
+  var decorators = {home:home,product:product,bundles:bundles,learn:learn,about:about,help:help};
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('[data-review-pause]');
+    if (!button) return;
+    var paused = button.getAttribute('aria-pressed') !== 'true';
+    button.setAttribute('aria-pressed', String(paused));
+    button.textContent = paused ? 'Play feedback →' : 'Pause feedback Ⅱ';
+    button.closest('[data-home-section="voices"]').classList.toggle('bi-reviews-paused', paused);
+  });
   Object.keys(decorators).forEach(function (name) {
     var render = S.themes.b[name]; if (typeof render !== 'function') return;
     S.themes.b[name] = function () {

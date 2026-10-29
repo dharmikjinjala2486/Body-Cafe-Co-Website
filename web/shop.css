@@ -203,7 +203,7 @@
    ===================================================================================================== */
 .sp-b { --bg: #f2ecdf; --ink: #2e2926; --muted: #4a423c; --line: rgb(46 41 38 / .2); --field: #fffdf8; --radius: 28px; --btn-radius: 999px; --panel: #fffdf8;
   --display: "Aileron", sans-serif; --card: #fffdf8; --ok: #2b6a34; }
-.sp-b .sp-plate { background: color-mix(in srgb, var(--cap) 30%, #f7f2e8); }
+.sp-b .sp-plate { aspect-ratio: 1; background: color-mix(in srgb, var(--cap) 30%, #f7f2e8); }
 .sp-b .sp-intro { max-width: none; margin: 0; padding-inline: max(var(--pad), (100% - var(--max)) / 2 + var(--pad)); background: #d9c3e6; border-bottom: 1.5px solid var(--ink); grid-template-columns: minmax(0, 1fr) auto; padding-bottom: clamp(20px, 3vw, 34px); }
 .sp-b .sp-h1 { font-weight: 800; letter-spacing: -.05em; }
 .sp-b .sp-lede { color: var(--ink); }
@@ -221,7 +221,18 @@
 .sp-b .sp-card { box-shadow: 0 0 0 1.5px var(--ink); overflow: hidden; }
 .sp-b .sp-media { border-radius: 0; }
 .sp-b .sp-plate { border-bottom: 1.5px solid var(--ink); }
-.sp-b .sp-plate img { rotate: 5deg; filter: drop-shadow(0 16px 16px rgb(0 0 0 / .16)); }
+.sp-b .sp-plate img:not(.sp-secondary) {
+  inset: auto auto auto 50%;
+  top: 9%;
+  bottom: auto;
+  width: auto;
+  max-width: 70%;
+  height: 84%;
+  transform: translateX(-50%);
+  rotate: 0deg;
+  filter: drop-shadow(5px 9px 5px #15122c25);
+}
+.sp-b .sp-card:hover .sp-plate img:not(.sp-secondary) { transform: translateX(-50%) translateY(-4px); }
 .sp-b .sp-body { padding: 16px 18px 18px; }
 .sp-b .sp-num { display: inline-grid; place-items: center; min-width: 30px; height: 30px; border-radius: 50%; background: var(--cap); color: var(--on-cap); font-size: 11px; }
 .sp-b .sp-meta { align-items: center; }
@@ -468,7 +479,7 @@
 /* Phone refinements per direction (after the shared phone card). */
 @media (max-width: 560px) {
   .sp-a .sp-media::after, .sp-c .sp-media::after { display: none; }
-  .sp-b .sp-card { padding: 10px; } .sp-b .sp-media { border-radius: 18px; } .sp-b .sp-plate { border: 0; } .sp-b .sp-body { padding: 0; }
+  .sp-b .sp-card { padding: 10px; } .sp-b .sp-media { border-radius: 18px; } .sp-b .sp-plate { border: 0; } .sp-b .sp-card[data-lead] .sp-plate { aspect-ratio: 1; } .sp-b .sp-body { padding: 0; }
   .sp-c .sp-media { border-width: 4px; box-shadow: 4px 4px 0 rgb(64 41 30 / .12); }
   .sp-d .sp-body, .sp-d .sp-meta, .sp-d .sp-buy, .sp-d .sp-actions, .sp-d .sp-facts div { text-align: left; justify-items: start; justify-content: start; }
   .sp-d .sp-grid { grid-template-columns: 1fr; }

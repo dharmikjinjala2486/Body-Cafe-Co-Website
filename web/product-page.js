@@ -277,7 +277,8 @@
   function explore(m, ctx) {
     if (!m.related.length) return "";
     return '<p class="pp-micro">' + COPY.explore + '</p><ul class="pp-related">' + m.related.map(function (r) {
-      return '<li style="--cap:' + r.color + '"><a href="/products/' + r.id + '"><span class="pp-rel-img"><img src="' + window.BCCBottleAssets.url(r.id) + '" alt="" width="' + (IMG_W[r.id] || 715) + '" height="1000" loading="lazy" decoding="async"></span><span class="pp-rel-name">' + esc(ctx, r.name) + '</span><span class="pp-rel-meta">' + esc(ctx, ctx.format[r.id] || "") + " · " + ctx.money(r.price) + " listed price</span></a></li>";
+      var image = ctx.design === "b" ? "/web/media/bottles-normalized/" + r.id + ".svg" : window.BCCBottleAssets.url(r.id);
+      return '<li style="--cap:' + r.color + '"><a href="/products/' + r.id + '"><span class="pp-rel-img"><img src="' + image + '" alt="" width="720" height="1040" loading="lazy" decoding="async"></span><span class="pp-rel-name">' + esc(ctx, r.name) + '</span><span class="pp-rel-meta">' + esc(ctx, ctx.format[r.id] || "") + " · " + ctx.money(r.price) + " listed price</span></a></li>";
     }).join("") + '</ul><p class="pp-p"><a href="/shop">See all seven products</a></p>';
   }
   function sticky(m) {

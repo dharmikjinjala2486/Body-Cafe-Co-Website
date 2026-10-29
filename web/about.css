@@ -220,6 +220,51 @@
 .ab-b .ab-shot:nth-child(odd) .ab-open { rotate: -1deg; } .ab-b .ab-shot:nth-child(even) .ab-open { rotate: 1deg; }
 .ab-b .ab-route { border: 1.5px solid var(--ink); border-radius: 22px; }
 .ab-b .ab-people-empty { background: rgb(255 255 255 / .6); border: 0; }
+/* B: give every product a clear display box and let the long chapter labels travel with their section. */
+.ab-b .ab-lineup-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(6px, 1vw, 14px);
+  min-height: 0;
+  padding: clamp(16px, 2vw, 28px);
+  border-radius: 28px;
+  overflow: visible;
+}
+.ab-b .ab-lineup-row img,
+.ab-b .ab-lineup-row img:nth-child(even) {
+  align-self: end;
+  width: 100%;
+  height: clamp(190px, 27vw, 340px);
+  margin: 0;
+  padding: 12px 4px;
+  object-fit: contain;
+  rotate: 0deg;
+  border: 1px solid rgb(46 41 38 / .14);
+  border-radius: 18px 18px 10px 10px;
+  background: color-mix(in srgb, var(--cap, #d9c3e6) 30%, #f7f2e8);
+  filter: drop-shadow(0 8px 8px rgb(0 0 0 / .12));
+}
+.ab-b .ab-sec-name .ab-head,
+.ab-b .ab-sec-values .ab-head,
+.ab-b .ab-sec-collection .ab-head,
+.ab-b .ab-sec-behind .ab-head { position: sticky; top: 104px; align-self: start; }
+@media (max-width: 1000px) {
+  .ab-b .ab-lineup-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .ab-b .ab-sec-name .ab-head,
+  .ab-b .ab-sec-values .ab-head,
+  .ab-b .ab-sec-collection .ab-head,
+  .ab-b .ab-sec-behind .ab-head { top: 84px; }
+}
+@media (max-width: 700px) {
+  .ab-b .ab-lineup-row { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 12px; }
+  .ab-b .ab-lineup-row img,
+  .ab-b .ab-lineup-row img:nth-child(even) { height: 190px; padding: 8px 2px; border-radius: 14px 14px 8px 8px; }
+  .ab-b .ab-sec-name .ab-head,
+  .ab-b .ab-sec-values .ab-head,
+  .ab-b .ab-sec-collection .ab-head,
+  .ab-b .ab-sec-behind .ab-head { top: 74px; }
+}
 
 /* =====================================================================================================
    4. C — EVERYDAY ELSEWHERE. Butter paper, Gloock serif, stamped chapters, an arched window for the line-up.

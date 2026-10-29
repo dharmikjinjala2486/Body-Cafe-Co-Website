@@ -155,10 +155,11 @@
     return '<p class="sp-rating"><span class="sp-star" aria-hidden="true">★</span> <span>' + a.toFixed(1) + '<span class="sr-only"> out of 5</span> · ' + c + " review" + (c === 1 ? "" : "s") + "</span></p>";
   }
   function card(v, ctx, x, st, shown, lead, eager) {
-    var p = x.p, href = "/products/" + p.id, w = (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720;
+    var p = x.p, href = "/products/" + p.id, w = ctx.design === "b" ? 720 : (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720;
     var num = v.num ? v.num(x.i, ctx.published.length) : "No. " + pad(x.i + 1);
-    var img = '<img src="' + window.BCCBottleAssets.url(p.id) + '" alt="" width="' + w + '" height="1000" decoding="async"' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + ">";
-    if (ctx.design === "b" && window.BCCCatalogSecondary && window.BCCCatalogSecondary[p.id]) img += '<img class="sp-secondary" src="'+h(window.BCCCatalogSecondary[p.id])+'" alt="" width="'+w+'" height="1000" loading="lazy">';
+    var bottleSrc = ctx.design === "b" ? "/web/media/bottles-normalized/" + p.id + ".svg" : window.BCCBottleAssets.url(p.id);
+    var bottleHeight = ctx.design === "b" ? 1040 : 1000;
+    var img = '<img src="' + bottleSrc + '" alt="" width="' + w + '" height="' + bottleHeight + '" decoding="async"' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + ">";
     if (ctx.design === "a") img = S.cardBottlePicture(ctx, p);
     return '<li class="sp-card" data-sp-item="' + p.id + '" data-format="' + x.fid + '" data-price="' + x.price + '" data-i="' + x.i + '" data-available="' + x.available + '"' +
       (shown ? "" : " hidden") + (lead ? " data-lead" : "") + ' style="' + ctx.capStyle(p) + '">' +

@@ -531,3 +531,110 @@ body.pp-lb-open { overflow: hidden; }
 .demo-feedback article{padding:20px 0;border-top:1px solid var(--line)}
 .demo-feedback article h3{font:700 15px/1.5 Aileron,sans-serif;margin:0 0 8px}
 .demo-feedback article p{font:400 16px/1.7 Aileron,sans-serif;margin:0;max-width:60ch}
+
+/* B product reading journey: each chapter has its own composition, with the shared facts intact. */
+.pp-b .pp-sec { padding: 0; }
+.pp-b .pp-sec-in { border-radius: 0; padding-block: clamp(44px, 6vw, 88px); }
+.pp-b .pp-head h2 { font-size: clamp(32px, 4vw, 60px); text-wrap: balance; }
+.pp-b .pp-bubble { font-size: clamp(23px, 3vw, 42px); line-height: 1.08; letter-spacing: -.04em; border: 0; background: transparent; padding: 0; margin: 0 0 12px; }
+.pp-b .pp-bubble::after { display: none; }
+.pp-b .pp-k { order: -1; align-items: center; }
+.pp-b .pp-head h2 { font-size: 13px; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+.pp-b .pp-lead { max-width: 62ch; }
+/* 02 / The essentials, arranged as a compact specimen board. */
+.pp-b .pp-sec-overview .pp-sec-in { grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); background: #d8ddbb; border-radius: 32px 32px 0 0; }
+.pp-b .pp-sec-overview .pp-bubble { font-size: clamp(40px, 5vw, 76px); }
+.pp-b .pp-facts-overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; background: transparent; border: 0; padding: 0; margin-block: 24px; }
+.pp-b .pp-facts-overview > div { display: flex; flex-direction: column; justify-content: space-between; gap: 20px; min-height: 126px; padding: 20px; background: #f9f6ed; border: 0; border-radius: 18px; }
+.pp-b .pp-facts-overview > div:nth-child(3) { background: #eaedb6; }
+.pp-b .pp-facts-overview > div:nth-child(4) { grid-column: span 2; }
+.pp-b .pp-facts-overview dd { font-size: 19px; font-weight: 700; line-height: 1.25; }
+.pp-b .pp-sec-overview .pp-status { background: transparent; border-top: 1px solid var(--ink); border-radius: 0; padding: 18px 0 0; }
+/* 03 / An open label ledger, with separate reading notes. */
+.pp-b .pp-sec-ingredients .pp-sec-in { background: #fbf7ef; grid-template-columns: 1fr; gap: 30px; }
+.pp-b .pp-sec-ingredients .pp-head { grid-template-columns: 1fr 1fr; align-items: end; border-bottom: 2px solid var(--ink); padding-bottom: 24px; }
+.pp-b .pp-sec-ingredients .pp-k { grid-column: 1 / -1; }
+.pp-b .pp-sec-ingredients .pp-bubble { margin: 0; }
+.pp-b .pp-sec-ingredients .pp-head h2 { justify-self: end; }
+.pp-b .pp-sec-ingredients .pp-body { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .8fr); gap: 28px 48px; align-items: start; }
+.pp-b .pp-sec-ingredients .pp-lead { grid-column: 1 / -1; margin: 0; }
+.pp-b .pp-facts-label { grid-row: span 2; padding: 0; background: transparent; border-radius: 0; }
+.pp-b .pp-facts-label > div { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); padding: 17px 0; }
+.pp-b .pp-sec-ingredients .pp-cols { grid-template-columns: 1fr; margin: 0; gap: 24px; padding: 26px; background: #e3cbe7; border-radius: 4px 26px 26px; }
+.pp-b .pp-sec-ingredients .pp-aside { margin: 0; background: #eaedb6; border: 0; border-radius: 24px 4px 24px 24px; padding: 26px; }
+/* 04 / Directions form a numbered field guide rather than another table. */
+.pp-b .pp-sec-use .pp-sec-in { background: #eaedb6; grid-template-columns: minmax(0, .7fr) minmax(0, 1.5fr); }
+.pp-b .pp-facts-use { counter-reset: care; display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; background: transparent; border: 0; border-radius: 0; padding: 0; }
+.pp-b .pp-facts-use > div { counter-increment: care; display: block; position: relative; padding: 22px 0 24px 42px; border-top: 1px solid var(--ink); border-bottom: 0; }
+.pp-b .pp-facts-use > div::before { content: counter(care, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-size: 13px; font-weight: 700; }
+.pp-b .pp-facts-use dt { margin-bottom: 10px; font-weight: 800; }
+.pp-b .pp-facts-use > div:nth-child(5) { grid-column: 1 / -1; }
+.pp-b .pp-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pp-b .pp-checks li { padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: #ffffff60; }
+.pp-b .pp-checks li::before { display: none; }
+/* 05 / A midnight evidence desk with a paper report lookup. */
+.pp-b .pp-sec-quality { --ink: #f2ecdf; --muted: #d9d2e9; --line: #ffffff35; }
+.pp-b .pp-sec-quality .pp-sec-in { background: #35306f; color: var(--ink); grid-template-columns: minmax(0, .7fr) minmax(0, 1.5fr); }
+.pp-b .pp-sec-quality .pp-k-n { background: #eaedb6; color: #35306f; }
+.pp-b .pp-sec-quality .pp-facts-quality { padding: 0; border-radius: 0; background: transparent; }
+.pp-b .pp-sec-quality .pp-lotbox { --ink: #2e2926; --muted: #4a423c; --line: #2e292630; background: #fbf7ef; color: #2e2926; border-radius: 4px 28px 28px; border: 0; padding: clamp(22px, 3vw, 38px); box-shadow: 8px 8px 0 #eaedb6; }
+.pp-b .pp-sec-quality .pp-lotbox .pp-sub-h { font-size: 25px; letter-spacing: -.035em; text-transform: none; }
+/* 06 / A conversation space with a warm, asymmetric composition. */
+.pp-b .pp-sec-reviews .pp-sec-in { background: #e6ceb5; grid-template-columns: minmax(0, .7fr) minmax(0, 1.5fr); }
+.pp-b .pp-sec-reviews .pp-head { border-left: 4px solid var(--ink); padding-left: 24px; }
+.pp-b .pp-sec-reviews .pp-rv-top { background: #fbf7ef; border: 0; border-radius: 28px 28px 4px 28px; padding: 28px; }
+.pp-b .pp-sec-reviews .pp-rv-list { margin-top: 22px; }
+/* 07 / Questions and the question form share a spacious help desk. */
+.pp-b .pp-sec-questions .pp-sec-in { background: #fbf7ef; grid-template-columns: 1fr; gap: 30px; }
+.pp-b .pp-sec-questions .pp-head { max-width: 660px; }
+.pp-b .pp-qa { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); column-gap: 48px; align-items: start; }
+.pp-b .pp-qa > .pp-sub-h { grid-column: 1; }
+.pp-b .pp-faqs { grid-column: 1; background: transparent; border: 0; border-radius: 0; padding: 0; counter-reset: faq; }
+.pp-b .pp-faq { counter-increment: faq; border-bottom: 1px solid var(--ink); }
+.pp-b .pp-faq summary { gap: 16px; padding-block: 22px; }
+.pp-b .pp-faq summary::before { content: counter(faq, decimal-leading-zero); font-size: 12px; opacity: .65; }
+.pp-b .pp-faq summary > span:first-child { flex: 1; }
+.pp-b .pp-faq[open] { background: #eaedb64d; }
+.pp-b .pp-qa-list { grid-column: 1; }
+.pp-b .pp-ask { grid-column: 2; grid-row: 1 / span 4; margin: 0; padding: 28px; border: 0; background: #d8ddbb; border-radius: 28px 4px 28px 28px; }
+/* 08 / Back to the collection, with a full width shelf. */
+.pp-b .pp-sec-explore .pp-sec-in { background: #e3cbe7; grid-template-columns: 1fr; gap: 24px; }
+.pp-b .pp-sec-explore .pp-bubble { font-size: clamp(38px, 5vw, 72px); }
+.pp-b .pp-related { gap: 24px; }
+.pp-b .pp-related > li { padding: 12px 12px 22px; background: #fbf7ef; border: 1px solid #2e292625; border-radius: 26px; }
+.pp-b .pp-rel-img { aspect-ratio: 1; border-radius: 18px; }
+.pp-b .pp-rel-name, .pp-b .pp-rel-meta { padding-inline: 10px; }
+@media (max-width: 1000px) {
+ .pp-b .pp-sec-overview .pp-sec-in, .pp-b .pp-sec-use .pp-sec-in, .pp-b .pp-sec-quality .pp-sec-in, .pp-b .pp-sec-reviews .pp-sec-in { grid-template-columns: 1fr; gap: 28px; }
+ .pp-b .pp-sec-ingredients .pp-body { gap: 24px; }
+ .pp-b .pp-facts-overview { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 650px) {
+ .pp-b .pp-sec-in { padding: 38px 20px; }
+ .pp-b .pp-bubble { font-size: 32px; }
+ .pp-b .pp-sec-overview .pp-bubble { font-size: 44px; }
+ .pp-b .pp-facts-overview { grid-template-columns: 1fr 1fr; }
+ .pp-b .pp-facts-overview > div { min-height: 120px; padding: 16px; }
+ .pp-b .pp-facts-overview > div:nth-child(3) { grid-column: 1 / -1; }
+ .pp-b .pp-facts-overview > div:nth-child(4) { grid-column: auto; }
+ .pp-b .pp-facts-overview dd { font-size: 17px; }
+ .pp-b .pp-sec-ingredients .pp-head, .pp-b .pp-sec-ingredients .pp-body, .pp-b .pp-qa { grid-template-columns: minmax(0, 1fr); }
+ .pp-b .pp-sec-ingredients .pp-head h2 { justify-self: start; }
+ .pp-b .pp-sec-ingredients .pp-lead, .pp-b .pp-facts-label, .pp-b .pp-sec-ingredients .pp-cols, .pp-b .pp-sec-ingredients .pp-aside { grid-column: 1; grid-row: auto; }
+ .pp-b .pp-facts-label > div { grid-template-columns: 1fr; gap: 6px; }
+ .pp-b .pp-facts-use, .pp-b .pp-checks { grid-template-columns: 1fr; }
+ .pp-b .pp-facts-use > div:nth-child(5) { grid-column: auto; }
+ .pp-b .pp-qa .pp-ask { grid-column: 1; grid-row: auto; margin-top: 24px; padding: 22px; }
+ .pp-b .pp-sec-reviews .pp-rv-top { padding: 22px; }
+ .pp-b .pp-sec-quality .pp-lotbox { box-shadow: 5px 5px 0 #eaedb6; }
+ .pp-b .pp-related { gap: 18px; }
+}
+.pp-b .pp-sec-explore .pp-rel-img { width: 100%; height: auto; }
+@media (max-width: 650px) {
+ .pp-b .pp-sec-explore .pp-rel-img { height: 120px; aspect-ratio: auto; }
+}
+.pp-b .pp-sec-explore .pp-rel-img { aspect-ratio: 1; display: grid; place-items: center; }
+.pp-b .pp-sec-explore .pp-rel-img img { position: relative; inset: auto; width: auto; max-width: 70%; height: 84%; object-fit: contain; }
+@media (max-width: 650px) {
+ .pp-b .pp-sec-explore .pp-rel-img { height: 120px; aspect-ratio: auto; }
+}

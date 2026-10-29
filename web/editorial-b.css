@@ -21,11 +21,21 @@ body[data-theme="b"] .lr-b .bi-guide-cover img { width: 100%; height: 100%; max-
 body[data-theme="b"] .bi-cover-link { display: block; overflow: hidden; border-radius: 16px; margin-bottom: 18px; }
 body[data-theme="b"] .bi-cover-link img { width: 100%; height: auto; display: block; aspect-ratio: 8 / 5; object-fit: cover; }
 body[data-theme="b"] .bi-about-identity { width: 100%; }
+body[data-theme="b"] .bi-about-scene { position: relative; aspect-ratio: 8 / 5; overflow: hidden; border-radius: 28px; isolation: isolate; }
+body[data-theme="b"] .bi-about-scene > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+body[data-theme="b"] .bi-about-products { position: absolute; inset: 0; pointer-events: none; }
+body[data-theme="b"] .bi-about-bottle { position: absolute; left: var(--stand-x); bottom: calc(100% - var(--stand-y)); width: 10.8%; transform: translateX(-50%); }
+body[data-theme="b"] .bi-about-bottle::before { content: ""; position: absolute; z-index: -1; left: 20%; bottom: -1%; width: 125%; height: 7%; background: radial-gradient(ellipse, #39233f50, transparent 70%); transform: rotate(8deg); }
+body[data-theme="b"] .bi-about-bottle::after { content: ""; position: absolute; z-index: -1; left: 7%; bottom: .3%; width: 86%; height: 4%; background: radial-gradient(ellipse, #30233885, transparent 72%); }
+body[data-theme="b"] .bi-about-bottle img { display: block; width: 100%; height: auto; max-width: none; aspect-ratio: 720 / 1040; border-radius: 0; object-fit: contain; filter: drop-shadow(1px 2px 1px #3b263e30); }
 body[data-theme="b"] .bi-about-curiosity { margin-top: 32px; max-width: 850px; }
 body[data-theme="b"] .bi-help-copy { min-width: 0; }
 @media (max-width: 1000px) {
  body[data-theme="b"] .bi-header-art { grid-template-columns: minmax(0,1fr); gap: 28px; }
  body[data-theme="b"] .bi-header-art > .bi-art { width: 100%; max-width: 700px; justify-self: center; }
+}
+@media (max-width: 640px) {
+ body[data-theme="b"] .bi-about-scene { border-radius: 20px; }
 }
 @media (max-width: 640px) {
  body[data-theme="b"] .bi-art img { border-radius: 20px; }
@@ -37,4 +47,149 @@ body[data-theme="b"] .bi-help-copy { min-width: 0; }
 body[data-theme="b"] .lr-b .bi-header-art > .bi-art { margin: 32px var(--pad,64px) 32px 0; }
 @media (max-width: 1000px) {
  body[data-theme="b"] .lr-b .bi-header-art > .bi-art { width: auto; max-width: none; justify-self: stretch; margin: 0 var(--pad,24px) 32px; }
+}
+
+/* Homepage collection: shared bottle framing on each product's own soft cap colour. */
+body[data-theme="b"] .tb-coll .tb-arch-photo {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--cap) 30%, #f7f2e8);
+}
+body[data-theme="b"] .tb-coll .tb-arch-photo img {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 70%;
+  height: 84%;
+  aspect-ratio: auto;
+  object-fit: contain;
+  align-self: start;
+  justify-self: center;
+  margin: 9% auto 0;
+  filter: drop-shadow(5px 9px 5px #15122c25);
+}
+body[data-theme="b"] .tb-coll .tb-arch-photo:hover img { transform: translateY(-4px); }
+body[data-theme="b"] .tb-home-lot .lot-inner { align-items: start; }
+
+/* Keep every cabinet bottle visible and selectable, including the end bottles. */
+body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-items: end;
+  gap: 2px;
+  height: 330px;
+  padding: 58px 14px 36px;
+  border-radius: 28px;
+}
+body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan button {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  transform: none;
+  display: flex;
+  align-items: end;
+}
+body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan button > img {
+  width: 100%;
+  height: calc(100% - 40px);
+  object-fit: contain;
+}
+body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan button:hover,
+body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan button[aria-pressed="true"] { transform: translateY(-12px); }
+body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan button:focus-visible { outline: 2px solid var(--at-ink); outline-offset: 4px; border-radius: 12px; }
+
+body[data-theme="b"] .bi-review-card { display: flex; flex-direction: column; margin: 0; padding: 28px; background: #f2ecdf; color: #292322; border: 2px solid #292322; border-radius: 24px 24px 24px 8px; box-shadow: 4px 4px 0 #35306f; }
+body[data-theme="b"] .bi-review-card:nth-child(2n) { background: #e7eecf; }
+body[data-theme="b"] .bi-review-mark { height: 40px; font-size: 68px; line-height: 1; color: #35306f; }
+body[data-theme="b"] .bi-review-card blockquote { margin: 12px 0 28px; font-size: 18px; line-height: 1.55; }
+body[data-theme="b"] .bi-review-card blockquote p { margin: 0; }
+body[data-theme="b"] .bi-review-card figcaption { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+body[data-theme="b"] .bi-review-avatar { display: grid; place-items: center; flex: 0 0 42px; height: 42px; border-radius: 50%; background: #35306f; color: #f2ecdf; font-size: 13px; font-weight: 700; }
+body[data-theme="b"] .bi-review-card strong { display: block; font-size: 16px; }
+body[data-theme="b"] .bi-review-card small { display: block; margin-top: 4px; font-size: 11px; color: #5b4a5f; }
+@media (max-width: 1000px) {
+
+}
+@media (max-width: 640px) {
+  body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan { grid-template-columns: repeat(7, 90px); justify-content: start; height: 250px; padding: 36px 12px 22px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; }
+  body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan button { scroll-snap-align: center; }
+
+  body[data-theme="b"] .bi-review-card { padding: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="b"] .tb-coll .tb-arch-photo img,
+  body[data-theme="b"] [data-home-section="curiosity"] .atelier-fan button { transition: none; }
+}
+
+/* One compact, full-width introduction followed by a continuous feedback ribbon. */
+body[data-theme="b"] .bi-voices-compact { padding-block: 44px; }
+body[data-theme="b"] .bi-voices-heading { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 24px 32px; border-radius: 28px; background: #f2ecdf; }
+body[data-theme="b"] .bi-voices-heading .hc-kicker { margin: 0 0 14px; }
+body[data-theme="b"] .bi-voices-heading h2 { margin: 0; font-size: clamp(32px, 3.4vw, 52px); line-height: .98; }
+body[data-theme="b"] .bi-voices-heading .bi-voices-art { margin: 0; flex: 0 1 270px; }
+body[data-theme="b"] .bi-voices-heading .bi-voices-art img { height: 155px; object-fit: cover; border-radius: 20px; }
+body[data-theme="b"] .bi-reviews-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 18px 0 14px; }
+body[data-theme="b"] .bi-reviews-toolbar p { margin: 0; font-size: 12px; }
+body[data-theme="b"] [data-review-pause] { flex: none; border: 1px solid currentColor; border-radius: 999px; background: #f2ecdf; color: #35306f; padding: 8px 14px; font: inherit; font-size: 12px; cursor: pointer; }
+body[data-theme="b"] .bi-review-window { overflow: hidden; padding: 4px 6px 10px 0; border-radius: 20px; }
+body[data-theme="b"] .bi-review-track { display: flex; width: max-content; gap: 20px; animation: bi-feedback-scroll 45s linear infinite; }
+body[data-theme="b"] .bi-review-group { display: flex; gap: 20px; }
+body[data-theme="b"] .bi-review-card { flex: 0 0 340px; width: 340px; padding: 22px; }
+body[data-theme="b"] .bi-review-card blockquote { margin: 8px 0 20px; font-size: 16px; line-height: 1.5; }
+body[data-theme="b"] .bi-review-mark { height: 28px; font-size: 50px; }
+body[data-theme="b"] .bi-review-window:hover .bi-review-track,
+body[data-theme="b"] .bi-review-window:focus .bi-review-track,
+body[data-theme="b"] .bi-reviews-paused .bi-review-track { animation-play-state: paused; }
+body[data-theme="b"] .bi-review-window:focus { overflow-x: auto; }
+@keyframes bi-feedback-scroll { to { transform: translateX(calc(-50% - 10px)); } }
+@media (max-width: 640px) {
+  body[data-theme="b"] .bi-voices-compact { padding-block: 28px; }
+  body[data-theme="b"] .bi-voices-heading { padding: 22px; gap: 12px; }
+  body[data-theme="b"] .bi-voices-heading .bi-voices-art { display: none; }
+  body[data-theme="b"] .bi-reviews-toolbar { gap: 10px; }
+  body[data-theme="b"] .bi-reviews-toolbar p { max-width: 22ch; font-size: 11px; }
+  body[data-theme="b"] .bi-review-card { flex-basis: 280px; width: 280px; padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="b"] .bi-review-track { animation: none; }
+  body[data-theme="b"] .bi-review-window { overflow-x: auto; }
+  body[data-theme="b"] .bi-review-group[aria-hidden="true"],
+  body[data-theme="b"] [data-review-pause] { display: none; }
+}
+
+/* Product detail gallery: match the collection card's background and bottle scale. */
+body[data-theme="b"] .pp-bottle-stage .pp-stage {
+  aspect-ratio: 1;
+  background: color-mix(in srgb, var(--cap) 30%, #f7f2e8);
+}
+body[data-theme="b"] .pp-bottle-stage .pp-slides,
+body[data-theme="b"] .pp-bottle-stage .pp-slide { height: 100%; }
+body[data-theme="b"] .pp-bottle-stage .pp-slide-front { position: relative; isolation: isolate; overflow: hidden; }
+body[data-theme="b"] .pp-bottle-stage .pp-slide-front .pp-open {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: start center;
+  height: 100%;
+  background: transparent;
+}
+body[data-theme="b"] .pp-bottle-stage .pp-slide-front .pp-open img {
+  position: absolute;
+  top: auto;
+  bottom: 7%;
+  left: 50%;
+  width: auto;
+  height: 84%;
+  max-width: 70%;
+  max-height: none;
+  object-fit: contain;
+  object-position: center bottom;
+  transform: translateX(-50%);
+  rotate: 0deg;
+  filter: drop-shadow(0 12px 10px rgb(31 26 22 / .16));
 }

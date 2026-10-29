@@ -60,9 +60,19 @@
 
   /* ---------- B: the expressive "tb-/hc-" vocabulary ---------- */
   const hcLink = (href, t) => `<a href="${href}">${t} ↗</a>`;
+  const previewReviews = [
+    ['Dharmik Ahir', 'The bottle colours make it easy to spot the product I’m looking for. The whole collection feels thoughtfully put together.'],
+    ['Milind Kumar', 'I like having the ingredient notes right beside the products. It makes browsing the collection feel simple.'],
+    ['Yagnik Vadher', 'The product pages are clear and easy to explore. Being able to look up a lot number is a helpful touch.'],
+    ['Jignesh Jinjala', 'A fresh look and a really easy layout to navigate. I can find the product details without searching around.'],
+    ['Mayur Solanki', 'The colourful bottles caught my eye, and the reading guides gave me a good place to start exploring.']
+  ];
   const b = {
     trust: () => `<section id="home-evidence" class="hc-section hc-evidence hf-trust" ${attr('trust')}><div class="hc-heading"><p class="hc-kicker">02 — WHAT YOU CAN CHECK</p><h2>What we can show.<br><em>What’s still to come.</em></h2><p>Everything published now, and everything still waiting for approval, in one place.</p></div><div class="hc-proof-grid">${TRUST.map((t, i) => `<article><span class="hc-index">${no(i)} / ${t.st.toUpperCase()}</span><h3>${t.k}</h3><p>${t.p}</p>${hcLink(t.href, t.l)}</article>`).join('')}</div></section>`,
-    voices: () => `<section class="hc-section hc-voices" ${attr('voices')} aria-labelledby="hc-voices-title"><p class="hc-kicker">04 — CUSTOMER VOICES</p><div class="hc-split"><h2 id="hc-voices-title">${VOICES.title || 'Real people.<br><em>Their own words.</em>'}</h2><div><p class="hc-lede">${VOICES.lead}</p><p>${VOICES.body}</p><p class="hc-small">${VOICES.small}</p></div></div></section>`,
+    voices: () => {
+      const cards = previewReviews.map(([name, quote], i) => `<figure class="bi-review-card"><span class="bi-review-mark" aria-hidden="true">“</span><blockquote><p>${quote}</p></blockquote><figcaption><span class="bi-review-avatar" aria-hidden="true">${name.split(' ').map(part => part[0]).join('')}</span><span><strong>${name}</strong><small>Placeholder feedback · 0${i + 1}</small></span></figcaption></figure>`).join('');
+      return `<section class="hc-section hc-voices bi-voices-compact" ${attr('voices')} aria-labelledby="hc-voices-title"><header class="bi-voices-heading"><div><p class="hc-kicker">04 — CUSTOMER VOICES</p><h2 id="hc-voices-title">A little feedback.<br><em>A lot of curiosity.</em></h2></div></header><div class="bi-reviews-toolbar"><p>Illustrative placeholder feedback for this preview.</p><button type="button" data-review-pause aria-pressed="false" aria-controls="bi-feedback-window">Pause feedback Ⅱ</button></div><div id="bi-feedback-window" class="bi-review-window" tabindex="0" role="region" aria-label="Customer feedback. Focus or hover to pause; scroll horizontally to explore."><div class="bi-review-track"><div class="bi-review-group">${cards}</div><div class="bi-review-group" aria-hidden="true">${cards}</div></div></div></section>`;
+    },
     faq: () => `<section id="home-care" class="hc-section hc-care hf-faq" ${attr('faq')}><div><p class="hc-kicker">BEFORE YOU ORDER</p><h2>Good questions<br><em>welcome here.</em></h2><p>This is a working preview. No payment is taken and no products are dispatched.</p>${hcLink('/help', 'Visit the help centre')}</div><div class="hc-faq">${FAQ.map((f) => `<details><summary>${f.q}<span aria-hidden="true">＋</span></summary><p>${f.a}</p><p class="hf-faq-link">${hcLink(f.href, f.l)}</p></details>`).join('')}</div></section>`,
     lotExtra: () => `<ol class="hf-steps">${R.steps.map((s, i) => `<li><span>${no(i)}</span><strong>${s[0]}</strong><small>${s[1]}</small></li>`).join('')}</ol><div class="hf-limits"><p class="hf-limits-title">What a report can’t tell you</p><ul>${R.limits.map((x) => `<li>${x}</li>`).join('')}</ul></div><p class="hf-note">${R.locationStatus}</p>`
   };

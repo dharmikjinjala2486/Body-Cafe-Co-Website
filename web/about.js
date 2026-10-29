@@ -109,7 +109,7 @@
   function lineup(ctx) {
     return '<figure class="ab-lineup"><div class="ab-lineup-row">' + ctx.published.map(function (p, i) {
       var w = (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720;
-      return '<img src="' + window.BCCBottleAssets.url(p.id) + '" alt="" width="' + w + '" height="1000" decoding="async"' + (i < 4 ? ' fetchpriority="high"' : ' loading="lazy"') + ' style="--i:' + i + '">';
+      return '<img src="' + window.BCCBottleAssets.url(p.id) + '" alt="" width="' + w + '" height="1000" decoding="async"' + (i < 4 ? ' fetchpriority="high"' : ' loading="lazy"') + ' style="--i:' + i + ';--cap:' + p.color + '">';
     }).join("") + '</div><figcaption class="ab-cap">The seven, as draft packaging: ' + ctx.published.map(function (p) { return h(p.name); }).join(", ") + ".</figcaption></figure>";
   }
 
