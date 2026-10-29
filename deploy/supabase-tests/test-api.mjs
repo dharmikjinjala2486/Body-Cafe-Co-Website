@@ -1,0 +1,66 @@
+import assert from 'node:assert/strict';
+import {createHandler,allocate,salesReport,validateProduct,validateReport} from '../../supabase/functions/operations/core.js';
+import {sanitiseImage} from '../../supabase/functions/operations/media.js';
+let checks=0;
+const product={id:'test-product',name:'Test product',sku:'TEST',price:100,color:'#35306f',published:true,gallery:[{src:'/web/media/test.webp',alt:'Product',visible:true}]};
+assert.equal(validateProduct(structuredClone(product)).name,'Test product');checks++;
+for(const patch of[{price:0.5},{gallery:[{src:'https://bad.example/image.png',alt:'Bad'}]},{sources:[{title:'Bad source',url:'javascript:alert(1)'}]},{related_product_ids:['test-product']},{faqs:[{question:'Q',answer:''}]}]){assert.throws(()=>validateProduct({...structuredClone(product),...patch}));checks++;}
+for(const amount of[0,1,2,5,100])assert.equal(allocate(amount,[1,1,1]).reduce((a,b)=>a+b,0),amount);checks++;
+const orders=[{id:'ONE',data:{items:[{id:'test-product',name:'Test',quantity:1,unit_price:100},{id:'other',name:'Other',quantity:2,unit_price:50}],discount:5,shipping:75}}];
+const payments=[{order_id:'ONE',captured:Date.parse('2026-10-27T20:00:00Z')/1000,amount:270,status:'captured'}];
+let report=salesReport(orders,payments,new URLSearchParams('from=2026-10-28&to=2026-10-28'));
+assert.equal(report.totals.orders,1);assert.equal(report.totals.net_sales,270);assert.equal(report.products.reduce((a,p)=>a+p.net_sales,0),270);checks++;
+report=salesReport(orders,[{...payments[0],refunded:Date.parse('2026-10-29T00:00:00Z')/1000,status:'refunded_preview'}],new URLSearchParams('from=2026-10-29&to=2026-10-29'));
+assert.equal(report.totals.net_sales,-270);assert.equal(report.totals.orders,0);checks++;
+assert.throws(()=>salesReport([],[],new URLSearchParams('from=2026-02-30')));checks++;
+const normalReport=validateReport({title:'Laboratory report',presentation:{show_documents:true,show_summary:false,show_results:false,show_lab:false,show_dates:false},results:[]});assert.equal(normalReport.presentation.show_summary,false);checks++;
+for(const r of [{lab:{accreditation:{verify_url:'javascript:alert(1)'}}},{dates:{issued:'2026-02-30'}},{results:[{parameter:'Lead',result:'ND',assessment:'meets'}]},{sample:{type:'made_up'}}]){assert.throws(()=>validateReport(r));checks++;}
+const uid='00000000-0000-4000-8000-000000000001',admin={auth_user_id:uid,username:'bodycafe.com'};
+let calls=[],fixtureReports=[];
+const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-secret',origin:'https://body-cafe-co-website.netlify.app',fetch:async(url,opts)=>{
+ calls.push({url,opts});const u=new URL(url),name=u.pathname.split('/').pop();let result=[];
+ if(u.pathname.startsWith('/auth/v1/admin/users/'))result={id:uid,email:'admin@example.test'};
+ else if(u.pathname==='/auth/v1/token'){let input=JSON.parse(opts.body);if(input.password!=='qa-current-password')return new Response(JSON.stringify({msg:'Invalid credentials'}),{status:403});result={access_token:'good-admin',expires_in:3600,user:{id:uid}};}
+ else if(name==='bcc_revoke_admin_sessions'){admin.session_version=(admin.session_version||0)+1;result=null;}
+ else if(u.pathname==='/auth/v1/user')result=opts.headers.Authorization==='Bearer good-admin'?{id:uid,user_metadata:{}}:{id:'customer-user',user_metadata:{role:'admin'}};
+ else if(name==='bcc_admin')result=u.searchParams.get('auth_user_id')==='eq.customer-user'?[]:[admin];
+ else if(name==='bcc_lot_reports')result=fixtureReports;
+ else if(name==='bcc_products')result=[{id:'test-product',data:product,draft:null,version:1}];
+ else if(name==='bcc_batches')result=[{id:'LOT',product:'test-product',available:3,expiry:Math.floor(Date.now()/1000)+86400,state:'released',proof:true,meta:{damaged:1}}];
+ else if(name==='bcc_reservations')result=[];
+ else if(name==='bcc_settings')result=[{id:'flags',data:{checkout_enabled:false}}];
+ else if(name==='bcc_expire_holds')result=null;
+ return new Response(JSON.stringify(result),{headers:{'Content-Type':'application/json'}});
+}});
+const signedPart=Buffer.from(JSON.stringify({token:'good-admin',version:0,expires:Math.floor(Date.now()/1000)+3600})).toString('base64url');
+const signing=await crypto.subtle.importKey('raw',new TextEncoder().encode('test-service-secret'),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+const adminCookie='bcc_admin='+signedPart+'.'+Buffer.from(await crypto.subtle.sign('HMAC',signing,new TextEncoder().encode(signedPart))).toString('hex');
+const request=(path,opts={})=>fn(new Request('https://test.supabase.co/functions/v1/operations/api'+path,opts));
+let response=await request('/admin');assert.equal(response.status,403);checks++;
+response=await request('/admin',{headers:{Cookie:'bcc_admin=pretend-admin'}});assert.equal(response.status,403);checks++;
+response=await request('/admin',{headers:{Cookie:adminCookie}});assert.equal(response.status,200);let snap=await response.json();assert.equal(snap.inventory_summary.on_hand,4);assert.equal(snap.inventory_summary.available,3);assert.ok(!('approvals'in snap));assert.ok(!('audit'in snap));checks++;
+response=await request('/catalog');let catalog=await response.json();assert.equal(catalog.products[0].stock,3);assert.equal(catalog.flags.checkout_enabled,false);checks++;
+response=await request('/admin/session');let session=await response.json();assert.equal(session.user.role,'customer');assert.equal(session.configured,true);assert.equal(session.csrf.length,32);checks++;
+const cookies=response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
+response=await request('/admin/product_archive',{method:'POST',headers:{Cookie:cookies,'Content-Type':'application/json','X-CSRF-Token':session.csrf,Origin:'https://evil.example'},body:'{}'});assert.equal(response.status,403);checks++;
+response=await request('/admin/product_archive',{method:'POST',headers:{Cookie:cookies,'Content-Type':'application/json'},body:'{}'});assert.equal(response.status,403);checks++;
+response=await request('/admin/approve',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:'{}'});assert.equal(response.status,404);checks++;
+response=await request('/orders',{method:'POST',headers:{Cookie:cookies,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:'{}'});assert.equal(response.status,503);checks++;
+response=await request('/admin/product_save',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:JSON.stringify({product:{...product,price:-1}})});assert.equal(response.status,400);checks++;
+assert.throws(()=>sanitiseImage(new TextEncoder().encode('<svg onload="alert(1)"></svg>')));checks++;
+const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jvXcAAAAASUVORK5CYII=','base64');
+let image=sanitiseImage(png);assert.equal(image.mime,'image/png');assert.equal(image.width,1);assert.equal(image.height,1);checks++;
+response=await request('/admin/order_update',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'X-CSRF-Token':session.csrf},body:JSON.stringify({id:'NOT-A-REAL-ORDER',state:'paid',remarks:'Payment capture must be refused'})});assert.equal(response.status,400);checks++;
+admin.session_version=1;response=await request('/admin',{headers:{Cookie:adminCookie}});assert.equal(response.status,403);admin.session_version=0;checks++;
+response=await request('/lots/documents/DOC-0000000000000000');assert.equal(response.status,404);checks++;
+response=await request('/catalog-media/CM-0000000000000000');assert.equal(response.status,404);checks++;
+response=await request('/admin/product_save',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'X-CSRF-Token':session.csrf},body:'invalid json'});assert.equal(response.status,400);checks++;
+fixtureReports=[{id:'LR-test',product:'test-product',lot:'LOT',state:'published',version:1,published:1,record:{title:'Image-only public report',presentation:{show_documents:true,show_summary:false,show_results:false,show_lab:false,show_dates:false},summary:'Private summary',results:[{parameter:'Test',result:'10',assessment:'meets'}],lab:{name:'Private lab'},lab_sample_ref:'private reference',commissioned_by:'Private commissioner',manufactured:'2026-01-01',expiry:'2027-01-01',dates:{issued:'2026-01-02'}}}];
+response=await request('/lots?product=test-product&lot=LOT');const publicLot=await response.json();assert.equal(publicLot.current.assessment.overall,'none');assert.equal(publicLot.current.assessment.total,0);assert.equal(publicLot.current.record.commissioned_by,'');assert.equal(publicLot.current.record.manufactured,null);assert.equal(publicLot.current.record.summary,'');checks++;
+response=await request('/admin/login',{method:'POST',headers:{Cookie:cookies,'X-CSRF-Token':session.csrf},body:JSON.stringify({username:'bodycafe.com',password:'wrong-password'})});assert.equal(response.status,403);checks++;
+response=await request('/admin/login',{method:'POST',headers:{Cookie:cookies,'X-CSRF-Token':session.csrf},body:JSON.stringify({username:'bodycafe.com',password:'qa-current-password'})});assert.equal(response.status,200);const loginCookies=response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');checks++;
+response=await request('/admin/session',{headers:{Cookie:loginCookies}});let loginSession=await response.json();assert.equal(loginSession.user.role,'admin');checks++;
+response=await request('/admin/password',{method:'POST',headers:{Cookie:loginCookies,'X-CSRF-Token':loginSession.csrf},body:JSON.stringify({current_password:'qa-current-password',new_password:'qa-replacement-password-123'})});assert.equal(response.status,200);checks++;
+response=await request('/admin',{headers:{Cookie:loginCookies}});assert.equal(response.status,403);checks++;
+assert.ok(calls.every(c=>!JSON.stringify(c.opts.body||'').includes('test-service-secret')));checks++;
+console.log(`${checks} hosted API, authorization, sales and image checks passed.`);

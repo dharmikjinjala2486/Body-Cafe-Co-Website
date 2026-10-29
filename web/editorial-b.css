@@ -1,0 +1,40 @@
+/* Editorial image placement for the finalized B direction only. */
+body[data-theme="b"] .bi-art { margin: 0; min-width: 0; }
+body[data-theme="b"] .bi-art img { width: 100%; height: auto; display: block; border-radius: 24px; }
+body[data-theme="b"] .bi-art figcaption { font-size: 12px; line-height: 1.5; padding: 12px 2px 0; color: #48413b; }
+body[data-theme="b"] .tb-hero-art.bi-hero-art { min-height: 0; aspect-ratio: auto; display: grid; align-content: center; background: #35306f; }
+body[data-theme="b"] .bi-hero-art picture { display: block; width: 100%; }
+body[data-theme="b"] .bi-hero-art picture img { display: block; width: 100%; height: auto; }
+body[data-theme="b"] .bi-hero-links { display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 13px 22px; font-size: 12px; color: #f2ecdf; background: #35306f; }
+body[data-theme="b"] .bi-hero-links a { text-underline-offset: 4px; }
+body[data-theme="b"] .bi-voices-art { margin-top: 24px; max-width: 540px; }
+body[data-theme="b"] .bi-faq-art { max-width: 360px; margin-top: 28px; }
+body[data-theme="b"] .tb-duo-photos.bi-bundle-art { min-height: 0; display: flex; align-items: center; overflow: hidden; border-radius: 28px; }
+body[data-theme="b"] .bi-bundle-art > img { display: block; width: 100%; height: auto; object-fit: contain; }
+body[data-theme="b"] .tb-edit-hero .bi-bundle-art { align-self: center; }
+body[data-theme="b"] .bi-header-art { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,.8fr); gap: 32px; align-items: center; }
+body[data-theme="b"] .bi-header-art > :first-child { min-width: 0; max-width: 100%; }
+body[data-theme="b"] .bi-header-art > .bi-art { align-self: center; }
+body[data-theme="b"] .lr-b .lr-hero-in, body[data-theme="b"] .lr-b .lr-ahead-in { width: 100%; margin-inline: 0; }
+body[data-theme="b"] .lr-b .bi-guide-cover { aspect-ratio: 8 / 5; min-height: 0; padding: 0; overflow: hidden; }
+body[data-theme="b"] .lr-b .bi-guide-cover img { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; rotate: none; transform: none; }
+body[data-theme="b"] .bi-cover-link { display: block; overflow: hidden; border-radius: 16px; margin-bottom: 18px; }
+body[data-theme="b"] .bi-cover-link img { width: 100%; height: auto; display: block; aspect-ratio: 8 / 5; object-fit: cover; }
+body[data-theme="b"] .bi-about-identity { width: 100%; }
+body[data-theme="b"] .bi-about-curiosity { margin-top: 32px; max-width: 850px; }
+body[data-theme="b"] .bi-help-copy { min-width: 0; }
+@media (max-width: 1000px) {
+ body[data-theme="b"] .bi-header-art { grid-template-columns: minmax(0,1fr); gap: 28px; }
+ body[data-theme="b"] .bi-header-art > .bi-art { width: 100%; max-width: 700px; justify-self: center; }
+}
+@media (max-width: 640px) {
+ body[data-theme="b"] .bi-art img { border-radius: 20px; }
+ body[data-theme="b"] .bi-faq-art { max-width: 100%; }
+ body[data-theme="b"] .bi-hero-links { gap: 12px 20px; padding-inline: 16px; }
+ body[data-theme="b"] .tb-duo-photos.bi-bundle-art { border-radius: 22px; }
+}
+/* Learn headers carry their padding on the text column, so give the art the matching outer gutter. */
+body[data-theme="b"] .lr-b .bi-header-art > .bi-art { margin: 32px var(--pad,64px) 32px 0; }
+@media (max-width: 1000px) {
+ body[data-theme="b"] .lr-b .bi-header-art > .bi-art { width: auto; max-width: none; justify-self: stretch; margin: 0 var(--pad,24px) 32px; }
+}

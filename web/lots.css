@@ -416,3 +416,5 @@ details[open] > summary .lt-plus { transform: rotate(45deg); }
 .lot-docs ul { display: grid; gap: 6px; }
 .lot-docs small { display: block; }
 @media (max-width: 800px) { .lot-start { grid-template-columns: 1fr; } }
+
+.lt-report-image{margin:18px 0;max-width:700px}.lt-report-image img{display:block;width:100%;max-height:700px;object-fit:contain;background:#f7f5fa;border:1px solid #e3ddea;border-radius:8px}.lt-report-image figcaption{margin-top:9px;font-size:13px;color:#514660}

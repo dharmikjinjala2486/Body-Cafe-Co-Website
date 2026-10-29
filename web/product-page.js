@@ -44,6 +44,8 @@
      not used: their printed wording differs from the approved front mockups. */
   function images(p) {
     var name = p.name;
+    if (p.gallery && p.gallery.length) return p.gallery.map(function(g,i){return {kind:"front",src:attr(g.src),w:g.w||1000,h:g.h||1000,alt:attr(g.alt||p.name),label:attr(g.label||"Product image "+(i+1)),caption:attr(g.caption||g.alt||p.name)};});
+    if (!Object.prototype.hasOwnProperty.call(IMG_W,p.id)) return [{kind:"front",src:"/web/media/product-placeholder.svg",w:800,h:1000,alt:attr(name),label:"Product image",caption:"Product image awaiting upload"}];
     var list = [
       { kind: "front", src: window.BCCBottleAssets.url(p.id), ...window.BCCBottleAssets.dimensions(p.id, IMG_W[p.id] || 715, 1000), alt: name + ", front of the bottle (draft packaging)", label: "Front of the bottle", caption: DRAFT },
       { kind: "cap", src: "/web/media/renders/" + p.id + "-cap.webp", w: 400, h: 400, alt: name + " cap, seen from above", label: "Cap colour, from above", caption: "Each product has its own cap colour. Studio render." },
@@ -82,20 +84,25 @@
   function model(ctx, p) {
     var idx = Math.max(0, ctx.catalog.indexOf(p));
     var notes = (S.notes && S.notes[p.id]) || { lead: "", check: [], compound: "", sources: [] };
+    notes = Object.assign({},notes);
+    if (p.ingredient_note) notes.compound=esc(ctx,p.ingredient_note);
+    if (p.ingredient_checks) notes.check=p.ingredient_checks.split("\n").filter(Boolean).map(function(line){var parts=line.split("|");return [esc(ctx,parts[0].trim()),esc(ctx,parts.slice(1).join("|").trim())];});
+    if (Array.isArray(p.sources)) notes.sources=p.sources.map(function(source){return [esc(ctx,source.title),esc(ctx,source.url)];});
     var f = FACTS[p.id] || {};
     var raw = String(p.ingredients || "");
     var off = !p.published ? "unpublished" : !(p.stock > 0) ? "stock" : "";
     var published = ctx.catalog.filter(function (x) { return x.published && x.id !== p.id; });
     var after = published.filter(function (x) { return ctx.catalog.indexOf(x) > idx; });
     var confirm = ((window.BCCProductPage && window.BCCProductPage.toConfirm && window.BCCProductPage.toConfirm[p.id]) || []).concat(["Complete ingredient list, allergens, storage and manufacturer details"]);
+    if (p.label_checklist) confirm=p.label_checklist.split("\n").filter(Boolean).map(function(line){return esc(ctx,line);});
     var rating = p.rating || { count: 0, average: null };
     return {
       p: p, ctx: ctx, id: p.id, n: idx + 1, no: pad(idx + 1), total: pad(ctx.catalog.length),
-      name: esc(ctx, p.name), sub: esc(ctx, p.subtitle), format: esc(ctx, ctx.format[p.id] || ""), category: esc(ctx, p.category || ""),
-      inView: esc(ctx, raw.split(";")[0]), formulationPending: !!f.formulationPending, flavourPending: !!f.flavourPending, allergenNote: f.allergenNote || "",
+      name: esc(ctx, p.name), sub: esc(ctx, p.subtitle), format: esc(ctx, p.format || ctx.format[p.id] || ""), category: esc(ctx, p.category || ""),
+      inView: esc(ctx, raw.split(";")[0]), formulationPending: !!f.formulationPending, flavourPending: !!f.flavourPending, allergenNote: p.allergens ? esc(ctx,p.allergens) : f.allergenNote || "",
       price: ctx.money(p.price), off: off, stock: p.stock, max: off ? 1 : Math.max(1, Math.min(5, p.stock)),
       sample: "DEMO-" + pad(idx + 1) + "-01", notes: notes, confirm: confirm, images: images(p), rating: rating,
-      related: after.concat(published.filter(function (x) { return ctx.catalog.indexOf(x) < idx; })).slice(0, 3),
+      related: Array.isArray(p.related_product_ids) ? p.related_product_ids.map(function(id){return published.find(function(x){return x.id===id;});}).filter(Boolean) : after.concat(published.filter(function (x) { return ctx.catalog.indexOf(x) < idx; })).slice(0, 3),
       color: p.color, staticPreview: !!ctx.staticPreview,
     };
   }
@@ -127,8 +134,8 @@
     return '<form id="pincode-form" class="pp-pincode" novalidate><label for="pincode">Check delivery to your pincode</label><div class="pp-inline"><input id="pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" pattern="[1-9][0-9]{5}" maxlength="6" placeholder="6-digit pincode" required aria-describedby="pincode-help pincode-result"><button type="submit">Check</button></div><p id="pincode-help" class="pp-micro">' + COPY.delivery + '</p><p id="pincode-result" class="pp-micro pp-result" role="status"></p></form>';
   }
   function packFacts(m) {
-    var pack = window.BCCDemo && window.BCCDemo.packInfo(m.id);
-    return '<dl class="pp-pack"><div><dt>Format</dt><dd>' + m.format + "</dd></div><div><dt>Pack quantity</dt><dd" + (pack ? ' data-pack-status="demo"' : ' class="is-pending"') + ">" + (pack ? pack.label : PENDING) + "</dd></div><div><dt>Serving size</dt><dd class=\"is-pending\">" + PENDING + "</dd></div><div><dt>Servings per pack</dt><dd class=\"is-pending\">" + PENDING + "</dd></div></dl>";
+    var pack = m.p.pack_size ? {label:esc(m.ctx,m.p.pack_size),status:"catalog"} : window.BCCDemo && window.BCCDemo.packInfo(m.id);
+    return '<dl class="pp-pack"><div><dt>Format</dt><dd>' + m.format + "</dd></div><div><dt>Pack quantity</dt><dd" + (pack ? ' data-pack-status="catalog"' : ' class="is-pending"') + ">" + (pack ? pack.label : PENDING) + "</dd></div><div><dt>Serving size</dt><dd class=\"is-pending\">" + (m.p.serving_size ? esc(m.ctx,m.p.serving_size) : PENDING) + "</dd></div><div><dt>Servings per pack</dt><dd class=\"is-pending\">" + (m.p.servings_per_pack ? esc(m.ctx,m.p.servings_per_pack) : PENDING) + "</dd></div></dl>";
   }
   function quickLinks() {
     return '<nav class="pp-quick" aria-label="On this page"><a href="#ingredients">Ingredients</a><a href="#use">How to use</a><a href="#reviews">Reviews</a><a href="#quality">Lot report</a></nav>';
@@ -181,28 +188,28 @@
   }
 
   function overview(m) {
-    return lead(m.notes.lead || m.sub) +
-      factRows([["Format", m.format], ["Ingredient in view", m.inView + (m.formulationPending ? " (complete formulation pending)" : "")], ["Collection", m.category], ["Purchase", "One-time purchase"]], "pp-facts pp-facts-overview") +
-      '<p class="pp-status"><strong>Purpose.</strong> ' + COPY.purpose + "</p>";
+    return lead(m.p.description ? esc(m.ctx,m.p.description) : m.notes.lead || m.sub) +
+      factRows([["Format", m.format], ["Pack size", esc(m.ctx,m.p.pack_size || PENDING)], ["Ingredient in view", m.inView + (m.formulationPending ? " (complete formulation pending)" : "")], ["Collection", m.category], ["Purchase", "One-time purchase"]], "pp-facts pp-facts-overview") +
+      '<p class="pp-status"><strong>Purpose.</strong> ' + (m.p.purpose ? esc(m.ctx,m.p.purpose) : COPY.purpose) + "</p>";
   }
   function ingredients(m) {
     var rows = [
-      ["Ingredients and forms", "In view: " + m.inView + ". The complete list with each ingredient's form comes from the approved label.", false],
-      ["Amount per serving", PENDING, true],
-      ["Serving size", PENDING, true],
-      ["Servings per pack", PENDING, true],
-      ["Other ingredients and " + (m.p.id === "creatine-chews" ? "chew base" : "capsule or softgel shell"), PENDING, true],
+      ["Ingredients and forms", m.p.ingredients ? esc(m.ctx,m.p.ingredients) : "In view: " + m.inView, false],
+      ["Amount per serving", m.p.amount_per_serving ? esc(m.ctx,m.p.amount_per_serving) : PENDING, !m.p.amount_per_serving],
+      ["Serving size", m.p.serving_size ? esc(m.ctx,m.p.serving_size) : PENDING, !m.p.serving_size],
+      ["Servings per pack", m.p.servings_per_pack ? esc(m.ctx,m.p.servings_per_pack) : PENDING, !m.p.servings_per_pack],
+      ["Other ingredients and " + (m.p.id === "creatine-chews" ? "chew base" : "capsule or softgel shell"), m.p.other_ingredients ? esc(m.ctx,m.p.other_ingredients) : PENDING, !m.p.other_ingredients],
     ];
-    if (m.flavourPending) rows.push(["Flavour and sweeteners", PENDING, true]);
-    rows.push(["Nutrition information", PENDING, true]);
-    rows.push(["Allergens", m.allergenNote ? m.allergenNote + " Full allergen statement: " + PENDING.toLowerCase() + "." : PENDING, !m.allergenNote]);
-    rows.push(["Dietary suitability", PENDING, true]);
-    rows.push(["Manufacturer and licence details", PENDING, true]);
+    if (m.flavourPending || m.p.flavour_sweeteners) rows.push(["Flavour and sweeteners", m.p.flavour_sweeteners ? esc(m.ctx,m.p.flavour_sweeteners) : PENDING, !m.p.flavour_sweeteners]);
+    rows.push(["Nutrition information", m.p.nutrition_information ? esc(m.ctx,m.p.nutrition_information) : PENDING, !m.p.nutrition_information]);
+    rows.push(["Allergens", m.p.allergens ? esc(m.ctx,m.p.allergens) : m.allergenNote || PENDING, !m.allergenNote]);
+    rows.push(["Dietary suitability", m.p.dietary_suitability ? esc(m.ctx,m.p.dietary_suitability) : PENDING, !m.p.dietary_suitability]);
+    rows.push(["Manufacturer and licence details", m.p.manufacturer_details ? esc(m.ctx,m.p.manufacturer_details) : PENDING, !m.p.manufacturer_details]);
     return lead("What's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.") +
       factRows(rows, "pp-facts pp-facts-label") +
       '<div class="pp-cols">' +
         '<div>' + sub("What the approved label will state") + '<ul class="pp-list">' + m.confirm.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ul></div>" +
-        '<div>' + sub("Rear label") + '<p class="pp-p">The approved rear label is not available in this preview. When supplied, it will appear here and in the gallery, with an option to enlarge it.</p></div>' +
+        '<div>' + sub("Rear label") + '<p class="pp-p">' + (m.p.rear_label_note ? esc(m.ctx,m.p.rear_label_note) : 'The approved rear label is not available in this preview. When supplied, it will appear here and in the gallery, with an option to enlarge it.') + '</p></div>' +
       "</div>" +
       (m.notes.compound ? '<aside class="pp-aside"><p class="pp-aside-k">Reading this ingredient</p><p>' + m.notes.compound + "</p>" + sources(m.notes.sources) + "</aside>" : "");
   }
@@ -210,13 +217,13 @@
     var checks = (m.notes.check || []).slice(0, 4);
     return lead("Approved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.") +
       factRows([
-        ["Recommended use", COPY.directions, true],
-        ["Preparation", PENDING, true],
-        ["Age", COPY.age],
-        ["Suitability", PENDING, true],
-        ["Cautions and interactions", PENDING + ". " + S.CARE_NOTE, true],
-        ["Allergens", m.allergenNote || PENDING, !m.allergenNote],
-        ["Storage", COPY.storage, true],
+        ["Recommended use", m.p.directions ? esc(m.ctx,m.p.directions) : COPY.directions, !m.p.directions],
+        ["Preparation", m.p.preparation ? esc(m.ctx,m.p.preparation) : PENDING, !m.p.preparation],
+        ["Age", m.p.age_guidance ? esc(m.ctx,m.p.age_guidance) : COPY.age],
+        ["Suitability", m.p.suitability ? esc(m.ctx,m.p.suitability) : PENDING, !m.p.suitability],
+        ["Cautions and interactions", m.p.warnings ? esc(m.ctx,m.p.warnings) : PENDING + ". " + S.CARE_NOTE, !m.p.warnings],
+        ["Allergens", m.p.allergens ? esc(m.ctx,m.p.allergens) : m.allergenNote || PENDING, !m.p.allergens && !m.allergenNote],
+        ["Storage", m.p.storage ? esc(m.ctx,m.p.storage) : COPY.storage, !m.p.storage],
       ], "pp-facts pp-facts-use") +
       (checks.length ? sub("What to check on the label") + '<ul class="pp-checks">' + checks.map(function (c) { return "<li><strong>" + c[0] + "</strong><span>" + c[1] + "</span></li>"; }).join("") + "</ul>" : "") +
       '<p class="pp-safety"><strong>Something wrong with a product?</strong> <a href="/contact?kind=safety">Report a safety concern privately</a>. It opens a priority support case, separate from reviews.</p>';
@@ -224,11 +231,11 @@
   function quality(m) {
     return lead("Sourcing, testing and documents are shown here only when they're confirmed for this product.") +
       factRows([
-        ["Ingredient sourcing", "Not yet published", true],
-        ["Manufacturer", "Not yet published", true],
-        ["Testing performed", "No test results published", true],
-        ["Supporting documents", "None published", true],
-        ["Certifications", "None claimed", true],
+        ["Ingredient sourcing", m.p.ingredient_sourcing ? esc(m.ctx,m.p.ingredient_sourcing) : "Not yet published", !m.p.ingredient_sourcing],
+        ["Manufacturer", m.p.manufacturer ? esc(m.ctx,m.p.manufacturer) : "Not yet published", !m.p.manufacturer],
+        ["Testing performed", m.p.testing_performed ? esc(m.ctx,m.p.testing_performed) : "No test results published", !m.p.testing_performed],
+        ["Supporting documents", m.p.supporting_documents ? esc(m.ctx,m.p.supporting_documents) : "None published", !m.p.supporting_documents],
+        ["Certifications", m.p.certifications ? esc(m.ctx,m.p.certifications) : "None claimed", !m.p.certifications],
       ], "pp-facts pp-facts-quality") +
       '<div class="pp-lotbox"><h3 class="pp-sub-h">Find a lot report</h3><p class="pp-p">Enter the lot number printed on your pack of ' + m.name + '. It\'s different from the barcode and your order number.</p>' +
       '<form id="pdp-lot" class="pp-lotform"><input type="hidden" name="product" value="' + m.id + '"><label for="pdp-lot-number">Lot number on your pack</label><div class="pp-inline"><input id="pdp-lot-number" name="lot" maxlength="60" required autocomplete="off" placeholder="e.g. ' + m.sample + '"><button type="submit">Find a lot report</button></div>' +
@@ -249,10 +256,11 @@
       "</div>";
   }
   function productFaqs(m) {
-    var pack = window.BCCDemo && window.BCCDemo.packInfo(m.id);
+    var pack = m.p.pack_size ? {label:esc(m.ctx,m.p.pack_size),status:"catalog"} : window.BCCDemo && window.BCCDemo.packInfo(m.id);
+    if (Array.isArray(m.p.faqs)) return m.p.faqs.map(function(f){return [esc(m.ctx,f.question),esc(m.ctx,f.answer)];});
     return [
       ["How much is in each serving?", "Amounts per serving come from the approved rear label, which hasn't been supplied yet. This page doesn't suggest a dose."],
-      ["How many " + (m.format ? m.format.toLowerCase() : "units") + " are in a pack?", pack ? pack.description : "The pack quantity will come from the approved label. The count printed on the draft packaging image isn't confirmed."],
+      ["How many " + (m.format ? m.format.toLowerCase() : "units") + " are in a pack?", m.p.pack_size ? esc(m.ctx,m.p.pack_size) : pack ? pack.description : "The pack quantity will come from the approved label. The count printed on the draft packaging image isn't confirmed."],
       ["Where's the lot number on my pack?", "A guide will be added with the final rear label. Your lot number is different from your order number or the barcode."],
       ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved."],
     ];
@@ -375,6 +383,11 @@
     lightboxBehaviour(root, on);
     reviewsBehaviour(root, on, product, signal);
     questionsBehaviour(root, on, product, signal);
+    var flags = App() && App().flags ? App().flags() : {};
+    if (flags.questions === false) {
+      var questionForm = root.querySelector("#pp-question-form");
+      if (questionForm) { questionForm.querySelectorAll("input,textarea,button").forEach(function(el){el.disabled=true;}); questionForm.insertAdjacentHTML("beforebegin",'<p class="pp-micro">Question submissions are temporarily paused.</p>'); }
+    }
     cleanup = function () {
       abort.abort();
       observers.forEach(function (o) { o.disconnect(); });

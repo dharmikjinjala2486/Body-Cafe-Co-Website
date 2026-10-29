@@ -1,3 +1,4 @@
+from app.test_identity import fixture_identity
 """Support: case routing and contact details, follow-up, help feedback, cancellation checks, return requests,
 privacy requests and the personal-data export."""
 import json
@@ -54,7 +55,7 @@ class SupportTests(unittest.TestCase):
     def test_reply_reopens_resolved_case_and_admin_note_is_visible(self):
         c = self.store.case(self.guest, {'kind': 'general', 'message': 'A general question here.', 'contact': {'name': 'Asha', 'mobile': '9876543210'}})
         admin = self.store.session('')[0]
-        self.store.login(admin, {'identity': 'admin-a'}); admin = self.store.session(admin['id'])[0]
+        fixture_identity(self.store, admin, {'identity': 'admin-a'}); admin = self.store.session(admin['id'])[0]
         self.store.admin(admin, 'case', {'id': c['id'], 'state': 'resolved', 'note': 'Answered by phone.'})
         v = self.store.case_view(self.guest, c['id'])
         self.assertEqual((v['state'], v['history'][-1]['note']), ('resolved', 'Answered by phone.'))

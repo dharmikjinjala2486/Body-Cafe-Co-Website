@@ -1,3 +1,9 @@
+# Current build — Variant B and admin portal
+
+The active storefront is Variant B. The operations portal uses one credential login (`bodycafe.com`). The connected Netlify build routes `/api/*` to the Supabase operations Edge Function. See [hosting configuration](NETLIFY.md), [Supabase migration and verification](SUPABASE-DEPLOYMENT.md), and [local portal implementation](ADMIN-PORTAL-IMPLEMENTATION.md).
+
+Live payments, customer OTP, courier booking and external messaging are not configured; hosted ordering stays paused. The local Python/SQLite preview remains available separately. The earlier release notes below describe historical builds.
+
 # Account, Cart, Support and Policies — 23 October 2026
 
 Claude’s Account/Cart and Support/Policies packages are integrated across A–H. They add a server-quoted bag, preview sign-in and account journeys, Help search, contextual private cases and replies, preferences, and clearly marked draft policies. Netlify keeps backend-dependent actions unavailable. See [Account/Cart](ACCOUNT-CART-IMPLEMENTATION.md), [Support/Policies](SUPPORT-POLICIES-IMPLEMENTATION.md) and [independent release checks](design-review/ACCOUNT-SUPPORT-RELEASE-2026-10-23.md).

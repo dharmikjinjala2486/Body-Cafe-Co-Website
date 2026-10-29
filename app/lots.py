@@ -1,21 +1,10 @@
-"""Lot reports: versioned, reviewed records that connect a product and manufacturing lot to its laboratory evidence.
+"""Versioned product-and-lot reports managed by the single admin.
 
-Three statuses are kept apart on purpose:
-  * document availability  — published / under_review / unavailable / withdrawn (+ superseded versions in history)
-  * test assessment        — per result row: meets / does_not_meet / not_assessed; an assessment is only accepted when the
-                             row states the specification it was read against and that specification's source
-  * batch notice           — a confirmed restriction, withdrawal or instruction for the batch, activated only after a
-                             second Admin approves it. Internal quarantine (the release workflow) is never shown publicly.
-
-Publication workflow: an Admin drafts a version for an existing product-and-lot batch, attaches the laboratory PDF
-(checked from its bytes, hashed, stored outside the web root), transcribes the report and submits it. A different Admin
-approves or rejects it through the existing approvals ledger. Publishing a new version supersedes the previous one and
-keeps it, with its reason, in the public history. Withdrawals and batch notices go through the same two-person
-approval. Every step is audited. Nothing uploaded becomes public until its version is published.
-
-Lots whose number begins with DEMO- are demonstrations. Seeded demonstration lots carry no laboratory, result, date or
-file. Operations may rehearse the workflow on them; anything published for a DEMO- lot is still returned with demo=True
-and the page labels it as a demonstration record, never as real testing.
+Drafts accept PDF and image evidence stored outside the web root. The admin
+chooses public sections and publishes directly. Replacements retain the prior
+published version and explain corrections; withdrawals retain their reason.
+Files become public only with a published version. Seeded DEMO lots are
+explicitly labelled demonstrations, never evidence of real testing.
 """
 import hashlib
 import json
@@ -90,6 +79,12 @@ def validate_record(data):
     if not isinstance(data, dict):
         raise LotError('Invalid record.')
     out = {}
+    out['title'] = _s(data.get('title'),160) or None
+    presentation = data.get('presentation')
+    if presentation is None:
+        presentation = {'show_summary':True,'show_results':bool(data.get('results')),'show_lab':bool((data.get('lab') or {}).get('name')),'show_dates':bool((data.get('dates') or {}).get('issued')),'show_documents':True}
+    if not isinstance(presentation,dict) or any(type(v)!=bool for v in presentation.values()):raise LotError('Choose valid report display options.')
+    out['presentation']={k:presentation.get(k,False) for k in ('show_summary','show_results','show_lab','show_dates','show_documents')}
     out['formulation_version'] = _s(data.get('formulation_version'), 80) or None
     out['manufactured'] = _date(data.get('manufactured'), 'Manufacturing date')
     out['expiry'] = _date(data.get('expiry'), 'Expiry date')
@@ -316,7 +311,7 @@ class LotsMixin:
             self.log(c, s['user_id'], 'lot_report_drafted', rid)
             return {'id': rid, 'version': version}
         r = None
-        if action in ('lot_update', 'lot_submit', 'lot_discard', 'lot_withdraw_request', 'lot_document_remove'):
+        if action in ('lot_update', 'lot_discard', 'lot_document_remove'):
             target = data.get('report') if action == 'lot_document_remove' else data.get('id')
             r = c.execute('SELECT * FROM lot_reports WHERE id=?', (target,)).fetchone()
             if not r:
@@ -335,112 +330,23 @@ class LotsMixin:
             if not d:
                 raise LotError('Document not found.', 404)
             c.execute('DELETE FROM lot_documents WHERE id=?', (d['id'],))
-            (self.lot_dir / (d['id'] + '.pdf')).unlink(missing_ok=True)
+            meta=c.execute('SELECT ext FROM lot_document_meta WHERE document=?',(d['id'],)).fetchone()
+            (self.lot_dir / (d['id'] + (meta['ext'] if meta else '.pdf'))).unlink(missing_ok=True)
+            c.execute('DELETE FROM lot_document_meta WHERE document=?',(d['id'],))
             self.log(c, s['user_id'], 'lot_document_removed', d['id'])
             return {'ok': True}
         if action == 'lot_discard':
             if r['state'] != 'draft':
                 raise LotError('Only a draft can be discarded.', 409)
             for d in c.execute('SELECT id FROM lot_documents WHERE report_id=?', (r['id'],)).fetchall():
-                (self.lot_dir / (d['id'] + '.pdf')).unlink(missing_ok=True)
+                meta=c.execute('SELECT ext FROM lot_document_meta WHERE document=?',(d['id'],)).fetchone()
+                (self.lot_dir / (d['id'] + (meta['ext'] if meta else '.pdf'))).unlink(missing_ok=True)
+                c.execute('DELETE FROM lot_document_meta WHERE document=?',(d['id'],))
             c.execute('DELETE FROM lot_documents WHERE report_id=?', (r['id'],))
             c.execute('DELETE FROM lot_reports WHERE id=?', (r['id'],))
             self.log(c, s['user_id'], 'lot_report_discarded', r['id'])
             return {'ok': True}
-        if action == 'lot_submit':
-            if r['state'] != 'draft':
-                raise LotError('Only a draft can be submitted.', 409)
-            rec = validate_record(json.loads(r['data'] or '{}'))
-            missing = [label for ok, label in [
-                (c.execute('SELECT 1 FROM lot_documents WHERE report_id=?', (r['id'],)).fetchone(), 'a source document'),
-                (rec['lab']['name'], 'the issuing laboratory'), (rec['lab_report_no'], 'the laboratory report number'),
-                (rec['dates']['issued'], 'the report issue date'), (rec['sample']['type'], 'what material was tested'),
-                (rec['summary'], 'a reviewed plain-language summary'),
-                (r['version'] == 1 or rec['change_note'], 'what changed from the previous version'),
-                (rec['lab']['accreditation']['covers'] or not rec['lab']['accreditation']['certificate'], 'whether the accreditation scope covers these tests'),
-            ] if not ok]
-            if missing:
-                raise LotError('Before review, add ' + ', '.join(missing) + '.')
-            if c.execute("SELECT 1 FROM approvals WHERE kind='report_publish' AND target=? AND state='pending'", (r['id'],)).fetchone():
-                raise LotError('This version is already awaiting approval.', 409)
-            aid = 'APR-' + secrets.token_hex(4).upper()
-            c.execute('INSERT INTO approvals VALUES(?,?,?,?,?,?,?,?)', (aid, s['user_id'], 'report_publish', r['id'],
-                      json.dumps({'value': {'product': r['product'], 'lot': r['lot'], 'version': r['version']}, 'reason': _s(data.get('reason'), 500)}), 'pending', None, int(time.time())))
-            c.execute("UPDATE lot_reports SET state='in_review',submitted_by=?,updated=? WHERE id=?", (s['user_id'], int(time.time()), r['id']))
-            self.log(c, s['user_id'], 'lot_report_submitted', r['id'])
-            return {'id': aid}
-        if action == 'lot_withdraw_request':
-            if r['state'] != 'published':
-                raise LotError('Only the published version can be withdrawn.', 409)
-            reason = _s(data.get('reason'), 600)
-            if len(reason) < 10:
-                raise LotError('Explain publicly why the report is withdrawn (at least 10 characters).')
-            return self.lot_request(c, s, 'report_withdraw', r['id'], {'reason': reason})
-        if action == 'lot_notice_request':
-            product = _s(data.get('product'), 60)
-            lot = _s(data.get('lot'), LOT_MAX)
-            batch = c.execute('SELECT * FROM batches WHERE id=?', (lot,)).fetchone()
-            if not batch or batch['product'] != product:
-                raise LotError('Choose a lot from the batch register for this product.', 404)
-            kind = _s(data.get('kind'), 20)
-            if kind not in NOTICE_KINDS:
-                raise LotError('Choose the kind of notice.')
-            title, body = _s(data.get('title'), 160), _s(data.get('body'), 2000)
-            if len(title) < 5 or len(body) < 20:
-                raise LotError('A notice needs a title and the approved instructions for customers.')
-            return self.lot_request(c, s, 'lot_notice', product + '/' + lot, {'product': product, 'lot': lot, 'kind': kind, 'title': title, 'body': body})
-        if action == 'lot_notice_retire_request':
-            n = c.execute("SELECT * FROM lot_notices WHERE id=? AND state='active'", (data.get('id'),)).fetchone()
-            if not n:
-                raise LotError('Active notice not found.', 404)
-            reason = _s(data.get('reason'), 600)
-            if len(reason) < 10:
-                raise LotError('Explain why the notice is being retired.')
-            return self.lot_request(c, s, 'lot_notice_retire', n['id'], {'reason': reason})
         raise LotError('Unknown operation.', 404)
-
-    def lot_request(self, c, s, kind, target, value):
-        if c.execute("SELECT id FROM approvals WHERE kind=? AND target=? AND state='pending'", (kind, target)).fetchone():
-            raise LotError('A request for this change is already awaiting approval.', 409)
-        aid = 'APR-' + secrets.token_hex(4).upper()
-        c.execute('INSERT INTO approvals VALUES(?,?,?,?,?,?,?,?)', (aid, s['user_id'], kind, target, json.dumps({'value': value, 'reason': value.get('reason', '')}), 'pending', None, int(time.time())))
-        self.log(c, s['user_id'], 'approval_requested', aid)
-        return {'id': aid}
-
-    def lot_resolve(self, c, s, approval, approve):
-        """Apply (or reject) an approved lot-report change. Called from the existing approvals flow."""
-        kind, target = approval['kind'], approval['target']
-        value = json.loads(approval['payload']).get('value') or {}
-        now = int(time.time())
-        if kind == 'report_publish':
-            r = c.execute('SELECT * FROM lot_reports WHERE id=?', (target,)).fetchone()
-            if not r or r['state'] != 'in_review':
-                raise LotError('This version is no longer awaiting review.', 409)
-            if not approve:
-                c.execute("UPDATE lot_reports SET state='draft',updated=?,review_note=? WHERE id=?", (now, 'Returned by reviewer', r['id']))
-                self.log(c, s['user_id'], 'lot_report_returned', r['id'])
-                return
-            prev = c.execute("SELECT * FROM lot_reports WHERE product=? AND lot=? AND state='published'", (r['product'], r['lot'])).fetchone()
-            if prev:
-                c.execute("UPDATE lot_reports SET state='superseded',superseded=?,superseded_by=? WHERE id=?", (now, r['id'], prev['id']))
-            c.execute("UPDATE lot_reports SET state='published',approved_by=?,published=?,updated=? WHERE id=?", (s['user_id'], now, now, r['id']))
-            self.log(c, s['user_id'], 'lot_report_published', r['id'])
-        elif kind == 'report_withdraw':
-            r = c.execute('SELECT * FROM lot_reports WHERE id=?', (target,)).fetchone()
-            if approve:
-                if not r or r['state'] != 'published':
-                    raise LotError('This version is no longer published.', 409)
-                c.execute("UPDATE lot_reports SET state='withdrawn',withdrawn=?,withdrawn_reason=?,updated=? WHERE id=?", (now, value.get('reason'), now, r['id']))
-                self.log(c, s['user_id'], 'lot_report_withdrawn', r['id'])
-        elif kind == 'lot_notice':
-            if approve:
-                nid = 'LN-' + secrets.token_hex(4).upper()
-                c.execute('INSERT INTO lot_notices VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)', (nid, value['product'], value['lot'], value['kind'], value['title'], value['body'], 'active', approval['creator'], s['user_id'], approval['created'], now, None, None))
-                self.log(c, s['user_id'], 'lot_notice_activated', nid)
-        elif kind == 'lot_notice_retire':
-            if approve:
-                c.execute("UPDATE lot_notices SET state='retired',retired=?,retired_reason=? WHERE id=? AND state='active'", (now, value.get('reason'), target))
-                self.log(c, s['user_id'], 'lot_notice_retired', target)
 
     def lot_upload(self, s, rid, raw, title, kind, redacted, note):
         self.require(s, 'admin')

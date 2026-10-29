@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test-postgres.mjs && node test-api.mjs && node test-media.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.12"
+  }
+}

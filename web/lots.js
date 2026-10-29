@@ -196,6 +196,14 @@
       ["Report issued by the laboratory", nd(day(d.issued))], ["Published here", cur ? h(day(cur.published)) + (cur.version ? " · version " + cur.version : "") : nd(null, "Not published")],
       ["Commissioned by", nd(rec && rec.commissioned_by)],
     ];
+    if(rec && rec.presentation){
+      var options=rec.presentation;
+      rows=rows.filter(function(row){
+        if(!options.show_dates && ['Manufactured','Expiry','Sampled','Tested','Report issued by the laboratory'].includes(row[0]))return false;
+        if(!options.show_lab && ['Material tested','Laboratory report number','Laboratory sample reference','Commissioned by'].includes(row[0]))return false;
+        return true;
+      });
+    }
     return '<dl class="lt-facts">' + rows.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + x[1] + "</dd></div>"; }).join("") + "</dl>";
   }
   function resultsTable(rec, cur) {
@@ -216,10 +224,10 @@
     var docs = (cur && cur.documents) || [];
     if (!docs.length) return '<p class="lt-empty">No public source document for this lot yet.</p>';
     return '<ul class="lt-docs">' + docs.map(function (d) {
-      var base = "/api/lots/documents/" + h(d.id);
-      return '<li class="lt-doc"><div><p class="lt-doc-k">' + h(DOCKIND[d.kind] || "Document") + " · PDF · " + bytes(d.bytes) + "</p><h4>" + h(d.title) + "</h4>" + (d.redacted ? '<p class="lt-redact"><strong>Redacted copy.</strong> ' + h(d.redaction_note || "") + " Scientific results and qualifiers are not altered.</p>" : "") +
+      var base = "/api/lots/documents/" + h(d.id); var isImage=(d.mime||"application/pdf").indexOf("image/")===0;
+      return '<li class="lt-doc"><div><p class="lt-doc-k">' + h(DOCKIND[d.kind] || "Document") + (isImage ? " · Image · " : " · PDF · ") + bytes(d.bytes) + "</p><h4>" + h(d.title) + "</h4>" + (isImage ? '<figure class="lt-report-image"><a href="'+base+'" target="_blank" rel="noopener"><img src="'+base+'" alt="'+h(d.caption||d.title)+'" loading="lazy"></a>'+(d.caption?'<figcaption>'+h(d.caption)+'</figcaption>':'')+'</figure>' : "") + (d.redacted ? '<p class="lt-redact"><strong>Redacted copy.</strong> ' + h(d.redaction_note || "") + " Scientific results and qualifiers are not altered.</p>" : "") +
         '<details class="lt-hash"><summary>File fingerprint (SHA-256)</summary><code>' + h(d.sha256) + "</code><p>If you download the file, this fingerprint lets you check it's the same file we published.</p></details></div>" +
-        '<div class="lt-doc-actions"><a class="lt-btn" href="' + base + '" target="_blank" rel="noopener">View PDF<span class="lt-sr"> (' + h(d.title) + ', opens in a new tab)</span></a><a class="lt-btn is-quiet" href="' + base + '?download=1" download>Download<span class="lt-sr"> ' + h(d.title) + "</span></a></div></li>";
+        '<div class="lt-doc-actions"><a class="lt-btn" href="' + base + '" target="_blank" rel="noopener">' + (isImage ? "View image" : "View PDF") + '<span class="lt-sr"> (' + h(d.title) + ', opens in a new tab)</span></a><a class="lt-btn is-quiet" href="' + base + '?download=1" download>Download<span class="lt-sr"> ' + h(d.title) + "</span></a></div></li>";
     }).join("") + "</ul>";
   }
   function lab(rec) {
@@ -253,6 +261,16 @@
       '<div><p class="lt-k">' + v.k(4) + " · " + v.stage.match + '</p><h3 class="lt-match-h" tabindex="-1" id="lt-match-h"><span class="lt-match-p">' + h(p ? p.name : r.product) + '</span><span class="lt-lotno"><span class="lt-sr">Lot </span>' + h(r.lot) + "</span></h3>" + changed + demo +
       '<div class="lt-actions"><button type="button" class="lt-btn is-quiet" data-lt-share>Copy record link</button>' + (cur ? '<button type="button" class="lt-btn is-quiet" data-lt-print>Print summary</button>' : "") + '<a class="lt-btn is-quiet" href="' + askHref("report", r.product, r.lot) + '">Ask about this lot</a></div></div></div>' +
       notices(r) + statusTrio(r) + "</div>";
+    if(cur && rec && rec.presentation){
+      var options=rec.presentation,sections=head+step(v,4,"record-facts",rec.title ? h(rec.title) : "The record",facts(r,p,rec,cur));
+      if(options.show_summary)sections+=step(v,5,"results","Report summary",'<p class="lt-summary">'+h(rec.summary||"")+'</p>'+(rec.partial?'<p class="lt-callout">'+h(rec.partial)+'</p>':""));
+      var detail="";
+      if(options.show_results)detail+='<h4 class="lt-sub">Results</h4>'+resultsTable(rec,{version:cur.version,lot:r.lot});
+      if(options.show_documents)detail+='<h4 class="lt-sub">Source documents</h4>'+documents(r,cur);
+      if(options.show_lab)detail+='<h4 class="lt-sub">Issuing laboratory</h4>'+lab(rec)+(rec.lab_notes?'<p>'+h(rec.lab_notes)+'</p>':"");
+      sections+=step(v,6,"documents","Report files and details",detail+versionHistory(r));
+      return sections;
+    }
     var why = r.availability === "withdrawn" && r.history[0] && r.history[0].withdrawn_reason ? '<p class="lt-callout"><strong>Why this report was withdrawn:</strong> ' + h(r.history[0].withdrawn_reason) + "</p>" : "";
     var und = cur ? '<p class="lt-summary">' + nd(rec.summary, "No summary has been reviewed for this record.") + "</p>" + (rec.partial ? '<p class="lt-callout"><strong>Published in part.</strong> ' + h(rec.partial) + "</p>" : "") +
       '<p class="lt-count">' + h(cur.assessment.total) + " result" + (cur.assessment.total === 1 ? "" : "s") + ": " + cur.assessment.meets + " meet" + (cur.assessment.meets === 1 ? "s" : "") + " the stated specification, " + cur.assessment.does_not_meet + " " + (cur.assessment.does_not_meet === 1 ? "does" : "do") + " not, " + cur.assessment.not_assessed + " reported without an assessment.</p>" + (rec.lab_notes ? '<p class="lt-small"><strong>Laboratory notes:</strong> ' + h(rec.lab_notes) + "</p>" : "")

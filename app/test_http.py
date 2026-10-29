@@ -1,3 +1,4 @@
+from app.test_identity import fixture_identity
 import http.client
 import json
 from pathlib import Path
@@ -30,9 +31,10 @@ class HttpTests(unittest.TestCase):
     def test_untrusted_host_denied(self):
         status,_,_=self.request('GET','/api/session',headers={'Host':'other.example'});self.assertEqual(status,403)
     def test_viewer_server_endpoints_are_read_only(self):
-        self.assertEqual(self.request('POST','/api/demo/login',{'identity':'viewer'})[0],200)
+        fixture_identity(Handler.store, {'id':self.cookie.split('=',1)[1]}, {'identity':'viewer'})
+        self.cookie=self.cookie.replace('bcc_session=','bcc_admin=')
         self.assertEqual(self.request('GET','/api/admin')[0],200)
-        for path,data in [('/api/cases',{'message':'A sample support question.'}),('/api/admin/quarantine',{'batch':'DEMO-01-01','reason':'Viewer attempt'}),('/api/auth/otp',{'mobile':'9876543210'})]:self.assertEqual(self.request('POST',path,data)[0],403)
+        for path,data in [('/api/admin/quarantine',{'batch':'DEMO-01-01','reason':'Viewer attempt'})]:self.assertEqual(self.request('POST',path,data)[0],403)
     def test_checkout_contract_and_duplicate_payment(self):
         payload={'adult':True,'items':[{'id':'iron-bisglycinate','quantity':1}],'discount':'PREVIEW10','contact':{'name':'Preview Customer','mobile':'9876543210','address':'123 Sample Street','city':'Surat','state':'Gujarat','pincode':'395001'}}
         status,_,body=self.request('POST','/api/orders',payload);self.assertEqual(status,200);order=json.loads(body);self.assertEqual(order['total'],884);oid=order['id']
@@ -60,7 +62,8 @@ class HttpTests(unittest.TestCase):
     def test_lot_document_upload_is_admin_only_and_private_until_published(self):
         pdf=b'%PDF-1.4\n%%EOF\n'
         status,_,_=self.request('POST','/api/admin-lot-document?report=LR-X&title=CoA&kind=original',headers={'Content-Type':'application/pdf'});self.assertIn(status,(400,403))
-        self.assertEqual(self.request('POST','/api/demo/login',{'identity':'admin-a'})[0],200)
+        fixture_identity(Handler.store, {'id':self.cookie.split('=',1)[1]}, {'identity':'admin-a'})
+        self.cookie=self.cookie.replace('bcc_session=','bcc_admin=')
         d=json.loads(self.request('POST','/api/admin/lot_draft',{'product':'omega-3-fish-oil','lot':'DEMO-04-02'})[2])
         conn=http.client.HTTPConnection('127.0.0.1',self.port)
         conn.request('POST','/api/admin-lot-document?report='+d['id']+'&title=Certificate&kind=original',b'GIF89a not a pdf',{'Cookie':self.cookie,'X-CSRF-Token':self.csrf,'Content-Type':'application/pdf'});r=conn.getresponse();r.read();conn.close();self.assertEqual(r.status,415)
@@ -68,7 +71,7 @@ class HttpTests(unittest.TestCase):
         conn.request('POST','/api/admin-lot-document?report='+d['id']+'&title=Certificate&kind=original',pdf,{'Cookie':self.cookie,'X-CSRF-Token':self.csrf,'Content-Type':'application/pdf'});r=conn.getresponse();doc=json.loads(r.read());conn.close()
         status,headers,body=self.request('GET','/api/lots/documents/'+doc['id'])
         self.assertEqual((status,headers['Content-Type']),(200,'application/pdf'));self.assertIn('sandbox',headers['Content-Security-Policy'])
-        self.request('POST','/api/logout',{});self.setUp()
+        self.request('POST','/api/admin/logout',{}) if self.cookie.startswith('bcc_admin=') else self.request('POST','/api/logout',{});self.setUp()
         self.assertEqual(self.request('GET','/api/lots/documents/'+doc['id'])[0],404)
     def sign_in(self,mobile):
         status,_,body=self.request('POST','/api/auth/otp',{'mobile':mobile});self.assertEqual(status,200);code=json.loads(body)['preview_code']
@@ -84,7 +87,7 @@ class HttpTests(unittest.TestCase):
         self.sign_in('9812300002')
         self.assertEqual(self.request('POST','/api/bag',{'items':[{'id':'l-theanine','quantity':2}]})[0],200)
         self.assertEqual(json.loads(self.request('GET','/api/bag')[2])['items'][0]['quantity'],2)
-        self.request('POST','/api/logout',{});self.setUp()
+        self.request('POST','/api/admin/logout',{}) if self.cookie.startswith('bcc_admin=') else self.request('POST','/api/logout',{});self.setUp()
     def test_address_and_order_ownership_over_http(self):
         self.assertEqual(self.request('POST','/api/addresses',{'name':'Guest','address':'1 Sample Road','city':'Surat','state':'Gujarat','pincode':'395001'})[0],401)
         self.sign_in('9812300003')
@@ -95,14 +98,14 @@ class HttpTests(unittest.TestCase):
         payload={'adult':True,'idempotency_key':'k-http-0001-abcdef','items':[{'id':'l-theanine','quantity':1}],'contact':{'name':'Owner','mobile':'9812300003','address':'1 Sample Road','city':'Surat','state':'Gujarat','pincode':'395001'}}
         order=json.loads(self.request('POST','/api/orders',payload)[2]);again=json.loads(self.request('POST','/api/orders',payload)[2]);self.assertEqual(order['id'],again['id'])
         self.assertEqual(self.request('GET',f"/api/orders/{order['id']}/status")[0],200)
-        self.request('POST','/api/logout',{});self.setUp();self.sign_in('9812300004')
+        self.request('POST','/api/admin/logout',{}) if self.cookie.startswith('bcc_admin=') else self.request('POST','/api/logout',{});self.setUp();self.sign_in('9812300004')
         self.assertEqual(self.request('GET',f"/api/orders/{order['id']}/status")[0],404)
         self.assertEqual(self.request('POST',f"/api/orders/{order['id']}/reconcile",{'outcome':'success'})[0],404)
         self.assertEqual(self.request('POST',f'/api/addresses/{aid}/delete',{})[0],404)
         self.assertEqual(self.request('POST','/api/addresses',{'id':aid,'name':'Thief','address':'2 Other Road','city':'Surat','state':'Gujarat','pincode':'395001'})[0],404)
         self.assertEqual(self.request('POST',f'/api/addresses/{aid}/default',{})[0],404)
         self.assertEqual(self.request('POST','/api/orders',payload)[0],409)
-        self.request('POST','/api/logout',{});self.setUp()
+        self.request('POST','/api/admin/logout',{}) if self.cookie.startswith('bcc_admin=') else self.request('POST','/api/logout',{});self.setUp()
     def test_support_endpoints_over_http(self):
         status,_,body=self.request('POST','/api/cases',{'kind':'product','message':'Is the omega-3 from fish?','contact':{'name':'A'}})
         data=json.loads(body);self.assertEqual(status,400);self.assertIn('name',data['fields'])
@@ -114,8 +117,8 @@ class HttpTests(unittest.TestCase):
         self.assertEqual(self.request('POST','/api/help/feedback',{'article':'track-order','helpful':True},headers={'X-CSRF-Token':'wrong'})[0],403)
         self.assertEqual(self.request('GET','/api/account/export')[0],401)
         self.assertEqual(json.loads(self.request('POST','/api/privacy-requests',{'request':'access'})[2])['reason'],'verify')
-        self.request('POST','/api/logout',{});self.setUp()
+        self.request('POST','/api/admin/logout',{}) if self.cookie.startswith('bcc_admin=') else self.request('POST','/api/logout',{});self.setUp()
         self.assertEqual(self.request('GET',f"/api/cases/{c['id']}")[0],404)
         self.assertEqual(self.request('POST',f"/api/cases/{c['id']}/reply",{'message':'Not mine'})[0],404)
         self.assertEqual(self.request('GET','/api/orders/BCC-00000000/cancel-check')[0],404)
-        self.request('POST','/api/logout',{});self.setUp()
+        self.request('POST','/api/admin/logout',{}) if self.cookie.startswith('bcc_admin=') else self.request('POST','/api/logout',{});self.setUp()

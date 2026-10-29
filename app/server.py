@@ -15,10 +15,10 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
 
 try:
-    from app import media, lots, account, support
+    from app import media, lots, account, support, operations, commerce
     from app.errors import Error
 except ImportError:  # run as a script: python3 app/server.py
-    import media, lots, account, support
+    import media, lots, account, support, operations, commerce
     from errors import Error
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -38,9 +38,8 @@ BUNDLES = [
 
 LEARN_TOPIC=re.compile(r'/learn(/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?')
 CASE_TOPIC=re.compile(r'/(learn(/[a-z0-9-]{1,60})?|story|about|help/[a-z]{2,20}/[a-z0-9-]{2,60}|policies/(shipping|returns|cancellation|privacy|terms)|products/[a-z0-9-]{1,60})(#[a-z0-9-]{1,40})?')
-LOT_KINDS=('report_publish','report_withdraw','lot_notice','lot_notice_retire')
 
-class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
+class Store(commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, account.AccountMixin, support.SupportMixin):
     def __init__(self, path):
         self.path = str(path)
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -91,9 +90,9 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
                     data['price'] = p[4]
                     c.execute('UPDATE products SET data=? WHERE id=?', (json.dumps(data), p[0]))
                 c.execute('INSERT INTO settings VALUES(?,?)', (price_version, 'true'))
-            for uid,name,role in [('admin-a','Preview Admin A','admin'),('admin-b','Preview Admin B','admin'),('viewer','Preview Viewer','viewer')]:
-                c.execute('INSERT OR IGNORE INTO users VALUES(?,?,?,?)',(uid,name,'',role))
             c.execute('INSERT OR IGNORE INTO settings VALUES(?,?)',('flags',json.dumps({'ingredient_library':True,'referrals':False,'amazon_sync':False})))
+            self.operations_init(c)
+
 
     @contextlib.contextmanager
     def db(self):
@@ -118,6 +117,7 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
         rows=c.execute("SELECT * FROM reservations WHERE state='held' AND expires<=? AND order_id NOT IN (SELECT order_id FROM payments WHERE status='processing')",(int(time.time()),)).fetchall()
         for r in rows:
             c.execute('UPDATE batches SET available=available+? WHERE id=?',(r['quantity'],r['batch']))
+            self.stock_move(c,{'user_id':'system'},r['batch'],r['quantity'],'reservation_expired',r['order_id'])
             c.execute("UPDATE reservations SET state='expired' WHERE id=?",(r['id'],))
             c.execute("UPDATE orders SET state='expired' WHERE id=? AND state='pending'",(r['order_id'],))
 
@@ -131,12 +131,15 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
             c.execute('INSERT INTO sessions VALUES(?,?,?,?)',(sid,uid,csrf,int(time.time())+86400))
             return {'id':sid,'user_id':uid,'csrf':csrf,'name':'Guest','mobile':'','role':'customer'},True
 
-    def products(self):
+    def products(self, include_hidden=False):
         with self.db() as c:
             self.expire(c)
             items=[]
             for r in c.execute('SELECT * FROM products'):
-                p=json.loads(r['data']);p['stock']=c.execute("SELECT COALESCE(SUM(available),0) FROM batches WHERE product=? AND state='released' AND proof=1 AND expiry>?",(p['id'],int(time.time()))).fetchone()[0]
+                p=json.loads(r['data'])
+                if not include_hidden and not p.get('published'):continue
+                p['stock']=c.execute("SELECT COALESCE(SUM(available),0) FROM batches WHERE product=? AND state='released' AND proof=1 AND expiry>?",(p['id'],int(time.time()))).fetchone()[0]
+                if not include_hidden:p['gallery']=[g for g in p.get('gallery',[]) if g.get('visible',True)]
                 p['rating']=self.rating_summary(c,p['id'],detail=False)
                 items.append(p)
             return items
@@ -145,13 +148,7 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
         if s['role']!=role:raise Error('This action requires an Admin session.',403)
 
     def login(self,s,data):
-        # Explicitly local demo identities. Real SSO is intentionally not simulated as verified.
-        uid=data.get('identity')
-        if uid not in ['admin-a','admin-b','viewer']:raise Error('Unknown preview identity.')
-        with self.db() as c:
-            c.execute('UPDATE sessions SET user_id=? WHERE id=?',(uid,s['id']))
-            self.log(c,uid,'preview_login',uid)
-        return {'ok':True}
+        raise Error('Demo identities have been retired. Use admin credential login.', 404)
 
     def order(self,s,data):
         if s['role']!='customer':raise Error('Use a customer session to place a preview order.',403)
@@ -183,6 +180,8 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
             # The same checkout submitted twice (double click, retry after a network error) returns the first order.
             existing=self.order_existing(c,s,key)
             if existing:return existing
+            flags=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0])
+            if flags.get('checkout_enabled') is False:raise Error('Checkout is temporarily paused. Your bag is saved.',409)
             for pid,qty in merged.items():
                 r=c.execute('SELECT data FROM products WHERE id=?',(pid,)).fetchone()
                 if not r:raise Error('Product not found.',404)
@@ -194,6 +193,7 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
                     if take:
                         allocations.append((batch['id'],take));remaining-=take
                         c.execute('UPDATE batches SET available=available-? WHERE id=?',(take,batch['id']))
+                        self.stock_move(c,s,batch['id'],-take,'reservation',oid)
                     if remaining==0:break
                 if remaining:raise Error(p['name']+' does not have enough released preview stock.',409)
                 lines.append({'id':pid,'name':p['name'],'quantity':qty,'unit_price':p['price'],'color':p['color']})
@@ -224,9 +224,10 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
             if self.payment_status(c,oid)=='processing':raise Error('We’re still confirming your payment. Check its status first, then you can cancel.',409,reason='processing')
             for held in c.execute("SELECT * FROM reservations WHERE order_id=? AND state IN ('held','consumed')",(oid,)).fetchall():
                 c.execute('UPDATE batches SET available=available+? WHERE id=?',(held['quantity'],held['batch']))
+                self.stock_move(c,s,held['batch'],held['quantity'],'cancellation',oid)
                 c.execute("UPDATE reservations SET state='released' WHERE id=?",(held['id'],))
             if r['state']=='paid':
-                p['refund']='approval_pending'
+                p['refund']='pending_refund'
             p['history'].append({'state':'cancelled','at':int(time.time())})
             c.execute("UPDATE orders SET state='cancelled',data=? WHERE id=?",(json.dumps(p),oid));self.log(c,s['user_id'],'order_cancelled',oid)
         return {'ok':True}
@@ -271,55 +272,17 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
             self.log(c,s['user_id'],'safety_case_created' if kind=='safety' else 'case_created',cid)
         return {'id':cid,**payload}
 
-    def admin(self,s,action,data):
+    def legacy_admin(self,s,action,data):
         self.require(s,'admin')
         with self.db() as c:
             self.expire(c)
+            if action in ('product_save','product_publish','product_archive','batch_create','batch_adjust','batch_release','order_update','flags_update'):
+                return self.operations_dispatch(c,s,action,data)
             if action=='quarantine':
                 batch=c.execute('SELECT * FROM batches WHERE id=?',(data.get('batch'),)).fetchone()
                 if not batch:raise Error('Batch not found.',404)
                 if len(str(data.get('reason','')).strip())<5:raise Error('Add a quarantine reason.')
-                c.execute("UPDATE batches SET state='quarantined' WHERE id=?",(batch['id'],));self.log(c,s['user_id'],'batch_quarantined',batch['id'])
-            elif action=='request':
-                kind=data.get('kind');target=data.get('target');value=data.get('value')
-                if kind not in ['price','stock','release','publication','refund','flags']:raise Error('Unsupported critical change.')
-                if kind in ['price','stock'] and (type(value)!=int or value<0 or value>100000):raise Error('Enter a valid non-negative integer.')
-                if kind=='publication' and type(value)!=bool:raise Error('Publication value must be true or false.')
-                if kind in ['price','publication'] and not c.execute('SELECT id FROM products WHERE id=?',(target,)).fetchone():raise Error('Product not found.',404)
-                if kind in ['stock','release'] and not c.execute('SELECT id FROM batches WHERE id=?',(target,)).fetchone():raise Error('Batch not found.',404)
-                if kind=='flags' and (target not in ['ingredient_library','referrals','amazon_sync'] or type(value)!=bool):raise Error('Invalid feature flag.')
-                if kind=='refund':
-                    r=c.execute('SELECT * FROM orders WHERE id=?',(target,)).fetchone()
-                    if not r or r['state']!='cancelled' or json.loads(r['data'])['refund']!='approval_pending':raise Error('No refundable cancelled order found.')
-                # One pending request per change: a duplicate could never be approved after the first resolved.
-                if c.execute("SELECT id FROM approvals WHERE kind=? AND target=? AND state='pending'",(kind,target)).fetchone():raise Error('A request for this change is already awaiting approval.',409)
-                aid='APR-'+secrets.token_hex(4).upper()
-                c.execute('INSERT INTO approvals VALUES(?,?,?,?,?,?,?,?)',(aid,s['user_id'],kind,target,json.dumps({'value':value,'reason':str(data.get('reason',''))[:500]}),'pending',None,int(time.time())))
-                self.log(c,s['user_id'],'approval_requested',aid)
-                return {'id':aid}
-            elif action=='approve':
-                r=c.execute('SELECT * FROM approvals WHERE id=?',(data.get('id'),)).fetchone()
-                if not r:raise Error('Approval not found.',404)
-                if r['creator']==s['user_id']:raise Error('A different Admin must approve this change.',403)
-                if r['state']!='pending':raise Error('This request has already been resolved.',409)
-                if data.get('decision') not in ['approve','reject']:raise Error('Select approve or reject.')
-                approve=data['decision']=='approve';value=json.loads(r['payload']).get('value')
-                if r['kind'] in LOT_KINDS:self.lot_resolve(c,s,r,approve)
-                elif approve:
-                    if r['kind'] in ['price','publication']:
-                        pr=c.execute('SELECT data FROM products WHERE id=?',(r['target'],)).fetchone();p=json.loads(pr['data']);p['price' if r['kind']=='price' else 'published']=value;c.execute('UPDATE products SET data=? WHERE id=?',(json.dumps(p),r['target']))
-                    elif r['kind']=='stock':c.execute('UPDATE batches SET available=available+? WHERE id=?',(value,r['target']))
-                    elif r['kind']=='release':
-                        batch=c.execute('SELECT * FROM batches WHERE id=?',(r['target'],)).fetchone()
-                        if not batch['proof'] or batch['expiry']<=time.time():raise Error('Evidence and unexpired stock are required before release.',409)
-                        c.execute("UPDATE batches SET state='released' WHERE id=?",(r['target'],))
-                    elif r['kind']=='refund':
-                        order=c.execute('SELECT * FROM orders WHERE id=?',(r['target'],)).fetchone();p=json.loads(order['data'])
-                        if p['refund']!='approval_pending':raise Error('Refund already resolved.',409)
-                        p['refund']='refunded_preview';c.execute('UPDATE orders SET data=? WHERE id=?',(json.dumps(p),r['target']));c.execute("UPDATE payments SET status='refunded_preview' WHERE order_id=?",(r['target'],))
-                    elif r['kind']=='flags':
-                        flags=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0]);flags[r['target']]=value;c.execute("UPDATE settings SET data=? WHERE id='flags'",(json.dumps(flags),))
-                c.execute('UPDATE approvals SET state=?,approver=? WHERE id=?',('approved' if approve else 'rejected',s['user_id'],r['id']));self.log(c,s['user_id'],'approval_approved' if approve else 'approval_rejected',r['id'])
+                c.execute("UPDATE batches SET state='quarantined' WHERE id=?",(batch['id'],));self.operation_log(c,s['user_id'],'batch_quarantined',batch['id'],dict(batch),{'state':'quarantined'},str(data.get('reason','')))
             elif action=='ship':
                 r,p=self.owned_order(c,s,data.get('id'))
                 next_state={'paid':'shipped','shipped':'delivered'}.get(r['state'])
@@ -334,7 +297,10 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
                 r=c.execute('SELECT * FROM cases WHERE id=?',(data.get('id'),)).fetchone()
                 if not r:raise Error('Case not found.',404)
                 if data.get('state') not in ['open','investigating','resolved','escalated']:raise Error('Invalid case state.')
-                p=json.loads(r['data']);p['state']=data['state'];p['owner']=s['name'];note=str(data.get('note','') or '').strip()[:2000];p['history'].append({'state':data['state'],'at':int(time.time()),**({'note':note,'from':'Body Café Co.'} if note else {})});c.execute('UPDATE cases SET data=? WHERE id=?',(json.dumps(p),r['id']));self.log(c,s['user_id'],'case_updated',r['id'])
+                p=json.loads(r['data']);before=dict(p)
+                internal=str(data.get('internal_note','')).strip()[:2000]
+                if internal:p.setdefault('internal',[]).append({'text':internal,'at':int(time.time()),'actor':s['user_id']})
+                p['state']=data['state'];p['owner']=s['name'];note=str(data.get('note','') or '').strip()[:2000];p['history'].append({'state':data['state'],'at':int(time.time()),**({'note':note,'from':'Body Café Co.'} if note else {})});c.execute('UPDATE cases SET data=? WHERE id=?',(json.dumps(p),r['id']));self.operation_log(c,s['user_id'],'case_updated',r['id'],{'state':r['state'] if 'state' in r.keys() else before.get('state')},{'state':p['state']},internal or note)
             elif action in ('review','review_reply','question'):return self.moderate(c,s,action,data)
             elif action.startswith('lot_'):return self.lot_admin(c,s,action,data)
             else:raise Error('Unknown operation.',404)
@@ -354,15 +320,19 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
                 if 'payload' in d:d['payload']=json.loads(d['payload'])
                 return d
             result={t:[decode(r) for r in rows(t)] for t in ['orders','cases','addresses','reviews']}
+            if not privileged:
+                for item in result['orders']:item.pop('internal_notes',None)
+                for item in result['cases']:item.pop('internal',None)
             result['flags']=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0])
             if privileged:
-                for t in ['batches','approvals','audit','payments']:result[t]=[decode(r) for r in rows(t)]
+                for t in ['batches','payments']:result[t]=[decode(r) for r in rows(t)]
                 result['review_media']=[dict(r) for r in c.execute('SELECT * FROM review_media ORDER BY created DESC')]
                 result['review_reports']=[dict(r) for r in c.execute('SELECT * FROM review_reports ORDER BY created DESC')]
                 result['events']=[dict(r) for r in c.execute('SELECT name,COUNT(*) AS count FROM events GROUP BY name')]
                 result.update(self.lot_snapshot(c))
                 result['help_feedback']=self.help_feedback_summary(c)
                 result['learn_feedback']=[dict(r) for r in c.execute('SELECT page,SUM(clear) AS clear,SUM(1-clear) AS unclear,COUNT(*) AS total FROM learn_feedback GROUP BY page ORDER BY page')]
+                self.operations_snapshot(c,result)
             return result
 
     def theme_feedback(self, data):
@@ -442,7 +412,7 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
         return re.sub(r'[ \t]+', ' ', text)[:limit + 1]
 
     def product_ids(self):
-        return [p[0] for p in PRODUCTS]
+        with sqlite3.connect(self.path) as c:return [r[0] for r in c.execute('SELECT id FROM products')]
 
     def delivered_orders(self, c, user_id, product):
         found = []
@@ -474,6 +444,9 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
             return {'state': 'not_delivered' if pending else 'no_purchase'}
 
     def review(self, s, data):
+        with self.db() as c:
+            flags=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0])
+            if flags.get('reviews') is False:raise Error('Review submissions are temporarily paused.',409)
         product = data.get('product')
         if product not in self.product_ids():
             raise Error('Choose a product.')
@@ -694,6 +667,9 @@ class Store(lots.LotsMixin, account.AccountMixin, support.SupportMixin):
 
     # ---------- Product questions (handled as support cases) ----------
     def question(self, s, data):
+        with self.db() as c:
+            flags=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0])
+            if flags.get('questions') is False:raise Error('Product question submissions are temporarily paused.',409)
         if s['role'] != 'customer':
             raise Error('Use a customer session to ask a question.', 403)
         product = data.get('product')
@@ -801,13 +777,20 @@ class Handler(BaseHTTPRequestHandler):
     def valid_host(self):
         return self.headers.get('Host') in [f'127.0.0.1:{self.server.server_port}',f'localhost:{self.server.server_port}']
     def json(self,status,data,cookie=None):
+        if getattr(self,'cookie_name','bcc_session')=='bcc_session':
+            def public(v):
+                if isinstance(v,dict):return {k:public(x) for k,x in v.items() if k not in ('internal_notes','internal')}
+                if isinstance(v,list):return [public(x) for x in v]
+                return v
+            data=public(data)
         body=json.dumps(data).encode();self.send_response(status);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('X-Content-Type-Options','nosniff')
-        if cookie:self.send_header('Set-Cookie',f'bcc_session={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400')
+        if cookie:self.send_header('Set-Cookie',f'{getattr(self,"cookie_name","bcc_session")}={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800')
         self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
     def api(self):
         path=urlparse(self.path).path;sid=''
+        self.cookie_name='bcc_admin' if path.startswith('/api/admin') or ('bcc_admin=' in self.headers.get('Cookie','') and (path.startswith('/api/catalog-media/') or path.startswith('/api/lots/documents/') or path.startswith('/api/review-media/'))) else 'bcc_session'
         for part in self.headers.get('Cookie','').split(';'):
-            if part.strip().startswith('bcc_session='):sid=part.strip().split('=',1)[1]
+            if part.strip().startswith(self.cookie_name+'='):sid=part.strip().split('=',1)[1]
         s,new=self.store.session(sid);cookie=s['id'] if new else None
         try:
             data={}
@@ -817,6 +800,13 @@ class Handler(BaseHTTPRequestHandler):
                 if origin and urlparse(origin).netloc!=self.headers.get('Host'):raise Error('Cross-origin requests are not allowed.',403)
                 if not hmac.compare_digest(self.headers.get('X-CSRF-Token',''),s['csrf']):raise Error('Refresh the page and retry.',403)
                 length=int(self.headers.get('Content-Length','0'))
+                if path=='/api/admin/lot-image':
+                    if not 0<length<=media.MAX_BYTES:raise Error('Choose an image of 5 MB or smaller.',413)
+                    q=parse_qs(urlparse(self.path).query);g=lambda key:q.get(key,[''])[0]
+                    return self.json(200,self.store.lot_image_upload(s,g('report'),self.rfile.read(length),g('title'),g('caption')),cookie)
+                if path=='/api/admin/catalog-image':
+                    if not 0<length<=media.MAX_BYTES:raise Error('Choose an image of 5 MB or smaller.',413)
+                    return self.json(200,self.store.catalog_upload(s,self.rfile.read(length)),cookie)
                 if path=='/api/review-media':
                     # Raw image body. Type and size are checked from the bytes; metadata is removed before storage.
                     if length<=0:raise Error('Choose an image to upload.')
@@ -833,11 +823,17 @@ class Handler(BaseHTTPRequestHandler):
                     if length>lots.PDF_MAX:raise Error('The PDF must be 15 MB or smaller.',413)
                     q=parse_qs(urlparse(self.path).query);g=lambda k:q.get(k,[''])[0]
                     return self.json(200,self.store.lot_upload(s,g('report'),self.rfile.read(length),g('title'),g('kind'),g('redacted')=='1',g('note')),cookie)
-                if length<0 or length>20000:raise Error('Request too large or invalid.',413)
+                if length<0 or length>(65536 if path.startswith('/api/admin/') else 20000):raise Error('Request too large or invalid.',413)
                 data=json.loads(self.rfile.read(length) or b'{}')
                 if not isinstance(data,dict):raise Error('Invalid request.')
             if self.command=='GET':
                 if path=='/api/session':result={'user':{'id':s['user_id'],'name':s['name'],'role':s['role'],'mobile':s['mobile']},'csrf':s['csrf'],'preview':True}
+                elif path=='/api/admin/session':
+                    with self.store.db() as c:configured=bool(c.execute('SELECT 1 FROM admin_credential').fetchone())
+                    result={'user':{'id':s['user_id'],'name':s['name'],'role':s['role'],'mobile':s['mobile']},'csrf':s['csrf'],'configured':configured}
+                elif re.fullmatch(r'/api/catalog-media/CM-[0-9a-f]{16}',path):
+                    mime,body=self.store.catalog_file(s,path.rsplit('/',1)[1])
+                    self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(body)));self.send_header('X-Content-Type-Options','nosniff');self.send_header('Cache-Control','private, no-store');self.end_headers();self.wfile.write(body);return
                 elif path=='/api/catalog':
                     with self.store.db() as c:flags=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0])
                     result={'products':self.store.products(),'bundles':BUNDLES,'flags':flags,'preview':True}
@@ -847,6 +843,9 @@ class Handler(BaseHTTPRequestHandler):
                 elif re.fullmatch(r'/api/orders/BCC-[0-9A-F]{8}/cancel-check',path):result=self.store.cancel_check(s,path.split('/')[3])
                 elif re.fullmatch(r'/api/cases/CASE-[0-9A-F]{8}',path):result=self.store.case_view(s,path.split('/')[3])
                 elif path=='/api/account/export':result=self.store.data_export(s)
+                elif path=='/api/admin/sales':
+                    self.store.require(s,'admin')
+                    with self.store.db() as c:result=self.store.sales_report(c,parse_qs(urlparse(self.path).query))
                 elif path=='/api/admin':
                     if s['role'] not in ['admin','viewer']:raise Error('An operations session is required.',403)
                     result=self.store.snapshot(s)
@@ -858,7 +857,7 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(body)));self.send_header('X-Content-Type-Options','nosniff')
                     self.send_header('Content-Security-Policy',"default-src 'none'; img-src 'self'; style-src 'unsafe-inline'");self.send_header('Content-Disposition','inline')
                     self.send_header('Cache-Control','public, max-age=300' if public else 'private, no-store')
-                    if cookie:self.send_header('Set-Cookie',f'bcc_session={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400')
+                    if cookie:self.send_header('Set-Cookie',f'{getattr(self,"cookie_name","bcc_session")}={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800')
                     self.end_headers();self.wfile.write(body);return
                 elif path=='/api/lots':
                     q=parse_qs(urlparse(self.path).query)
@@ -870,14 +869,18 @@ class Handler(BaseHTTPRequestHandler):
                     raw,d=self.store.lots_document(s,path.rsplit('/',1)[1],s['role'] in ['admin','viewer'])
                     download=parse_qs(urlparse(self.path).query).get('download',[''])[0]=='1'
                     name=re.sub(r'[^A-Za-z0-9._-]+','-',d['title'])[:60].strip('-') or 'document'
-                    self.send_response(200);self.send_header('Content-Type','application/pdf');self.send_header('Content-Length',str(len(raw)));self.send_header('X-Content-Type-Options','nosniff')
-                    self.send_header('Content-Security-Policy',"sandbox; default-src 'none'");self.send_header('Content-Disposition',('attachment' if download else 'inline')+f'; filename="{name}-{d["id"][4:12]}.pdf"')
+                    self.send_response(200);self.send_header('Content-Type',d.get('mime','application/pdf'));self.send_header('Content-Length',str(len(raw)));self.send_header('X-Content-Type-Options','nosniff')
+                    self.send_header('Content-Security-Policy',"sandbox; default-src 'none'");self.send_header('Content-Disposition',('attachment' if download else 'inline')+f'; filename="{name}-{d["id"][4:12]}{d.get("ext",".pdf")}"')
                     self.send_header('Cache-Control','no-cache');self.send_header('X-Document-SHA256',d['sha256'])
-                    if cookie:self.send_header('Set-Cookie',f'bcc_session={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400')
+                    if cookie:self.send_header('Set-Cookie',f'{getattr(self,"cookie_name","bcc_session")}={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800')
                     self.end_headers();self.wfile.write(raw);return
                 else:raise Error('Endpoint not found.',404)
             else:
-                if path=='/api/demo/login':result=self.store.login(s,data)
+                if path=='/api/admin/login':
+                    result=self.store.admin_signin(s,data,self.client_address[0]);cookie=result.pop('_sid')
+                elif path=='/api/admin/password':result=self.store.admin_password(s,data)
+                elif path=='/api/admin/logout':result=self.store.logout(s,data)
+                elif path=='/api/demo/login':raise Error('Demo access is disabled. Use credential login.',404)
                 elif path=='/api/logout':result=self.store.logout(s,data)
                 elif path=='/api/auth/otp':result=self.store.otp(s,data)
                 elif path=='/api/auth/verify':result=self.store.verify(s,data)
@@ -932,7 +935,7 @@ class Handler(BaseHTTPRequestHandler):
         else:file=ROOT/'web/index.html'
         resolved=file.resolve()
         if not resolved.is_relative_to(ROOT) or '..' in path.split('/') or not resolved.is_file():return self.json(404,{'error':'Not found'})
-        content=resolved.read_bytes();self.send_response(200);self.send_header('Content-Type',mimetypes.guess_type(str(resolved))[0] or 'application/octet-stream');self.send_header('X-Content-Type-Options','nosniff');self.send_header('Referrer-Policy','same-origin');self.send_header('Content-Security-Policy',"default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");self.send_header('Cache-Control','no-cache');self.send_header('Content-Length',str(len(content)));self.end_headers();self.wfile.write(content)
+        content=resolved.read_bytes();self.send_response(200);self.send_header('Content-Type',mimetypes.guess_type(str(resolved))[0] or 'application/octet-stream');self.send_header('X-Content-Type-Options','nosniff');self.send_header('Referrer-Policy','same-origin');self.send_header('Content-Security-Policy',"default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");self.send_header('Cache-Control','no-cache');self.send_header('Content-Length',str(len(content)));self.end_headers();self.wfile.write(content)
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=4174);parser.add_argument('--db',default=str(ROOT/'.local/preview.sqlite3'));args=parser.parse_args()

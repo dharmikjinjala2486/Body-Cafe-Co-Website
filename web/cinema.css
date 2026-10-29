@@ -175,3 +175,11 @@ body[data-theme="d"] .house-lights .r-page-head h1 em{color:#7a4b20}
 .machine-object img{position:absolute;inset:0;width:100%;height:100%;max-height:100%;object-fit:contain}
 body[data-theme="a"] .machine-control input[type="range"]{appearance:none;background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;min-height:35px;margin:10px 0}
 @media(max-width:700px){.machine-control>div:first-child{font-size:8px}.machine-presets button{font-size:10px}}
+
+/* Variant C: the same landscape in the selected bottle's palette. */
+.cin-palette-defs{position:absolute;pointer-events:none}
+.cin-c .cin-landscape-palette{position:absolute;inset:0;opacity:0;transition:opacity .8s var(--cin-ease)}
+.cin-c .cin-landscape-palette[data-active="true"]{opacity:1}
+body[data-theme="c"] .cin-caption em{color:var(--cin-accent,#777d51);transition:color .8s}
+@media(prefers-reduced-motion:reduce){.cin-c .cin-landscape-palette,body[data-theme="c"] .cin-caption em{transition:none}}
+.cin-static .cin-c .cin-landscape-palette,.cin-static body[data-theme="c"] .cin-caption em{transition:none}

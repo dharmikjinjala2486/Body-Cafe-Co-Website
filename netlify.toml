@@ -2,3 +2,6 @@
   command = "python3 -B deploy/build_netlify.py"
   publish = "dist"
 
+[build.environment]
+  BCC_HOSTED_MODE = "connected"
+  BCC_API_ORIGIN = "https://dzsglgcagghinjevdbnw.supabase.co/functions/v1/operations"

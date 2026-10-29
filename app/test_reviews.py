@@ -1,3 +1,4 @@
+from app.test_identity import fixture_identity
 """Product-page reviews, review photos, moderation and product questions."""
 import http.client
 import json
@@ -26,7 +27,7 @@ class ReviewTests(unittest.TestCase):
 
     def session_as(self, identity):
         s = self.store.session('')[0]
-        self.store.login(s, {'identity': identity})
+        fixture_identity(self.store, s, {'identity': identity})
         return self.store.session(s['id'])[0]
 
     def customer(self, mobile='9876543210'):
@@ -246,7 +247,7 @@ class ReviewHttpTests(unittest.TestCase):
         self.assertEqual(self.request('POST', '/api/auth/verify', {'mobile': '9811111111', 'code': code})[0], 200)
         order = json.loads(self.request('POST', '/api/orders', {**ORDER, 'contact': {**ORDER['contact'], 'mobile': '9811111111'}, 'items': [{'id': 'iron-bisglycinate', 'quantity': 1}]})[2])
         self.request('POST', f"/api/orders/{order['id']}/pay", {'outcome': 'success'})
-        admin = store.session('')[0]; store.login(admin, {'identity': 'admin-a'}); admin = store.session(admin['id'])[0]
+        admin = store.session('')[0]; fixture_identity(store, admin, {'identity': 'admin-a'}); admin = store.session(admin['id'])[0]
         store.admin(admin, 'ship', {'id': order['id']}); store.admin(admin, 'ship', {'id': order['id']})
         self.assertEqual(json.loads(self.request('GET', '/api/reviews/eligibility?product=iron-bisglycinate')[2])['state'], 'eligible')
         # Upload: CSRF required, type detected from bytes, oversize refused before reading.

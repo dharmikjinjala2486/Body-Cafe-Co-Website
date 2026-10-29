@@ -158,6 +158,7 @@
     var p = x.p, href = "/products/" + p.id, w = (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720;
     var num = v.num ? v.num(x.i, ctx.published.length) : "No. " + pad(x.i + 1);
     var img = '<img src="' + window.BCCBottleAssets.url(p.id) + '" alt="" width="' + w + '" height="1000" decoding="async"' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + ">";
+    if (ctx.design === "b" && window.BCCCatalogSecondary && window.BCCCatalogSecondary[p.id]) img += '<img class="sp-secondary" src="'+h(window.BCCCatalogSecondary[p.id])+'" alt="" width="'+w+'" height="1000" loading="lazy">';
     if (ctx.design === "a") img = S.cardBottlePicture(ctx, p);
     return '<li class="sp-card" data-sp-item="' + p.id + '" data-format="' + x.fid + '" data-price="' + x.price + '" data-i="' + x.i + '" data-available="' + x.available + '"' +
       (shown ? "" : " hidden") + (lead ? " data-lead" : "") + ' style="' + ctx.capStyle(p) + '">' +
@@ -166,7 +167,7 @@
       '<p class="sp-meta"><span class="sp-num">' + num + '</span><span class="sp-format">' + h(x.format) + "</span></p>" +
       '<h3 class="sp-name"><a href="' + href + '">' + h(p.name) + "</a></h3>" +
       '<p class="sp-sub">' + h(x.sub) + "</p>" +
-      '<dl class="sp-facts"><div><dt>Format</dt><dd>' + h(x.format) + '</dd></div><div><dt>Pack &amp; servings</dt><dd>' + ((window.BCCDemo && window.BCCDemo.packs[p.id]) || PENDING) + "</dd></div></dl>" +
+      '<dl class="sp-facts"><div><dt>Format</dt><dd>' + h(x.format) + '</dd></div><div><dt>Pack &amp; servings</dt><dd>' + (h(p.pack_size) || (window.BCCDemo && window.BCCDemo.packs[p.id]) || PENDING) + "</dd></div></dl>" +
       ratingLine(x) +
       '<div class="sp-buy"><p class="sp-price"><strong>' + ctx.money(p.price) + '</strong> <span>MRP</span></p>' +
       '<p class="sp-avail" data-state="' + (x.available ? "in" : "out") + '"><span class="sp-dot" aria-hidden="true"></span>' + (x.available ? "In stock" : "Out of stock") + "</p></div>" +

@@ -1,3 +1,4 @@
+from app.test_identity import fixture_identity
 import concurrent.futures
 from pathlib import Path
 import tempfile
@@ -9,8 +10,8 @@ class CommerceTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.store=Store(Path(self.temp.name)/'test.db');self.customer=self.store.session('')[0]
         self.payload={'items':[{'id':'vitamin-d3-k2','quantity':2}],'adult':True,'method':'prepaid','contact':{'name':'Preview Customer','mobile':'9876543210','address':'123 Sample Street','city':'Surat','state':'Gujarat','pincode':'395001'}}
-        self.admin_a=self.store.session('')[0];self.store.login(self.admin_a,{'identity':'admin-a'});self.admin_a=self.store.session(self.admin_a['id'])[0]
-        self.admin_b=self.store.session('')[0];self.store.login(self.admin_b,{'identity':'admin-b'});self.admin_b=self.store.session(self.admin_b['id'])[0]
+        self.admin_a=self.store.session('')[0];fixture_identity(self.store, self.admin_a,{'identity':'admin-a'});self.admin_a=self.store.session(self.admin_a['id'])[0]
+        self.admin_b=self.store.session('')[0];fixture_identity(self.store, self.admin_b,{'identity':'admin-b'});self.admin_b=self.store.session(self.admin_b['id'])[0]
     def tearDown(self):self.temp.cleanup()
     def stock(self,pid='vitamin-d3-k2'):
         return next(p['stock'] for p in self.store.products() if p['id']==pid)
@@ -88,35 +89,29 @@ class CommerceTests(unittest.TestCase):
     def test_unreleased_proof_blocks_sale(self):
         with self.store.db() as c:c.execute("UPDATE batches SET proof=0 WHERE product='vitamin-d3-k2'")
         with self.assertRaises(Error):self.store.order(self.customer,self.payload)
-    def test_separate_person_approval_and_viewer_denial(self):
-        request=self.store.admin(self.admin_a,'request',{'kind':'price','target':'vitamin-d3-k2','value':1200})
-        with self.assertRaises(Error):self.store.admin(self.admin_a,'approve',{'id':request['id'],'decision':'approve'})
+    def test_removed_workflows_and_viewer_denial(self):
+        for action in ('request','approve'):
+            with self.assertRaises(Error) as e:self.store.admin(self.admin_a,action,{'kind':'price','target':'vitamin-d3-k2','value':1200})
+            self.assertEqual(e.exception.status,404)
         viewer={**self.admin_a,'role':'viewer'}
-        with self.assertRaises(Error):self.store.admin(viewer,'approve',{'id':request['id'],'decision':'approve'})
-        self.store.admin(self.admin_b,'approve',{'id':request['id'],'decision':'approve'})
-        self.assertEqual(next(p['price'] for p in self.store.products() if p['id']=='vitamin-d3-k2'),1200)
-        with self.assertRaises(Error):self.store.admin(self.admin_b,'approve',{'id':request['id'],'decision':'approve'})
-    def test_paid_cancel_refund_requires_two_admins(self):
+        with self.assertRaises(Error):self.store.admin(viewer,'batch_adjust',{'id':'DEMO-03-01','quantity':1,'remarks':'Not authorized.'})
+        snapshot=self.store.snapshot(self.admin_a)
+        self.assertNotIn('audit',snapshot);self.assertNotIn('approvals',snapshot)
+
+    def test_paid_cancel_refund_is_direct_and_restores_stock_once(self):
         order=self.store.order(self.customer,self.payload);self.store.pay(self.customer,order['id'],{'outcome':'success'});self.store.cancel(self.customer,order['id'])
         self.assertEqual(self.stock(),40)
         self.store.cancel(self.customer,order['id']);self.assertEqual(self.stock(),40)
-        request=self.store.admin(self.admin_a,'request',{'kind':'refund','target':order['id']})
-        with self.assertRaises(Error):self.store.admin(self.admin_a,'approve',{'id':request['id'],'decision':'approve'})
-        self.store.admin(self.admin_b,'approve',{'id':request['id'],'decision':'approve'})
+        self.store.admin(self.admin_a,'refund',{'id':order['id'],'remarks':'Full cancellation refund.'})
         self.assertEqual(self.store.snapshot(self.customer)['orders'][0]['refund'],'refunded_preview')
-    def test_duplicate_pending_requests_are_rejected(self):
-        # A second pending request for the same change could never be approved once the first resolved.
+
+    def test_duplicate_refunds_do_not_repeat_effects(self):
         order=self.store.order(self.customer,self.payload);self.store.pay(self.customer,order['id'],{'outcome':'success'});self.store.cancel(self.customer,order['id'])
-        first=self.store.admin(self.admin_a,'request',{'kind':'refund','target':order['id']})
-        with self.assertRaises(Error) as duplicate:self.store.admin(self.admin_b,'request',{'kind':'refund','target':order['id']})
-        self.assertEqual(duplicate.exception.status,409)
-        self.store.admin(self.admin_b,'approve',{'id':first['id'],'decision':'approve'})
-        pending=[a for a in self.store.snapshot(self.admin_a)['approvals'] if a['state']=='pending']
-        self.assertEqual(pending,[])
-        price=self.store.admin(self.admin_a,'request',{'kind':'price','target':'vitamin-d3-k2','value':950})
-        with self.assertRaises(Error):self.store.admin(self.admin_a,'request',{'kind':'price','target':'vitamin-d3-k2','value':975})
-        self.store.admin(self.admin_b,'approve',{'id':price['id'],'decision':'reject'})
-        self.store.admin(self.admin_a,'request',{'kind':'price','target':'vitamin-d3-k2','value':975})
+        self.store.admin(self.admin_a,'refund',{'id':order['id'],'remarks':'Record full refund.'})
+        repeat=self.store.admin(self.admin_a,'refund',{'id':order['id'],'remarks':'Retry full refund.'})
+        self.assertTrue(repeat['idempotent']);self.assertEqual(self.stock(),40)
+        with self.store.db() as c:self.assertEqual(c.execute('SELECT COUNT(*) FROM sales_refunds WHERE order_id=?',(order['id'],)).fetchone()[0],1)
+
     def test_shipped_order_cannot_cancel_review_requires_delivery(self):
         order=self.store.order(self.customer,self.payload);self.store.pay(self.customer,order['id'],{'outcome':'success'})
         review={'order_id':order['id'],'product':'vitamin-d3-k2','rating':5,'text':'A preview review of a delivered order.'}

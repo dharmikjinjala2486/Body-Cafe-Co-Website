@@ -14,15 +14,11 @@ const DESIGN_LABELS = [
   ["h", "H", "Folio"],
 ];
 const availableDesigns = () => DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
-let activeDesign = "c";
+let activeDesign = "b";
 function syncDesign() {
-  const requested = new URL(location.href).searchParams.get("design");
-  let stored = null;
-  try { stored = sessionStorage.getItem("bcc-design"); } catch {}
-  const available = availableDesigns();
-  activeDesign = available.includes(requested) ? requested : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "c";
-  try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
-  document.body.dataset.design = activeDesign;
+  activeDesign = "b";
+  try { sessionStorage.setItem("bcc-design", "b"); } catch {}
+  document.body.dataset.design = "b";
 }
 syncDesign();
 /* Where "home" is for the active direction: A/B return to their concept homepage. */
@@ -100,7 +96,7 @@ const shortName = {
 const product = (id) => state.catalog.find((p) => p.id === id);
 const image = (p, cls = "", eager = false) =>
   p
-    ? `<img class="bottle ${cls}" src="${window.BCCBottleAssets.url(p.id)}" alt="${escape(p.name)} bottle" width="${bottleWidth[p.id] || 720}" height="1000" decoding="async" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'}>`
+    ? `<img class="bottle ${cls}" src="${escape(window.BCCBottleAssets.url(p.id))}" alt="${escape(p.name)} bottle" width="${bottleWidth[p.id] || 720}" height="1000" decoding="async" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'}>`
     : "";
 /* Text colour that reads on a given cap colour. */
 function onCap(hex) {
@@ -136,8 +132,9 @@ async function api(path, data) {
 window.BCCApp = {
   api: (path, data) => api(path, data),
   csrf: () => state.csrf,
+  flags: () => state.flags,
   user: () => state.user,
-  catalog: () => state.catalog,
+  catalog: () => location.pathname.startsWith("/ops") ? (state.ops?.products || state.catalog) : state.catalog,
   opsAction: (action, data) => opsAction(action, data),
   rerender: () => render(false),
   staticPreview: () => !!window.BCCStaticPreview,
@@ -160,7 +157,7 @@ window.BCCApp = {
   routeChanged: () => { renderedRoute = location.pathname + location.search; },
 };
 async function session() {
-  const s = await api("/session");
+  const s = await api(location.pathname.startsWith("/ops") ? "/admin/session" : "/session");
   state.user = s.user;
   state.csrf = s.csrf;
   state.sessionReady = true;
@@ -270,10 +267,10 @@ function designLinks() {
     .join("");
 }
 function previewBar() {
-  const options = DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d)).map(([d, number, label]) => `<option value="${d}"${activeDesign === d ? " selected" : ""}>${number} · ${label}</option>`).join("");
-  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Design preview · Dummy content · Ordering and sign-in unavailable." : "Design preview · Dummy content · No payment is taken."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><label class="preview-design-mobile">Design<select data-design-select aria-label="Choose design direction">${options}</select></label><a href="/ops">Operations preview</a></div>`;
+  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Design preview · Ordering and sign-in unavailable." : window.BCCConnectedHosted ? "Store preview · Ordering opens soon." : "Local preview · No live payment or dispatch."}</p><a href="/ops">Admin portal ↗</a></div>`;
 }
 function shell(content) {
+  if (location.pathname.startsWith("/ops")) return content;
   const t = theme();
   if (t && t.chrome && !location.pathname.startsWith("/ops")) {
     const html = t.chrome(siteCtx(), content);
@@ -333,7 +330,7 @@ function menuBoard(list) {
     )
     .join(
       "",
-    )}</ul><p class="menu-note">All prices are samples. Pack sizes, serving quantities, directions and approved product purposes are awaiting final labels. Final prices, GST and delivery are confirmed before launch.</p><div class="menu-peek" aria-hidden="true">${list.map((p) => `<img src="${window.BCCBottleAssets.url(p.id)}" alt="" data-peek-img="${p.id}" width="${bottleWidth[p.id]}" height="1000" loading="lazy">`).join("")}</div></section>`;
+    )}</ul><p class="menu-note">All prices are samples. Pack sizes, serving quantities, directions and approved product purposes are awaiting final labels. Final prices, GST and delivery are confirmed before launch.</p><div class="menu-peek" aria-hidden="true">${list.map((p) => `<img src="${escape(window.BCCBottleAssets.url(p.id))}" alt="" data-peek-img="${p.id}" width="${bottleWidth[p.id]}" height="1000" loading="lazy">`).join("")}</div></section>`;
 }
 function homeLot() {
   return `<section id="home-report" class="lot-band" aria-labelledby="lot-title"><div class="lot-inner"><div class="lot-copy"><h2 id="lot-title" class="display">Turn the bottle over.</h2><p>Understand the evidence before you choose. Already have a bottle? Its lot number connects a pack to the corresponding batch record.</p>${window.BCCHome.example()}</div><form id="home-lot" class="lot-form"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">${state.catalog.map((p, i) => `<option value="${p.id}" data-sample="DEMO-${String(i + 1).padStart(2, "0")}-01">${escape(p.name)}</option>`).join("")}</select><label for="home-lot-number">Lot number</label><div class="lot-input"><input id="home-lot-number" name="lot" placeholder="DEMO-01-01" maxlength="60" required autocomplete="off"><button class="button on-dark" type="submit">Look up</button></div><p class="micro">Demonstration only. Try <button type="button" class="link-button" data-fill-lot>the sample lot</button> for the product you picked. No real laboratory document is connected.</p></form></div></section>`;
@@ -1016,161 +1013,13 @@ function searchPage() {
   return `<section class="section-wrap">${heading("", "Search")}<form id="page-search" class="inline-search"><label class="sr-only" for="page-query">Search products</label><input id="page-query" name="q" value="${escape(q)}" placeholder="Product or ingredient name"><button class="button">Search</button></form><p>${match.length} product match${match.length === 1 ? "" : "es"} ${q ? "for “" + escape(q) + "”" : ""}</p>${report ? `<div class="note-panel">${link("Find your lot report", "/reports", "text-link")}</div>` : ""}${match.length ? grid(match) : empty("No matches", "Try “creatine”, “iron”, “softgels” or “lot report”.", "Shop all seven", "/shop")}</section>`;
 }
 
-const opsTabs = [
-  ["overview", "Overview"],
-  ["orders", "Orders"],
-  ["inventory", "Inventory & batches"],
-  ["products", "Products & prices"],
-  ["cases", "Support & safety"],
-  ["reviews", "Reviews & questions"],
-  ["lots", "Lot reports"],
-  ["approvals", "Approvals"],
-  ["audit", "Audit history"],
-  ["analytics", "Analytics"],
-  ["channels", "Channels & integrations"],
-  ["flags", "Feature flags"],
-];
-function opsLogin() {
-  return `<section class="section-wrap">${heading("Operations preview", "Run the store", "Try the back-office workflows with demo identities. Microsoft SSO and MFA aren't connected.")}<div class="demo-identities">${[
-    ["admin-a", "Admin A", "Initiate changes, quarantine lots and manage orders."],
-    ["admin-b", "Admin B", "A different person for approval demonstrations."],
-    ["viewer", "Viewer", "Read-only, enforced on server endpoints."],
-  ]
-    .map(
-      ([id, t, d]) =>
-        `<article><span class="kicker">Preview identity</span><h2>${t}</h2><p>${d}</p><button class="button" data-demo-login="${id}">Enter as ${t}</button></article>`,
-    )
-    .join(
-      "",
-    )}</div><div class="note-panel">This is a localhost-only demonstration. Real organisational identity, account provisioning and production approval ownership remain required.</div></section>`;
-}
 function table(headers, rows) {
   return `<div class="table-scroll"><table><thead><tr>${headers.map((x) => `<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.length ? rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("") : `<tr><td colspan="${headers.length}">No records yet.</td></tr>`}</tbody></table></div>`;
 }
 function ops(tab = "overview") {
-  if (!["admin", "viewer"].includes(state.user.role)) return opsLogin();
-  const o = state.ops;
-  const viewer = state.user.role === "viewer";
-  let content = "";
-  const orders = o.orders;
-  const delivered = orders.filter((x) => x.state === "delivered");
-  const captured = o.payments.filter((x) => x.status === "captured").reduce((n, x) => n + x.amount, 0);
-  if (tab === "overview")
-    content = `<div class="metric-grid">${[
-      ["Orders", orders.length],
-      ["Captured sample value", money(captured)],
-      ["Delivered", delivered.length],
-      ["Open cases", o.cases.filter((x) => x.state !== "resolved").length],
-    ]
-      .map(([l, v]) => `<article><span>${l}</span><strong>${v}</strong></article>`)
-      .join(
-        "",
-      )}</div><div class="ops-section"><h2>Needs attention</h2><div class="attention-grid"><a href="/ops/approvals"><strong>${o.approvals.filter((x) => x.state === "pending").length}</strong><span>Changes awaiting approval ↗</span></a><a href="/ops/inventory"><strong>${o.batches.filter((x) => x.state === "quarantined").length}</strong><span>Quarantined lots ↗</span></a><a href="/ops/cases"><strong>${o.cases.filter((x) => x.kind === "safety" && x.state !== "resolved").length}</strong><span>Active safety cases ↗</span></a></div></div><div class="note-panel"><strong>Preview ledger, durable local records.</strong><p>External payment, courier, identity and Amazon connections are inactive. A successful preview action does not move money or dispatch a product.</p></div>`;
-  else if (tab === "orders")
-    content = table(
-      ["Order", "State", "Sample total", "Provider", "Action"],
-      orders.map((x) => [
-        x.id,
-        badge(x.state),
-        money(x.total),
-        escape(x.provider || "Not assigned"),
-        `${link("View", "/orders/" + x.id, "small-link")}${["paid", "shipped"].includes(x.state) ? `<button class="small-button" data-ship="${x.id}" ${viewer ? "disabled" : ""}>${x.state === "paid" ? "Simulate shipment" : "Mark delivered"}</button>` : ""}${x.refund === "approval_pending" ? (o.approvals.some((a) => a.kind === "refund" && a.target === x.id && a.state === "pending") ? badge("Refund awaiting approval") : `<button class="small-button" data-refund="${x.id}" ${viewer ? "disabled" : ""}>Request refund approval</button>`) : ""}`,
-      ]),
-    );
-  else if (tab === "inventory")
-    content = `<p>FEFO selects the earliest-expiring released lot. Reservations decrement available stock atomically. Quarantine immediately prevents new allocation and shipping.</p>${table(
-      ["Lot / product", "Expiry", "Available", "Evidence / state", "Actions"],
-      o.batches.map((b) => [
-        `${b.id}<small>${product(b.product)?.name || b.product}</small>`,
-        date(b.expiry),
-        b.available,
-        `${badge(b.proof ? "Sample proof present" : "Proof missing")}${badge(b.state)}`,
-        `<button class="small-button" data-quarantine="${b.id}" ${viewer || b.state === "quarantined" ? "disabled" : ""}>Quarantine</button><button class="small-button" data-stock="${b.id}" ${viewer ? "disabled" : ""}>Request stock addition</button>${b.state === "quarantined" ? `<button class="small-button" data-release="${b.id}" ${viewer ? "disabled" : ""}>Request release</button>` : ""}`,
-      ]),
-    )}`;
-  else if (tab === "products")
-    content = `<p>All listed prices are illustrative. Price and publication changes require a different Admin’s approval.</p>${table(
-      ["Product", "Sample price", "Publication", "Content readiness", "Actions"],
-      state.catalog.map((p) => [
-        p.name,
-        money(p.price),
-        badge(p.published ? "Published preview" : "Hidden"),
-        badge("Approved rear label pending"),
-        `<button class="small-button" data-price="${p.id}" ${viewer ? "disabled" : ""}>Request price change</button><button class="small-button" data-publication="${p.id}" ${viewer ? "disabled" : ""}>${p.published ? "Request unpublish" : "Request publish"}</button>`,
-      ]),
-    )}`;
-  else if (tab === "cases")
-    content = `<p>Case IDs, ownership and state changes stay in the ledger. A safety case must be assessed; quarantine can be initiated immediately by an Admin.</p>${table(
-      ["Case", "Type / state", "Message", "Queue / order / contact", "Actions"],
-      o.cases.map((c) => [
-        c.id,
-        `${badge(caseKind(c.kind), c.kind === "safety" ? "warning" : "")}${badge(c.state)}`,
-        `${c.subject ? `<strong>${escape(c.subject)}</strong><br>` : ""}${escape(c.message)}${c.request ? `<small>Request: ${escape(c.request.type)} · ${escape(c.request.reason || c.request.kind || "")}${c.request.remedy ? " · wants " + escape(c.request.remedy) : ""}${(c.request.items || []).map((i) => " · " + escape(i.name) + " × " + i.quantity).join("")}</small>` : ""}${c.topic ? `<small>${escape(c.topic)}${c.lot ? " · lot " + escape(c.lot) : ""}</small>` : ""}${(c.history || []).filter((x) => x.state === "customer_reply").map((x) => `<small>Customer added: ${escape(x.message)}</small>`).join("")}${(c.media || []).map((m) => `<a class="small-link" href="/api/review-media/${escape(m)}" target="_blank" rel="noopener">Pack photo ${escape(m.slice(4, 10))}</a>`).join("")}`,
-        `${escape(c.queue || "General")}<small>${escape(c.order_id || "No order")} · ${escape(c.sla)}</small>${c.contact ? `<small>${escape(c.contact.name)}${c.contact.mobile ? " · +91 " + escape(c.contact.mobile) : ""}${c.contact.email ? " · " + escape(c.contact.email) : ""}</small>` : ""}`,
-        `<label class="micro" for="note-${c.id}">Reply shown to the customer (optional)</label><input id="note-${c.id}" class="small-input" data-case-note="${c.id}" maxlength="2000" ${viewer ? "disabled" : ""}>${["investigating", "escalated", "resolved"].map((s) => `<button class="small-button" data-case-state="${s}" data-id="${c.id}" ${viewer ? "disabled" : ""}>${s}</button>`).join("")}`,
-      ]),
-    )}<h2>Help Centre answers</h2><p class="micro">“Did this answer your question?” — one answer per browser session per article.</p>${(o.help_feedback || []).length ? table(["Article", "Yes", "No"], o.help_feedback.map((f) => [escape(f.article), String(f.yes), String(f.no)])) : "<p>No answers yet.</p>"}`;
-  else if (tab === "approvals")
-    content = `<p>No self-approval. Switch to the other preview Admin to approve a request. Real production identities must enforce the same separation.</p><div class="identity-tools">${["admin-a", "admin-b", "viewer"].map((id) => `<button class="small-button" data-demo-login="${id}">${id}</button>`).join("")}</div>${table(
-      ["Request", "Change", "Creator", "State", "Decision"],
-      o.approvals.map((a) => [
-        a.id,
-        `${a.kind}: ${escape(a.target)}<small>${escape(JSON.stringify(a.payload))}</small>`,
-        a.creator,
-        badge(a.state),
-        a.state === "pending"
-          ? `<button class="small-button" data-approval="${a.id}" data-decision="approve" ${viewer || a.creator === state.user.id ? "disabled" : ""}>Approve</button><button class="small-button" data-approval="${a.id}" data-decision="reject" ${viewer || a.creator === state.user.id ? "disabled" : ""}>Reject</button>`
-          : escape(a.approver || "—"),
-      ]),
-    )}`;
-  else if (tab === "audit")
-    content = `<p>Append-only application audit trail. Database access and production tamper resistance require deployment controls.</p>${table(
-      ["Time", "Actor", "Action", "Record"],
-      o.audit.slice(0, 200).map((a) => [date(a.created), a.actor, a.action, a.target]),
-    )}`;
-  else if (tab === "analytics")
-    content = `<div class="metric-grid">${[
-      ["Preview delivered value", money(delivered.reduce((n, x) => n + x.total, 0))],
-      ["Sample delivery rate", orders.length ? Math.round((delivered.length / orders.length) * 100) + "%" : "—"],
-      ["Cases", o.cases.length],
-      ["Verified review submissions", o.reviews.length],
-    ]
-      .map(([l, v]) => `<article><span>${l}</span><strong>${v}</strong></article>`)
-      .join(
-        "",
-      )}</div><div class="note-panel"><strong>Delivered contribution: awaiting finance inputs.</strong><p>COGS, taxes, payment fees, billed shipping, returns and other attributable costs are not approved. Revenue is not presented as contribution.</p></div><h2>First-party events</h2>${table(
-      ["Event", "Count"],
-      o.events.map((e) => [e.name, e.count]),
-    )}<p class="micro">No external analytics exports are active. Event records do not contain contact data or support narratives.</p>`;
-  else if (tab === "channels")
-    content = `<div class="integration-grid">${[
-      ["Razorpay", "Not connected", "Server signatures, webhooks and settlement reconciliation required."],
-      ["Mobile OTP / email", "Preview codes only", "Provider credentials, rate limits and email fallback required."],
-      ["Microsoft SSO + MFA", "Not connected", "Organisational tenant and real users required."],
-      ["Vayuvega", "Preview assignment only", "Contract, serviceability, booking and reconciliation integration required."],
-      ["Shipneer", "Preview assignment only", "Contract, serviceability, booking and reconciliation integration required."],
-      ["Amazon FBA", "Agency boundary pending", "FBA-only scope; Amazon stock and bulk replenishment stay distinct from D2C."],
-      ["WhatsApp / email support", "Not connected", "Business contacts, sender configuration and consented communication required."],
-      ["Unit authenticity", "Scope unresolved", "Lot lookup is separate from a concealed unit code."],
-    ]
-      .map(([t, s, d]) => `<article><h2>${t}</h2>${badge(s)}<p>${d}</p></article>`)
-      .join(
-        "",
-      )}</div><div class="note-panel"><strong>Release readiness</strong><p>Keep independent D2C and Amazon acceptance checklists; the later direction requests a coordinated public launch. No channel is marked ready from this preview.</p></div>`;
-  else if (tab === "flags")
-    content = `<p>These provisional flags demonstrate governed configuration. Turning a flag on does not create an external integration or approve missing content.</p>${table(
-      ["Flag", "Current state", "Action"],
-      Object.entries(o.flags).map(([k, v]) => [
-        k,
-        badge(v ? "On" : "Off"),
-        `<button class="small-button" data-flag="${k}" data-value="${!v}" ${viewer ? "disabled" : ""}>Request ${v ? "disable" : "enable"}</button>`,
-      ]),
-    )}`;
-  else if (tab === "reviews") content = opsReviews(o, viewer);
-  else if (tab === "lots") content = window.BCCLotsOps ? window.BCCLotsOps.render(o, viewer) : "";
-  else return notFound();
-  return `<div class="ops-layout"><aside class="ops-sidebar"><p class="kicker">Body Café Co. operations</p><h2>Operations</h2><p>${escape(state.user.name)} ${badge(state.user.role)}</p><nav aria-label="Operations sections">${opsTabs.map(([id, l]) => `<a class="${id === tab ? "active" : ""}" href="/ops${id === "overview" ? "" : "/" + id}">${l}</a>`).join("")}</nav><button class="small-button" data-action="logout">Leave operations</button></aside><section class="ops-content"><div class="ops-heading"><div><p class="kicker">${viewer ? "Read-only" : "Admin"} view</p><h1>${opsTabs.find((x) => x[0] === tab)[1]}</h1></div><button class="small-button" data-action="refresh">Refresh</button></div>${content}</section></div>`;
+  return window.BCCOps ? window.BCCOps.render(state.ops,state.user,opsReviews) : notFound();
 }
+
 /* Review and product-question moderation. Publication follows written rules: a low rating or criticism is never a
    reason to reject. Each photo is decided separately. Brand replies and official answers are labelled as ours. */
 const REJECT_REASONS = [
@@ -1230,10 +1079,14 @@ async function render(scroll = true) {
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
   }
   try {
+    await session();
     let content;
     const fx = fixtureState(path);
     if (!fx && (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/") || path === "/checkout" || path === "/contact" || path === "/settings")) state.account = await api("/account");
-    if (path.startsWith("/ops") && ["admin", "viewer"].includes(state.user.role)) state.ops = await api("/admin");
+    if (path.startsWith("/ops") && ["admin", "viewer"].includes(state.user.role)) {
+      state.ops = await api("/admin");
+      if (path === "/ops/sales") state.ops.sales = await api("/admin/sales?" + new URL(location.href).searchParams.toString());
+    }
     if (version !== renderVersion) return;
     // Each customer route asks the active direction for its own composition, falling back to the shared template.
     const t = theme();
@@ -1244,6 +1097,10 @@ async function render(scroll = true) {
       content = `<section class="section article">${heading("Shared design preview", "Operations aren't available here", "The operations preview needs the local application. Browse the customer designs instead.")}${link("Continue shopping", "/shop")}</section>`;
     else if (window.BCCStaticPreview && !fx && /^\/(checkout|account|orders|payment|sign-in)(\/|$)/.test(path))
       content = call("unavailable", path) ?? `<section class="section article">${heading("Shared design preview", "Explore the design", "You can browse all eight designs, inspect product details and try the sample bag and lot lookup. Ordering, sign-in and support submissions are not enabled on this shared preview.")}${link("Continue shopping", "/shop")}</section>`;
+    else if (window.BCCConnectedHosted && !state.flags.checkout_enabled && /^\/(checkout|payment)(\/|$)/.test(path))
+      content = `<section class="section article">${heading("Body Café Co.", "Ordering opens soon", "You can browse products and lot reports now. Online ordering is not open yet.")}${link("Continue shopping", "/shop")}</section>`;
+    else if (window.BCCConnectedHosted && /^\/(sign-in)(\/|$)/.test(path))
+      content = `<section class="section article">${heading("Body Café Co.", "Customer accounts open soon", "Customer sign-in will be available when ordering launches. You can still contact us for help.")}${link("Contact us", "/contact")}</section>`;
     else if (path === "/") content = call("home") ?? home();
     else if (path === "/shop") content = call("shop") ?? shop();
     else if (path.startsWith("/products/")) content = detail(product(seg));
@@ -1299,7 +1156,7 @@ async function render(scroll = true) {
     const shown = path.startsWith("/products/") ? product(path.split("/")[2]) : null;
     const pageTitle = $("#main h1")?.textContent.trim();
     document.title = shown
-      ? `${shown.name} — Body Café Co.`
+      ? `${shown.seo_title || shown.name} — Body Café Co.`
       : path !== "/" && pageTitle ? `${pageTitle} — Body Café Co.` : (path === "/"
         ? "Seven everyday essentials"
         : path
@@ -1307,6 +1164,7 @@ async function render(scroll = true) {
             .filter(Boolean)
             .map((x) => x.replaceAll("-", " "))
             .join(" · ")) + " — Body Café Co.";
+    if (shown) document.querySelector('meta[name="description"]')?.setAttribute("content", shown.seo_description || shown.subtitle || shown.name);
     if (scroll) {
       const anchor = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
       if (anchor) anchor.scrollIntoView();
@@ -1338,6 +1196,9 @@ function navigate(href, color) {
 async function refreshCatalog() {
   const c = await api("/catalog");
   state.catalog = c.products;
+  window.BCCCatalogImages = Object.fromEntries(c.products.filter(p => p.gallery?.length).map(p => [p.id,p.gallery[0].src]));
+  window.BCCCatalogSecondary = Object.fromEntries(c.products.filter(p => p.gallery?.length > 1).map(p => [p.id,p.gallery[1].src]));
+  c.products.forEach(p => { if (p.format) format[p.id] = p.format; });
   state.bundles = c.bundles;
   state.flags = c.flags;
 }
@@ -1350,7 +1211,7 @@ async function opsAction(action, data) {
   await api("/admin/" + action, data);
   await refreshCatalog();
   await render(false);
-  toast("Preview record updated.");
+  toast("Record updated.");
 }
 document.addEventListener("click", async (e) => {
   const button = e.target.closest("button");
@@ -1448,36 +1309,12 @@ document.addEventListener("click", async (e) => {
       await api("/orders/" + button.dataset.cancel + "/cancel", {});
       await refreshCatalog();
       await render(false);
-      toast("Preview order cancelled. Paid refunds await approval.");
+      toast("Order cancelled. Any paid amount is pending a refund.");
     } else if (button.dataset.reorder) {
       const o = state.account.orders.find((o) => o.id === button.dataset.reorder);
       o.items.forEach((i) => add(i.id, i.quantity));
       navigate("/cart");
-    } else if (button.dataset.ship) await opsAction("ship", { id: button.dataset.ship });
-    else if (button.dataset.quarantine) {
-      const reason = prompt("Reason for quarantining this preview lot:");
-      if (reason) await opsAction("quarantine", { batch: button.dataset.quarantine, reason });
-    } else if (button.dataset.stock) {
-      const raw = prompt("Preview units to add (requires another Admin’s approval):", "10");
-      if (raw !== null && raw.trim() && Number.isInteger(Number(raw)))
-        await opsAction("request", { kind: "stock", target: button.dataset.stock, value: Number(raw), reason: "Preview stock addition" });
-    } else if (button.dataset.price) {
-      const raw = prompt("New sample price in whole rupees (requires another Admin):", String(product(button.dataset.price).price));
-      if (raw !== null && raw.trim() && Number.isInteger(Number(raw)))
-        await opsAction("request", { kind: "price", target: button.dataset.price, value: Number(raw), reason: "Preview price change" });
-    } else if (button.dataset.publication)
-      await opsAction("request", {
-        kind: "publication",
-        target: button.dataset.publication,
-        value: !product(button.dataset.publication).published,
-      });
-    else if (button.dataset.release) await opsAction("request", { kind: "release", target: button.dataset.release, value: true });
-    else if (button.dataset.refund) await opsAction("request", { kind: "refund", target: button.dataset.refund });
-    else if (button.dataset.approval) await opsAction("approve", { id: button.dataset.approval, decision: button.dataset.decision });
-    else if (button.dataset.caseState) await opsAction("case", { id: button.dataset.id, state: button.dataset.caseState, note: document.querySelector(`[data-case-note="${button.dataset.id}"]`)?.value || "" });
-    else if (button.dataset.flag)
-      await opsAction("request", { kind: "flags", target: button.dataset.flag, value: button.dataset.value === "true" });
-    else if (button.dataset.action === "menu") {
+    } else if (button.dataset.action === "menu") {
       if ($("#mobile-nav").hidden) openMenu();
       else closeMenu();
     } else if (button.dataset.action === "search") {
@@ -1728,5 +1565,5 @@ try {
   restoreShopScroll();
 } catch (e) {
   $("#app").innerHTML =
-    `<div class="boot"><p class="boot-title">The store didn't load</p><p>${escape(e.message)}</p><p>${window.BCCStaticPreview ? "Reload the preview. If this continues, check the latest deployment build." : "Start the local Python preview server, then reload."}</p></div>`;
+    `<div class="boot"><p class="boot-title">The store didn't load</p><p>${escape(e.message)}</p><p>${window.BCCStaticPreview ? "Reload the preview. If this continues, check the latest deployment build." : window.BCCConnectedHosted ? "Please reload in a moment. The store service is temporarily unavailable." : "Start the local Python preview server, then reload."}</p></div>`;
 }
