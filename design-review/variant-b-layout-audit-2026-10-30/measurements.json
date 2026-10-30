@@ -1,0 +1,7292 @@
+[
+  {
+    "h1": "Your body. Your curiosity. Your café.",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 774,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/hero/home-hero-panel.webp",
+        "w": 745
+      },
+      {
+        "fit": "contain",
+        "h": 285,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 285,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 285,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 285,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 285,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 285,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 285,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 198
+      },
+      {
+        "fit": "fill",
+        "h": 570,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 395
+      },
+      {
+        "fit": "cover",
+        "h": 197,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 318
+      },
+      {
+        "fit": "fill",
+        "h": 270,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/faq/faq_questions.webp",
+        "w": 360
+      }
+    ],
+    "outside": [
+      {
+        "cls": "",
+        "rect": {
+          "bottom": 917.5352478027344,
+          "height": 774.179931640625,
+          "left": 707.4000244140625,
+          "right": 1452.5999755859375,
+          "top": 143.35531616210938,
+          "width": 745.199951171875,
+          "x": 707.4000244140625,
+          "y": 143.35531616210938
+        },
+        "tag": "IMG",
+        "text": "Vitamin D3 + K2 and L-Theanine bottles on an indigo and lilac stage."
+      }
+    ],
+    "pageHeight": 10281,
+    "pageWidth": 1440,
+    "path": "/",
+    "sticky": [
+      {
+        "cls": "bz-stick-c bz-stick",
+        "height": 609,
+        "tag": "DIV",
+        "text": "BEFORE YOU ORDERGood questionswelcome here.This is a working preview. No payment is taken and no products are ",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Meet the collection.",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 125,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 86
+      },
+      {
+        "fit": "fill",
+        "h": 125,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 86
+      },
+      {
+        "fit": "fill",
+        "h": 125,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 86
+      },
+      {
+        "fit": "fill",
+        "h": 125,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 86
+      },
+      {
+        "fit": "fill",
+        "h": 125,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 86
+      },
+      {
+        "fit": "fill",
+        "h": 125,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 86
+      },
+      {
+        "fit": "fill",
+        "h": 125,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 86
+      },
+      {
+        "fit": "contain",
+        "h": 231,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 160
+      },
+      {
+        "fit": "contain",
+        "h": 231,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 160
+      },
+      {
+        "fit": "contain",
+        "h": 231,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 160
+      },
+      {
+        "fit": "contain",
+        "h": 231,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 160
+      },
+      {
+        "fit": "contain",
+        "h": 231,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 160
+      },
+      {
+        "fit": "contain",
+        "h": 231,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 160
+      },
+      {
+        "fit": "contain",
+        "h": 231,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 160
+      }
+    ],
+    "outside": [],
+    "pageHeight": 4220,
+    "pageWidth": 1440,
+    "path": "/shop",
+    "sticky": [
+      {
+        "cls": "bz-stick-c bz-stick",
+        "height": 175,
+        "tag": "HEADER",
+        "text": "At a glanceThe collection, side by sideFormat, pack and price for every product — the same facts as each produ",
+        "top": "112px"
+      },
+      {
+        "cls": "sp-head bz-stick-c bz-stick",
+        "height": 109,
+        "tag": "HEADER",
+        "text": "01Capsules, softgels and chews",
+        "top": "112px"
+      },
+      {
+        "cls": "sp-head bz-stick-c bz-stick",
+        "height": 54,
+        "tag": "HEADER",
+        "text": "02Need a hand?",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Iron Bisglycinate",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 454,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 314
+      },
+      {
+        "fit": "cover",
+        "h": 315,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 559
+      },
+      {
+        "fit": "contain",
+        "h": 436,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 302
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 116
+      }
+    ],
+    "outside": [],
+    "pageHeight": 9386,
+    "pageWidth": 1440,
+    "path": "/products/iron-bisglycinate",
+    "sticky": [
+      {
+        "cls": "bz-specimen bz-stick-c bz-stick",
+        "height": 751,
+        "tag": "FIGURE",
+        "text": "123Cap colour Identifies this product across the collection.Front label Product name and format.Rear label Amo",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How do I take it?04How to use and cautionsHow to use and cautions",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How can I check it?05Quality, sourcing and lot reportQuality, sourcing and lot report",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "Still wondering?07Questions and answersQuestions and answers",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "What else is there?08Other products to exploreOther products to explore",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "L-Theanine",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 456,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 316
+      },
+      {
+        "fit": "cover",
+        "h": 315,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 559
+      },
+      {
+        "fit": "contain",
+        "h": 436,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 302
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 116
+      }
+    ],
+    "outside": [],
+    "pageHeight": 8818,
+    "pageWidth": 1440,
+    "path": "/products/l-theanine",
+    "sticky": [
+      {
+        "cls": "bz-specimen bz-stick-c bz-stick",
+        "height": 751,
+        "tag": "FIGURE",
+        "text": "123Cap colour Identifies this product across the collection.Front label Product name and format.Rear label Amo",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How do I take it?04How to use and cautionsHow to use and cautions",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How can I check it?05Quality, sourcing and lot reportQuality, sourcing and lot report",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 235,
+        "tag": "HEADER",
+        "text": "What do customers say?06Customer reviewsCustomer reviews",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "Still wondering?07Questions and answersQuestions and answers",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "What else is there?08Other products to exploreOther products to explore",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Vitamin D3 + K2",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 454,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 314
+      },
+      {
+        "fit": "cover",
+        "h": 315,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 559
+      },
+      {
+        "fit": "contain",
+        "h": 436,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 302
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 116
+      }
+    ],
+    "outside": [],
+    "pageHeight": 9465,
+    "pageWidth": 1440,
+    "path": "/products/vitamin-d3-k2",
+    "sticky": [
+      {
+        "cls": "bz-specimen bz-stick-c bz-stick",
+        "height": 751,
+        "tag": "FIGURE",
+        "text": "123Cap colour Identifies this product across the collection.Front label Product name and format.Rear label Amo",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How do I take it?04How to use and cautionsHow to use and cautions",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How can I check it?05Quality, sourcing and lot reportQuality, sourcing and lot report",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 235,
+        "tag": "HEADER",
+        "text": "What do customers say?06Customer reviewsCustomer reviews",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "Still wondering?07Questions and answersQuestions and answers",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "What else is there?08Other products to exploreOther products to explore",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Omega-3 Fish Oil",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 454,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 314
+      },
+      {
+        "fit": "cover",
+        "h": 315,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 559
+      },
+      {
+        "fit": "contain",
+        "h": 436,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 302
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 116
+      }
+    ],
+    "outside": [],
+    "pageHeight": 9199,
+    "pageWidth": 1440,
+    "path": "/products/omega-3-fish-oil",
+    "sticky": [
+      {
+        "cls": "bz-specimen bz-stick-c bz-stick",
+        "height": 751,
+        "tag": "FIGURE",
+        "text": "123Cap colour Identifies this product across the collection.Front label Product name and format.Rear label Amo",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How do I take it?04How to use and cautionsHow to use and cautions",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How can I check it?05Quality, sourcing and lot reportQuality, sourcing and lot report",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "Still wondering?07Questions and answersQuestions and answers",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "What else is there?08Other products to exploreOther products to explore",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Myo & D-Chiro Inositol",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 455,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 315
+      },
+      {
+        "fit": "cover",
+        "h": 315,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 559
+      },
+      {
+        "fit": "contain",
+        "h": 436,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 302
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 116
+      }
+    ],
+    "outside": [],
+    "pageHeight": 9043,
+    "pageWidth": 1440,
+    "path": "/products/myo-d-chiro-inositol",
+    "sticky": [
+      {
+        "cls": "bz-specimen bz-stick-c bz-stick",
+        "height": 751,
+        "tag": "FIGURE",
+        "text": "123Cap colour Identifies this product across the collection.Front label Product name and format.Rear label Amo",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How do I take it?04How to use and cautionsHow to use and cautions",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How can I check it?05Quality, sourcing and lot reportQuality, sourcing and lot report",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "Still wondering?07Questions and answersQuestions and answers",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "What else is there?08Other products to exploreOther products to explore",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Creatine Chews",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 455,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 315
+      },
+      {
+        "fit": "cover",
+        "h": 315,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 559
+      },
+      {
+        "fit": "contain",
+        "h": 436,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 302
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 116
+      }
+    ],
+    "outside": [],
+    "pageHeight": 9273,
+    "pageWidth": 1440,
+    "path": "/products/creatine-chews",
+    "sticky": [
+      {
+        "cls": "bz-specimen bz-stick-c bz-stick",
+        "height": 751,
+        "tag": "FIGURE",
+        "text": "123Cap colour Identifies this product across the collection.Front label Product name and format.Rear label Amo",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How do I take it?04How to use and cautionsHow to use and cautions",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How can I check it?05Quality, sourcing and lot reportQuality, sourcing and lot report",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 235,
+        "tag": "HEADER",
+        "text": "What do customers say?06Customer reviewsCustomer reviews",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "Still wondering?07Questions and answersQuestions and answers",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "What else is there?08Other products to exploreOther products to explore",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Psyllium Husk",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 454,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 314
+      },
+      {
+        "fit": "cover",
+        "h": 315,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 559
+      },
+      {
+        "fit": "contain",
+        "h": 436,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 302
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 116
+      },
+      {
+        "fit": "contain",
+        "h": 168,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 116
+      }
+    ],
+    "outside": [],
+    "pageHeight": 9032,
+    "pageWidth": 1440,
+    "path": "/products/psyllium-husk",
+    "sticky": [
+      {
+        "cls": "bz-specimen bz-stick-c bz-stick",
+        "height": 751,
+        "tag": "FIGURE",
+        "text": "123Cap colour Identifies this product across the collection.Front label Product name and format.Rear label Amo",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How do I take it?04How to use and cautionsHow to use and cautions",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "How can I check it?05Quality, sourcing and lot reportQuality, sourcing and lot report",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "Still wondering?07Questions and answersQuestions and answers",
+        "top": "112px"
+      },
+      {
+        "cls": "pp-head bz-stick-c bz-stick",
+        "height": 173,
+        "tag": "HEADER",
+        "text": "What else is there?08Other products to exploreOther products to explore",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "The detail behind the bottle.",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 229,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 159
+      },
+      {
+        "fit": "fill",
+        "h": 229,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 159
+      },
+      {
+        "fit": "fill",
+        "h": 376,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 260
+      },
+      {
+        "fit": "fill",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 124
+      },
+      {
+        "fit": "fill",
+        "h": 253,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 196
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12872,
+    "pageWidth": 1440,
+    "path": "/standards",
+    "sticky": [
+      {
+        "cls": "sx-head bz-stick-c bz-stick",
+        "height": 190,
+        "tag": "HEADER",
+        "text": "What's actually in it?03The formulaWhat goes into the formula",
+        "top": "112px"
+      },
+      {
+        "cls": "sx-head bz-stick-c bz-stick",
+        "height": 190,
+        "tag": "HEADER",
+        "text": "Where does it come from?04SourcesWhere ingredients come from",
+        "top": "112px"
+      },
+      {
+        "cls": "sx-head bz-stick-c bz-stick",
+        "height": 190,
+        "tag": "HEADER",
+        "text": "Who checks it, and when?05Quality checksHow quality is checked",
+        "top": "112px"
+      },
+      {
+        "cls": "sx-head bz-stick-c bz-stick",
+        "height": 190,
+        "tag": "HEADER",
+        "text": "Can I check my bottle?07Your lotFollow your lot",
+        "top": "112px"
+      },
+      {
+        "cls": "sx-head bz-stick-c bz-stick",
+        "height": 246,
+        "tag": "HEADER",
+        "text": "How do you decide what to say?08How we communicateHow we communicate responsibly",
+        "top": "112px"
+      },
+      {
+        "cls": "sx-head bz-stick-c bz-stick",
+        "height": 133,
+        "tag": "HEADER",
+        "text": "Anything else?09QuestionsGood questions about our standards",
+        "top": "112px"
+      },
+      {
+        "cls": "sx-head bz-stick-c bz-stick",
+        "height": 133,
+        "tag": "HEADER",
+        "text": "Where now?10Next stepA clear next step",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "A supplement shop that shows its working",
+    "headings": [
+      {
+        "client": 362,
+        "cls": "",
+        "scroll": 402,
+        "tag": "H3",
+        "text": "Accountability"
+      }
+    ],
+    "height": 900,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 744,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/about/about-seven-colours.webp",
+        "w": 1190
+      },
+      {
+        "fit": "contain",
+        "h": 186,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 129
+      },
+      {
+        "fit": "contain",
+        "h": 186,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 129
+      },
+      {
+        "fit": "contain",
+        "h": 186,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 129
+      },
+      {
+        "fit": "contain",
+        "h": 186,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 129
+      },
+      {
+        "fit": "contain",
+        "h": 186,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 129
+      },
+      {
+        "fit": "contain",
+        "h": 186,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 129
+      },
+      {
+        "fit": "contain",
+        "h": 186,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 129
+      },
+      {
+        "fit": "fill",
+        "h": 478,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/about/about_curiosity.webp",
+        "w": 765
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6293,
+    "pageWidth": 1440,
+    "path": "/about",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Curiosity is a good place to start",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 136,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/about/caps-row.webp",
+        "w": 887
+      },
+      {
+        "fit": "contain",
+        "h": 142,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/renders/iron-bisglycinate-cap.webp",
+        "w": 142
+      },
+      {
+        "fit": "contain",
+        "h": 142,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 142
+      },
+      {
+        "fit": "contain",
+        "h": 142,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/cap-colours.webp",
+        "w": 142
+      },
+      {
+        "fit": "contain",
+        "h": 142,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/logo-clear-space.webp",
+        "w": 142
+      },
+      {
+        "fit": "contain",
+        "h": 142,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/type-specimen.webp",
+        "w": 142
+      },
+      {
+        "fit": "contain",
+        "h": 440,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/renders/iron-bisglycinate-cap.webp",
+        "w": 440
+      },
+      {
+        "fit": "contain",
+        "h": 135,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 91
+      },
+      {
+        "fit": "contain",
+        "h": 135,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 91
+      },
+      {
+        "fit": "contain",
+        "h": 135,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 91
+      },
+      {
+        "fit": "contain",
+        "h": 135,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 91
+      },
+      {
+        "fit": "contain",
+        "h": 135,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 91
+      },
+      {
+        "fit": "contain",
+        "h": 135,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 91
+      },
+      {
+        "fit": "contain",
+        "h": 135,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 91
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7403,
+    "pageWidth": 1440,
+    "path": "/story",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "A little more knowing.",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_hub.webp",
+        "w": 499
+      },
+      {
+        "fit": "cover",
+        "h": 419,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 670
+      },
+      {
+        "fit": "cover",
+        "h": 420,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 585
+      },
+      {
+        "fit": "cover",
+        "h": 353,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 283
+      },
+      {
+        "fit": "cover",
+        "h": 353,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 283
+      },
+      {
+        "fit": "cover",
+        "h": 353,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 283
+      },
+      {
+        "fit": "cover",
+        "h": 353,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 283
+      },
+      {
+        "fit": "cover",
+        "h": 353,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 283
+      },
+      {
+        "fit": "cover",
+        "h": 353,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 283
+      },
+      {
+        "fit": "fill",
+        "h": 0,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 0
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 160
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_forms.webp",
+        "w": 160
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_servings.webp",
+        "w": 160
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_evidence.webp",
+        "w": 160
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_reports.webp",
+        "w": 160
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10294,
+    "pageWidth": 1440,
+    "path": "/learn",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Read a label with confidence",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 499
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6162,
+    "pageWidth": 1440,
+    "path": "/learn/reading-a-label",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Why ingredient forms matter",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_forms.webp",
+        "w": 499
+      }
+    ],
+    "outside": [],
+    "pageHeight": 5010,
+    "pageWidth": 1440,
+    "path": "/learn/ingredient-forms",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Serving sizes, amounts and units",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_servings.webp",
+        "w": 499
+      }
+    ],
+    "outside": [],
+    "pageHeight": 4916,
+    "pageWidth": 1440,
+    "path": "/learn/serving-sizes",
+    "sticky": [
+      {
+        "cls": "lr-toc bz-stick-c bz-stick",
+        "height": 406,
+        "tag": "NAV",
+        "text": "In this guide1In a minute2The serving comes first3Same unit, then compare4Servings per pack5Percentages of a d",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Understanding evidence",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_evidence.webp",
+        "w": 499
+      }
+    ],
+    "outside": [],
+    "pageHeight": 4985,
+    "pageWidth": 1440,
+    "path": "/learn/understanding-evidence",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "What a lot report shows",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_reports.webp",
+        "w": 499
+      }
+    ],
+    "outside": [],
+    "pageHeight": 4989,
+    "pageWidth": 1440,
+    "path": "/learn/understanding-reports",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Iron Bisglycinate",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 499
+      },
+      {
+        "fit": "fill",
+        "h": 279,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 224
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6767,
+    "pageWidth": 1440,
+    "path": "/learn/iron-bisglycinate",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "L-Theanine",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 499
+      },
+      {
+        "fit": "fill",
+        "h": 279,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 224
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6516,
+    "pageWidth": 1440,
+    "path": "/learn/l-theanine",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Vitamin D3 + K2",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 499
+      },
+      {
+        "fit": "fill",
+        "h": 318,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 224
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6969,
+    "pageWidth": 1440,
+    "path": "/learn/vitamin-d3-k2",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Omega-3 Fish Oil",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 499
+      },
+      {
+        "fit": "fill",
+        "h": 299,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 224
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6610,
+    "pageWidth": 1440,
+    "path": "/learn/omega-3-fish-oil",
+    "sticky": [
+      {
+        "cls": "lr-toc bz-stick-c bz-stick",
+        "height": 467,
+        "tag": "NAV",
+        "text": "In this guide1In a minute2What it is3Names, forms and terms4What the research says5Inside our product6How to r",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Myo & D-Chiro Inositol",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 499
+      },
+      {
+        "fit": "fill",
+        "h": 299,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 224
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6542,
+    "pageWidth": 1440,
+    "path": "/learn/myo-d-chiro-inositol",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Creatine Chews",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 499
+      },
+      {
+        "fit": "fill",
+        "h": 299,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 224
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6538,
+    "pageWidth": 1440,
+    "path": "/learn/creatine-chews",
+    "sticky": [
+      {
+        "cls": "lr-toc bz-stick-c bz-stick",
+        "height": 467,
+        "tag": "NAV",
+        "text": "In this guide1In a minute2What it is3Names, forms and terms4What the research says5Inside our product6How to r",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Psyllium Husk",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 312,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 499
+      },
+      {
+        "fit": "fill",
+        "h": 299,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 224
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6625,
+    "pageWidth": 1440,
+    "path": "/learn/psyllium-husk",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Your batch. Its record.",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 318,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 220
+      }
+    ],
+    "outside": [],
+    "pageHeight": 5041,
+    "pageWidth": 1440,
+    "path": "/reports",
+    "sticky": [
+      {
+        "cls": "lt-head bz-stick-c bz-stick",
+        "height": 131,
+        "tag": "HEADER",
+        "text": "07Understand this report",
+        "top": "112px"
+      },
+      {
+        "cls": "lt-head bz-stick-c bz-stick",
+        "height": 131,
+        "tag": "HEADER",
+        "text": "08Browse published lots",
+        "top": "112px"
+      },
+      {
+        "cls": "lt-head bz-stick-c bz-stick",
+        "height": 179,
+        "tag": "HEADER",
+        "text": "09Questions or a missing report?",
+        "top": "112px"
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "h1": "Two products. One page.",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 587,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/daily-edit-card.webp",
+        "w": 783
+      },
+      {
+        "fit": "cover",
+        "h": 587,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/curious-edit-card.webp",
+        "w": 783
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3014,
+    "pageWidth": 1440,
+    "path": "/bundles",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "The daily edit",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 462,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/daily-edit-detail.webp",
+        "w": 616
+      }
+    ],
+    "outside": [],
+    "pageHeight": 1586,
+    "pageWidth": 1440,
+    "path": "/bundles/daily-edit",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "The curious edit",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 462,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/curious-edit-detail.webp",
+        "w": 616
+      }
+    ],
+    "outside": [],
+    "pageHeight": 1586,
+    "pageWidth": 1440,
+    "path": "/bundles/curious-edit",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "How can we help?",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 324,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/faq/faq_orders.webp",
+        "w": 432
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2753,
+    "pageWidth": 1440,
+    "path": "/help",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Contact support",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2334,
+    "pageWidth": 1440,
+    "path": "/contact",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Shipping & Delivery",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 3002,
+    "pageWidth": 1440,
+    "path": "/policies/shipping",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Returns & Refunds",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 3215,
+    "pageWidth": 1440,
+    "path": "/policies/returns",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Cancellations",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2579,
+    "pageWidth": 1440,
+    "path": "/policies/cancellation",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Privacy",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 4899,
+    "pageWidth": 1440,
+    "path": "/policies/privacy",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Terms",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 4156,
+    "pageWidth": 1440,
+    "path": "/policies/terms",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Your bag",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 91,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 68
+      }
+    ],
+    "outside": [],
+    "pageHeight": 1784,
+    "pageWidth": 1440,
+    "path": "/cart",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Nearly there. Nothing is charged.",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 44
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3047,
+    "pageWidth": 1440,
+    "path": "/checkout",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 1811,
+    "pageWidth": 1440,
+    "path": "/account",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 1811,
+    "pageWidth": 1440,
+    "path": "/account/addresses",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 1691,
+    "pageWidth": 1440,
+    "path": "/account/cases",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Privacy & communication preferences",
+    "headings": [],
+    "height": 900,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2447,
+    "pageWidth": 1440,
+    "path": "/settings",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Looking for something?",
+    "headings": [],
+    "height": 900,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 391,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 349
+      },
+      {
+        "fit": "cover",
+        "h": 391,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 349
+      },
+      {
+        "fit": "cover",
+        "h": 391,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 349
+      },
+      {
+        "fit": "cover",
+        "h": 391,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 349
+      },
+      {
+        "fit": "cover",
+        "h": 391,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 349
+      },
+      {
+        "fit": "cover",
+        "h": 391,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 349
+      },
+      {
+        "fit": "cover",
+        "h": 391,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 349
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3362,
+    "pageWidth": 1440,
+    "path": "/search",
+    "sticky": [],
+    "width": 1440
+  },
+  {
+    "h1": "Your body. Your curiosity. Your café.",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 497,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/hero/home-hero-panel.webp",
+        "w": 795
+      },
+      {
+        "fit": "contain",
+        "h": 199,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 138
+      },
+      {
+        "fit": "contain",
+        "h": 199,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 138
+      },
+      {
+        "fit": "contain",
+        "h": 199,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 138
+      },
+      {
+        "fit": "contain",
+        "h": 199,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 138
+      },
+      {
+        "fit": "contain",
+        "h": 181,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 181,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 181,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 0
+      },
+      {
+        "fit": "fill",
+        "h": 406,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 281
+      },
+      {
+        "fit": "fill",
+        "h": 238,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/faq/faq_questions.webp",
+        "w": 318
+      }
+    ],
+    "outside": [
+      {
+        "cls": "",
+        "rect": {
+          "bottom": 913.2672119140624,
+          "height": 496.8000183105469,
+          "left": -13.44000244140625,
+          "right": 781.4400024414062,
+          "top": 416.4671936035156,
+          "width": 794.8800048828125,
+          "x": -13.44000244140625,
+          "y": 416.4671936035156
+        },
+        "tag": "IMG",
+        "text": "Vitamin D3 + K2 and L-Theanine bottles on an indigo and lilac stage."
+      }
+    ],
+    "pageHeight": 12304,
+    "pageWidth": 768,
+    "path": "/",
+    "sticky": [
+      {
+        "cls": "bz-stick-c bz-stick",
+        "height": 543,
+        "tag": "DIV",
+        "text": "BEFORE YOU ORDERGood questionswelcome here.This is a working preview. No payment is taken and no products are ",
+        "top": "112px"
+      }
+    ],
+    "width": 768
+  },
+  {
+    "h1": "Meet the collection.",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 81,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 56
+      },
+      {
+        "fit": "fill",
+        "h": 81,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 56
+      },
+      {
+        "fit": "fill",
+        "h": 81,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 56
+      },
+      {
+        "fit": "fill",
+        "h": 81,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 56
+      },
+      {
+        "fit": "fill",
+        "h": 81,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 56
+      },
+      {
+        "fit": "fill",
+        "h": 81,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 56
+      },
+      {
+        "fit": "fill",
+        "h": 81,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 56
+      },
+      {
+        "fit": "contain",
+        "h": 286,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 286,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 286,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 286,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 286,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 286,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 198
+      },
+      {
+        "fit": "contain",
+        "h": 286,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 198
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6181,
+    "pageWidth": 768,
+    "path": "/shop",
+    "sticky": [
+      {
+        "cls": "sp-head bz-stick-c bz-stick",
+        "height": 79,
+        "tag": "HEADER",
+        "text": "01Capsules, softgels and chews",
+        "top": "112px"
+      },
+      {
+        "cls": "sp-head bz-stick-c bz-stick",
+        "height": 48,
+        "tag": "HEADER",
+        "text": "02Need a hand?",
+        "top": "112px"
+      }
+    ],
+    "width": 768
+  },
+  {
+    "h1": "Iron Bisglycinate",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 383,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 265
+      },
+      {
+        "fit": "cover",
+        "h": 393,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 699
+      },
+      {
+        "fit": "contain",
+        "h": 460,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 318
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 111
+      }
+    ],
+    "outside": [],
+    "pageHeight": 11495,
+    "pageWidth": 768,
+    "path": "/products/iron-bisglycinate",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "L-Theanine",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 383,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 265
+      },
+      {
+        "fit": "cover",
+        "h": 393,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 699
+      },
+      {
+        "fit": "contain",
+        "h": 460,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 318
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 111
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10942,
+    "pageWidth": 768,
+    "path": "/products/l-theanine",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Vitamin D3 + K2",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 384,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 266
+      },
+      {
+        "fit": "cover",
+        "h": 393,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 699
+      },
+      {
+        "fit": "contain",
+        "h": 460,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 318
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 111
+      }
+    ],
+    "outside": [],
+    "pageHeight": 11618,
+    "pageWidth": 768,
+    "path": "/products/vitamin-d3-k2",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Omega-3 Fish Oil",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 383,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 265
+      },
+      {
+        "fit": "cover",
+        "h": 393,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 699
+      },
+      {
+        "fit": "contain",
+        "h": 460,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 318
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 111
+      }
+    ],
+    "outside": [],
+    "pageHeight": 11333,
+    "pageWidth": 768,
+    "path": "/products/omega-3-fish-oil",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Myo & D-Chiro Inositol",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 383,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 265
+      },
+      {
+        "fit": "cover",
+        "h": 393,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 699
+      },
+      {
+        "fit": "contain",
+        "h": 460,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 318
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 111
+      }
+    ],
+    "outside": [],
+    "pageHeight": 11214,
+    "pageWidth": 768,
+    "path": "/products/myo-d-chiro-inositol",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Creatine Chews",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 383,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 265
+      },
+      {
+        "fit": "cover",
+        "h": 393,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 699
+      },
+      {
+        "fit": "contain",
+        "h": 460,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 318
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 111
+      }
+    ],
+    "outside": [],
+    "pageHeight": 11447,
+    "pageWidth": 768,
+    "path": "/products/creatine-chews",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Psyllium Husk",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 383,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 265
+      },
+      {
+        "fit": "cover",
+        "h": 393,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 699
+      },
+      {
+        "fit": "contain",
+        "h": 460,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 318
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 111
+      },
+      {
+        "fit": "contain",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 111
+      }
+    ],
+    "outside": [],
+    "pageHeight": 11203,
+    "pageWidth": 768,
+    "path": "/products/psyllium-husk",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "The detail behind the bottle.",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 234,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 162
+      },
+      {
+        "fit": "fill",
+        "h": 234,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 162
+      },
+      {
+        "fit": "fill",
+        "h": 355,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 246
+      },
+      {
+        "fit": "fill",
+        "h": 160,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 124
+      },
+      {
+        "fit": "fill",
+        "h": 244,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 189
+      }
+    ],
+    "outside": [],
+    "pageHeight": 13913,
+    "pageWidth": 768,
+    "path": "/standards",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "A supplement shop that shows its working",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/about/about-seven-colours.webp",
+        "w": 699
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 75
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 75
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 75
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 75
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 75
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 75
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 75
+      },
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/about/about_curiosity.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 5888,
+    "pageWidth": 768,
+    "path": "/about",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Curiosity is a good place to start",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 107,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/about/caps-row.webp",
+        "w": 696
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/renders/iron-bisglycinate-cap.webp",
+        "w": 109
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 109
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/cap-colours.webp",
+        "w": 109
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/logo-clear-space.webp",
+        "w": 109
+      },
+      {
+        "fit": "contain",
+        "h": 109,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/type-specimen.webp",
+        "w": 109
+      },
+      {
+        "fit": "contain",
+        "h": 349,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/renders/iron-bisglycinate-cap.webp",
+        "w": 349
+      },
+      {
+        "fit": "contain",
+        "h": 137,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 109
+      },
+      {
+        "fit": "contain",
+        "h": 137,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 109
+      },
+      {
+        "fit": "contain",
+        "h": 136,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 96
+      },
+      {
+        "fit": "contain",
+        "h": 136,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 102
+      },
+      {
+        "fit": "contain",
+        "h": 136,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 102
+      },
+      {
+        "fit": "contain",
+        "h": 136,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 102
+      },
+      {
+        "fit": "contain",
+        "h": 136,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 102
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6866,
+    "pageWidth": 768,
+    "path": "/story",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "A little more knowing.",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_hub.webp",
+        "w": 699
+      },
+      {
+        "fit": "cover",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 699
+      },
+      {
+        "fit": "cover",
+        "h": 437,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 699
+      },
+      {
+        "fit": "cover",
+        "h": 424,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 339
+      },
+      {
+        "fit": "cover",
+        "h": 424,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 339
+      },
+      {
+        "fit": "cover",
+        "h": 424,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 339
+      },
+      {
+        "fit": "cover",
+        "h": 424,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 339
+      },
+      {
+        "fit": "cover",
+        "h": 424,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 339
+      },
+      {
+        "fit": "cover",
+        "h": 424,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 339
+      },
+      {
+        "fit": "fill",
+        "h": 0,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 0
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 160
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_forms.webp",
+        "w": 160
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_servings.webp",
+        "w": 160
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_evidence.webp",
+        "w": 160
+      },
+      {
+        "fit": "cover",
+        "h": 100,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_reports.webp",
+        "w": 160
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12966,
+    "pageWidth": 768,
+    "path": "/learn",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Read a label with confidence",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7334,
+    "pageWidth": 768,
+    "path": "/learn/reading-a-label",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Why ingredient forms matter",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_forms.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 5810,
+    "pageWidth": 768,
+    "path": "/learn/ingredient-forms",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Serving sizes, amounts and units",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_servings.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 5733,
+    "pageWidth": 768,
+    "path": "/learn/serving-sizes",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Understanding evidence",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_evidence.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 5802,
+    "pageWidth": 768,
+    "path": "/learn/understanding-evidence",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "What a lot report shows",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_reports.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 5771,
+    "pageWidth": 768,
+    "path": "/learn/understanding-reports",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Iron Bisglycinate",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 699
+      },
+      {
+        "fit": "fill",
+        "h": 240,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 194
+      }
+    ],
+    "outside": [],
+    "pageHeight": 8004,
+    "pageWidth": 768,
+    "path": "/learn/iron-bisglycinate",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "L-Theanine",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 699
+      },
+      {
+        "fit": "fill",
+        "h": 240,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 194
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7586,
+    "pageWidth": 768,
+    "path": "/learn/l-theanine",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Vitamin D3 + K2",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 699
+      },
+      {
+        "fit": "fill",
+        "h": 273,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 194
+      }
+    ],
+    "outside": [],
+    "pageHeight": 8098,
+    "pageWidth": 768,
+    "path": "/learn/vitamin-d3-k2",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Omega-3 Fish Oil",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 699
+      },
+      {
+        "fit": "fill",
+        "h": 257,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 194
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7765,
+    "pageWidth": 768,
+    "path": "/learn/omega-3-fish-oil",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Myo & D-Chiro Inositol",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 699
+      },
+      {
+        "fit": "fill",
+        "h": 257,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 194
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7598,
+    "pageWidth": 768,
+    "path": "/learn/myo-d-chiro-inositol",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Creatine Chews",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 699
+      },
+      {
+        "fit": "fill",
+        "h": 257,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 194
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7774,
+    "pageWidth": 768,
+    "path": "/learn/creatine-chews",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Psyllium Husk",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 437,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 699
+      },
+      {
+        "fit": "fill",
+        "h": 257,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 194
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7779,
+    "pageWidth": 768,
+    "path": "/learn/psyllium-husk",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Your batch. Its record.",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 318,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 220
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6017,
+    "pageWidth": 768,
+    "path": "/reports",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Two products. One page.",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 524,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/daily-edit-card.webp",
+        "w": 699
+      },
+      {
+        "fit": "cover",
+        "h": 524,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/curious-edit-card.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3975,
+    "pageWidth": 768,
+    "path": "/bundles",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "The daily edit",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 524,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/daily-edit-detail.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2376,
+    "pageWidth": 768,
+    "path": "/bundles/daily-edit",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "The curious edit",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 524,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/curious-edit-detail.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2376,
+    "pageWidth": 768,
+    "path": "/bundles/curious-edit",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "How can we help?",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 524,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/faq/faq_orders.webp",
+        "w": 699
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3833,
+    "pageWidth": 768,
+    "path": "/help",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Contact support",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 3244,
+    "pageWidth": 768,
+    "path": "/contact",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Shipping & Delivery",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 3665,
+    "pageWidth": 768,
+    "path": "/policies/shipping",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Returns & Refunds",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 3851,
+    "pageWidth": 768,
+    "path": "/policies/returns",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Cancellations",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 3189,
+    "pageWidth": 768,
+    "path": "/policies/cancellation",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Privacy",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 5573,
+    "pageWidth": 768,
+    "path": "/policies/privacy",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Terms",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 4817,
+    "pageWidth": 768,
+    "path": "/policies/terms",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Your bag",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 91,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 68
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2385,
+    "pageWidth": 768,
+    "path": "/cart",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Nearly there. Nothing is charged.",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 44
+      }
+    ],
+    "outside": [],
+    "pageHeight": 4118,
+    "pageWidth": 768,
+    "path": "/checkout",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2335,
+    "pageWidth": 768,
+    "path": "/account",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2335,
+    "pageWidth": 768,
+    "path": "/account/addresses",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2188,
+    "pageWidth": 768,
+    "path": "/account/cases",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Privacy & communication preferences",
+    "headings": [],
+    "height": 1024,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2466,
+    "pageWidth": 768,
+    "path": "/settings",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Looking for something?",
+    "headings": [],
+    "height": 1024,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 242,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 216
+      },
+      {
+        "fit": "cover",
+        "h": 242,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 216
+      },
+      {
+        "fit": "cover",
+        "h": 242,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 216
+      },
+      {
+        "fit": "cover",
+        "h": 242,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 216
+      },
+      {
+        "fit": "cover",
+        "h": 242,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 216
+      },
+      {
+        "fit": "cover",
+        "h": 242,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 216
+      },
+      {
+        "fit": "cover",
+        "h": 242,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 216
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3237,
+    "pageWidth": 768,
+    "path": "/search",
+    "sticky": [],
+    "width": 768
+  },
+  {
+    "h1": "Your body. Your curiosity. Your café.",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 303,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/hero/home-hero-panel.webp",
+        "w": 404
+      },
+      {
+        "fit": "contain",
+        "h": 156,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 108
+      },
+      {
+        "fit": "contain",
+        "h": 156,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 108
+      },
+      {
+        "fit": "contain",
+        "h": 156,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 108
+      },
+      {
+        "fit": "contain",
+        "h": 156,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 108
+      },
+      {
+        "fit": "contain",
+        "h": 142,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 142,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 142,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 0
+      },
+      {
+        "fit": "fill",
+        "h": 290,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 201
+      },
+      {
+        "fit": "fill",
+        "h": 257,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/faq/faq_questions.webp",
+        "w": 343
+      }
+    ],
+    "outside": [
+      {
+        "cls": "",
+        "rect": {
+          "bottom": 707.4234619140625,
+          "height": 302.7375183105469,
+          "left": -6.8249969482421875,
+          "right": 396.8250274658203,
+          "top": 404.6859436035156,
+          "width": 403.6500244140625,
+          "x": -6.8249969482421875,
+          "y": 404.6859436035156
+        },
+        "tag": "IMG",
+        "text": "Vitamin D3 + K2 and L-Theanine bottles on an indigo and lilac stage."
+      }
+    ],
+    "pageHeight": 12707,
+    "pageWidth": 390,
+    "path": "/",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Meet the collection.",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 44
+      },
+      {
+        "fit": "contain",
+        "h": 113,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 78
+      },
+      {
+        "fit": "contain",
+        "h": 113,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 78
+      },
+      {
+        "fit": "contain",
+        "h": 113,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 78
+      },
+      {
+        "fit": "contain",
+        "h": 113,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 78
+      },
+      {
+        "fit": "contain",
+        "h": 113,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 78
+      },
+      {
+        "fit": "contain",
+        "h": 113,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 78
+      },
+      {
+        "fit": "contain",
+        "h": 113,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 78
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6697,
+    "pageWidth": 390,
+    "path": "/shop",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Iron Bisglycinate",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 165
+      },
+      {
+        "fit": "cover",
+        "h": 200,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 355
+      },
+      {
+        "fit": "contain",
+        "h": 355,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 246
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12771,
+    "pageWidth": 390,
+    "path": "/products/iron-bisglycinate",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "L-Theanine",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 165
+      },
+      {
+        "fit": "cover",
+        "h": 200,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 355
+      },
+      {
+        "fit": "contain",
+        "h": 355,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 246
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12086,
+    "pageWidth": 390,
+    "path": "/products/l-theanine",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Vitamin D3 + K2",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 165
+      },
+      {
+        "fit": "cover",
+        "h": 200,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 355
+      },
+      {
+        "fit": "contain",
+        "h": 355,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 246
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12971,
+    "pageWidth": 390,
+    "path": "/products/vitamin-d3-k2",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Omega-3 Fish Oil",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 165
+      },
+      {
+        "fit": "cover",
+        "h": 200,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 355
+      },
+      {
+        "fit": "contain",
+        "h": 355,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 246
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12524,
+    "pageWidth": 390,
+    "path": "/products/omega-3-fish-oil",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Myo & D-Chiro Inositol",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 165
+      },
+      {
+        "fit": "cover",
+        "h": 200,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 355
+      },
+      {
+        "fit": "contain",
+        "h": 355,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 246
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12436,
+    "pageWidth": 390,
+    "path": "/products/myo-d-chiro-inositol",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Creatine Chews",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 166
+      },
+      {
+        "fit": "cover",
+        "h": 200,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 355
+      },
+      {
+        "fit": "contain",
+        "h": 355,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 246
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12759,
+    "pageWidth": 390,
+    "path": "/products/creatine-chews",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Psyllium Husk",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 165
+      },
+      {
+        "fit": "cover",
+        "h": 200,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 355
+      },
+      {
+        "fit": "contain",
+        "h": 355,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 246
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12351,
+    "pageWidth": 390,
+    "path": "/products/psyllium-husk",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "The detail behind the bottle.",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 179,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 124
+      },
+      {
+        "fit": "fill",
+        "h": 179,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 124
+      },
+      {
+        "fit": "fill",
+        "h": 159,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 110
+      },
+      {
+        "fit": "fill",
+        "h": 116,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 90
+      },
+      {
+        "fit": "fill",
+        "h": 121,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 94
+      }
+    ],
+    "outside": [],
+    "pageHeight": 14403,
+    "pageWidth": 390,
+    "path": "/standards",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "A supplement shop that shows its working",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/about/about-seven-colours.webp",
+        "w": 355
+      },
+      {
+        "fit": "contain",
+        "h": 55,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 38
+      },
+      {
+        "fit": "contain",
+        "h": 55,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 38
+      },
+      {
+        "fit": "contain",
+        "h": 55,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 38
+      },
+      {
+        "fit": "contain",
+        "h": 55,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 38
+      },
+      {
+        "fit": "contain",
+        "h": 55,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 38
+      },
+      {
+        "fit": "contain",
+        "h": 55,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 38
+      },
+      {
+        "fit": "contain",
+        "h": 55,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 38
+      },
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/about/about_curiosity.webp",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6117,
+    "pageWidth": 390,
+    "path": "/about",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Curiosity is a good place to start",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 54,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/about/caps-row.webp",
+        "w": 352
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/renders/iron-bisglycinate-cap.webp",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/cap-colours.webp",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/logo-clear-space.webp",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/type-specimen.webp",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 312,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/renders/iron-bisglycinate-cap.webp",
+        "w": 312
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 71
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 71
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 62
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 66
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 66
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 66
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 66
+      }
+    ],
+    "outside": [],
+    "pageHeight": 8321,
+    "pageWidth": 390,
+    "path": "/story",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "A little more knowing.",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_hub.webp",
+        "w": 355
+      },
+      {
+        "fit": "cover",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 355
+      },
+      {
+        "fit": "cover",
+        "h": 133,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 214
+      },
+      {
+        "fit": "cover",
+        "h": 71,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 57
+      },
+      {
+        "fit": "cover",
+        "h": 71,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 57
+      },
+      {
+        "fit": "cover",
+        "h": 71,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 57
+      },
+      {
+        "fit": "cover",
+        "h": 71,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 57
+      },
+      {
+        "fit": "cover",
+        "h": 71,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 57
+      },
+      {
+        "fit": "cover",
+        "h": 71,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 57
+      },
+      {
+        "fit": "fill",
+        "h": 0,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 0
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 88
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_forms.webp",
+        "w": 88
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_servings.webp",
+        "w": 88
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_evidence.webp",
+        "w": 88
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_reports.webp",
+        "w": 88
+      }
+    ],
+    "outside": [],
+    "pageHeight": 14187,
+    "pageWidth": 390,
+    "path": "/learn",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Read a label with confidence",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 9267,
+    "pageWidth": 390,
+    "path": "/learn/reading-a-label",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Why ingredient forms matter",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_forms.webp",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7291,
+    "pageWidth": 390,
+    "path": "/learn/ingredient-forms",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Serving sizes, amounts and units",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_servings.webp",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7022,
+    "pageWidth": 390,
+    "path": "/learn/serving-sizes",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Understanding evidence",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_evidence.webp",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7174,
+    "pageWidth": 390,
+    "path": "/learn/understanding-evidence",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "What a lot report shows",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_reports.webp",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7219,
+    "pageWidth": 390,
+    "path": "/learn/understanding-reports",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Iron Bisglycinate",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 355
+      },
+      {
+        "fit": "fill",
+        "h": 448,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10509,
+    "pageWidth": 390,
+    "path": "/learn/iron-bisglycinate",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "L-Theanine",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 355
+      },
+      {
+        "fit": "fill",
+        "h": 448,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10024,
+    "pageWidth": 390,
+    "path": "/learn/l-theanine",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Vitamin D3 + K2",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 355
+      },
+      {
+        "fit": "fill",
+        "h": 514,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10798,
+    "pageWidth": 390,
+    "path": "/learn/vitamin-d3-k2",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Omega-3 Fish Oil",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 355
+      },
+      {
+        "fit": "fill",
+        "h": 482,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10114,
+    "pageWidth": 390,
+    "path": "/learn/omega-3-fish-oil",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Myo & D-Chiro Inositol",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 355
+      },
+      {
+        "fit": "fill",
+        "h": 481,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 9991,
+    "pageWidth": 390,
+    "path": "/learn/myo-d-chiro-inositol",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Creatine Chews",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 355
+      },
+      {
+        "fit": "fill",
+        "h": 481,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10113,
+    "pageWidth": 390,
+    "path": "/learn/creatine-chews",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Psyllium Husk",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 222,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 355
+      },
+      {
+        "fit": "fill",
+        "h": 483,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10194,
+    "pageWidth": 390,
+    "path": "/learn/psyllium-husk",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Your batch. Its record.",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 199,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 138
+      }
+    ],
+    "outside": [],
+    "pageHeight": 8018,
+    "pageWidth": 390,
+    "path": "/reports",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Two products. One page.",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 269,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/daily-edit-card.webp",
+        "w": 358
+      },
+      {
+        "fit": "cover",
+        "h": 269,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/curious-edit-card.webp",
+        "w": 358
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3884,
+    "pageWidth": 390,
+    "path": "/bundles",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "The daily edit",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 269,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/daily-edit-detail.webp",
+        "w": 358
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2132,
+    "pageWidth": 390,
+    "path": "/bundles/daily-edit",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "The curious edit",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 269,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/curious-edit-detail.webp",
+        "w": 358
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2157,
+    "pageWidth": 390,
+    "path": "/bundles/curious-edit",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "How can we help?",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 266,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/faq/faq_orders.webp",
+        "w": 355
+      }
+    ],
+    "outside": [],
+    "pageHeight": 4033,
+    "pageWidth": 390,
+    "path": "/help",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Contact support",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 3787,
+    "pageWidth": 390,
+    "path": "/contact",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Shipping & Delivery",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 4574,
+    "pageWidth": 390,
+    "path": "/policies/shipping",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Returns & Refunds",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 4973,
+    "pageWidth": 390,
+    "path": "/policies/returns",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Cancellations",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 3761,
+    "pageWidth": 390,
+    "path": "/policies/cancellation",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Privacy",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 7346,
+    "pageWidth": 390,
+    "path": "/policies/privacy",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Terms",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 6412,
+    "pageWidth": 390,
+    "path": "/policies/terms",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Your bag",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 91,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 68
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2444,
+    "pageWidth": 390,
+    "path": "/cart",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Checkout",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 57,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 44
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3494,
+    "pageWidth": 390,
+    "path": "/checkout",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2448,
+    "pageWidth": 390,
+    "path": "/account",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2448,
+    "pageWidth": 390,
+    "path": "/account/addresses",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2276,
+    "pageWidth": 390,
+    "path": "/account/cases",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Privacy & communication preferences",
+    "headings": [],
+    "height": 844,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2687,
+    "pageWidth": 390,
+    "path": "/settings",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Looking for something?",
+    "headings": [],
+    "height": 844,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 189,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 169
+      },
+      {
+        "fit": "cover",
+        "h": 189,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 169
+      },
+      {
+        "fit": "cover",
+        "h": 189,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 169
+      },
+      {
+        "fit": "cover",
+        "h": 189,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 169
+      },
+      {
+        "fit": "cover",
+        "h": 189,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 169
+      },
+      {
+        "fit": "cover",
+        "h": 189,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 169
+      },
+      {
+        "fit": "cover",
+        "h": 189,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 169
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3952,
+    "pageWidth": 390,
+    "path": "/search",
+    "sticky": [],
+    "width": 390
+  },
+  {
+    "h1": "Your body. Your curiosity. Your café.",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 248,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/hero/home-hero-panel.webp",
+        "w": 331
+      },
+      {
+        "fit": "contain",
+        "h": 263,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 182
+      },
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 239,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 0
+      },
+      {
+        "fit": "contain",
+        "h": 0,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 0
+      },
+      {
+        "fit": "fill",
+        "h": 242,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 167
+      },
+      {
+        "fit": "fill",
+        "h": 211,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/faq/faq_questions.webp",
+        "w": 282
+      }
+    ],
+    "outside": [
+      {
+        "cls": "",
+        "rect": {
+          "bottom": 632.6296997070312,
+          "height": 248.4000244140625,
+          "left": -5.5999908447265625,
+          "right": 325.59996032714844,
+          "top": 384.2296752929687,
+          "width": 331.199951171875,
+          "x": -5.5999908447265625,
+          "y": 384.2296752929687
+        },
+        "tag": "IMG",
+        "text": "Vitamin D3 + K2 and L-Theanine bottles on an indigo and lilac stage."
+      }
+    ],
+    "pageHeight": 13054,
+    "pageWidth": 320,
+    "path": "/",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Meet the collection.",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 44
+      },
+      {
+        "fit": "fill",
+        "h": 64,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 44
+      },
+      {
+        "fit": "contain",
+        "h": 90,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 62
+      },
+      {
+        "fit": "contain",
+        "h": 90,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 62
+      },
+      {
+        "fit": "contain",
+        "h": 90,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 62
+      },
+      {
+        "fit": "contain",
+        "h": 90,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 62
+      },
+      {
+        "fit": "contain",
+        "h": 90,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 62
+      },
+      {
+        "fit": "contain",
+        "h": 90,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 62
+      },
+      {
+        "fit": "contain",
+        "h": 90,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 62
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7339,
+    "pageWidth": 320,
+    "path": "/shop",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Iron Bisglycinate",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 189,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 131
+      },
+      {
+        "fit": "cover",
+        "h": 162,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 288
+      },
+      {
+        "fit": "contain",
+        "h": 288,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 199
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 13456,
+    "pageWidth": 320,
+    "path": "/products/iron-bisglycinate",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "L-Theanine",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 189,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 131
+      },
+      {
+        "fit": "cover",
+        "h": 162,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 288
+      },
+      {
+        "fit": "contain",
+        "h": 288,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 199
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12612,
+    "pageWidth": 320,
+    "path": "/products/l-theanine",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Vitamin D3 + K2",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 189,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 131
+      },
+      {
+        "fit": "cover",
+        "h": 162,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 288
+      },
+      {
+        "fit": "contain",
+        "h": 288,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 199
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 13686,
+    "pageWidth": 320,
+    "path": "/products/vitamin-d3-k2",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Omega-3 Fish Oil",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 189,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 131
+      },
+      {
+        "fit": "cover",
+        "h": 162,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 288
+      },
+      {
+        "fit": "contain",
+        "h": 288,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 199
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 13089,
+    "pageWidth": 320,
+    "path": "/products/omega-3-fish-oil",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Myo & D-Chiro Inositol",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 189,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 131
+      },
+      {
+        "fit": "cover",
+        "h": 162,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 288
+      },
+      {
+        "fit": "contain",
+        "h": 288,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 199
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 13079,
+    "pageWidth": 320,
+    "path": "/products/myo-d-chiro-inositol",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Creatine Chews",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 189,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 131
+      },
+      {
+        "fit": "cover",
+        "h": 162,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 288
+      },
+      {
+        "fit": "contain",
+        "h": 288,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 199
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 13414,
+    "pageWidth": 320,
+    "path": "/products/creatine-chews",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Psyllium Husk",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 189,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 131
+      },
+      {
+        "fit": "cover",
+        "h": 162,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 288
+      },
+      {
+        "fit": "contain",
+        "h": 288,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 199
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 67
+      },
+      {
+        "fit": "contain",
+        "h": 101,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 67
+      }
+    ],
+    "outside": [],
+    "pageHeight": 12894,
+    "pageWidth": 320,
+    "path": "/products/psyllium-husk",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "The detail behind the bottle.",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 147,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 102
+      },
+      {
+        "fit": "fill",
+        "h": 147,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 102
+      },
+      {
+        "fit": "fill",
+        "h": 159,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 110
+      },
+      {
+        "fit": "fill",
+        "h": 116,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 90
+      },
+      {
+        "fit": "fill",
+        "h": 121,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 94
+      }
+    ],
+    "outside": [],
+    "pageHeight": 15887,
+    "pageWidth": 320,
+    "path": "/standards",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "A supplement shop that shows its working",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/about/about-seven-colours.webp",
+        "w": 288
+      },
+      {
+        "fit": "contain",
+        "h": 45,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 31
+      },
+      {
+        "fit": "contain",
+        "h": 45,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 31
+      },
+      {
+        "fit": "contain",
+        "h": 45,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 31
+      },
+      {
+        "fit": "contain",
+        "h": 45,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 31
+      },
+      {
+        "fit": "contain",
+        "h": 45,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 31
+      },
+      {
+        "fit": "contain",
+        "h": 45,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 31
+      },
+      {
+        "fit": "contain",
+        "h": 45,
+        "lazy": "eager",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 31
+      },
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/about/about_curiosity.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6888,
+    "pageWidth": 320,
+    "path": "/about",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Curiosity is a good place to start",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 44,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/about/caps-row.webp",
+        "w": 285
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/renders/iron-bisglycinate-cap.webp",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/cap-colours.webp",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/logo-clear-space.webp",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 97,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/about/type-specimen.webp",
+        "w": 97
+      },
+      {
+        "fit": "contain",
+        "h": 245,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/renders/iron-bisglycinate-cap.webp",
+        "w": 245
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 66
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 66
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 62
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 66
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 66
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 66
+      },
+      {
+        "fit": "contain",
+        "h": 88,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 66
+      }
+    ],
+    "outside": [],
+    "pageHeight": 8995,
+    "pageWidth": 320,
+    "path": "/story",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "A little more knowing.",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_hub.webp",
+        "w": 288
+      },
+      {
+        "fit": "cover",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 288
+      },
+      {
+        "fit": "cover",
+        "h": 165,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 263
+      },
+      {
+        "fit": "cover",
+        "h": 57,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 46
+      },
+      {
+        "fit": "cover",
+        "h": 57,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 46
+      },
+      {
+        "fit": "cover",
+        "h": 57,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 46
+      },
+      {
+        "fit": "cover",
+        "h": 57,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 46
+      },
+      {
+        "fit": "cover",
+        "h": 57,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 46
+      },
+      {
+        "fit": "cover",
+        "h": 57,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 46
+      },
+      {
+        "fit": "fill",
+        "h": 0,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 0
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 88
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_forms.webp",
+        "w": 88
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_servings.webp",
+        "w": 88
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_evidence.webp",
+        "w": 88
+      },
+      {
+        "fit": "cover",
+        "h": 55,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/editorial-b/blogs/blog_reports.webp",
+        "w": 88
+      }
+    ],
+    "outside": [
+      {
+        "cls": "lr-sub-h",
+        "rect": {
+          "bottom": 9008.71875,
+          "height": 24,
+          "left": 16,
+          "right": 323.1875,
+          "top": 8984.71875,
+          "width": 307.1875,
+          "x": 16,
+          "y": 8984.71875
+        },
+        "tag": "H3",
+        "text": "Walk through a report"
+      }
+    ],
+    "pageHeight": 15381,
+    "pageWidth": 320,
+    "path": "/learn",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Read a label with confidence",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_label.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10443,
+    "pageWidth": 320,
+    "path": "/learn/reading-a-label",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Why ingredient forms matter",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_forms.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 8101,
+    "pageWidth": 320,
+    "path": "/learn/ingredient-forms",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Serving sizes, amounts and units",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_servings.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7718,
+    "pageWidth": 320,
+    "path": "/learn/serving-sizes",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Understanding evidence",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_evidence.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7826,
+    "pageWidth": 320,
+    "path": "/learn/understanding-evidence",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "What a lot report shows",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/blogs/blog_reports.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 7755,
+    "pageWidth": 320,
+    "path": "/learn/understanding-reports",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Iron Bisglycinate",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_iron.webp",
+        "w": 288
+      },
+      {
+        "fit": "fill",
+        "h": 362,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 11293,
+    "pageWidth": 320,
+    "path": "/learn/iron-bisglycinate",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "L-Theanine",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_theanine.webp",
+        "w": 288
+      },
+      {
+        "fit": "fill",
+        "h": 362,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10771,
+    "pageWidth": 320,
+    "path": "/learn/l-theanine",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Vitamin D3 + K2",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_d3k2.webp",
+        "w": 288
+      },
+      {
+        "fit": "fill",
+        "h": 414,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 11694,
+    "pageWidth": 320,
+    "path": "/learn/vitamin-d3-k2",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Omega-3 Fish Oil",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_omega.webp",
+        "w": 288
+      },
+      {
+        "fit": "fill",
+        "h": 388,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10965,
+    "pageWidth": 320,
+    "path": "/learn/omega-3-fish-oil",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Myo & D-Chiro Inositol",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_inositol.webp",
+        "w": 288
+      },
+      {
+        "fit": "fill",
+        "h": 388,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10675,
+    "pageWidth": 320,
+    "path": "/learn/myo-d-chiro-inositol",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Creatine Chews",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_creatine.webp",
+        "w": 288
+      },
+      {
+        "fit": "fill",
+        "h": 388,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10912,
+    "pageWidth": 320,
+    "path": "/learn/creatine-chews",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Psyllium Husk",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 180,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/learn/learn_psyllium.webp",
+        "w": 288
+      },
+      {
+        "fit": "fill",
+        "h": 389,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 10996,
+    "pageWidth": 320,
+    "path": "/learn/psyllium-husk",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Your batch. Its record.",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 156,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 108
+      }
+    ],
+    "outside": [],
+    "pageHeight": 8630,
+    "pageWidth": 320,
+    "path": "/reports",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Two products. One page.",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 216,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/daily-edit-card.webp",
+        "w": 288
+      },
+      {
+        "fit": "cover",
+        "h": 216,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/curious-edit-card.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3881,
+    "pageWidth": 320,
+    "path": "/bundles",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "The daily edit",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 216,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/daily-edit-detail.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2130,
+    "pageWidth": 320,
+    "path": "/bundles/daily-edit",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "The curious edit",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 216,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/bundle/curious-edit-detail.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2165,
+    "pageWidth": 320,
+    "path": "/bundles/curious-edit",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "How can we help?",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 216,
+        "lazy": "auto",
+        "loaded": true,
+        "src": "/web/media/editorial-b/faq/faq_orders.webp",
+        "w": 288
+      }
+    ],
+    "outside": [],
+    "pageHeight": 4153,
+    "pageWidth": 320,
+    "path": "/help",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Contact support",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 4062,
+    "pageWidth": 320,
+    "path": "/contact",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Shipping & Delivery",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 4954,
+    "pageWidth": 320,
+    "path": "/policies/shipping",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Returns & Refunds",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 5405,
+    "pageWidth": 320,
+    "path": "/policies/returns",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Cancellations",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 4030,
+    "pageWidth": 320,
+    "path": "/policies/cancellation",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Privacy",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 8337,
+    "pageWidth": 320,
+    "path": "/policies/privacy",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Terms",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 7104,
+    "pageWidth": 320,
+    "path": "/policies/terms",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Your bag",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "contain",
+        "h": 91,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 68
+      }
+    ],
+    "outside": [],
+    "pageHeight": 2494,
+    "pageWidth": 320,
+    "path": "/cart",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Checkout",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "fill",
+        "h": 57,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 44
+      }
+    ],
+    "outside": [],
+    "pageHeight": 3698,
+    "pageWidth": 320,
+    "path": "/checkout",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2580,
+    "pageWidth": 320,
+    "path": "/account",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2580,
+    "pageWidth": 320,
+    "path": "/account/addresses",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Your account",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2419,
+    "pageWidth": 320,
+    "path": "/account/cases",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Privacy & communication preferences",
+    "headings": [],
+    "height": 640,
+    "images": [],
+    "outside": [],
+    "pageHeight": 2999,
+    "pageWidth": 320,
+    "path": "/settings",
+    "sticky": [],
+    "width": 320
+  },
+  {
+    "h1": "Looking for something?",
+    "headings": [],
+    "height": 640,
+    "images": [
+      {
+        "fit": "cover",
+        "h": 318,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/iron-bisglycinate.svg",
+        "w": 284
+      },
+      {
+        "fit": "cover",
+        "h": 318,
+        "lazy": "lazy",
+        "loaded": true,
+        "src": "/web/media/bottles-normalized/l-theanine.svg",
+        "w": 284
+      },
+      {
+        "fit": "cover",
+        "h": 318,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/vitamin-d3-k2.svg",
+        "w": 284
+      },
+      {
+        "fit": "cover",
+        "h": 318,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/omega-3-fish-oil.svg",
+        "w": 284
+      },
+      {
+        "fit": "cover",
+        "h": 318,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/myo-d-chiro-inositol.svg",
+        "w": 284
+      },
+      {
+        "fit": "cover",
+        "h": 318,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/creatine-chews.svg",
+        "w": 284
+      },
+      {
+        "fit": "cover",
+        "h": 318,
+        "lazy": "lazy",
+        "loaded": false,
+        "src": "/web/media/bottles-normalized/psyllium-husk.svg",
+        "w": 284
+      }
+    ],
+    "outside": [],
+    "pageHeight": 6129,
+    "pageWidth": 320,
+    "path": "/search",
+    "sticky": [],
+    "width": 320
+  }
+]

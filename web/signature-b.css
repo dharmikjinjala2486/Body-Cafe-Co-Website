@@ -1,0 +1,164 @@
+/* ==========================================================================
+   Variant B — signature layer: home brand manifesto, home composition, scroll motion, bottle hand-off.
+   B's existing look only: its palette tokens, Aileron, pills, arches and 2px ink rules. Scoped to B.
+   ========================================================================== */
+
+/* ---------- 1. The manifesto: "Why a café?" ----------
+   One lilac panel holds its heading, the quote, the cap colours and the closing line. Every moving value comes from
+   the script as a 0–1 custom property (eased, scroll-linked), so nothing jumps:
+   --e entrance · --p reading progress · --f per-word ink · --h per-word highlight · --d per-cap fill · --end closing row. */
+body[data-theme="b"] .bzm { margin-top: clamp(24px, 5vw, 80px); }
+body[data-theme="b"] .bzm .bzh-track { position: relative; height: calc((100svh - var(--bzh-top, 88px)) * 3); }
+body[data-theme="b"] .bzm .bzh-stage {
+  --in: calc(1 - var(--e, 1));
+  position: sticky; top: var(--bzh-top, 88px); height: calc(100svh - var(--bzh-top, 88px)); overflow: hidden;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; row-gap: clamp(16px, 2.4vh, 32px);
+  padding: clamp(24px, 4vh, 44px) var(--b-pad); box-sizing: border-box; color: var(--ink);
+  background: var(--b-lilac); box-shadow: inset 0 2px 0 var(--ink), inset 0 -2px 0 var(--ink);
+  /* Arrives as an inset rounded card and opens to the full band. */
+  clip-path: inset(calc(var(--in) * 4vh) calc(var(--in) * 4vw) round calc(var(--in) * 56px));
+}
+
+body[data-theme="b"] .bzm-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; position: relative; z-index: 2; opacity: calc(0.35 + 0.65 * var(--e, 1)); }
+body[data-theme="b"] .bzm-k { flex: none; }
+body[data-theme="b"] .bzm-title { margin: 0 auto 0 0; font-size: clamp(18px, 1.6vw, 24px); letter-spacing: -0.04em; line-height: 1.1; }
+body[data-theme="b"] .bzm-caps { display: flex; align-items: center; gap: 12px; }
+body[data-theme="b"] .bzm-caps ol { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; }
+body[data-theme="b"] .bzm-caps li { position: relative; overflow: hidden; width: 22px; height: 22px; border: 2px solid var(--ink); border-radius: 50%; transform: scale(calc(1 + 0.14 * var(--d, 0))); }
+body[data-theme="b"] .bzm-caps li::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--cap); transform: scale(var(--d, 0)); }
+body[data-theme="b"] .bzm-caps small { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+
+/* The quote: a hanging quotation mark, then words that ink in and settle as the reading head passes. */
+body[data-theme="b"] .bzm-quote { position: relative; z-index: 2; align-self: center; margin: 0 auto; max-width: 20ch; font-size: clamp(28px, min(8.6vw, 7.6vh), 84px); transform: scale(calc(0.94 + 0.06 * var(--e, 1))); transform-origin: 50% 40%; }
+body[data-theme="b"] .bzm-quote p { margin: 0; font-size: 1em; font-weight: 700; letter-spacing: -0.06em; line-height: 1.06; text-wrap: balance; }
+body[data-theme="b"] .bzm-mark { position: absolute; right: 100%; top: -0.06em; margin-right: 0.06em; font-size: 2.2em; font-weight: 700; line-height: 0.8; color: var(--b-indigo); opacity: var(--e, 1); transform: translate3d(0, calc(var(--in, 0) * 0.4em), 0); pointer-events: none; }
+body[data-theme="b"] .bzm-w { display: inline-block; text-indent: 0; opacity: calc(0.22 + 0.78 * var(--f, 0)); transform: translate3d(0, calc((1 - var(--f, 0)) * 0.16em), 0); will-change: opacity, transform; }
+body[data-theme="b"] .bzm-hl { padding: 0 0.12em; margin: 0 -0.04em; border-radius: 0.22em; background-image: linear-gradient(var(--hl), var(--hl)); background-repeat: no-repeat; background-position: 0 58%; background-size: calc(var(--h, 0) * 100%) 86%; }
+body[data-theme="b"] .bzm-peach { --hl: var(--b-peach); }
+body[data-theme="b"] .bzm-lime { --hl: var(--b-lime); }
+body[data-theme="b"] .bzm-sage { --hl: var(--b-sage); }
+body[data-theme="b"] .bzm-paper { --hl: var(--card); }
+body[data-theme="b"] .bzm-indigo { --hl: var(--b-indigo); color: var(--ink); color: color-mix(in srgb, var(--b-lime) calc(var(--h, 0) * 100%), var(--ink)); }
+
+/* Brand illustrations live in the side margins only, so they never sit behind the words. They drift in with the
+   entrance and float against the scroll. */
+body[data-theme="b"] .bzm-art { display: none; }
+@media (min-width: 1360px) {
+  body[data-theme="b"] .bzm-art { display: block; position: absolute; z-index: 1; margin: 0; width: clamp(140px, 11vw, 200px); aspect-ratio: 4 / 5; overflow: hidden; border: 2px solid var(--ink); border-radius: 200px 200px 22px 22px; background: var(--card); opacity: var(--e, 1); will-change: transform; }
+  body[data-theme="b"] .bzm-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  body[data-theme="b"] .bzm-art-1 { left: var(--b-pad); top: 28%; transform: translate3d(calc(var(--in, 0) * -90px), calc((0.5 - var(--p, 0.5)) * 120px), 0) rotate(calc(-7deg + var(--p, 0) * 6deg)); }
+  body[data-theme="b"] .bzm-art-2 { right: var(--b-pad); top: 40%; transform: translate3d(calc(var(--in, 0) * 90px), calc((var(--p, 0.5) - 0.5) * 120px), 0) rotate(calc(7deg - var(--p, 0) * 6deg)); }
+}
+
+/* The closing line rises as the quote completes. */
+body[data-theme="b"] .bzm-end { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 28px; padding-top: 18px; border-top: 2px solid var(--ink); opacity: calc(0.25 + 0.75 * var(--end, 0)); transform: translate3d(0, calc((1 - var(--end, 0)) * var(--rise, 22px)), 0); }
+body[data-theme="b"] .bzm-view { margin: 0; font-size: clamp(17px, 1.5vw, 22px); font-weight: 700; letter-spacing: -0.03em; }
+body[data-theme="b"] .bzm-values { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+body[data-theme="b"] .bzm-values li { padding: 6px 14px; border: 2px solid var(--ink); border-radius: 999px; background: var(--card); font-size: 14px; font-weight: 700; }
+
+/* Still mode (reduced motion, a short screen, or a crowded quote): the finished state in normal flow. */
+body[data-theme="b"] .bzm.bzh-still .bzh-track { height: auto; }
+body[data-theme="b"] .bzm.bzh-still .bzh-stage { position: relative; top: auto; height: auto; overflow: visible; clip-path: none; padding-block: clamp(40px, 6vw, 80px); }
+body[data-theme="b"] .bzm.bzh-still .bzm-quote { margin-block: clamp(24px, 4vw, 56px); transform: none; }
+body[data-theme="b"] .bzm.bzh-still .bzm-art { transform: none; }
+
+/* Narrower screens: the mark drops into the first line instead of hanging in a margin that isn't there. */
+@media (max-width: 1100px) {
+  body[data-theme="b"] .bzm-mark { right: auto; left: 0; top: 0.02em; margin: 0; font-size: 1.5em; }
+  body[data-theme="b"] .bzm-quote p { text-indent: 0.9em; }
+}
+@media (max-width: 720px) {
+  body[data-theme="b"] .bzm-caps small { display: none; }
+  body[data-theme="b"] .bzm-caps li { width: 18px; height: 18px; }
+  body[data-theme="b"] .bzm-caps ol { gap: 6px; }
+  body[data-theme="b"] .bzm-quote { max-width: none; }
+  body[data-theme="b"] .bzm-end { flex-direction: column; align-items: flex-start; }
+  body[data-theme="b"] .bzm-values li { padding: 4px 11px; font-size: 13px; }
+  body[data-theme="b"] .bzm .bzh-stage { padding-block: 18px; row-gap: 14px; }
+  body[data-theme="b"] .bzm-end { gap: 10px; padding-top: 12px; }
+  body[data-theme="b"] .bzm-view { font-size: 16px; }
+  body[data-theme="b"] .bzm-end { --rise: 12px; }
+  body[data-theme="b"] .bzm-top { gap: 10px 14px; }
+}
+/* Short, wide screens (landscape tablets, small laptops): size the quote to the height so it can stay pinned. */
+@media (max-height: 820px) and (min-width: 900px) {
+  body[data-theme="b"] .bzm-quote { font-size: clamp(28px, min(6vw, 6.6vh), 72px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="b"] .bzm-w { will-change: auto; }
+}
+
+/* ---------- 2. Collection: the heading is the grid's first cell ---------- */
+body[data-theme="b"] .bzh-coll .tb-archgrid > .bzh-coll-cell { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 28px; margin: 0; padding: 4px 8px 8px 0; grid-template-columns: none; }
+body[data-theme="b"] .bzh-coll .bzh-coll-cell h2.tb-big { font-size: clamp(36px, 3.3vw, 54px); }
+body[data-theme="b"] .bzh-coll .bzh-coll-cell p { max-width: 24ch; margin: 0; justify-self: start; text-align: left; }
+@media (max-width: 1100px) and (min-width: 721px) {
+  body[data-theme="b"] .bzh-coll .tb-archgrid > .bzh-coll-cell { grid-column: span 2; justify-content: flex-end; }
+}
+@media (max-width: 720px) {
+  body[data-theme="b"] .bzh-coll .tb-archgrid > .bzh-coll-cell { grid-column: 1 / -1; }
+  /* An odd last card spans the row instead of standing alone. */
+  body[data-theme="b"] .bzh-coll .tb-archgrid > .tb-arch:nth-child(even):last-child { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: repeat(5, min-content) 1fr; column-gap: 14px; align-items: start; }
+  body[data-theme="b"] .bzh-coll .tb-archgrid > .tb-arch:nth-child(even):last-child > .tb-arch-photo { grid-row: 1 / -1; }
+  body[data-theme="b"] .bzh-coll .tb-archgrid > .tb-arch:nth-child(even):last-child > :not(.tb-arch-photo) { grid-column: 2; }
+}
+@media (max-width: 360px) {
+  body[data-theme="b"] .bzh-coll .tb-archgrid > .tb-arch:nth-child(even):last-child { display: flex; }
+}
+
+/* ---------- 3. What we can show: a ruled ledger, not cards ---------- */
+body[data-theme="b"] .bzh-ledger .hc-proof-grid { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 0 !important; border-bottom: 2px solid var(--ink); }
+body[data-theme="b"] .bzh-ledger .hc-proof-grid article { display: grid !important; grid-template-columns: 170px minmax(0, 0.9fr) minmax(0, 1.3fr) auto; gap: 8px 28px; align-items: baseline; min-height: 0 !important; margin: 0 !important; padding: 26px 0 !important; border: 0 !important; border-top: 2px solid var(--ink) !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; transform: none; }
+body[data-theme="b"] .bzh-ledger .hc-proof-grid article::before, body[data-theme="b"] .bzh-ledger .hc-proof-grid article::after { display: none !important; }
+body[data-theme="b"] .bzh-ledger .hc-proof-grid .hc-index { order: 0; margin: 0; font-size: 11px !important; font-weight: 700; letter-spacing: 0.08em; }
+body[data-theme="b"] .bzh-ledger .hc-proof-grid h3 { margin: 0; font-size: clamp(22px, 2vw, 30px); letter-spacing: -0.05em; line-height: 1; }
+body[data-theme="b"] .bzh-ledger .hc-proof-grid p { margin: 0; font-size: 15px; line-height: 1.5; }
+body[data-theme="b"] .bzh-ledger .hc-proof-grid a { justify-self: end; margin: 0 !important; white-space: nowrap; }
+@media (max-width: 1100px) {
+  body[data-theme="b"] .bzh-ledger .hc-proof-grid article { grid-template-columns: 130px minmax(0, 1fr); }
+  body[data-theme="b"] .bzh-ledger .hc-proof-grid article p, body[data-theme="b"] .bzh-ledger .hc-proof-grid article a { grid-column: 2; justify-self: start; }
+}
+@media (max-width: 560px) {
+  body[data-theme="b"] .bzh-ledger .hc-proof-grid article { grid-template-columns: minmax(0, 1fr); padding: 20px 0 !important; }
+  body[data-theme="b"] .bzh-ledger .hc-proof-grid article > * { grid-column: 1 !important; white-space: normal; }
+}
+
+/* ---------- 4. Customer voices: the honest note, no sample quotes ---------- */
+body[data-theme="b"] .bzh-voices { padding: clamp(56px, 7vw, 96px) var(--b-pad); }
+body[data-theme="b"] .bzh-voices-in { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 18px 6vw; align-items: end; padding-top: 28px; border-top: 2px solid var(--ink); }
+body[data-theme="b"] .bzh-voices-in .tb-pill { grid-column: 1 / -1; justify-self: start; }
+body[data-theme="b"] .bzh-voices-in p { margin: 0; font-size: 17px; max-width: 46ch; }
+body[data-theme="b"] .bzh-voices-in .tb-chip { grid-column: 2; justify-self: start; }
+@media (max-width: 900px) {
+  body[data-theme="b"] .bzh-voices-in { grid-template-columns: minmax(0, 1fr); }
+  body[data-theme="b"] .bzh-voices-in .tb-chip { grid-column: 1; }
+}
+
+/* ---------- 5. Scroll-linked motion (transforms only; never hides content) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    body[data-theme="b"] .bz-rise { animation: bz-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+  }
+  body[data-theme="b"] .bz-rise-js { transform: translate3d(0, 36px, 0); transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  body[data-theme="b"] .bz-rise-js.bz-risen { transform: none; }
+}
+@keyframes bz-rise { from { transform: translate3d(0, 48px, 0) scale(0.98); } to { transform: none; } }
+
+/* ---------- 6. Page transitions: the bottle carries over to the product page ---------- */
+:root:has(body[data-theme="b"])::view-transition-group(bz-bottle) { animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 10; }
+:root:has(body[data-theme="b"])::view-transition-old(bz-bottle), :root:has(body[data-theme="b"])::view-transition-new(bz-bottle) { height: 100%; object-fit: contain; animation-duration: 0.7s; }
+:root:has(body[data-theme="b"])::view-transition-old(root) { animation: bz-vt-out 0.38s cubic-bezier(0.4, 0, 0.2, 1) both; }
+:root:has(body[data-theme="b"])::view-transition-new(root) { animation: bz-vt-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.08s both; }
+@keyframes bz-vt-out { to { transform: translate3d(0, -40px, 0); opacity: 0; } }
+@keyframes bz-vt-in { from { clip-path: inset(100% 0 0 0 round 28px 28px 0 0); transform: translate3d(0, 60px, 0); } to { clip-path: inset(0 0 0 0 round 0); transform: none; } }
+
+/* Measured guard: when the margins are too narrow for an illustration, it steps out rather than touching the words. */
+body[data-theme="b"] .bzm-tight .bzm-art { display: none !important; }
+/* The heading row and the closing row share the site's 1320px column; the stage itself spans the band. */
+body[data-theme="b"] .bzm-top, body[data-theme="b"] .bzm-end { width: min(100%, 1190px); justify-self: center; box-sizing: border-box; }
+/* Short phones (iPhone SE class): slightly smaller quote so the panel can stay pinned. */
+@media (max-width: 720px) and (max-height: 700px) {
+  body[data-theme="b"] .bzm-quote { font-size: clamp(26px, 7.6vw, 32px); }
+  body[data-theme="b"] .bzm-end { gap: 8px; }
+  body[data-theme="b"] .bzm-values li { padding: 3px 10px; font-size: 12px; }
+}

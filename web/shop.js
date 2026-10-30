@@ -163,7 +163,7 @@
     // B: static first artwork for existing products, admin image or placeholder for new ones; second admin image on hover.
     if (ctx.design === "b" && window.BCCBMedia) {
       var second = window.BCCBMedia.secondary(p);
-      img = window.BCCBMedia.img(p, { alt: "", eager: eager }) + (second ? '<img class="bx-second" src="' + h(second.src) + '" alt="" width="' + (second.w || 1000) + '" height="' + (second.h || 1000) + '" loading="lazy" decoding="async">' : "");
+      img = window.BCCBMedia.img(p, { alt: "", eager: eager }) + (second ? '<img class="bx-second sp-secondary" src="' + h(second.src) + '" alt="" width="' + (second.w || 1000) + '" height="' + (second.h || 1000) + '" loading="lazy" decoding="async">' : "");
     }
     if (ctx.design === "a") img = S.cardBottlePicture(ctx, p);
     return '<li class="sp-card" data-sp-item="' + p.id + '" data-format="' + x.fid + '" data-price="' + x.price + '" data-i="' + x.i + '" data-available="' + x.available + '"' +
@@ -483,9 +483,16 @@
     on(root.querySelector("[data-sp-sort]"), "change", function (e) { var st = current(); st.sort = e.target.value; commit(root, st, { sortOnly: true }); });
     addBehaviour(root, on);
 
-    /* No broken images: if a pack image fails, the card shows its cap colour and name instead. */
+    /* A failed hover image must never hide the working front-of-pack image. */
     root.querySelectorAll(".sp-plate img").forEach(function (img) {
-      var fail = function () { var c = img.closest("[data-sp-item]"); if (c) c.classList.add("is-noimg"); };
+      var fail = function () {
+        if (img.classList.contains("sp-secondary") || img.classList.contains("bx-second")) {
+          img.hidden = true;
+          return;
+        }
+        var c = img.closest("[data-sp-item]");
+        if (c) c.classList.add("is-noimg");
+      };
       if (img.complete && img.naturalWidth === 0 && img.getAttribute("src")) fail();
       on(img, "error", fail);
     });

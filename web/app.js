@@ -1152,6 +1152,8 @@ async function render(scroll = true) {
     // Keep keyboard focus on the same control, or at the start of the main content, instead of losing it to <body>.
     const keepFocus = !scroll && booted ? focusKey(document.activeElement) : null;
     const paint = () => {
+      // A skipped transition can still run its update after a newer navigation; never let it repaint an older page.
+      if (version !== renderVersion) return;
       renderedRoute = location.pathname + location.search;
       $("#app").innerHTML = shell(content);
       document.body.dataset.route = path === "/" ? "home" : path.split("/")[1];
@@ -1167,7 +1169,12 @@ async function render(scroll = true) {
     };
     if (scroll && document.startViewTransition && ["a", "b", "c", "d"].includes(activeDesign) && !reducedMotion() && booted) {
       document.documentElement.style.setProperty("--wipe", transitionColor);
-      await document.startViewTransition(paint).updateCallbackDone;
+      const transition = document.startViewTransition(paint);
+      // A transition interrupted by a quicker navigation is skipped; that is expected, not an error.
+      transition.ready.catch(() => {});
+      transition.finished.catch(() => {});
+      await transition.updateCallbackDone;
+      if (version !== renderVersion) return;
     } else paint();
     booted = true;
     const shown = path.startsWith("/products/") ? product(path.split("/")[2]) : null;

@@ -308,6 +308,8 @@
     if (!addBound) { addBound = true; addFeedback(new AbortController().signal); }
     heroDepth(main, signal);
     cabinetBehaviour(main, signal);
+    if (window.BCCBPdpHero) window.BCCBPdpHero.enhance();
+    if (window.BCCBPages) window.BCCBPages.enhance();
     loops(main, signal);
     var seoTimer = setTimeout(function () { seo(main); }, 30);
     cleanup = function () { abort.abort(); clearTimeout(seoTimer); };

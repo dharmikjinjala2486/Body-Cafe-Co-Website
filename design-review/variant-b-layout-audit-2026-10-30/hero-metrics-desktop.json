@@ -1,0 +1,58 @@
+[
+  {
+    "ctaY": 1187,
+    "heroHeight": 1552,
+    "path": "/products/iron-bisglycinate",
+    "stageHeight": 620,
+    "sticky": "sticky",
+    "width": 1440
+  },
+  {
+    "ctaY": 782,
+    "heroHeight": 1147,
+    "path": "/products/l-theanine",
+    "stageHeight": 619,
+    "sticky": "sticky",
+    "width": 1440
+  },
+  {
+    "ctaY": 1097,
+    "heroHeight": 1461,
+    "path": "/products/vitamin-d3-k2",
+    "stageHeight": 620,
+    "sticky": "sticky",
+    "width": 1440
+  },
+  {
+    "ctaY": 975,
+    "heroHeight": 1339,
+    "path": "/products/omega-3-fish-oil",
+    "stageHeight": 619,
+    "sticky": "sticky",
+    "width": 1440
+  },
+  {
+    "ctaY": 1058,
+    "heroHeight": 1422,
+    "path": "/products/myo-d-chiro-inositol",
+    "stageHeight": 620,
+    "sticky": "sticky",
+    "width": 1440
+  },
+  {
+    "ctaY": 1026,
+    "heroHeight": 1390,
+    "path": "/products/creatine-chews",
+    "stageHeight": 622,
+    "sticky": "sticky",
+    "width": 1440
+  },
+  {
+    "ctaY": 1043,
+    "heroHeight": 1407,
+    "path": "/products/psyllium-husk",
+    "stageHeight": 619,
+    "sticky": "sticky",
+    "width": 1440
+  }
+]

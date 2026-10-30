@@ -208,3 +208,12 @@ Imported `body-cafe-co-lot-reports-a-h.zip` (SHA-256 `e4e2c22b78a5922ae62926db56
 ## Account/Cart and Support/Policies — 23 October 2026
 
 Applied sequentially over clean `3ad38b1`: `body-cafe-co-account-cart-a-h.zip` SHA-256 `d0d60624837c977923d571e96ea8bdbd62f352611ca48349be78015a76f35350`, then frozen `body-cafe-co-support-policies-a-h.zip` SHA-256 `d5ff6505ecff22a062ecaa7643bb4a0763d2b0caa67d026a25764d6d17b58993`. Both patches apply cleanly. Archive integrity and paths checked; combined files match the Support overlay. Existing feedback and Lot Reports work remains. See independent checks and publication limits in `design-review/ACCOUNT-SUPPORT-RELEASE-2026-10-23.md`.
+
+
+## Variant B shared-workspace release — 30 October 2026
+
+Claude Code is working directly in this Website checkout. Its latest completed response and saved handoff were inspected before release: the seven PDP hero concepts, inner-page/sticky enhancements and signature homepage with the continuous “Why a café?” scroll sequence are present locally. No ZIP import is necessary. The completed response states that nothing was committed. A release-checkpoint message was attempted through the desktop UI, but delivery could not be confirmed because native window interaction became unavailable; this is not recorded as a Claude acknowledgement.
+
+The release includes all current source, design handoffs, supplied screenshots, OTP implementation research (documentation only), and the independent layout audit with selected evidence. The nine audited layout findings remain open; this publication does not claim they were fixed. Existing static first product artwork, backend source and Netlify preview/ordering-pause configuration are preserved.
+
+Release checks: frontend JavaScript syntax, preview-content regression, all 32 domain/HTTP tests, static export and hosted-preview API/publish-boundary checks, and connected Netlify export passed. GitHub refs were fetched and both main and design/concepts matched baseline b1734be before committing. Git and Netlify histories provide the publication result.

@@ -1,0 +1,144 @@
+/* Variant B — product-page hero concepts (see pdp-hero-b.js). One frame, seven selling approaches.
+   Stage: cap-colour rounded rectangle around the unchanged static first image. Panel: message → value → offer → buy. */
+body[data-theme="b"] .pp-hero.bxh { --bxh-ink: var(--ink, #2e2926); --bxh-paper: #fffdf8; --bxh-tint: color-mix(in srgb, var(--cap) 22%, #f7f2e8);
+  padding: clamp(14px, 2vw, 24px) var(--b-pad, 24px) clamp(36px, 5vw, 64px); }
+body[data-theme="b"] .bxh .pp-crumbs { margin-bottom: 14px; }
+body[data-theme="b"] .bxh-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(340px, .95fr); grid-template-areas: "stage head" "stage value" "stage buy";
+  grid-template-rows: auto auto 1fr; gap: 22px clamp(28px, 4vw, 64px); align-items: start; }
+body[data-theme="b"] .bxh-head { grid-area: head; }
+body[data-theme="b"] .bxh-value { grid-area: value; display: grid; gap: 12px; justify-items: start; }
+body[data-theme="b"] .bxh-value .bxh-points { margin: 0; }
+body[data-theme="b"] .bxh .pp-enlarge { top: auto; bottom: 14px; right: 14px; }
+body[data-theme="b"] .bxh-stage { grid-area: stage; position: sticky; top: 104px; isolation: isolate; padding: clamp(14px, 2vw, 22px); border: 2px solid var(--bxh-ink);
+  border-radius: 32px; background: radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--cap) 45%, #fbf7ef) 0%, var(--bxh-tint) 62%, #f2ecdf 100%); overflow: hidden; }
+body[data-theme="b"] .bxh-buy { grid-area: buy; display: grid; gap: 14px; padding: clamp(18px, 2.2vw, 28px); border-radius: 28px; background: var(--bxh-paper); box-shadow: 0 0 0 1.5px var(--bxh-ink); }
+body[data-theme="b"] .bxh-buy > * { margin: 0; }
+
+/* Stage: the static first image stays exactly as supplied; only its surroundings change. */
+body[data-theme="b"] .bxh .pp-gallery { position: relative; z-index: 1; }
+body[data-theme="b"] .bxh .pp-stage { background: transparent; border-radius: 22px; }
+body[data-theme="b"] .bxh .pp-bottle-stage .pp-stage { background: transparent; }
+body[data-theme="b"] .bxh .pp-thumbs { justify-content: center; }
+body[data-theme="b"] .bxh .pp-caption { text-align: center; font-size: 12.5px; }
+body[data-theme="b"] .bxh-stage::after { content: ""; position: absolute; left: 22%; right: 22%; bottom: 17%; height: 16px; border-radius: 50%; background: #2e292624; filter: blur(6px); z-index: 0; }
+body[data-theme="b"] .bxh-backdrop { position: absolute; inset: 5% -4% auto; z-index: 0; font-size: clamp(64px, 9vw, 150px); font-weight: 700; letter-spacing: -0.08em; line-height: .82; text-align: center;
+  color: #fbf7ef40; -webkit-text-stroke: 1.5px #fbf7efcc; opacity: 1; pointer-events: none; overflow-wrap: anywhere; }
+
+/* Message */
+body[data-theme="b"] .bxh .pp-title { margin: 0; }
+body[data-theme="b"] .bxh .pp-h1 { font-size: clamp(34px, 3.6vw, 56px); line-height: .95; letter-spacing: -0.06em; }
+body[data-theme="b"] .bxh-promise { margin: 12px 0 0; font-size: clamp(22px, 2.1vw, 32px); font-weight: 700; letter-spacing: -0.045em; line-height: 1.05;
+  color: color-mix(in srgb, var(--cap) 78%, #1d1a18); max-width: 22ch; }
+body[data-theme="b"] .bxh-lede { margin: 10px 0 0; max-width: 46ch; font-size: 16.5px; line-height: 1.5; color: var(--muted, #48413b); }
+body[data-theme="b"] .bxh-points { list-style: none; display: grid; gap: 7px; margin: 16px 0 14px; padding: 0; }
+body[data-theme="b"] .bxh-points li { position: relative; padding-left: 28px; font-size: 15px; font-weight: 600; line-height: 1.35; }
+body[data-theme="b"] .bxh-points li::before { content: ""; position: absolute; left: 0; top: 2px; width: 18px; height: 18px; border-radius: 50%; background: var(--cap);
+  box-shadow: inset 0 0 0 2px #00000022; -webkit-mask: none; }
+body[data-theme="b"] .bxh-points li::after { content: ""; position: absolute; left: 6px; top: 6px; width: 6px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; rotate: 45deg; }
+body[data-theme="b"] .bxh-proof { display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 40px; padding: 4px 14px 4px 6px; border-radius: 999px;
+  background: var(--b-lime, #eaedb6); color: var(--b-indigo, #35306f) !important; font-size: 13px; font-weight: 700; text-decoration: none; }
+body[data-theme="b"] .bxh-proof-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--b-indigo, #35306f); color: var(--b-lime, #eaedb6); font-size: 13px; }
+body[data-theme="b"] .bxh-proof:hover { text-decoration: underline; text-underline-offset: 3px; }
+body[data-theme="b"] .bxh .pp-pricebox { padding-top: 0; }
+
+/* Shared offer vocabulary */
+body[data-theme="b"] .bxh-sample { display: inline-block; padding: 3px 10px; border-radius: 999px; border: 1.5px dashed currentColor; font-size: 11px; font-weight: 700; letter-spacing: .02em; white-space: nowrap; opacity: .85; }
+body[data-theme="b"] .bxh-offer { position: relative; display: grid; gap: 10px; padding: 16px 18px; border-radius: 20px; background: var(--bxh-tint); box-shadow: inset 0 0 0 2px var(--bxh-ink); }
+body[data-theme="b"] .bxh-offer > p { margin: 0; font-size: 14.5px; line-height: 1.45; }
+body[data-theme="b"] .bxh-offer-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; }
+body[data-theme="b"] .bxh-offer-head strong { font-size: 18px; letter-spacing: -0.03em; }
+body[data-theme="b"] .bxh-sum { display: grid; gap: 6px; margin: 0; }
+body[data-theme="b"] .bxh-sum > div { display: flex; justify-content: space-between; gap: 12px; font-size: 14.5px; }
+body[data-theme="b"] .bxh-sum dt { color: var(--muted, #48413b); }
+body[data-theme="b"] .bxh-sum dd { margin: 0; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+body[data-theme="b"] .bxh-sum s { font-weight: 500; color: var(--muted, #48413b); }
+body[data-theme="b"] .bxh-sum .is-total { padding-top: 8px; border-top: 1.5px solid #2e292633; font-size: 17px; }
+body[data-theme="b"] .bxh-sum .is-total dt { color: inherit; font-weight: 700; }
+body[data-theme="b"] .bxh-terms-mini { font-size: 12.5px !important; color: var(--muted, #48413b); }
+body[data-theme="b"] .bxh-conditions { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 13.5px; }
+
+/* 1 · Iron: serving cards — count left, crossed and offer price right, per-serving under. */
+body[data-theme="b"] .bxh-tiers { display: grid; gap: 10px; margin: 0; padding: 0; border: 0; min-width: 0; }
+body[data-theme="b"] .bxh-tiers legend { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; width: 100%; margin-bottom: 10px; padding: 0; font-size: 15px; font-weight: 700; }
+body[data-theme="b"] .bxh-tier { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name price" "name per"; align-items: center; gap: 2px 14px;
+  min-height: 76px; padding: 14px 20px; border-radius: 18px; border: 2px solid var(--bxh-ink); background: var(--bxh-paper); cursor: pointer;
+  transition: background-color 200ms, color 200ms, transform 200ms cubic-bezier(.2,.8,.2,1); }
+body[data-theme="b"] .bxh-tier input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+body[data-theme="b"] .bxh-tier-name { grid-area: name; font-size: clamp(19px, 1.7vw, 23px); font-weight: 700; letter-spacing: -0.04em; }
+body[data-theme="b"] .bxh-tier-price { grid-area: price; text-align: right; font-size: 21px; letter-spacing: -0.03em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+body[data-theme="b"] .bxh-tier-price s { margin-right: 6px; font-size: 15px; font-weight: 500; opacity: .7; }
+body[data-theme="b"] .bxh-tier-per { grid-area: per; text-align: right; font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+body[data-theme="b"] .bxh-tier:hover { transform: translateY(-1px); }
+body[data-theme="b"] .bxh-tier:has(input:checked) { background: var(--bxh-ink); color: var(--bxh-paper); }
+body[data-theme="b"] .bxh-tier:has(input:focus-visible) { outline: 3px solid var(--b-indigo, #35306f); outline-offset: 3px; }
+body[data-theme="b"] .bxh-tier-summary { margin: 2px 0 0; font-size: 13.5px; line-height: 1.45; }
+
+/* 2 · L-Theanine: desire-led atmosphere, full price */
+body[data-theme="b"] .bxh--theanine .bxh-stage { background: radial-gradient(90% 70% at 50% 18%, #f4f1d8 0%, color-mix(in srgb, var(--cap) 55%, #e8e6c8) 55%, color-mix(in srgb, var(--cap) 85%, #2e2926) 100%); }
+body[data-theme="b"] .bxh--theanine .bxh-promise { font-size: clamp(26px, 2.6vw, 40px); max-width: 16ch; }
+body[data-theme="b"] .bxh--theanine .pp-caption { color: #fbf7ef; }
+
+/* 3 · D3 + K2: delivered price */
+body[data-theme="b"] .bxh-delivered { background: color-mix(in srgb, var(--cap) 12%, #fbf7ef); }
+body[data-theme="b"] .bxh-delivered .is-total dd { font-size: 22px; color: var(--cap); }
+
+/* 4 · Omega-3: quiet premium */
+body[data-theme="b"] .bxh--omega .bxh-stage { background: linear-gradient(180deg, #fbfaf6 0%, color-mix(in srgb, var(--cap) 28%, #f4f2ec) 100%); }
+body[data-theme="b"] .bxh-premium { background: #fbfaf6; box-shadow: inset 0 0 0 1.5px #2e292655; }
+
+/* 5 · Inositol: next-order credit as a ticket */
+body[data-theme="b"] .bxh-credit { background: color-mix(in srgb, var(--cap) 18%, #fbf7ef);
+  -webkit-mask: radial-gradient(circle 11px at 0 58%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 11px at 100% 58%, #0000 98%, #000) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle 11px at 0 58%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 11px at 100% 58%, #0000 98%, #000) right / 51% 100% no-repeat; }
+body[data-theme="b"] .bxh-credit .is-total { border-top: 0; padding-top: 0; }
+
+/* 6 · Creatine Chews: format + gift */
+body[data-theme="b"] .bxh--creatine .bxh-promise { font-size: clamp(28px, 3vw, 44px); max-width: 14ch; }
+body[data-theme="b"] .bxh-gift { padding-right: 18px; padding-top: 22px; }
+body[data-theme="b"] .bxh-gift-tag { position: absolute; top: -22px; right: -8px; display: grid; place-items: center; width: 62px; height: 62px; border-radius: 50%; background: var(--b-lime, #eaedb6);
+  color: var(--b-indigo, #35306f); border: 2px solid var(--bxh-ink); font-size: 13px; font-weight: 700; rotate: 10deg; }
+
+/* 7 · Psyllium: first-order entry */
+body[data-theme="b"] .bxh-first .is-total dd { font-size: 24px; }
+
+/* Standard add: the button carries today's real payable total. */
+body[data-theme="b"] .bxh .pp-add-main { display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; padding-inline: 22px; }
+body[data-theme="b"] .bxh-cta-total { font-variant-numeric: tabular-nums; opacity: .9; }
+body[data-theme="b"] .bxh .pp-add-main .bxh-cta-total::before { content: "·"; margin-right: 10px; opacity: .6; }
+body[data-theme="b"] .bxh .pp-pack { margin-top: 12px; }
+
+/* One brief arrival: the stage settles and the panel follows. */
+@media (prefers-reduced-motion: no-preference) {
+  body[data-theme="b"] .bxh-stage { animation: bxh-in 520ms cubic-bezier(.2,.8,.2,1) both; }
+  body[data-theme="b"] .bxh-head, body[data-theme="b"] .bxh-buy { animation: bxh-up 460ms 90ms cubic-bezier(.2,.8,.2,1) both; }
+}
+@keyframes bxh-in { from { transform: translateY(14px) scale(.985); } }
+@keyframes bxh-up { from { transform: translateY(10px); } }
+
+/* Tablet and phone: message, compact stage, then the buying controls. */
+@media (max-width: 960px) {
+  body[data-theme="b"] .bxh-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "stage" "buy" "value"; gap: 16px; }
+  body[data-theme="b"] .bxh-value { padding: 4px 4px 0; }
+  body[data-theme="b"] .bxh-stage { position: relative; top: auto; max-width: 560px; width: 100%; justify-self: center; padding: 10px 10px 6px; border-radius: 26px; }
+  body[data-theme="b"] .bxh .pp-stage { aspect-ratio: 1 / .86; }
+  body[data-theme="b"] .bxh-promise { max-width: none; }
+}
+@media (max-width: 560px) {
+  body[data-theme="b"] .bxh .pp-h1 { font-size: clamp(30px, 9vw, 40px); }
+  body[data-theme="b"] .bxh-promise { font-size: 21px !important; }
+  body[data-theme="b"] .bxh-lede { font-size: 15.5px; }
+  body[data-theme="b"] .bxh-buy { padding: 16px; border-radius: 22px; }
+  body[data-theme="b"] .bxh-tier { min-height: 68px; padding: 12px 14px; }
+  body[data-theme="b"] .bxh-tier-name { font-size: 18px; }
+  body[data-theme="b"] .bxh-tier-price { font-size: 18px; }
+  body[data-theme="b"] .bxh-tier-price s { font-size: 13px; }
+  body[data-theme="b"] .bxh .pp-thumbs { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="b"] .bxh-tier { transition: none; }
+  body[data-theme="b"] .bxh-tier:hover { transform: none; }
+}
+
+/* Iron's serving cards carry the price; the rating stays. The note keeps the real purchase unambiguous. */
+body[data-theme="b"] .bxh--iron .pp-pricebox { display: none; }
+body[data-theme="b"] .bxh-cta-note { padding: 10px 14px; border-radius: 14px; background: #f2ecdf; font-size: 13px; line-height: 1.4; }
