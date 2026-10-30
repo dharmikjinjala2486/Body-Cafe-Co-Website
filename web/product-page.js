@@ -42,8 +42,10 @@
 
   /* Approved images per product, in gallery order. Only accurate, available assets. The 3D three-quarter renders are
      not used: their printed wording differs from the approved front mockups. */
-  function images(p) {
+  function images(p, ctx) {
     var name = p.name;
+    // B: the first image is the intentional static studio artwork; later admin images follow in order.
+    if (ctx && ctx.design === "b" && window.BCCBMedia) return window.BCCBMedia.gallery(p);
     if (p.gallery && p.gallery.length) return p.gallery.map(function(g,i){return {kind:"front",src:attr(g.src),w:g.w||1000,h:g.h||1000,alt:attr(g.alt||p.name),label:attr(g.label||"Product image "+(i+1)),caption:attr(g.caption||g.alt||p.name)};});
     if (!Object.prototype.hasOwnProperty.call(IMG_W,p.id)) return [{kind:"front",src:"/web/media/product-placeholder.svg",w:800,h:1000,alt:attr(name),label:"Product image",caption:"Product image awaiting upload"}];
     var list = [
@@ -101,7 +103,7 @@
       name: esc(ctx, p.name), sub: esc(ctx, p.subtitle), format: esc(ctx, p.format || ctx.format[p.id] || ""), category: esc(ctx, p.category || ""),
       inView: esc(ctx, raw.split(";")[0]), formulationPending: !!f.formulationPending, flavourPending: !!f.flavourPending, allergenNote: p.allergens ? esc(ctx,p.allergens) : f.allergenNote || "",
       price: ctx.money(p.price), off: off, stock: p.stock, max: off ? 1 : Math.max(1, Math.min(5, p.stock)),
-      sample: "DEMO-" + pad(idx + 1) + "-01", notes: notes, confirm: confirm, images: images(p), rating: rating,
+      sample: "DEMO-" + pad(idx + 1) + "-01", notes: notes, confirm: confirm, images: images(p, ctx), rating: rating,
       related: Array.isArray(p.related_product_ids) ? p.related_product_ids.map(function(id){return published.find(function(x){return x.id===id;});}).filter(Boolean) : after.concat(published.filter(function (x) { return ctx.catalog.indexOf(x) < idx; })).slice(0, 3),
       color: p.color, staticPreview: !!ctx.staticPreview,
     };
@@ -178,6 +180,11 @@
 
   function attr(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
   function lead(text) { return '<p class="pp-lead">' + text + "</p>"; }
+  /* One pack value for the purchase panel, overview and FAQs: admin record first, then the labelled preview entry. */
+  function packText(m) {
+    var pack = m.p.pack_size ? { label: esc(m.ctx, m.p.pack_size) } : window.BCCDemo && window.BCCDemo.packInfo(m.id);
+    return pack ? pack.label : PENDING;
+  }
   function sub(t) { return '<h3 class="pp-sub-h">' + t + "</h3>"; }
   function factRows(rows, cls) {
     return '<dl class="' + (cls || "pp-facts") + '">' + rows.map(function (r) { return '<div' + (r[2] ? ' class="is-pending"' : "") + "><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("") + "</dl>";
@@ -189,7 +196,7 @@
 
   function overview(m) {
     return lead(m.p.description ? esc(m.ctx,m.p.description) : m.notes.lead || m.sub) +
-      factRows([["Format", m.format], ["Pack size", esc(m.ctx,m.p.pack_size || PENDING)], ["Ingredient in view", m.inView + (m.formulationPending ? " (complete formulation pending)" : "")], ["Collection", m.category], ["Purchase", "One-time purchase"]], "pp-facts pp-facts-overview") +
+      factRows([["Format", m.format], ["Pack size", m.ctx.design === "b" ? packText(m) : esc(m.ctx,m.p.pack_size || PENDING)], ["Ingredient in view", m.inView + (m.formulationPending ? " (complete formulation pending)" : "")], ["Collection", m.category], ["Purchase", "One-time purchase"]], "pp-facts pp-facts-overview") +
       '<p class="pp-status"><strong>Purpose.</strong> ' + (m.p.purpose ? esc(m.ctx,m.p.purpose) : COPY.purpose) + "</p>";
   }
   function ingredients(m) {
@@ -277,7 +284,7 @@
   function explore(m, ctx) {
     if (!m.related.length) return "";
     return '<p class="pp-micro">' + COPY.explore + '</p><ul class="pp-related">' + m.related.map(function (r) {
-      var image = ctx.design === "b" ? "/web/media/bottles-normalized/" + r.id + ".svg" : window.BCCBottleAssets.url(r.id);
+      var image = ctx.design === "b" ? (window.BCCBMedia ? attr(window.BCCBMedia.first(r).src) : "/web/media/bottles-normalized/" + r.id + ".svg") : window.BCCBottleAssets.url(r.id);
       return '<li style="--cap:' + r.color + '"><a href="/products/' + r.id + '"><span class="pp-rel-img"><img src="' + image + '" alt="" width="720" height="1040" loading="lazy" decoding="async"></span><span class="pp-rel-name">' + esc(ctx, r.name) + '</span><span class="pp-rel-meta">' + esc(ctx, ctx.format[r.id] || "") + " · " + ctx.money(r.price) + " listed price</span></a></li>";
     }).join("") + '</ul><p class="pp-p"><a href="/shop">See all seven products</a></p>';
   }

@@ -13,7 +13,8 @@ const DESIGN_LABELS = [
   ["g", "G", "Darkroom"],
   ["h", "H", "Folio"],
 ];
-const availableDesigns = () => DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
+// A production release ships Variant B only; previews keep every direction.
+const availableDesigns = () => window.BCCRelease?.production ? ["b"] : DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
 let activeDesign = "b";
 function syncDesign() {
   const requested = new URL(location.href).searchParams.get("design");
@@ -276,6 +277,7 @@ function designLinks() {
     .join("");
 }
 function previewBar() {
+  if (window.BCCRelease?.production) return "";
   const options = DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d)).map(([d, number, label]) => `<option value="${d}"${activeDesign === d ? " selected" : ""}>${number} · ${label}</option>`).join("");
   return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Design preview · Ordering and sign-in unavailable." : window.BCCConnectedHosted ? "Store preview · Ordering opens soon." : "Local preview · No live payment or dispatch."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><label class="preview-design-mobile">Design<select data-design-select aria-label="Choose design direction">${options}</select></label><a href="/ops">Admin portal ↗</a></div>`;
 }
@@ -730,6 +732,7 @@ function enhance() {
   window.BCCAccount?.enhance?.();
   window.BCCSupport?.enhance?.();
   window.BCCMobileShopping?.enhance?.();
+  window.BCCVariantB?.enhance?.(product);
 }
 function cart() {
   return `<section class="section-wrap">${heading("", "Your bag")}${
@@ -1142,7 +1145,7 @@ async function render(scroll = true) {
     else if (path.startsWith("/policies/")) content = call("policy", seg) ?? policy(seg);
     else if (path === "/settings") content = call("settings") ?? settings();
     else if (path === "/search") content = call("search") ?? searchPage();
-    else if (path === "/preview/states") content = call("states") ?? notFound();
+    else if (path === "/preview/states") content = window.BCCRelease?.production ? call("notFound") ?? notFound() : call("states") ?? notFound();
     else if (path.startsWith("/ops")) content = ops(seg || "overview");
     else content = call("notFound") ?? notFound();
     // In-place updates (cart quantity, saved address, operations actions…) replace the DOM.

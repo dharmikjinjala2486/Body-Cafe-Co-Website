@@ -123,7 +123,7 @@
   function chips(st) {
     var out = st.formats.map(function (id) {
       var f = FORMATS.filter(function (x) { return x.id === id; })[0];
-      return '<li><button type="button" class="sp-chip" data-sp-remove="format:' + id + '" aria-label="Remove filter: ' + f.label + '">' + f.label + '<span aria-hidden="true">×</span></button></li>';
+      return '<li><button type="button" class="sp-chip" data-sp-remove="format:' + id + '" aria-label="Remove filter: ' + h(f.label) + '">' + h(f.label) + '<span aria-hidden="true">×</span></button></li>';
     });
     st.unknown.forEach(function (u) {
       out.push('<li><button type="button" class="sp-chip is-unknown" data-sp-remove="format:' + h(u) + '" aria-label="Remove filter: ' + h(u) + ' (not a format in this range)">' + h(u) + ' <em>not in this range</em><span aria-hidden="true">×</span></button></li>');
@@ -137,7 +137,7 @@
     var fmt = '<button type="button" class="sp-opt" data-sp-format="all" aria-pressed="' + all + '"><span class="sp-opt-l">All products</span> <span class="sp-n">' + r.counts.all + "</span></button>" +
       FORMATS.map(function (f) {
         var on = st.formats.indexOf(f.id) >= 0;
-        return '<button type="button" class="sp-opt" data-sp-format="' + f.id + '" aria-pressed="' + on + '"><span class="sp-opt-l">' + f.label + '</span> <span class="sp-n">' + r.counts[f.id] + "</span></button>";
+        return '<button type="button" class="sp-opt" data-sp-format="' + f.id + '" aria-pressed="' + on + '"><span class="sp-opt-l">' + h(f.label) + '</span> <span class="sp-n">' + r.counts[f.id] + "</span></button>";
       }).join("");
     var sort = '<div class="sp-sort"><label for="sp-sort">Sort</label><select id="sp-sort" data-sp-sort>' + SORTS.map(function (s) { return '<option value="' + s[0] + '"' + (s[0] === st.sort ? " selected" : "") + ">" + s[1] + "</option>"; }).join("") + "</select></div>";
     var stock = '<label class="sp-stock"><input type="checkbox" data-sp-stock' + (st.stock ? " checked" : "") + '><span class="sp-stock-l">In stock only</span> <span class="sp-n" data-sp-n="stock">' + r.counts.stock + "</span></label>";
@@ -149,8 +149,8 @@
       '<button type="button" class="sp-clear" data-sp-clear' + (isDefault(st) ? " hidden" : "") + ">Clear all</button></div>";
   }
 
-  function ratingLine(x) {
-    if (!x.rating) return '<p class="sp-rating is-empty">Illustrative feedback</p>';
+  function ratingLine(x, ctx) {
+    if (!x.rating) return '<p class="sp-rating is-empty">' + (ctx && ctx.design === "b" ? "No reviews yet" : "Illustrative feedback") + "</p>";
     var a = Number(x.rating.average), c = x.rating.count;
     return '<p class="sp-rating"><span class="sp-star" aria-hidden="true">★</span> <span>' + a.toFixed(1) + '<span class="sr-only"> out of 5</span> · ' + c + " review" + (c === 1 ? "" : "s") + "</span></p>";
   }
@@ -160,6 +160,11 @@
     var bottleSrc = ctx.design === "b" ? "/web/media/bottles-normalized/" + p.id + ".svg" : window.BCCBottleAssets.url(p.id);
     var bottleHeight = ctx.design === "b" ? 1040 : 1000;
     var img = '<img src="' + bottleSrc + '" alt="" width="' + w + '" height="' + bottleHeight + '" decoding="async"' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + ">";
+    // B: static first artwork for existing products, admin image or placeholder for new ones; second admin image on hover.
+    if (ctx.design === "b" && window.BCCBMedia) {
+      var second = window.BCCBMedia.secondary(p);
+      img = window.BCCBMedia.img(p, { alt: "", eager: eager }) + (second ? '<img class="bx-second" src="' + h(second.src) + '" alt="" width="' + (second.w || 1000) + '" height="' + (second.h || 1000) + '" loading="lazy" decoding="async">' : "");
+    }
     if (ctx.design === "a") img = S.cardBottlePicture(ctx, p);
     return '<li class="sp-card" data-sp-item="' + p.id + '" data-format="' + x.fid + '" data-price="' + x.price + '" data-i="' + x.i + '" data-available="' + x.available + '"' +
       (shown ? "" : " hidden") + (lead ? " data-lead" : "") + ' style="' + ctx.capStyle(p) + '">' +
@@ -169,7 +174,7 @@
       '<h3 class="sp-name"><a href="' + href + '">' + h(p.name) + "</a></h3>" +
       '<p class="sp-sub">' + h(x.sub) + "</p>" +
       '<dl class="sp-facts"><div><dt>Format</dt><dd>' + h(x.format) + '</dd></div><div><dt>Pack &amp; servings</dt><dd>' + (h(p.pack_size) || (window.BCCDemo && window.BCCDemo.packs[p.id]) || PENDING) + "</dd></div></dl>" +
-      ratingLine(x) +
+      ratingLine(x, ctx) +
       '<div class="sp-buy"><p class="sp-price"><strong>' + ctx.money(p.price) + '</strong> <span>MRP</span></p>' +
       '<p class="sp-avail" data-state="' + (x.available ? "in" : "out") + '"><span class="sp-dot" aria-hidden="true"></span>' + (x.available ? "In stock" : "Out of stock") + "</p></div>" +
       '<div class="sp-actions"><a class="sp-view" href="' + href + '">View product<span class="sr-only">: ' + h(p.name) + "</span></a>" +
@@ -194,7 +199,7 @@
   function formatsSection(v, ctx, list) {
     var rows = FORMATS.map(function (f) {
       var names = list.filter(function (x) { return x.fid === f.id; }).map(function (x) { return h(x.name); });
-      return '<li class="sp-fmt" data-fmt="' + f.id + '"><h3>' + (f.id === "chews" ? "Chews <small>(chewable tablets)</small>" : f.label) + '</h3><p>' + COPY.formats[f.id] + "</p>" +
+      return '<li class="sp-fmt" data-fmt="' + f.id + '"><h3>' + (f.id === "chews" ? "Chews <small>(chewable tablets)</small>" : h(f.label)) + '</h3><p>' + (COPY.formats[f.id] || "See each product page for this format's details.") + "</p>" +
         (names.length ? '<p class="sp-fmt-in"><span>In the range: </span>' + names.join(", ") + "</p>" : "") + "</li>";
     }).join("");
     return block(v, "formats", 1, COPY.formatsTitle, '<p class="sp-lead">' + COPY.formatsLede + '</p><ul class="sp-fmts">' + rows + '</ul><p class="sp-small">' + COPY.formatsUnsure + "</p>" +
@@ -215,7 +220,22 @@
     return '<header class="sp-intro">' + (t.pre || "") + '<div class="sp-intro-text"><p class="sp-kicker">' + t.kicker + '</p><h1 class="sp-h1">' + t.title + '</h1><p class="sp-lede">' + COPY.lede + "</p></div>" + (t.post || "") + "</header>";
   }
 
+  /* A format added in the admin product editor gets its own filter option instead of disappearing from filtering.
+     Nothing changes while the catalogue only uses the three known formats. */
+  var BASE_FORMATS = FORMATS.length;
+  function registerFormats(ctx) {
+    // Variant B only: other directions keep exactly the three original format options.
+    FORMATS.splice(BASE_FORMATS).forEach(function (f) { if (ALIAS[f.id] === f.id) delete ALIAS[f.id]; });
+    if (ctx.design !== "b") return;
+    ctx.published.forEach(function (p) {
+      var label = String(ctx.format[p.id] || "").trim(), id = formatId(ctx, p);
+      if (!label || !/^[a-z0-9 -]{1,40}$/.test(id) || FORMATS.some(function (f) { return f.id === id; })) return;
+      FORMATS.push({ id: id, label: label, value: label });
+      ALIAS[id] = id;
+    });
+  }
   function compose(v, ctx) {
+    registerFormats(ctx);
     var list = items(ctx);
     var st = parse(ctx.query);
     if (!list.length) {

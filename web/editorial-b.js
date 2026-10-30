@@ -38,58 +38,58 @@
     link.setAttribute('aria-hidden', 'true'); link.className = 'bi-cover-link';
     link.appendChild(img(key, '', 1600, 1000, false)); container.prepend(link);
   }
-  function home(t) {
-    // Use the same transparent framing for all seven homepage bottles.
-    t.querySelectorAll('.tb-coll .tb-arch-photo, .atelier-fan [data-curiosity-pick]').forEach(function (card) {
-      var link = card.getAttribute('href');
-      var id = link ? link.split('/').pop() : JSON.parse(t.querySelector('[data-curiosity-products]').textContent)[Number(card.dataset.curiosityPick)].id;
-      var bottle = card.querySelector('img');
-      if (bottle && productIds[id]) {
-        bottle.src = '/web/media/bottles-normalized/' + id + '.svg';
-        bottle.width = 720; bottle.height = 1040;
-      }
-    });
+  /* The campaign hero shows two particular bottles, so it is used only while both are published. Otherwise
+     site-b.js composes the hero from the first published products (their static first images). */
+  // [id, name, x%, y%, label side] over the square desktop panel; phones show the same links as a row.
+  var FEATURED = [['vitamin-d3-k2', 'Vitamin D3 + K2', 62, 20], ['l-theanine', 'L-Theanine', 39, 33, 'start']];
+  function home(t, ctx) {
+    var live = FEATURED.map(function (f) { return ctx && ctx.live ? ctx.live(f[0]) : null; });
     var art = t.querySelector('.tb-hero-art');
-    if (art) {
+    if (art && live[0] && live[1]) {
       art.classList.add('bi-hero-art'); art.replaceChildren();
       var picture = document.createElement('picture'), source = document.createElement('source');
       source.media = '(max-width: 640px)'; source.srcset = ROOT + 'hero/home-hero-mobile.webp';
       source.setAttribute('width', '1080'); source.setAttribute('height', '1350'); picture.appendChild(source);
       picture.appendChild(img('hero/home-hero-panel', 'Vitamin D3 + K2 and L-Theanine bottles on an indigo and lilac stage.', 1400, 1400, true)); art.appendChild(picture);
       var nav = document.createElement('nav'); nav.className = 'bi-hero-links'; nav.setAttribute('aria-label', 'Products shown in the hero');
-      [['vitamin-d3-k2','Vitamin D3 + K2'],['l-theanine','L-Theanine']].forEach(function (p) {
-        var a = document.createElement('a'); a.href = '/products/' + p[0]; a.textContent = p[1] + ' ↗'; nav.appendChild(a);
+      FEATURED.forEach(function (f, i) {
+        var p = live[i], a = document.createElement('a'); a.href = '/products/' + f[0]; a.className = 'bx-hotspot' + (f[4] === 'start' ? ' is-start' : '');
+        a.style.setProperty('--x', f[2] + '%'); a.style.setProperty('--y', f[3] + '%'); a.style.setProperty('--cap', p.color);
+        var dot = document.createElement('span'); dot.className = 'bx-hotspot-dot'; dot.setAttribute('aria-hidden', 'true');
+        var name = document.createElement('span'); name.className = 'bx-hotspot-name'; name.textContent = p.name;
+        var price = document.createElement('span'); price.className = 'bx-hotspot-price'; price.textContent = ctx.money(p.price);
+        a.append(dot, name, price); nav.appendChild(a);
       }); art.appendChild(nav);
+      var sticker = document.createElement('p'); sticker.className = 'tb-stamp bx-sticker'; sticker.setAttribute('aria-hidden', 'true');
+      sticker.innerHTML = 'A curious mind<b>✳</b>A clearer choice'; art.appendChild(sticker);
     }
     var voices = t.querySelector('.bi-voices-heading');
     if (voices) voices.appendChild(figure('reviews/reviews_conversation', '', 'bi-voices-art', 1600, 900));
     var faq = t.querySelector('[data-home-section="faq"]');
     if (faq && faq.firstElementChild) faq.firstElementChild.appendChild(figure('faq/faq_questions', '', 'bi-faq-art', 1200, 900));
   }
+  // The static first image, thumbnails, captions and enlargement now come from one source (BCCBMedia via the PDP model).
   function product(t) {
     var gallery = t.querySelector('[data-pp-gallery]');
     var id = location.pathname.split('/').filter(Boolean).pop();
-    if (!gallery || !productIds[id]) return;
+    if (!gallery) return;
     gallery.setAttribute('data-bottle-id', id);
     gallery.classList.add('pp-bottle-stage');
-    var front = gallery.querySelector('.pp-slide-front img');
-    if (front) {
-      var bottleSrc = '/web/media/bottles-normalized/' + id + '.svg';
-      front.src = bottleSrc;
-      front.width = 720; front.height = 1040;
-      front.alt = front.alt || id.replaceAll('-', ' ') + ', front-of-pack design mockup';
-      var thumb = gallery.querySelector('[data-pp-thumb="0"] img');
-      if (thumb) { thumb.src = bottleSrc; thumb.width = 720; thumb.height = 1040; }
-    }
   }
-  function bundles(t) {
+  // Bundle artwork pictures particular bottles: use it only while the edit's membership and publication still match.
+  var BUNDLE_ART = { 'daily-edit': ['vitamin-d3-k2', 'omega-3-fish-oil'], 'curious-edit': ['l-theanine', 'creatine-chews'] };
+  function bundleArtOk(id, ctx) {
+    var want = BUNDLE_ART[id], b = ctx && ctx.state && (ctx.state.bundles || []).find(function (x) { return x.id === id; });
+    return !!(want && b && b.items.join() === want.join() && want.every(function (pid) { return ctx.live(pid); }));
+  }
+  function bundles(t, ctx) {
     t.querySelectorAll('a.tb-duo-photos').forEach(function (a) {
       var id = new URL(a.getAttribute('href'), location.origin).pathname.split('/').pop();
-      if (id !== 'daily-edit' && id !== 'curious-edit') return;
+      if (!bundleArtOk(id, ctx)) return;
       a.replaceChildren(img('bundle/' + id + '-card', id === 'daily-edit' ? 'Vitamin D3 + K2 and Omega-3 Fish Oil bottles.' : 'L-Theanine and Creatine Chews bottles.', 1200, 1200)); a.classList.add('bi-bundle-art');
     });
     var detail = t.querySelector('.tb-edit-hero .tb-duo-photos'), id = location.pathname.split('/').filter(Boolean).pop();
-    if (detail && (id === 'daily-edit' || id === 'curious-edit')) {
+    if (detail && bundleArtOk(id, ctx)) {
       detail.replaceChildren(img('bundle/' + id + '-detail', id === 'daily-edit' ? 'Vitamin D3 + K2 and Omega-3 Fish Oil bottles.' : 'L-Theanine and Creatine Chews bottles.', 1600, 1200)); detail.classList.add('bi-bundle-art');
     }
   }
@@ -113,13 +113,15 @@
     }
   }
   var productIds = {'iron-bisglycinate':1,'l-theanine':1,'vitamin-d3-k2':1,'omega-3-fish-oil':1,'myo-d-chiro-inositol':1,'creatine-chews':1,'psyllium-husk':1};
-  function about(t) {
+  function about(t, ctx) {
     var media = t.querySelector('.ab-meet-media');
     if (media) {
-      var art = figure('about/about-seven-colours', 'Seven product bottles displayed on their matching coloured stands.', 'bi-about-identity', 1600, 1000, 'Our seven products, each on its cap-colour stand.', true);
+      // Fixed campaign artwork: only bottles that are currently published stand on it.
+      var art = figure('about/about-seven-colours', 'Product bottles displayed on their matching coloured stands.', 'bi-about-identity', 1600, 1000, 'The everyday collection, each bottle on its cap-colour stand.', true);
       var lineup = document.createElement('span'); lineup.className = 'bi-about-products'; lineup.setAttribute('aria-hidden', 'true');
       var stands = [[11.5,70.9],[24.4,67.8],[36.9,65.9],[49.4,64.6],[61.9,65.9],[74.4,67.8],[88,70.9]];
       ['iron-bisglycinate','l-theanine','vitamin-d3-k2','omega-3-fish-oil','myo-d-chiro-inositol','creatine-chews','psyllium-husk'].forEach(function (id, i) {
+        if (ctx && ctx.live && !ctx.live(id)) return;
         var mount = document.createElement('span'); mount.className = 'bi-about-bottle'; mount.style.setProperty('--stand-x', stands[i][0] + '%'); mount.style.setProperty('--stand-y', stands[i][1] + '%');
         var bottle = document.createElement('img'); bottle.src = '/web/media/bottles-normalized/' + id + '.svg'; bottle.alt = ''; bottle.width = 720; bottle.height = 1040; bottle.loading = 'eager'; bottle.decoding = 'async'; mount.appendChild(bottle); lineup.appendChild(mount);
       });
@@ -150,7 +152,7 @@
     S.themes.b[name] = function () {
       var html = render.apply(this, arguments);
       var template = document.createElement('template'); template.innerHTML = html;
-      decorators[name](template.content); return template.innerHTML;
+      decorators[name](template.content, arguments[0]); return template.innerHTML;
     };
   });
 })();

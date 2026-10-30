@@ -4,6 +4,8 @@
    licence numbers, verified reviews or payment capabilities are invented here. */
 (function () {
   'use strict';
+  // Demonstration fixtures exist only in preview releases; production shows the approved/pending states instead.
+  if (window.BCCRelease && !window.BCCRelease.preview) return;
   const S = window.BCCSite, C = window.BCCSupportContent;
   const contact = {phone:'+91-8457125489',email:'care@bodycafeco.com'};
   const packs = {

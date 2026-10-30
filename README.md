@@ -1,3 +1,9 @@
+# Variant B refinement — 30 October 2026
+
+Claude's Curious Everyday update is integrated: revised hero, interactive Curiosity Cabinet, clearer product cards, consistent pack information and B-specific motion. Every existing product retains its unchanged static first artwork; later gallery images remain admin-managed. See [implementation and remaining work](design-review/VARIANT-B-IMPLEMENTATION-2026-10-30.md) and [sync verification](design-review/VARIANT-B-SYNC-2026-10-30.md).
+
+The connected Netlify build remains a preview with all existing design directions available. Production mode is opt-in; payments, OTP and provider capabilities are unchanged.
+
 # Current build — Variant B and admin portal
 
 The active storefront is Variant B. The operations portal uses one credential login (`bodycafe.com`). The connected Netlify build routes `/api/*` to the Supabase operations Edge Function. See [hosting configuration](NETLIFY.md), [Supabase migration and verification](SUPABASE-DEPLOYMENT.md), and [local portal implementation](ADMIN-PORTAL-IMPLEMENTATION.md).

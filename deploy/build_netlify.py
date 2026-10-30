@@ -26,9 +26,26 @@ def api_target(mode, origin):
     return origin.rstrip('/')
 
 
+OTHER_DIRECTIONS = ['site-a', 'site-c', 'site-d', 'direction-d', 'pdp-a', 'pdp-c', 'pdp-d', 'cinema', 'live', 'site-eh',
+                    'site-e', 'site-f', 'site-g', 'site-h', 'typography-a']
+
+
+def release_target(release, site_url):
+    """Preview (the default) stays noindex with design tooling. Production is an explicit, deliberate opt-in."""
+    if release not in ('preview', 'production'):
+        raise ValueError('BCC_RELEASE must be preview or production.')
+    if release == 'preview':
+        return None
+    parsed = urlparse(site_url or '')
+    if parsed.scheme != 'https' or not parsed.hostname or parsed.path not in ('', '/') or parsed.query or parsed.fragment:
+        raise ValueError('Set BCC_SITE_URL to the production https:// origin before a production release.')
+    return site_url.rstrip('/')
+
+
 def build():
     mode = os.getenv('BCC_HOSTED_MODE', 'static')
     target = api_target(mode, os.getenv('BCC_API_ORIGIN'))
+    site = release_target(os.getenv('BCC_RELEASE', 'preview'), os.getenv('BCC_SITE_URL'))
     out = ROOT / 'dist'
     if out.exists():
         shutil.rmtree(out)
@@ -48,6 +65,15 @@ def build():
         (out / 'web/catalog-preview.json').write_text(json.dumps(catalog), encoding='utf-8')
         shutil.copy2(ROOT / 'deploy/hosted-preview.js', out / 'web/hosted-preview.js')
         html = html.replace('<script src="/web/homepage.js">', '<script src="/web/hosted-preview.js"></script>\n<script src="/web/homepage.js">')
+    if site:
+        # Variant B only, no fixtures or design switcher, indexable. Payments and providers are unaffected.
+        html = html.replace('<meta name="robots" content="noindex,nofollow">', '<meta name="robots" content="index,follow">\n<meta name="bcc-release" content="production">')
+        html = html.replace('<meta name="description" content="Explore seven everyday supplements from Body Café Co. Preview product information, ingredient guides and the lot-report experience.">',
+                            '<meta name="description" content="Everyday supplements from Body Café Co., with ingredient guides, clear product details and a lot-record lookup.">')
+        # B-only entry: drop stylesheets/scripts that only serve other design directions (about 790 KB uncompressed).
+        # Verified to render B routes identically; shared modules (world/creative/atelier/home-flow) stay loaded.
+        html = '\n'.join(line for line in html.split('\n')
+                          if not any('/web/' + name + ext + '"' in line for name in OTHER_DIRECTIONS for ext in ('.css', '.js')))
     (out / 'index.html').write_text(html, encoding='utf-8')
     (out / 'web/index.html').write_text(html, encoding='utf-8')
     feedback = (ROOT / 'web/feedback.html').read_text(encoding='utf-8')
@@ -60,8 +86,16 @@ def build():
     redirects += '/feedback /feedback/index.html 200\n/feedback/ /feedback/index.html 200\n/* /index.html 200\n'
     (out / '_redirects').write_text(redirects, encoding='utf-8')
     (out / '_headers').write_text('/api/*\n  Cache-Control: no-store\n/ops*\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: same-origin\n', encoding='utf-8')
-    (out / 'robots.txt').write_text('User-agent: *\nDisallow: /\n', encoding='utf-8')
-    print('Netlify ' + mode + ' build in dist/ (no database, credentials or customer data exported).')
+    if site:
+        routes = ['/', '/shop', '/bundles', '/standards', '/about', '/story', '/learn', '/reports', '/help', '/contact',
+                  '/policies/shipping', '/policies/returns', '/policies/cancellation', '/policies/privacy', '/policies/terms']
+        # Product and guide URLs follow the live catalogue; add them here once the release catalogue is fixed.
+        urls = ''.join('  <url><loc>' + site + r + '</loc></url>\n' for r in routes)
+        (out / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n', encoding='utf-8')
+        (out / 'robots.txt').write_text('User-agent: *\nDisallow: /ops\nDisallow: /api/\nSitemap: ' + site + '/sitemap.xml\n', encoding='utf-8')
+    else:
+        (out / 'robots.txt').write_text('User-agent: *\nDisallow: /\n', encoding='utf-8')
+    print('Netlify ' + mode + ' ' + ('production' if site else 'preview') + ' build in dist/ (no database, credentials or customer data exported).')
 
 
 if __name__ == '__main__':
