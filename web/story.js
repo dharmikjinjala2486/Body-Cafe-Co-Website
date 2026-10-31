@@ -66,6 +66,7 @@
     return '<figure class="st-fig ' + (cls || "") + '"><button type="button" class="st-open" data-st-open="' + i + '" aria-label="Enlarge: ' + h(img.title || img.alt) + '"><img src="' + h(img.src) + '" alt="' + h(img.alt) + '" width="' + (img.w || 800) + '" height="' + (img.h || 800) + '" loading="lazy" decoding="async"><span class="st-zoom" aria-hidden="true">+</span></button>' + (img.caption ? "<figcaption>" + h(img.caption) + "</figcaption>" : "") + "</figure>";
   }
   function chapter(v, id, n, title, inner) {
+    title = (v.titles && v.titles[id]) || title;
     return '<section class="st-ch st-ch-' + id + '" id="' + id + '" aria-labelledby="' + id + '-t"><div class="st-ch-in"><header class="st-head"><p class="st-k">' + (v.k ? v.k(n) : "Chapter " + n) + '</p><h2 id="' + id + '-t">' + title + '</h2><button type="button" class="st-share" data-st-share="' + id + '" aria-label="Copy link to chapter: ' + h(title) + '">#</button></header><div class="st-body">' + inner + "</div>" +
       (id === "next" ? "" : '<p class="st-ask"><a href="/contact?kind=brand&amp;topic=' + encodeURIComponent("/story#" + id) + '">Ask about this chapter</a></p>') + "</div></section>";
   }
@@ -73,12 +74,12 @@
   function opening(v, ctx) {
     var caps = '<div class="st-caps" aria-hidden="true">' + ctx.published.map(function (p, i) { return '<span style="--dot:' + h(p.color) + ";--i:" + i + '"></span>'; }).join("") + "</div>";
     return '<header class="st-hero" id="top"><div class="st-hero-in"><p class="st-kicker">' + (v.kicker || "Our story") + '</p><h1 class="st-h1" id="st-h1">' + (v.title ? v.title() : "Curiosity is a good place to start") + '</h1>' + caps +
-      '<div class="st-summary" role="note" aria-label="The story in short"><p class="st-summary-k">The story in short</p><p>Body Café Co. is built around one idea: the details of a supplement should be easy to find before you choose it, not after. The name comes from the kind of place where asking what\'s in something is normal. Our first seven products each have their own cap colour, and we\'re building the records that let you check what we say.</p></div></div></header>';
+      '<div class="st-summary" role="note" aria-label="The story in short"><p class="st-summary-k">The story in short</p><p>' + h(v.summary || "Body Café Co. is built around one idea: the details of a supplement should be easy to find before you choose it, not after. The name comes from the kind of place where asking what's in something is normal. Our first seven products each have their own cap colour, and we're building the records that let you check what we say.") + '</p></div></div></header>';
   }
   function nav(v, shown) {
     var list = CH.filter(function (c) { return shown[c[0]] !== false; });
     return '<nav class="st-nav" aria-label="Chapters"><p class="st-nav-k" aria-hidden="true">Chapters</p><ol>' + list.map(function (c, i) {
-      return '<li><a href="#' + c[0] + '" data-st-nav="' + c[0] + '"><span class="st-nav-n" aria-hidden="true">' + (i + 1) + "</span>" + c[1] + "</a></li>";
+      return '<li><a href="#' + c[0] + '" data-st-nav="' + c[0] + '"><span class="st-nav-n" aria-hidden="true">' + (i + 1) + "</span>" + ((v.titles && v.titles[c[0]]) || c[1]) + "</a></li>";
     }).join("") + '</ol><div class="st-progress" aria-hidden="true"><span data-st-progress></span></div></nav>';
   }
   function objectsTable() {
@@ -132,7 +133,7 @@
     var out = [];
     var q = ST.opening.split(". ");
     out.push(chapter(v, "opening", num(), "The opening moment",
-      '<p class="st-lead">' + h(ST.lede) + '</p><p>Seven caps, seven everyday supplements, and one question every label should answer clearly: what exactly is in this?</p>' + openable({ src: "/web/media/about/caps-row.webp", w: 2340, h: 360, alt: "Seven product caps seen from above, in rust, olive, indigo, grey-blue, lilac, teal and sand", title: "Seven caps", caption: "The seven caps, seen from above. Studio renders." }, "st-wide")));
+      '<p class="st-lead">' + h(ST.lede) + '</p><p>' + h(v.openingLine || "Seven caps, seven everyday supplements, and one question every label should answer clearly: what exactly is in this?") + '</p>' + openable({ src: "/web/media/about/caps-row.webp", w: 2340, h: 360, alt: "Seven product caps seen from above, in rust, olive, indigo, grey-blue, lilac, teal and sand", title: "Seven caps", caption: "The seven caps, seen from above. Studio renders." }, "st-wide")));
     if (has.before) out.push(chapter(v, "before", num(), "Before there was a brand", f.before.paragraphs.map(function (p) { return "<p>" + h(p) + "</p>"; }).join("") + ((f.before.photos || []).length ? '<div class="st-photos">' + f.before.photos.map(function (ph) { return openable({ src: ph.src, w: ph.w, h: ph.h, alt: ph.alt, title: ph.caption, caption: ph.caption + (ph.date ? " · " + ph.date : "") }); }).join("") + "</div>" : "")));
     var who = ST.chapters.filter(function (c) { return c.title === "Who it's for"; })[0];
     out.push(chapter(v, "question", num(), "The question we kept asking",
@@ -152,7 +153,7 @@
     if (has.founder) out.push(chapter(v, "founder", num(), "A note from the founder",
       '<div class="st-letter">' + openable({ src: f.note.portrait.src, w: f.note.portrait.w, h: f.note.portrait.h, alt: f.note.portrait.alt, title: f.note.name, caption: f.note.name + ", " + f.note.role }, "st-portrait") + '<div class="st-letter-text">' + f.note.paragraphs.map(function (p) { return "<p>" + h(p) + "</p>"; }).join("") + '<p class="st-sign">' + h(f.note.name) + "<span>" + h(f.note.role) + "</span></p></div></div>" + media(f)));
     out.push(chapter(v, "next", num(), "The next chapter",
-      '<div class="st-next"><div><h3 class="st-sub-h">Where things stand now</h3><ul class="st-list is-now">' + SD.documented.map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + '</ul></div><div><h3 class="st-sub-h">What we\'re working towards</h3><p class="st-small">Planned, not yet in place. No dates are promised.</p><ul class="st-list is-plan">' + SD.planned.map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul></div>" +
+      (v.nextLead ? '<p class="st-lead">' + h(v.nextLead) + "</p>" : "") + '<div class="st-next"><div><h3 class="st-sub-h">Where things stand now</h3><ul class="st-list is-now">' + SD.documented.map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + '</ul></div><div><h3 class="st-sub-h">What we\'re working towards</h3><p class="st-small">Planned, not yet in place. No dates are promised.</p><ul class="st-list is-plan">' + SD.planned.map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul></div>" +
       '<div><h3 class="st-sub-h">What we won\'t do</h3><ul class="st-list is-wont">' + ST.wont.map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul></div></div>" +
       '<ul class="st-routes">' + [["/about", "About us", "Who we are today"], ["/standards", "Our standards", "What we show, and its limits"], ["/learn", "Learn", "Guides to labels and our seven"], ["/shop", "Shop", "All seven, with sample prices"], ["/contact?kind=brand&topic=" + encodeURIComponent("/story"), "Ask about our story", "A support case, with this page attached"]].map(function (r) {
         return '<li><a class="st-route" href="' + r[0] + '"><strong>' + r[1] + "</strong><span>" + r[2] + '</span><span class="st-arr" aria-hidden="true">→</span></a></li>';
@@ -184,6 +185,7 @@
     g: { key: "g", kicker: "Our story / frames", k: function (n) { return "Frame " + pad(n); } },
     h: { key: "h", kicker: "Story · Reference", k: function (n) { return "§ " + n; } },
   };
+  if (window.BCCContentE) window.BCCContentE.merge("storyV", V.e);
   Object.keys(V).forEach(function (d) {
     if (!S.themes[d]) return;
     var base = S.themes[d], next = {};

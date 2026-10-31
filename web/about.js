@@ -87,6 +87,7 @@
       contact: "Open a support case on this site, or find our email, WhatsApp and phone links on Contact. Support hours and reply targets in this preview are illustrative.",
     },
   };
+  if (window.BCCContentE) window.BCCContentE.merge("about", C);
 
   /* ====================================================================================================
      2. BUILDERS — semantic HTML with ab-* hooks; directions restyle these and never change facts.

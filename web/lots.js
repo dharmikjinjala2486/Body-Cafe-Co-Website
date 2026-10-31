@@ -54,6 +54,7 @@
       ["What if a batch has a problem?", "If there's a confirmed restriction, withdrawal or instruction for a batch, it appears at the top of that lot's record with the approved instructions and a direct route to Product safety support."],
     ],
   };
+  if (window.BCCContentE) window.BCCContentE.merge("lots", C);
   var AVAIL = {
     published: ["Published", "The reviewed record and its source documents are public."],
     under_review: ["Under review", "A record exists for this lot, but it hasn't finished review. That says nothing about whether a test passed or failed."],

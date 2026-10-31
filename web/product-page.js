@@ -100,7 +100,7 @@
     var rating = p.rating || { count: 0, average: null };
     return {
       p: p, ctx: ctx, id: p.id, n: idx + 1, no: pad(idx + 1), total: pad(ctx.catalog.length),
-      name: esc(ctx, p.name), sub: esc(ctx, p.subtitle), format: esc(ctx, p.format || ctx.format[p.id] || ""), category: esc(ctx, p.category || ""),
+      name: esc(ctx, p.name), sub: esc(ctx, window.BCCContentE ? window.BCCContentE.line(p) : p.subtitle), format: esc(ctx, p.format || ctx.format[p.id] || ""), category: esc(ctx, p.category || ""),
       inView: esc(ctx, raw.split(";")[0]), formulationPending: !!f.formulationPending, flavourPending: !!f.flavourPending, allergenNote: p.allergens ? esc(ctx,p.allergens) : f.allergenNote || "",
       price: ctx.money(p.price), off: off, stock: p.stock, max: off ? 1 : Math.max(1, Math.min(5, p.stock)),
       sample: "DEMO-" + pad(idx + 1) + "-01", notes: notes, confirm: confirm, images: images(p, ctx), rating: rating,
