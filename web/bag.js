@@ -93,7 +93,7 @@
     var ql = q && q.lines.filter(function (x) { return x.id === i.id; })[0];
     var max = ql ? ql.max : Math.min(10, p.stock || 0);
     var status = ql ? ql.status : "checking";
-    var pack = window.BCCDemo && window.BCCDemo.packInfo(p.id);
+    var pack = p.pack_size ? {label: p.pack_size} : window.BCCDemo && window.BCCDemo.packInfo(p.id);
     var avail = status === "unavailable" ? '<span class="bg-av is-out">Not available right now</span>' : status === "checking" ? '<span class="bg-av">Checking availability…</span>' : max < 10 ? '<span class="bg-av">Available · up to ' + max + " per order in preview stock</span>" : '<span class="bg-av is-ok">Available · up to 10 per order</span>';
     return '<li class="bg-line' + (status === "unavailable" ? " is-out" : "") + '" data-bg-line="' + h(p.id) + '" style="--bg-cap:' + h(p.color) + '">' +
       '<a class="bg-thumb" href="/products/' + h(p.id) + '" tabindex="-1" aria-hidden="true"><img src="' + window.BCCBottleAssets.url(h(p.id)) + '" alt="" width="720" height="1000" loading="lazy" decoding="async"></a>' +

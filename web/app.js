@@ -1,7 +1,6 @@
 /* Body Café Co. — storefront preview.
    View layer: templates + interaction. Data, cart, checkout, account and ops logic live further down. */
-/* Design direction. A/B homepages are the standalone concepts; C/D homepages and all four product pages live here.
-   Precedence: ?design= in the URL, then this tab's sessionStorage (also written by the A/B concept pages), then B. */
+/* Variant E is the default storefront; previews retain all eight design directions. */
 const DESIGNS = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const DESIGN_LABELS = [
   ["a", "A", "State of Play"],
@@ -13,15 +12,15 @@ const DESIGN_LABELS = [
   ["g", "G", "Darkroom"],
   ["h", "H", "Folio"],
 ];
-// A production release ships Variant B only; previews keep every direction.
-const availableDesigns = () => window.BCCRelease?.production ? ["b"] : DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
-let activeDesign = "b";
+// Production uses E; local and connected previews keep the comparison controls.
+const availableDesigns = () => window.BCCRelease?.production ? ["e"] : DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
+let activeDesign = "e";
 function syncDesign() {
   const requested = new URL(location.href).searchParams.get("design");
   let stored = null;
   try { stored = sessionStorage.getItem("bcc-design"); } catch {}
   const available = availableDesigns();
-  activeDesign = available.includes(requested) ? requested : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "b";
+  activeDesign = available.includes(requested) ? requested : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "e";
   try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
   document.body.dataset.design = activeDesign;
 }
@@ -1167,7 +1166,7 @@ async function render(scroll = true) {
         (target && !target.disabled ? target : $("#main"))?.focus({ preventScroll: true });
       }
     };
-    if (scroll && document.startViewTransition && ["a", "b", "c", "d"].includes(activeDesign) && !reducedMotion() && booted) {
+    if (scroll && document.startViewTransition && ["a", "b", "c", "d", "e"].includes(activeDesign) && !reducedMotion() && booted) {
       document.documentElement.style.setProperty("--wipe", transitionColor);
       const transition = document.startViewTransition(paint);
       // A transition interrupted by a quicker navigation is skipped; that is expected, not an error.
@@ -1219,6 +1218,7 @@ function navigate(href, color) {
 }
 async function refreshCatalog() {
   const c = await api("/catalog");
+  c.products = await window.BCCLabelContent.enrich(c.products);
   state.catalog = c.products;
   window.BCCCatalogImages = Object.fromEntries(c.products.filter(p => p.gallery?.length).map(p => [p.id,p.gallery[0].src]));
   window.BCCCatalogSecondary = Object.fromEntries(c.products.filter(p => p.gallery?.length > 1).map(p => [p.id,p.gallery[1].src]));

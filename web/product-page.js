@@ -101,7 +101,7 @@
     return {
       p: p, ctx: ctx, id: p.id, n: idx + 1, no: pad(idx + 1), total: pad(ctx.catalog.length),
       name: esc(ctx, p.name), sub: esc(ctx, p.subtitle), format: esc(ctx, p.format || ctx.format[p.id] || ""), category: esc(ctx, p.category || ""),
-      inView: esc(ctx, raw.split(";")[0]), formulationPending: !!f.formulationPending, flavourPending: !!f.flavourPending, allergenNote: p.allergens ? esc(ctx,p.allergens) : f.allergenNote || "",
+      inView: esc(ctx, raw.split(";")[0]), formulationPending: !p.label_source && !!f.formulationPending, flavourPending: !p.label_source && !!f.flavourPending, allergenNote: p.allergens ? esc(ctx,p.allergens) : f.allergenNote || "",
       price: ctx.money(p.price), off: off, stock: p.stock, max: off ? 1 : Math.max(1, Math.min(5, p.stock)),
       sample: "DEMO-" + pad(idx + 1) + "-01", notes: notes, confirm: confirm, images: images(p, ctx), rating: rating,
       related: Array.isArray(p.related_product_ids) ? p.related_product_ids.map(function(id){return published.find(function(x){return x.id===id;});}).filter(Boolean) : after.concat(published.filter(function (x) { return ctx.catalog.indexOf(x) < idx; })).slice(0, 3),
@@ -137,7 +137,7 @@
   }
   function packFacts(m) {
     var pack = m.p.pack_size ? {label:esc(m.ctx,m.p.pack_size),status:"catalog"} : window.BCCDemo && window.BCCDemo.packInfo(m.id);
-    return '<dl class="pp-pack"><div><dt>Format</dt><dd>' + m.format + "</dd></div><div><dt>Pack quantity</dt><dd" + (pack ? ' data-pack-status="catalog"' : ' class="is-pending"') + ">" + (pack ? pack.label : PENDING) + "</dd></div><div><dt>Serving size</dt><dd class=\"is-pending\">" + (m.p.serving_size ? esc(m.ctx,m.p.serving_size) : PENDING) + "</dd></div><div><dt>Servings per pack</dt><dd class=\"is-pending\">" + (m.p.servings_per_pack ? esc(m.ctx,m.p.servings_per_pack) : PENDING) + "</dd></div></dl>";
+    return '<dl class="pp-pack"><div><dt>Format</dt><dd>' + m.format + "</dd></div><div><dt>Pack quantity</dt><dd" + (pack ? ' data-pack-status="catalog"' : ' class="is-pending"') + ">" + (pack ? pack.label : PENDING) + "</dd></div><div><dt>Serving size</dt><dd>" + (m.p.serving_size ? esc(m.ctx,m.p.serving_size) : PENDING) + "</dd></div><div><dt>Servings per pack</dt><dd>" + (m.p.servings_per_pack ? esc(m.ctx,m.p.servings_per_pack) : PENDING) + "</dd></div></dl>";
   }
   function quickLinks() {
     return '<nav class="pp-quick" aria-label="On this page"><a href="#ingredients">Ingredients</a><a href="#use">How to use</a><a href="#reviews">Reviews</a><a href="#quality">Lot report</a></nav>';
@@ -212,17 +212,17 @@
     rows.push(["Allergens", m.p.allergens ? esc(m.ctx,m.p.allergens) : m.allergenNote || PENDING, !m.allergenNote]);
     rows.push(["Dietary suitability", m.p.dietary_suitability ? esc(m.ctx,m.p.dietary_suitability) : PENDING, !m.p.dietary_suitability]);
     rows.push(["Manufacturer and licence details", m.p.manufacturer_details ? esc(m.ctx,m.p.manufacturer_details) : PENDING, !m.p.manufacturer_details]);
-    return lead("What's inside, in readable text. Everything here comes from confirmed records; the rest will come from the approved rear label.") +
+    return lead(m.p.label_source ? "Ingredient amounts and product facts transcribed from the supplied final label artwork. Values are per labelled serving." : "What is inside, in readable text. Missing facts are marked below.") +
       factRows(rows, "pp-facts pp-facts-label") +
       '<div class="pp-cols">' +
-        '<div>' + sub("What the approved label will state") + '<ul class="pp-list">' + m.confirm.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ul></div>" +
+        '<div>' + sub(m.p.label_source ? "Check your own pack" : "What the approved label will state") + '<ul class="pp-list">' + m.confirm.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ul></div>" +
         '<div>' + sub("Rear label") + '<p class="pp-p">' + (m.p.rear_label_note ? esc(m.ctx,m.p.rear_label_note) : 'The approved rear label is not available in this preview. When supplied, it will appear here and in the gallery, with an option to enlarge it.') + '</p></div>' +
       "</div>" +
       (m.notes.compound ? '<aside class="pp-aside"><p class="pp-aside-k">Reading this ingredient</p><p>' + m.notes.compound + "</p>" + sources(m.notes.sources) + "</aside>" : "");
   }
   function use(m) {
     var checks = (m.notes.check || []).slice(0, 4);
-    return lead("Approved directions and cautions belong together. Until the approved label arrives, here is what's confirmed, and what to look for.") +
+    return lead(m.p.label_source ? "Directions and cautions from the supplied final label. Read both together and follow the label on your own pack." : "Approved directions and cautions belong together. Here is what is confirmed, and what to look for.") +
       factRows([
         ["Recommended use", m.p.directions ? esc(m.ctx,m.p.directions) : COPY.directions, !m.p.directions],
         ["Preparation", m.p.preparation ? esc(m.ctx,m.p.preparation) : PENDING, !m.p.preparation],
@@ -266,9 +266,9 @@
     var pack = m.p.pack_size ? {label:esc(m.ctx,m.p.pack_size),status:"catalog"} : window.BCCDemo && window.BCCDemo.packInfo(m.id);
     if (Array.isArray(m.p.faqs)) return m.p.faqs.map(function(f){return [esc(m.ctx,f.question),esc(m.ctx,f.answer)];});
     return [
-      ["How much is in each serving?", "Amounts per serving come from the approved rear label, which hasn't been supplied yet. This page doesn't suggest a dose."],
+      ["How much is in each serving?", m.p.amount_per_serving ? esc(m.ctx, m.p.amount_per_serving) + " Serving size: " + esc(m.ctx, m.p.serving_size) + "." : "See the ingredient facts and directions on your pack."],
       ["How many " + (m.format ? m.format.toLowerCase() : "units") + " are in a pack?", m.p.pack_size ? esc(m.ctx,m.p.pack_size) : pack ? pack.description : "The pack quantity will come from the approved label. The count printed on the draft packaging image isn't confirmed."],
-      ["Where's the lot number on my pack?", "A guide will be added with the final rear label. Your lot number is different from your order number or the barcode."],
+      ["Where's the lot number on my pack?", "Look for “Batch No” on the rear label of your pack. It is different from your order number or the barcode."],
       ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved."],
     ];
   }

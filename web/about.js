@@ -58,7 +58,7 @@
     },
     values: [
       { id: "clarity", title: "Clarity", line: "Understandable product and ingredient details.",
-        practice: "Every product page separates what's confirmed now from what the approved rear label will add, in readable text rather than small print.",
+        practice: "Every product page brings label amounts, directions and cautions together in readable text. Missing evidence is identified separately.",
         links: [["/products/iron-bisglycinate#ingredients", "See a product's ingredient details"], ["/learn/reading-a-label", "How to read a label"]] },
       { id: "curiosity", title: "Curiosity", line: "Questions are welcome, and unfamiliar terms get explained.",
         practice: "Short guides and a glossary explain serving sizes, ingredient forms and lot numbers. Product pages take questions, answered by our support team after review.",
@@ -72,7 +72,7 @@
     ],
     collection: {
       lead: "We start with seven everyday supplements. Each is named for what's in it, and each has its own cap colour, so the range is easy to read from across the room.",
-      packaging: "Packaging is a draft. Amounts, directions and cautions will come from approved rear labels; until then, product pages show them as awaiting approval rather than guessing.",
+      packaging: "Product pages include amounts, pack sizes, directions and cautions transcribed from the supplied final labels. Studio bottle images illustrate the collection; lot-specific reports remain separate.",
     },
     gallery: [
       { src: "/web/media/premium/iron-bisglycinate-detail.webp", w: 1800, h: 2400, alt: "Close-up of the Iron Bisglycinate pack: the Body Café Co. wordmark beneath a rust-red cap", title: "The pack, up close", caption: "Draft packaging for Iron Bisglycinate: the wordmark and cap. A studio render of the pack design, not a photograph." },
@@ -319,4 +319,5 @@
   window.BCCAbout.enhance = enhance;
   window.BCCAbout.nav = NAV;
   window.BCCAbout.gallery = C.gallery;
+  window.BCCAbout.copy = C;
 })();

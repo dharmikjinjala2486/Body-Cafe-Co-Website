@@ -1,9 +1,11 @@
-# Connected Netlify build — Variant B
+# Connected Netlify build — Variant E
 
 `netlify.toml` builds `dist` with `python3 -B deploy/build_netlify.py` and supplies:
 
 - `BCC_HOSTED_MODE=connected`
 - `BCC_API_ORIGIN=https://dzsglgcagghinjevdbnw.supabase.co/functions/v1/operations`
+
+The connected storefront defaults to Variant E. Local, static and connected previews retain the A–H tabs and mobile design selector, including explicit design queries and saved preferences. Admin storefront and product links open E. An explicit production release ships only E.
 
 The first rewrite proxies `/api/*` to the operations Edge Function, before the SPA fallback. The static-preview API adapter is omitted. The public export excludes the local database, backend/SQL source, private uploads, credentials, customer records, Git metadata, Blender originals and QA captures. No Supabase service credential belongs in Netlify or browser assets.
 
@@ -14,5 +16,7 @@ Hosted ordering and customer sign-in remain paused until real payment/OTP provid
 ## Local verification
 
 The default local export stays a seeded static preview. Run `node deploy/test_hosted_preview.mjs` after `python3 -B deploy/build_netlify.py`. For a connected export, set the two environment variables above before building.
+
+Run `node deploy/test_storefront_theme.mjs` to check A–H preview selection, E default/production selection, admin links and admin-managed homepage images.
 
 Run `npm ci && npm test` in `deploy/supabase-tests` for the database/API suite. See `SUPABASE-DEPLOYMENT.md` for backend rules, verification and remaining launch work.

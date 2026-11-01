@@ -146,7 +146,7 @@
       (seven ? '<p class="st-lead">' + h(seven.body) + "</p>" : "") +
       '<ul class="st-formats">' + Object.keys(groups).map(function (k) { var c = groups[k].length; return "<li><strong>" + h(k) + "</strong><span>" + (c === 1 ? "One product: " : (words[c] || c).replace(/^./, function (x) { return x.toUpperCase(); }) + " products: ") + groups[k].map(function (p) { return '<a href="/products/' + p.id + '">' + h(p.name) + "</a>"; }).join(", ") + "</span></li>"; }).join("") + "</ul>" +
       '<div class="st-lineup">' + ctx.published.map(function (p) { return '<a href="/products/' + p.id + '" style="' + ctx.capStyle(p) + '"><img src="' + window.BCCBottleAssets.url(p.id) + '" alt="' + h(p.name) + ', draft packaging" width="' + ((ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720) + '" height="1000" loading="lazy" decoding="async"><span>' + h(p.name) + "</span></a>"; }).join("") + "</div>" +
-      '<p class="st-small">The bottles are draft packaging. Amounts, directions and cautions will come from the approved rear labels.</p>' + changed(f) + packaging(f) + timeline(f) +
+      '<p class="st-small">Studio bottle images show the collection. Read ingredient amounts, directions and cautions from the supplied final labels on each product page.</p>' + changed(f) + packaging(f) + timeline(f) +
       '<p class="st-more">' + arrow("/shop", "Meet the seven") + arrow("/learn", "Learn about each one") + "</p>"));
     if (has.lessons) out.push(chapter(v, "lessons", num(), "What the journey taught us", '<ol class="st-lessons">' + f.lessons.map(function (l) { return "<li><h3>" + h(l.title) + "</h3><p>" + h(l.text) + "</p>" + (l.link ? arrow(l.link[0], h(l.link[1])) : "") + "</li>"; }).join("") + "</ol>"));
     if (has.founder) out.push(chapter(v, "founder", num(), "A note from the founder",
@@ -310,6 +310,7 @@
   }
 
   window.BCCStory = window.BCCStory || {};
+  window.BCCStory.objects = OBJECTS;
   window.BCCStory.enhance = enhance;
   window.BCCStory.chapters = CH;
 })();

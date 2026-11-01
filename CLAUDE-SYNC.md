@@ -1,5 +1,13 @@
 # Claude frontend import
 
+## Shared-workspace release — 1 November 2026
+
+Inspected Claude Code's completed **Body Cafe creative website redesign** session (`local_17eeb58e-3a41-483f-b70c-ffadbf43df54`). Claude confirmed both Super Sevens rounds are complete, all site work is in this checkout, and it will leave the shared files unchanged while Codex handles the owner-authorized commit, push and Netlify deployment. This release includes the preceding Living Fan Deck implementation, supplied label content, E default/admin routing and preview-selection fixes, design research/handoffs, and all 168 turntable WebPs. No ZIP import is necessary.
+
+Independent release checks: all 100 Python domain/HTTP tests, all 56 top-level web/deploy JavaScript syntax checks, storefront-theme and content regressions, static export and hosted-preview boundary tests pass. Connected export confirms the Supabase proxy, referenced entrypoint assets, and all new E layers. Local databases and generated builds remain ignored. Historical A–H previews and the connected operational-preview configuration are retained; this is not an activation of payment or OTP providers.
+
+Claude's remaining limits: copy awaits owner review before commercial launch; turntables use draft GLB label artwork; physical devices and Safari/iOS interactions were not covered by its reported browser QA. The connected operations function currently has no reviews endpoint; the new Voices section handles that with its unavailable state. GitHub and Netlify histories identify the published commit and deployment.
+
 16 October 2026
 
 Imported at the user's request from [UI/frontend improvement](https://claude.ai/chat/8b60ad4b-e1d5-4250-aa27-5c7efab820f7) in the Body Cafe Co Website Claude project.
@@ -217,3 +225,19 @@ Claude Code is working directly in this Website checkout. Its latest completed r
 The release includes all current source, design handoffs, supplied screenshots, OTP implementation research (documentation only), and the independent layout audit with selected evidence. The nine audited layout findings remain open; this publication does not claim they were fixed. Existing static first product artwork, backend source and Netlify preview/ordering-pause configuration are preserved.
 
 Release checks: frontend JavaScript syntax, preview-content regression, all 32 domain/HTTP tests, static export and hosted-preview API/publish-boundary checks, and connected Netlify export passed. GitHub refs were fetched and both main and design/concepts matched baseline b1734be before committing. Git and Netlify histories provide the publication result.
+
+## Finalized Variant E full-site implementation handoff — 31 October 2026
+
+At the owner's explicit request, sent the complete implementation assignment through the open Claude desktop app to the existing local Code session **Variant B website improvements**, whose earlier B work is now historical. The visible session URL is `claude.ai/epitaxy/local_8eb41076-8cfe-48d8-82c5-469bdf73aab5`.
+
+Shared local source documents:
+
+- `design-review/variant-e-research-2026-10-31/CLAUDE-IMPLEMENTATION-BRIEF.md` — implementation scope, fixed identity/hero, all customer page requirements, seven product treatments, source/backend constraints, QA and delivery requirements.
+- `design-review/variant-e-research-2026-10-31/CREATIVE-RESEARCH.md` — complete creative research: 34 page briefs, 25 reference URLs and the 74-URL customer audit with companion JSON files.
+- `design-review/VARIANT-E-REVIEW-2026-10-31.md` — current integration/content/test baseline.
+
+The sent message explicitly preserves the headline “Seven supplements. One colour each.”, E's fonts/logo/palette/actual bottle identity, admin-managed catalogue/gallery behavior, existing backend/session/commerce hooks, current owner database and any concurrent admin/preview-tab fixes. It requests full local design implementation and verification; no commit, push, deployment or publication. No passwords, credential hashes or customer records were sent.
+
+Claude visibly acknowledged: “This is a large new assignment for Variant E across the whole site. I’ll start by reading the brief, the research and the review baseline in full, and checking the current state of the working tree.” Its task list covers reading, render-path audit, shared identity/Living Fan Deck, Home/Shop/all PDPs, brand/education pages, remaining service pages and full regression/handoff. A visible command to list the brief files and current Git state began. This confirms receipt and the start of work; it does not claim the design is complete or that all files have already been read.
+
+Acknowledgement screenshot: `.local/variant-e-claude-handoff/claude-received.png`. No source ZIP was required because Claude is operating in the same local checkout.

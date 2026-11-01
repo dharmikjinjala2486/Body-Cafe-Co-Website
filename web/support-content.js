@@ -15,8 +15,8 @@
   // Confirmed business and contact details. Everything null is still to be supplied by the business.
   var BUSINESS = {
     brand: "Body Café Co.",
-    legalName: null,
-    address: null,
+    legalName: "Bluebell Lifecare Pvt. Ltd. (marketed by on the supplied labels)",
+    address: "Ahmedabad, Gujarat, 380054, India (as printed on the supplied labels)",
     gstin: null,
     fssai: null,
     grievanceOfficer: null, // name, designation, email, phone (E-Commerce Rules 2020, rule 4)
@@ -24,8 +24,8 @@
     channels: {
       web: { live: true, label: "Contact form", detail: "Open a case here. You get a reference straight away and can follow it in your account." },
       email: { live: true, label: "Email", detail: "care@bodycafeco.com", href: "mailto:care@bodycafeco.com" },
-      whatsapp: { live: true, label: "WhatsApp", detail: "+91-8457125489", href: "https://wa.me/918457125489" },
-      phone: { live: true, label: "Phone", detail: "+91-8457125489", href: "tel:+918457125489" },
+      whatsapp: { live: true, label: "WhatsApp", detail: "+91-9274248974", href: "https://wa.me/919274248974" },
+      phone: { live: true, label: "Phone", detail: "+91-9274248974", href: "tel:+919274248974" },
     },
     hours: null, // e.g. "Mon–Sat, 10:00–18:00 IST"
     timezone: "India Standard Time (IST, UTC+5:30)",
@@ -146,7 +146,7 @@
       words: "unsubscribe marketing email whatsapp stop messages" },
     { id: "product-question", cat: "products", title: "I have a question about a product",
       answer: "Ask on the product page or contact us. We can’t give medical advice; please speak to a doctor about your own health.",
-      body: ["Label details such as serving size, directions and cautions will appear once the approved labels are published."],
+      body: ["Each product page shows the serving size, directions and cautions from the supplied label. The label on your own pack is the authority."],
       actions: [{ label: "Contact support", href: "/contact?topic=product", kind: "contact" }],
       words: "product question ingredient dose serving label" },
     { id: "safety", cat: "products", title: "I think a product is unsafe or made someone unwell",
@@ -286,7 +286,7 @@
 
   // Footer and page labels — identical across A–H.
   var LINKS = [
-    { group: "Customer care", items: [["Help Centre", "/help"], ["Contact", "/contact"]] },
+    { group: "Customer care", items: [["Help Centre", "/help"], ["Contact", "/contact"], ["care@bodycafeco.com", "mailto:care@bodycafeco.com"], ["+91-9274248974", "tel:+919274248974"]] },
     { group: "Orders & delivery", items: [["Shipping & Delivery", "/policies/shipping"], ["Returns & Refunds", "/policies/returns"], ["Cancellations", "/policies/cancellation"]] },
     { group: "Privacy & legal", items: [["Preferences", "/settings"], ["Privacy", "/policies/privacy"], ["Terms", "/policies/terms"]] },
   ];

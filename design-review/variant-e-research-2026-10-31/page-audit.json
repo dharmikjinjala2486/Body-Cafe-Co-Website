@@ -1,0 +1,784 @@
+{
+  "date": "2026-10-31",
+  "method": "Read-only browser heading and content audit. Account-protected routes observed signed out; payment/order populated layouts use labelled fixtures.",
+  "pages": [
+    {
+      "route": "/",
+      "headings": [
+        "Seven supplements. One colour each.",
+        "Open a colour.",
+        "Start with the detail that matters.",
+        "What you can check today.",
+        "Find the lot. Read its record.",
+        "Good questions welcome here."
+      ],
+      "title": "Seven everyday essentials — Body Café Co.",
+      "words": 665
+    },
+    {
+      "route": "/shop",
+      "headings": [
+        "Shop all seven",
+        "The collection",
+        "Capsules, softgels and chews",
+        "Standards and lot reports",
+        "Need a hand?"
+      ],
+      "title": "Shop all seven — Body Café Co.",
+      "words": 601
+    },
+    {
+      "route": "/bundles",
+      "headings": [
+        "Two labels, one page",
+        "A shortcut, not a regimen"
+      ],
+      "title": "Two labels, one page — Body Café Co.",
+      "words": 160
+    },
+    {
+      "route": "/bundles/daily-edit",
+      "headings": [
+        "The daily edit",
+        "In this edit"
+      ],
+      "title": "The daily edit — Body Café Co.",
+      "words": 72
+    },
+    {
+      "route": "/bundles/curious-edit",
+      "headings": [
+        "The curious edit",
+        "In this edit"
+      ],
+      "title": "The curious edit — Body Café Co.",
+      "words": 68
+    },
+    {
+      "route": "/search?q=iron",
+      "headings": [
+        "Results for “iron”",
+        "Products 1",
+        "Reading 2"
+      ],
+      "title": "Results for “iron” — Body Café Co.",
+      "words": 92
+    },
+    {
+      "route": "/about",
+      "headings": [
+        "A supplement shop that shows its working",
+        "Why we exist",
+        "Why “Body Café Co.”?",
+        "The people behind the brand",
+        "Values in practice",
+        "Our approach to the collection",
+        "Behind the scenes",
+        "Keep the conversation going"
+      ],
+      "title": "A supplement shop that shows its working — Body Café Co.",
+      "words": 913
+    },
+    {
+      "route": "/story",
+      "headings": [
+        "Curiosity is a good place to start",
+        "The opening moment",
+        "The question we kept asking",
+        "Becoming Body Café Co.",
+        "Making the first collection",
+        "The next chapter"
+      ],
+      "title": "Curiosity is a good place to start — Body Café Co.",
+      "words": 746
+    },
+    {
+      "route": "/standards",
+      "headings": [
+        "The detail behind the bottle.",
+        "Our standards, at a glance",
+        "What goes into the formula",
+        "Where ingredients come from",
+        "How quality is checked",
+        "The evidence behind the standard",
+        "Follow your lot",
+        "How we communicate responsibly",
+        "Good questions about our standards",
+        "A clear next step"
+      ],
+      "title": "The detail behind the bottle. — Body Café Co.",
+      "words": 2010
+    },
+    {
+      "route": "/learn",
+      "headings": [
+        "A little more knowing.",
+        "Start here",
+        "Explore all seven products",
+        "The supplement essentials",
+        "Look beyond the front label",
+        "Understand the evidence",
+        "Inside Body Café Co.",
+        "Good questions, clearly answered",
+        "Keep exploring"
+      ],
+      "title": "A little more knowing. — Body Café Co.",
+      "words": 1455
+    },
+    {
+      "route": "/products/iron-bisglycinate",
+      "headings": [
+        "Iron Bisglycinate",
+        "Overview",
+        "Ingredients and product facts",
+        "How to use and cautions",
+        "Quality, sourcing and lot report",
+        "Customer reviews",
+        "Questions and answers",
+        "Other products to explore"
+      ],
+      "title": "Iron Bisglycinate — Body Café Co.",
+      "words": 1009
+    },
+    {
+      "route": "/products/l-theanine",
+      "headings": [
+        "L-Theanine",
+        "Overview",
+        "Ingredients and product facts",
+        "How to use and cautions",
+        "Quality, sourcing and lot report",
+        "Customer reviews",
+        "Questions and answers",
+        "Other products to explore"
+      ],
+      "title": "L-Theanine — Body Café Co.",
+      "words": 927
+    },
+    {
+      "route": "/products/vitamin-d3-k2",
+      "headings": [
+        "Vitamin D3 + K2",
+        "Overview",
+        "Ingredients and product facts",
+        "How to use and cautions",
+        "Quality, sourcing and lot report",
+        "Customer reviews",
+        "Questions and answers",
+        "Other products to explore"
+      ],
+      "title": "Vitamin D3 + K2 — Body Café Co.",
+      "words": 1105
+    },
+    {
+      "route": "/products/omega-3-fish-oil",
+      "headings": [
+        "Omega-3 Fish Oil",
+        "Overview",
+        "Ingredients and product facts",
+        "How to use and cautions",
+        "Quality, sourcing and lot report",
+        "Customer reviews",
+        "Questions and answers",
+        "Other products to explore"
+      ],
+      "title": "Omega-3 Fish Oil — Body Café Co.",
+      "words": 1064
+    },
+    {
+      "route": "/products/myo-d-chiro-inositol",
+      "headings": [
+        "Myo & D-Chiro Inositol",
+        "Overview",
+        "Ingredients and product facts",
+        "How to use and cautions",
+        "Quality, sourcing and lot report",
+        "Customer reviews",
+        "Questions and answers",
+        "Other products to explore"
+      ],
+      "title": "Myo & D-Chiro Inositol — Body Café Co.",
+      "words": 953
+    },
+    {
+      "route": "/products/creatine-chews",
+      "headings": [
+        "Creatine Chews",
+        "Overview",
+        "Ingredients and product facts",
+        "How to use and cautions",
+        "Quality, sourcing and lot report",
+        "Customer reviews",
+        "Questions and answers",
+        "Other products to explore"
+      ],
+      "title": "Creatine Chews — Body Café Co.",
+      "words": 1044
+    },
+    {
+      "route": "/products/psyllium-husk",
+      "headings": [
+        "Psyllium Husk",
+        "Overview",
+        "Ingredients and product facts",
+        "How to use and cautions",
+        "Quality, sourcing and lot report",
+        "Customer reviews",
+        "Questions and answers",
+        "Other products to explore"
+      ],
+      "title": "Psyllium Husk — Body Café Co.",
+      "words": 980
+    },
+    {
+      "route": "/learn/iron-bisglycinate",
+      "headings": [
+        "Iron Bisglycinate",
+        "In a minute",
+        "What it is",
+        "Names, forms and terms",
+        "What the research says",
+        "Inside our product",
+        "How to read this label",
+        "Usage, cautions and storage",
+        "Quality, sourcing and lot records",
+        "Common questions",
+        "Sources and versions",
+        "Keep going",
+        "Was this explanation clear?",
+        "Related guides",
+        "Iron Bisglycinate"
+      ],
+      "title": "Iron Bisglycinate — Body Café Co.",
+      "words": 1049
+    },
+    {
+      "route": "/learn/l-theanine",
+      "headings": [
+        "L-Theanine",
+        "In a minute",
+        "What it is",
+        "Names, forms and terms",
+        "What the research says",
+        "Inside our product",
+        "How to read this label",
+        "Usage, cautions and storage",
+        "Quality, sourcing and lot records",
+        "Common questions",
+        "Sources and versions",
+        "Keep going",
+        "Was this explanation clear?",
+        "Related guides",
+        "L-Theanine"
+      ],
+      "title": "L-Theanine — Body Café Co.",
+      "words": 935
+    },
+    {
+      "route": "/learn/vitamin-d3-k2",
+      "headings": [
+        "Vitamin D3 + K2",
+        "In a minute",
+        "What it is",
+        "Names, forms and terms",
+        "What the research says",
+        "Inside our product",
+        "How to read this label",
+        "Usage, cautions and storage",
+        "Quality, sourcing and lot records",
+        "Common questions",
+        "Sources and versions",
+        "Keep going",
+        "Was this explanation clear?",
+        "Related guides",
+        "Vitamin D3 + K2"
+      ],
+      "title": "Vitamin D3 + K2 — Body Café Co.",
+      "words": 1122
+    },
+    {
+      "route": "/learn/omega-3-fish-oil",
+      "headings": [
+        "Omega-3 Fish Oil",
+        "In a minute",
+        "What it is",
+        "Names, forms and terms",
+        "What the research says",
+        "Inside our product",
+        "How to read this label",
+        "Usage, cautions and storage",
+        "Quality, sourcing and lot records",
+        "Common questions",
+        "Sources and versions",
+        "Keep going",
+        "Was this explanation clear?",
+        "Related guides",
+        "Omega-3 Fish Oil"
+      ],
+      "title": "Omega-3 Fish Oil — Body Café Co.",
+      "words": 976
+    },
+    {
+      "route": "/learn/myo-d-chiro-inositol",
+      "headings": [
+        "Myo & D-Chiro Inositol",
+        "In a minute",
+        "What it is",
+        "Names, forms and terms",
+        "What the research says",
+        "Inside our product",
+        "How to read this label",
+        "Usage, cautions and storage",
+        "Quality, sourcing and lot records",
+        "Common questions",
+        "Sources and versions",
+        "Keep going",
+        "Was this explanation clear?",
+        "Related guides",
+        "Myo & D-Chiro Inositol"
+      ],
+      "title": "Myo & D-Chiro Inositol — Body Café Co.",
+      "words": 912
+    },
+    {
+      "route": "/learn/creatine-chews",
+      "headings": [
+        "Creatine Chews",
+        "In a minute",
+        "What it is",
+        "Names, forms and terms",
+        "What the research says",
+        "Inside our product",
+        "How to read this label",
+        "Usage, cautions and storage",
+        "Quality, sourcing and lot records",
+        "Common questions",
+        "Sources and versions",
+        "Keep going",
+        "Was this explanation clear?",
+        "Related guides",
+        "Creatine Chews"
+      ],
+      "title": "Creatine Chews — Body Café Co.",
+      "words": 969
+    },
+    {
+      "route": "/learn/psyllium-husk",
+      "headings": [
+        "Psyllium Husk",
+        "In a minute",
+        "What it is",
+        "Names, forms and terms",
+        "What the research says",
+        "Inside our product",
+        "How to read this label",
+        "Usage, cautions and storage",
+        "Quality, sourcing and lot records",
+        "Common questions",
+        "Sources and versions",
+        "Keep going",
+        "Was this explanation clear?",
+        "Related guides",
+        "Psyllium Husk"
+      ],
+      "title": "Psyllium Husk — Body Café Co.",
+      "words": 961
+    },
+    {
+      "route": "/learn/reading-a-label",
+      "headings": [
+        "Read a label with confidence",
+        "In a minute",
+        "Start with the serving",
+        "Read the full ingredient name",
+        "The statements an Indian health supplement label carries",
+        "Find directions, warnings and allergens",
+        "Keep the lot number",
+        "Worked example",
+        "Checklist",
+        "Sources and versions",
+        "Was this explanation clear?",
+        "Related guides",
+        "Read a label with confidence"
+      ],
+      "title": "Read a label with confidence — Body Café Co.",
+      "words": 913
+    },
+    {
+      "route": "/learn/understanding-reports",
+      "headings": [
+        "What a lot report shows",
+        "In a minute",
+        "A product is not a lot",
+        "What a report should identify",
+        "Reading a result",
+        "What a report can't prove",
+        "What you may see on our lookup",
+        "Worked example",
+        "Checklist",
+        "Sources and versions",
+        "Was this explanation clear?",
+        "Related guides",
+        "What a lot report shows"
+      ],
+      "title": "What a lot report shows — Body Café Co.",
+      "words": 721
+    },
+    {
+      "route": "/learn/ingredient-forms",
+      "headings": [
+        "Why ingredient forms matter",
+        "In a minute",
+        "Compound weight versus active amount",
+        "Same nutrient, different units",
+        "Named forms",
+        "Oils: the total and the actives",
+        "Compare like with like",
+        "Worked example",
+        "Checklist",
+        "Sources and versions",
+        "Was this explanation clear?",
+        "Related guides",
+        "Why ingredient forms matter"
+      ],
+      "title": "Why ingredient forms matter — Body Café Co.",
+      "words": 778
+    },
+    {
+      "route": "/learn/serving-sizes",
+      "headings": [
+        "Serving sizes, amounts and units",
+        "In a minute",
+        "The serving comes first",
+        "Same unit, then compare",
+        "Servings per pack",
+        "Percentages of a daily allowance",
+        "Chews, softgels and capsules",
+        "Worked example",
+        "Checklist",
+        "Sources and versions",
+        "Was this explanation clear?",
+        "Related guides",
+        "Serving sizes, amounts and units"
+      ],
+      "title": "Serving sizes, amounts and units — Body Café Co.",
+      "words": 698
+    },
+    {
+      "route": "/learn/understanding-evidence",
+      "headings": [
+        "Understanding evidence",
+        "In a minute",
+        "Four kinds of evidence",
+        "How studies differ",
+        "Ingredient research isn't product proof",
+        "Testing and certification",
+        "What labels can't claim",
+        "Worked example",
+        "Checklist",
+        "Sources and versions",
+        "Was this explanation clear?",
+        "Related guides",
+        "Understanding evidence"
+      ],
+      "title": "Understanding evidence — Body Café Co.",
+      "words": 723
+    },
+    {
+      "route": "/reports",
+      "headings": [
+        "Your batch. Its record.",
+        "02 Find your lot report",
+        "The matching record",
+        "Understand this report",
+        "Browse published lots",
+        "Questions or a missing report?"
+      ],
+      "title": "Your batch. Its record. — Body Café Co.",
+      "words": 780
+    },
+    {
+      "route": "/cart",
+      "headings": [
+        "Your bag",
+        "Your bag is empty"
+      ],
+      "title": "Your bag — Body Café Co.",
+      "words": 22
+    },
+    {
+      "route": "/checkout?state=sample",
+      "headings": [
+        "Checkout",
+        "01 Delivery",
+        "02 Payment",
+        "03 Confirm"
+      ],
+      "title": "Checkout — Body Café Co.",
+      "words": 337
+    },
+    {
+      "route": "/payment/SAMPLE-1042?state=failed",
+      "headings": [
+        "That payment didn't go through"
+      ],
+      "title": "That payment didn't go through — Body Café Co.",
+      "words": 91
+    },
+    {
+      "route": "/orders/SAMPLE-1042?state=shipped",
+      "headings": [
+        "Your order is on its way",
+        "In this order"
+      ],
+      "title": "Your order is on its way — Body Café Co.",
+      "words": 118
+    },
+    {
+      "route": "/sign-in",
+      "headings": [
+        "Sign in or create your account"
+      ],
+      "title": "Sign in or create your account — Body Café Co.",
+      "words": 94
+    },
+    {
+      "route": "/account",
+      "headings": [
+        "Your account",
+        "Sign in or create your account",
+        "No active orders",
+        "Lot reports"
+      ],
+      "title": "Your account — Body Café Co.",
+      "words": 164
+    },
+    {
+      "route": "/account/orders",
+      "headings": [
+        "Your account",
+        "Sign in or create your account",
+        "No orders yet"
+      ],
+      "title": "Your account — Body Café Co.",
+      "words": 145
+    },
+    {
+      "route": "/account/addresses",
+      "headings": [
+        "Your account",
+        "Sign in or create your account",
+        "No active orders",
+        "Lot reports"
+      ],
+      "title": "Your account — Body Café Co.",
+      "words": 164
+    },
+    {
+      "route": "/account/support",
+      "headings": [
+        "Your account",
+        "Sign in or create your account",
+        "Your support cases"
+      ],
+      "title": "Your account — Body Café Co.",
+      "words": 150
+    },
+    {
+      "route": "/account/reviews",
+      "headings": [
+        "Your account",
+        "Sign in or create your account",
+        "No active orders",
+        "Lot reports"
+      ],
+      "title": "Your account — Body Café Co.",
+      "words": 164
+    },
+    {
+      "route": "/account/profile",
+      "headings": [
+        "Your account",
+        "Sign in or create your account",
+        "No active orders",
+        "Lot reports"
+      ],
+      "title": "Your account — Body Café Co.",
+      "words": 164
+    },
+    {
+      "route": "/account/preferences",
+      "headings": [
+        "Your account",
+        "Sign in or create your account",
+        "Privacy & communication preferences",
+        "Necessary",
+        "This browser",
+        "Advertising and personalisation",
+        "Marketing messages"
+      ],
+      "title": "Your account — Body Café Co.",
+      "words": 289
+    },
+    {
+      "route": "/help",
+      "headings": [
+        "How can we help?",
+        "Quick actions",
+        "Browse by topic",
+        "Common questions",
+        "Policies",
+        "Still need help?"
+      ],
+      "title": "How can we help? — Body Café Co.",
+      "words": 206
+    },
+    {
+      "route": "/contact",
+      "headings": [
+        "Contact support",
+        "Ways to reach us",
+        "Hours and replies",
+        "Business details",
+        "Complaints and grievances"
+      ],
+      "title": "Contact support — Body Café Co.",
+      "words": 322
+    },
+    {
+      "route": "/settings",
+      "headings": [
+        "Privacy & communication preferences",
+        "Necessary",
+        "This browser",
+        "Advertising and personalisation",
+        "Marketing messages"
+      ],
+      "title": "Privacy & communication preferences — Body Café Co.",
+      "words": 182
+    },
+    {
+      "route": "/policies/shipping",
+      "headings": [
+        "Shipping & Delivery",
+        "On this page",
+        "Other policies",
+        "In short",
+        "Where we deliver #",
+        "When orders are sent #",
+        "Delivery charges #",
+        "Delivery estimates #",
+        "Tracking #",
+        "Changing the delivery address #",
+        "Failed delivery and return to us #",
+        "Late, lost, damaged or incomplete parcels #",
+        "Cash on delivery #",
+        "Help with a delivery #",
+        "Still need help?"
+      ],
+      "title": "Shipping & Delivery — Body Café Co.",
+      "words": 540
+    },
+    {
+      "route": "/policies/returns",
+      "headings": [
+        "Returns & Refunds",
+        "On this page",
+        "Other policies",
+        "In short",
+        "Damaged, wrong, missing, faulty or expired items #",
+        "Change of mind #",
+        "Time limits #",
+        "Condition of items #",
+        "How to ask #",
+        "Photos and evidence #",
+        "Sending items back #",
+        "Refunds #",
+        "Delivery charges, discounts and part-returns #",
+        "Product safety #",
+        "Your rights #",
+        "Still need help?"
+      ],
+      "title": "Returns & Refunds — Body Café Co.",
+      "words": 563
+    },
+    {
+      "route": "/policies/cancellation",
+      "headings": [
+        "Cancellations",
+        "On this page",
+        "Other policies",
+        "In short",
+        "Before dispatch #",
+        "After dispatch #",
+        "Cancelling part of an order #",
+        "Charges #",
+        "Payment, discounts and refunds #",
+        "If we cancel #",
+        "Still need help?"
+      ],
+      "title": "Cancellations — Body Café Co.",
+      "words": 337
+    },
+    {
+      "route": "/policies/privacy",
+      "headings": [
+        "Privacy",
+        "On this page",
+        "Other policies",
+        "In short",
+        "Who we are #",
+        "What we collect #",
+        "Where it comes from #",
+        "Why we use it #",
+        "Who we share it with #",
+        "Cookies and similar technologies #",
+        "How long we keep it #",
+        "Your choices and rights #",
+        "How we check it’s you #",
+        "Children #",
+        "Security and storage #",
+        "The law we follow #",
+        "Privacy contact and grievances #",
+        "Changes to this policy #",
+        "Still need help?"
+      ],
+      "title": "Privacy — Body Café Co.",
+      "words": 983
+    },
+    {
+      "route": "/policies/terms",
+      "headings": [
+        "Terms",
+        "On this page",
+        "Other policies",
+        "In short",
+        "Who we are #",
+        "What these terms cover #",
+        "Your account #",
+        "Product information and availability #",
+        "Ordering #",
+        "Prices, tax and payment #",
+        "Payment methods #",
+        "Shipping, returns and cancellations #",
+        "Using our products #",
+        "Reviews and what you submit #",
+        "Our content #",
+        "Our responsibility to you #",
+        "Complaints and disputes #",
+        "Changes to these terms #",
+        "Still need help?"
+      ],
+      "title": "Terms — Body Café Co.",
+      "words": 820
+    },
+    {
+      "route": "/not-a-page",
+      "headings": [
+        "Page not found"
+      ],
+      "title": "Page not found — Body Café Co.",
+      "words": 26
+    }
+  ]
+}

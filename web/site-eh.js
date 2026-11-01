@@ -22,10 +22,12 @@
   function inView(p) { return String(p.ingredients || "").split(";")[0]; }
   function front(ctx, p, o) {
     o = o || {};
-    return '<img class="' + (o.cls || "x-bottle") + '" src="/web/media/' + p.id + '.webp" alt="' + (o.alt === "" ? "" : ctx.escape(p.name) + " bottle, draft packaging") + '" width="' + ((ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720) + '" height="1000" decoding="async" ' + (o.eager ? 'fetchpriority="high"' : 'loading="lazy"') + ">";
+    var src = window.BCCBottleAssets.url(p.id);
+    return '<img class="' + (o.cls || "x-bottle") + '" src="' + ctx.escape(src) + '" alt="' + (o.alt === "" ? "" : ctx.escape(p.name) + " bottle, draft packaging") + '" width="' + ((ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720) + '" height="1000" decoding="async" ' + (o.eager ? 'fetchpriority="high"' : 'loading="lazy"') + ">";
   }
   function render(ctx, p, view, o) {
     o = o || {};
+    if (!Object.prototype.hasOwnProperty.call(ctx.bottleWidth || {}, p.id)) return front(ctx, p, o);
     var file = view === "cap" ? p.id + "-cap" : p.id + "-three-quarter";
     var dims = view === "cap" ? ' width="400" height="400"' : ' width="' + (/iron|theanine|vitamin/.test(p.id) ? 629 : 517) + '" height="1000"';
     return '<img class="' + (o.cls || "x-render") + '" src="/web/media/renders/' + file + '.webp" alt="' + (o.alt === "" ? "" : ctx.escape(p.name) + (view === "cap" ? " cap, seen from above" : " bottle, three-quarter view, draft packaging")) + '"' + dims + ' decoding="async" ' + (o.eager ? 'fetchpriority="high"' : 'loading="lazy"') + ">";
@@ -72,14 +74,14 @@
 
   /* ---------- Homepage content (shared facts for the seven sections) ---------- */
   var HOME = {
-    hero: "The ingredient in view, what the approved label will add, and the record for a particular lot.",
+    hero: "The label facts in readable text, and the record for a particular lot.",
     curiosity: "Every product has one detail worth checking first. Pick a bottle and see what to look for on its label.",
     trust: S.copy.standards.lede,
     voices: "There are no published customer reviews yet.",
     voicesBody: REVIEWS,
     voicesSmall: "Until then there are no sample quotes, star ratings or testimonials on this site.",
     faq: [
-      ["Where are the full product details?", "Each product page separates what's confirmed now from the amounts, directions, cautions and allergens that will come from the approved rear label."],
+      ["Where are the full product details?", "Each product page includes ingredient amounts, serving and pack sizes, directions, allergens and cautions from the supplied final label artwork. Check your own pack for its lot number and expiry date."],
       ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved."],
       ["When will my order arrive?", "Delivery dates depend on courier setup that isn't connected yet, so the preview doesn't promise a date. The pincode check confirms the format only."],
       ["How do returns work?", "Return eligibility, timing and remedies are still being approved. The working policy explains what's undecided; the preview doesn't promise a return window."],

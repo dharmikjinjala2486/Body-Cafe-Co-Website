@@ -45,7 +45,7 @@
       '<div><h2>Shop</h2><a href="/shop">All seven</a>' + ctx.published.map(function (p) { return '<a href="/products/' + p.id + '"><i style="background:' + p.color + '" aria-hidden="true"></i>' + ctx.escape(p.name) + "</a>"; }).join("") + "</div>" +
       '<div><h2>Read</h2><a href="/about">About</a><a href="/story">Story</a><a href="/standards">Standards</a><a href="/learn">Learn</a><a href="/reports">Lot reports</a></div>' +
       S.careGroups().map(function (g) { return '<div><h2>' + g.group + '</h2>' + g.items.map(function (x) { return '<a href="' + x[1] + '">' + x[0] + '</a>'; }).join('') + '</div>'; }).join('') + "</div>" +
-      '<p class="e-foot-legal"><span>© ' + new Date().getFullYear() + " Body Café Co.</span><span>Preview store. Prices are samples, packaging is a draft and lot reports are demonstration records.</span><a href=\"/preview/states\">Design states</a></p></footer></div>";
+      '<p class="e-foot-legal"><span>© ' + new Date().getFullYear() + " Body Café Co.</span><span>Review preview. Product facts come from supplied labels; prices and trading policies await launch approval. Lot records are demonstrations.</span><a href=\"/preview/states\">Design states</a></p></footer></div>";
   }
 
   /* ---------- Home: seven sections ---------- */
@@ -55,7 +55,7 @@
     var first = ctx.product("iron-bisglycinate") || list[0];
     return (
       /* 1 · Hero */
-      '<section class="e-hero" data-home-section="hero" aria-labelledby="e-hero-t"><div class="e-hero-copy"><p class="x-kicker">01 — 07 · Seven daily supplements</p><h1 id="e-hero-t">Seven supplements. <span>One colour each.</span></h1><p class="x-lede">' + H.hero + '</p><div class="e-actions"><a class="x-btn" href="/shop"><span>Shop all seven</span></a><a class="x-link" href="/reports">Find a lot report</a></div><p class="x-small">Prices are samples. Packaging shown is a draft.</p></div>' +
+      '<section class="e-hero" data-home-section="hero" aria-labelledby="e-hero-t"><div class="e-hero-copy"><p class="x-kicker">01 — 07 · Seven daily supplements</p><h1 id="e-hero-t">Seven supplements. <span>One colour each.</span></h1><p class="x-lede">' + 'Seven supplements, clear ingredient amounts and directions from the supplied labels. Choose a cap colour to explore the details.' + '</p><div class="e-actions"><a class="x-btn" href="/shop"><span>Shop all seven</span></a><a class="x-link" href="/reports">Find a lot report</a></div><p class="x-small">Review preview · Current project prices. Ordering is not live.</p></div>' +
       '<ol class="e-tray" aria-label="The seven, by cap colour">' + list.map(function (p) { return '<li style="' + ctx.capStyle(p) + '"><a href="/products/' + p.id + '"><span class="e-tray-cap">' + h.render(ctx, p, "cap", { alt: "", eager: true }) + '</span><span class="e-tray-no">' + h.no(ctx, p) + "</span>" + name(ctx, p) + "</a></li>"; }).join("") + "</ol></section>" +
 
       /* 2 · Meet the collection: the fan deck */

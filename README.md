@@ -1,3 +1,11 @@
+# The Super Sevens on Variant E — 1 November 2026
+
+Variant E now carries the Super Sevens system. Each of the seven products owns one segment of a seven-segment digit (catalogue order a–g), and the segments also write numbers across the site. It adds a light-up hero, a scroll-scrubbed roll call with Blender turntables, a serving pour, flip-and-save cards, a new `/super-sevens` page, and touches across product pages, Shop, Bag, Reports, About, Story, Learn, Standards and 404. Presentation only; backend, records and commerce hooks are unchanged. See [implementation and checks](design-review/SUPER-SEVENS-IMPLEMENTATION-2026-11-01.md). Not committed or published.
+
+# Finalized storefront — Variant E · 31 October 2026
+
+Variant E (Fan Deck) is the default storefront. Local, static and connected previews keep all A–H tabs and the mobile selector; explicit production builds use E only. The operations portal opens E for storefront and published product links. The existing Supabase API, product records, stock and admin accounts are shared and unchanged. Payments and OTP remain unconfigured. All seven product pages now include facts from the supplied final labels; the design-only fixture adapter is removed. See [review build and checks](design-review/VARIANT-E-REVIEW-2026-10-31.md). Earlier release notes below are historical.
+
 # Variant B refinement — 30 October 2026
 
 Claude's Curious Everyday update is integrated: revised hero, interactive Curiosity Cabinet, clearer product cards, consistent pack information and B-specific motion. Every existing product retains its unchanged static first artwork; later gallery images remain admin-managed. See [implementation and remaining work](design-review/VARIANT-B-IMPLEMENTATION-2026-10-30.md) and [sync verification](design-review/VARIANT-B-SYNC-2026-10-30.md).

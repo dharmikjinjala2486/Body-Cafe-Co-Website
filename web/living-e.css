@@ -1,0 +1,292 @@
+/* ==========================================================================
+   Body Café Co. — Variant E · The Living Fan Deck
+   E's own world, refined: white and cream surfaces, ink text, Aileron for reading, LEMON MILK for product names,
+   the seven cap colours as product identity only. The unit is the bottle: a cap band over a cream body.
+   Scoped to .eh-e (E's chrome) so other variants and operations are unaffected.
+   ========================================================================== */
+.eh-e {
+  --cream: #f6f3ec; --cream-2: #efebe2; --rule: rgb(45 41 38 / 0.14); --rule-strong: rgb(45 41 38 / 0.32);
+  --ez-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.eh-e .ez-k { margin: 0 0 14px; font-family: "Lemon Milk", "Aileron", sans-serif; font-size: 10.5px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; }
+.eh-e .ez-small { margin: 14px 0 0; font-size: 13px; color: var(--muted); }
+.eh-e .ez-sec-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 34ch); gap: 12px 48px; align-items: end; margin: 0 0 clamp(28px, 4vw, 48px); }
+.eh-e .ez-sec-head .ez-k { grid-column: 1 / -1; margin: 0; }
+.eh-e .ez-sec-head h2 { margin: 0; font-size: clamp(36px, 4.4vw, 64px); font-weight: 300; letter-spacing: -0.035em; line-height: 1; }
+.eh-e .ez-sec-head p { margin: 0; color: var(--muted); }
+.eh-e .ez-sec-head > .x-link { justify-self: start; }
+.eh-e .ez-sec-foot { margin: 28px 0 0; }
+.eh-e .ez-chip-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--cap); box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.18); vertical-align: 0; margin-right: 8px; }
+.eh-e .ez-status { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.eh-e .ez-status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid currentColor; }
+.eh-e .ez-status[data-state="in"]::before { background: currentColor; }
+.eh-e .ez-status[data-state="demo"]::before { border-style: dashed; }
+.eh-e .ez-avail { display: inline-flex; align-items: center; gap: 7px; margin: 0; font-size: 13px; }
+.eh-e .ez-avail::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.eh-e .ez-avail[data-state="out"]::before { background: transparent; border: 1.5px solid currentColor; }
+
+/* ---------- 1. Hero: the Living Fan Deck ---------- */
+.eh-e .ez-hero { display: grid; grid-template-columns: minmax(0, 5.2fr) minmax(0, 6.8fr); gap: clamp(24px, 4vw, 72px); align-items: center; padding: clamp(20px, 3.4vh, 48px) var(--pad) clamp(32px, 5vh, 64px); }
+.eh-e .ez-hero h1 { margin: 0; font-size: clamp(42px, 4.5vw, 76px); font-weight: 300; letter-spacing: -0.04em; line-height: 0.98; }
+.eh-e .ez-hero h1 span { display: block; }
+.eh-e .ez-lede { max-width: 36ch; margin: 22px 0 0; font-size: clamp(16px, 1.25vw, 19px); line-height: 1.5; color: var(--muted); }
+.eh-e .ez-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 28px; }
+
+.eh-e .ez-deck { display: grid; grid-template-rows: auto auto auto; gap: 18px; min-width: 0; }
+.eh-e .ez-fan { --bw: clamp(70px, 8vw, 118px); --gap: clamp(40px, 5.4vw, 80px); position: relative; height: clamp(240px, 37vh, 400px); overflow: visible; }
+.eh-e .ez-fan-shelf { position: absolute; left: 4%; right: 4%; bottom: 6%; height: 1.5px; background: var(--rule-strong); }
+.eh-e .ez-fan-b { position: absolute; left: 50%; bottom: 6%; width: var(--bw); transform-origin: 50% 160%; transform: translateX(calc(-50% + var(--o) * var(--gap))) rotate(calc(var(--o) * 4.5deg)); transition: transform 0.5s var(--ez-ease), filter 0.5s var(--ez-ease); cursor: pointer; filter: drop-shadow(0 18px 18px rgb(45 41 38 / 0.12)); }
+.eh-e .ez-fan-b img { display: block; width: 100%; height: auto; }
+.eh-e .ez-fan-b[data-on] { z-index: 20 !important; transform: translateX(calc(-50% + var(--o) * var(--gap))) translateY(-9%) rotate(calc(var(--o) * 2deg)) scale(1.1); filter: drop-shadow(0 28px 26px rgb(45 41 38 / 0.22)); }
+@media (prefers-reduced-motion: no-preference) {
+  .eh-e .ez-fan-b { animation: ez-rise 0.85s var(--ez-ease) both; animation-delay: calc(80ms + var(--i) * 45ms); }
+}
+@keyframes ez-rise { from { transform: translateX(calc(-50% + var(--o) * var(--gap) * 0.35)) translateY(34%) rotate(0deg) scale(0.9); } }
+
+.eh-e .ez-info { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 18px; min-height: 132px; padding: 14px 0 0; border-top: 1.5px solid var(--ink); }
+.eh-e .ez-swatch { background: var(--cap); border-radius: 2px; }
+.eh-e .ez-info-in { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 28px; align-items: start; }
+.eh-e .ez-info-k { grid-column: 1; display: flex; gap: 14px; margin: 0; font-family: "Lemon Milk", sans-serif; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.eh-e .ez-info-name { grid-column: 1; margin: 0; font-size: clamp(22px, 2vw, 30px); }
+.eh-e .ez-info-fact { grid-column: 1; margin: 0; font-size: 16px; }
+.eh-e .ez-info-buy { grid-column: 2; grid-row: 1 / span 3; display: grid; justify-items: end; gap: 8px; text-align: right; }
+.eh-e .ez-info-price { margin: 0; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.eh-e .ez-info-price small { font-size: 12px; font-weight: 400; color: var(--muted); }
+.eh-e .ez-info .ez-add { border: 0; background: none; padding: 0; font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; color: inherit; }
+.eh-e .ez-info .ez-add:disabled { opacity: 0.5; cursor: not-allowed; text-decoration: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .eh-e .ez-info.is-swap .ez-info-in { animation: ez-in 0.32s var(--ez-ease); }
+}
+@keyframes ez-in { from { transform: translate3d(0, 6px, 0); opacity: 0.35; } }
+
+.eh-e .ez-caps { display: grid; grid-template-columns: repeat(var(--n, 7), minmax(0, 1fr)); gap: 8px; }
+.eh-e .ez-cap { display: grid; justify-items: center; align-content: start; gap: 6px; padding: 6px 2px 4px; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; text-align: center; border-radius: 4px; }
+.eh-e .ez-cap-img { width: clamp(40px, 4vw, 58px); height: auto; aspect-ratio: 1; border-radius: 50%; display: block; transition: transform 0.25s var(--ez-ease), box-shadow 0.25s; }
+.eh-e .ez-capdot { display: block; }
+.eh-e .ez-cap-no { font-size: 11px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.eh-e .ez-cap-name { font-family: "Lemon Milk", sans-serif; font-size: 10.5px; line-height: 1.25; letter-spacing: 0.02em; text-transform: uppercase; overflow-wrap: anywhere; }
+.eh-e .ez-cap[aria-pressed="true"] .ez-cap-img { box-shadow: 0 0 0 3px #fff, 0 0 0 4.5px var(--ink); transform: translateY(-2px); }
+.eh-e .ez-cap[aria-pressed="true"] .ez-cap-name { font-weight: 700; }
+.eh-e .ez-cap:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ---------- 2. The collection shelf ---------- */
+.eh-e .ez-shelf, .eh-e .ez-details, .eh-e .ez-evidence, .eh-e .ez-lot, .eh-e .ez-learn, .eh-e .ez-faq { padding: clamp(56px, 8vw, 112px) var(--pad); border-top: 1px solid var(--rule); }
+.eh-e .ez-shelf-list { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ez-unitcard { display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 6px; min-width: 0; }
+.eh-e .ez-unitcard-media { display: grid; place-items: end center; aspect-ratio: 3 / 4; padding: 14% 12% 8%; background: var(--cream); border-top: 8px solid var(--cap); }
+.eh-e .ez-unitcard-media img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.4s var(--ez-ease); }
+.eh-e .ez-unitcard-media:hover img { transform: translateY(-4px); }
+.eh-e .ez-unitcard-k { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
+.eh-e .ez-unitcard h3 { margin: 0; font-size: 15px; }
+.eh-e .ez-unitcard h3 a { text-decoration: none; }
+.eh-e .ez-unitcard h3 a:hover { text-decoration: underline; }
+.eh-e .ez-unitcard-fact { margin: 0; font-size: 13px; color: var(--muted); }
+.eh-e .ez-unitcard-foot { display: flex; align-items: end; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.eh-e .ez-unitcard-price { display: grid; margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.eh-e .ez-unitcard-price small { font-size: 11.5px; font-weight: 400; color: var(--muted); }
+.eh-e .ez-mini-add { min-height: 36px; padding: 0 14px; border: 1.5px solid var(--ink); border-radius: 3px; background: #fff; color: var(--ink); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.eh-e .ez-mini-add:hover:not(:disabled) { background: var(--ink); color: #fff; }
+.eh-e .ez-mini-add:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ---------- 3. One colour. One useful detail. ---------- */
+.eh-e .ez-det-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ez-det { flex: 0 1 calc((100% - 54px) / 4); min-width: 0; display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; }
+.eh-e .ez-det-k { margin: 0; font-family: "Lemon Milk", sans-serif; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; }
+.eh-e .ez-det h3 { margin: 0; font-family: "Aileron", sans-serif; font-weight: 300; font-size: 24px; letter-spacing: -0.02em; line-height: 1.1; }
+
+/* ---------- The label diagrams (shared by Home and product pages) ---------- */
+.eh-e .ez-sig { margin: 0; display: grid; gap: 14px; }
+.eh-e .ez-sig-art { padding: clamp(18px, 2.4vw, 32px); background: var(--cream); border-top: 8px solid var(--cap); }
+.eh-e .ez-sig figcaption { font-size: 13px; color: var(--muted); }
+.eh-e .ez-d { display: grid; gap: 18px; }
+.eh-e .ez-d b { font-weight: 600; }
+.eh-e .ez-d-key { display: grid; gap: 12px; margin: 0; }
+.eh-e .ez-d-key div { display: grid; gap: 2px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.eh-e .ez-d-key dt { font-family: "Lemon Milk", sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.eh-e .ez-d-key dd { margin: 0; }
+.eh-e .ez-d-rule { margin: 0; font-size: 14px; }
+.eh-e .ez-d-rule span { display: inline-block; margin-right: 10px; padding: 2px 8px; border: 1px solid var(--rule-strong); border-radius: 3px; font-variant-numeric: tabular-nums; font-size: 12px; }
+/* Iron: the iron inside its compound */
+.eh-e .ez-d-iron { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; gap: 28px; }
+.eh-e .ez-ring { aspect-ratio: 1; border-radius: 50%; border: 1.5px dashed var(--ink); display: grid; place-items: center; padding: 15%; max-width: 300px; width: 100%; justify-self: center; }
+.eh-e .ez-ring-in { display: grid; place-items: center; align-content: center; width: 100%; aspect-ratio: 1; border-radius: 50%; background: var(--cap); color: var(--on-cap, #fff); }
+.eh-e .ez-ring-in b { font-size: clamp(44px, 5vw, 76px); font-weight: 300; line-height: 0.9; letter-spacing: -0.04em; }
+.eh-e .ez-ring-in i { font-style: normal; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; }
+/* L-Theanine: one capsule, thirty in a pack */
+.eh-e .ez-unit { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.eh-e .ez-unit p, .eh-e .ez-pack p { margin: 0; }
+.eh-e .ez-unit b { font-size: 1.4em; font-weight: 300; letter-spacing: -0.02em; }
+.eh-e .ez-capsule { width: 22px; height: 50px; border-radius: 11px; border: 1.5px solid var(--ink); background: linear-gradient(var(--cap) 0 50%, #fff 50% 100%); flex: none; }
+.eh-e .ez-pack { display: grid; gap: 10px; }
+.eh-e .ez-dots { display: grid; grid-template-columns: repeat(15, 14px); gap: 6px; }
+.eh-e .ez-dots i { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--ink); }
+.eh-e .ez-dots i.is-one { background: var(--cap); border-color: var(--cap); }
+/* D3 + K2: three windows, three units */
+.eh-e .ez-windows { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ez-windows li { display: grid; align-content: start; gap: 4px; padding: 14px 12px; background: #fff; border-top: 4px solid var(--cap); }
+.eh-e .ez-w-k { font-family: "Lemon Milk", sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+.eh-e .ez-windows b { font-size: clamp(34px, 3.4vw, 54px); font-weight: 300; letter-spacing: -0.03em; line-height: 1; }
+.eh-e .ez-windows b i { font-style: normal; font-size: 0.4em; margin-left: 4px; letter-spacing: 0.04em; }
+.eh-e .ez-windows small { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+/* Omega-3 and Psyllium: nested quantities drawn to scale */
+.eh-e .ez-d-nest { gap: 0; }
+.eh-e .ez-n { position: relative; box-sizing: border-box; width: var(--w); padding: 30px 0 0; border: 1.5px solid var(--ink); background: #fff; min-height: 64px; }
+.eh-e .ez-n-l { position: absolute; top: 7px; left: 10px; right: 6px; font-size: 13px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.eh-e .ez-n-2 { margin-top: 0; background: color-mix(in srgb, var(--cap) 22%, #fff); }
+.eh-e .ez-n-row { display: flex; }
+.eh-e .ez-n-3 { min-height: 70px; border-bottom: 0; border-left: 0; background: var(--cap); color: var(--on-cap, #fff); }
+.eh-e .ez-n-3.is-alt { background: color-mix(in srgb, var(--cap) 62%, #fff); color: var(--ink); }
+.eh-e .ez-n-row > .ez-n:first-child { border-left: 0; }
+.eh-e .ez-n-rest { min-height: 70px; border-bottom: 0; border-right: 0; background: repeating-linear-gradient(135deg, transparent 0 5px, rgb(45 41 38 / 0.12) 5px 6px); }
+.eh-e .ez-n-rest .ez-n-l { font-size: 10px; white-space: normal; left: 4px; }
+.eh-e .ez-n-2 { border-bottom: 0; border-left: 0; }
+.eh-e .ez-n-1 > .ez-n-2 { margin-left: 0; }
+.eh-e .ez-n-rest-l { display: block; padding: 6px 10px; font-size: 11px; color: var(--muted); text-align: right; }
+.eh-e .ez-d-nest + .ez-d-rule { margin-top: 14px; }
+/* Inositol: 40 : 1 */
+.eh-e .ez-ratio { display: flex; align-items: center; gap: 14px; }
+.eh-e .ez-sq { display: grid; grid-template-columns: repeat(10, 12px); gap: 4px; }
+.eh-e .ez-sq i { width: 12px; height: 12px; background: var(--cap); }
+.eh-e .ez-sq.is-one { grid-template-columns: 12px; }
+.eh-e .ez-sq.is-one i { background: #fff; outline: 1.5px solid var(--ink); outline-offset: -1.5px; }
+.eh-e .ez-colon { font-size: 28px; font-weight: 300; }
+.eh-e .ez-ratio-t { margin: 0; }
+.eh-e .ez-ratio-t b { font-size: clamp(30px, 3vw, 44px); font-weight: 300; letter-spacing: -0.02em; margin-right: 8px; }
+/* Creatine: two tablets, one amount */
+.eh-e .ez-eq { display: flex; align-items: center; gap: 12px; }
+.eh-e .ez-tab { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--cap); color: var(--on-cap, #fff); font-size: 13px; font-weight: 600; }
+.eh-e .ez-plus, .eh-e .ez-arrow { font-size: 24px; font-weight: 300; }
+.eh-e .ez-big { margin: 0; }
+.eh-e .ez-big b { display: block; font-size: clamp(40px, 4.4vw, 68px); font-weight: 300; letter-spacing: -0.035em; line-height: 1; }
+/* Mini (homepage card) versions */
+.eh-e .ez-sig.is-mini { gap: 8px; }
+.eh-e .ez-sig.is-mini .ez-sig-art { padding: 16px; border-top-width: 6px; }
+.eh-e .ez-sig.is-mini .ez-d-iron { grid-template-columns: minmax(0, 1fr); }
+.eh-e .ez-sig.is-mini .ez-ring { max-width: 150px; }
+.eh-e .ez-sig.is-mini .ez-ring-in b { font-size: 38px; }
+.eh-e .ez-sig.is-mini .ez-d-key, .eh-e .ez-sig.is-mini .ez-d-rule, .eh-e .ez-sig.is-mini .ez-n-rest-l { display: none; }
+.eh-e .ez-sig.is-mini .ez-windows { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+.eh-e .ez-sig.is-mini .ez-windows li { grid-template-columns: auto 1fr; align-items: baseline; gap: 8px; padding: 8px 10px; }
+.eh-e .ez-sig.is-mini .ez-windows b { font-size: 26px; }
+.eh-e .ez-sig.is-mini .ez-windows small { grid-column: 1 / -1; }
+.eh-e .ez-sig.is-mini .ez-dots { grid-template-columns: repeat(10, 10px); gap: 4px; }
+.eh-e .ez-sig.is-mini .ez-dots i { width: 10px; height: 10px; }
+.eh-e .ez-sig.is-mini .ez-sq { grid-template-columns: repeat(10, 8px); gap: 3px; }
+.eh-e .ez-sig.is-mini .ez-sq i { width: 8px; height: 8px; }
+.eh-e .ez-sig.is-mini .ez-sq.is-one { grid-template-columns: 8px; }
+.eh-e .ez-sig.is-mini .ez-n-l { font-size: 11px; }
+.eh-e .ez-sig.is-mini .ez-n { min-height: 50px; padding-top: 24px; }
+.eh-e .ez-sig.is-mini .ez-n-3, .eh-e .ez-sig.is-mini .ez-n-rest { min-height: 48px; }
+.eh-e .ez-sig.is-mini .ez-n-rest .ez-n-l { display: none; }
+.eh-e .ez-sig.is-mini .ez-big b { font-size: 36px; }
+.eh-e .ez-sig.is-mini .ez-tab { width: 40px; height: 40px; }
+.eh-e .ez-sig.is-mini figcaption { font-size: 12px; }
+
+/* ---------- 4. Behind the colour ---------- */
+.eh-e .ez-ev-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); margin: 0; padding: 0; list-style: none; }
+.eh-e .ez-ev-list li { display: grid; align-content: start; gap: 12px; padding-top: 18px; border-top: 1.5px solid var(--ink); }
+.eh-e .ez-ev-n { margin: 0; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.eh-e .ez-ev-list h3 { margin: 0; font-size: 22px; font-weight: 300; letter-spacing: -0.02em; font-family: "Aileron", sans-serif; }
+.eh-e .ez-ev-list p { margin: 0; }
+.eh-e .ez-ev-list .x-link { justify-self: start; }
+
+/* ---------- 5. Lot lookup ---------- */
+.eh-e .ez-lot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: start; background: var(--cream); }
+.eh-e .ez-lot h2 { margin: 0 0 16px; font-size: clamp(34px, 4vw, 56px); font-weight: 300; letter-spacing: -0.035em; line-height: 1; }
+.eh-e .ez-lot-copy p { max-width: 46ch; }
+.eh-e .ez-lot-form { padding: clamp(20px, 3vw, 32px); background: #fff; border-top: 6px solid var(--ink); }
+
+/* ---------- 6. Learn invitation ---------- */
+.eh-e .ez-learn-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ez-learn-list a { display: grid; gap: 8px; height: 100%; padding: 20px 0 0; border-top: 1.5px solid var(--ink); text-decoration: none; }
+.eh-e .ez-learn-list strong { font-size: 22px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.15; }
+.eh-e .ez-learn-list a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.eh-e .ez-learn-list span:last-child { color: var(--muted); font-size: 15px; }
+.eh-e .ez-learn-n { font-size: 12px; color: var(--muted); }
+
+/* ---------- 7. FAQ ---------- */
+.eh-e .ez-faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+.eh-e .ez-faq .ez-sec-head { grid-template-columns: minmax(0, 1fr); margin: 0; }
+
+/* ---------- Product page: One colour, in detail ---------- */
+.eh-e .ezp-detail .ez-sig { max-width: 980px; }
+.eh-e .ezp-detail .pp-lead { max-width: 60ch; }
+
+/* ---------- Page transitions: quick and calm; the chosen swatch becomes the cap band ---------- */
+:root:has(body[data-theme="e"])::view-transition-group(root) { background: #fff; }
+:root:has(body[data-theme="e"])::view-transition-old(root) { animation: ez-vt-out 0.22s ease both; }
+:root:has(body[data-theme="e"])::view-transition-new(root) { animation: ez-vt-in 0.34s var(--ez-ease, ease) 0.06s both; }
+:root:has(body[data-theme="e"])::view-transition-group(ez-swatch) { animation-duration: 0.5s; animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); z-index: 30; }
+:root:has(body[data-theme="e"])::view-transition-old(ez-swatch), :root:has(body[data-theme="e"])::view-transition-new(ez-swatch) { height: 100%; width: 100%; object-fit: fill; }
+@keyframes ez-vt-out { to { opacity: 0; } }
+@keyframes ez-vt-in { from { opacity: 0; transform: translate3d(0, 10px, 0); } }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1280px) {
+  .eh-e .ez-shelf-list { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 28px; }
+}
+@media (max-width: 1100px) {
+  .eh-e .ez-hero { grid-template-columns: minmax(0, 1fr); }
+  .eh-e .ez-hero-copy { max-width: 680px; }
+  .eh-e .ez-det { flex-basis: calc((100% - 18px) / 2); }
+  .eh-e .ez-d-iron { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 860px) {
+  .eh-e .ez-sec-head { grid-template-columns: minmax(0, 1fr); }
+  .eh-e .ez-ev-list, .eh-e .ez-learn-list { grid-template-columns: minmax(0, 1fr); }
+  .eh-e .ez-lot, .eh-e .ez-faq { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .eh-e .ez-hero { overflow-x: clip; padding-top: 18px; }
+  .eh-e .ez-deck { display: flex; flex-direction: column; gap: 16px; }
+  .eh-e .ez-caps { order: 1; }
+  .eh-e .ez-info { order: 2; }
+  .eh-e .ez-fan { order: 3; }
+  .eh-e .ez-fan-b { transform: translateX(calc(-50% + var(--o) * var(--gap))) rotate(calc(var(--o) * 2deg)); }
+  .eh-e .ez-fan-b[data-on] { transform: translateX(calc(-50% + var(--o) * var(--gap))) translateY(-7%) scale(1.08); }
+  .eh-e .ez-lede { margin-top: 14px; font-size: 15.5px; }
+  .eh-e .ez-actions { margin-top: 20px; }
+  .eh-e .ez-fan { --bw: clamp(52px, 16vw, 78px); --gap: clamp(30px, 10vw, 48px); height: clamp(190px, 54vw, 270px); }
+  .eh-e .ez-caps { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 12px; }
+  .eh-e .ez-cap-img { width: 42px; }
+  .eh-e .ez-cap-name { font-size: 10px; }
+  .eh-e .ez-info-in { grid-template-columns: minmax(0, 1fr); }
+  .eh-e .ez-info-buy { grid-column: 1; grid-row: auto; justify-items: start; text-align: left; grid-template-columns: auto auto; align-items: center; gap: 8px 16px; margin-top: 8px; }
+  .eh-e .ez-info-buy .ez-view { grid-column: 1 / -1; justify-self: stretch; text-align: center; }
+  .eh-e .ez-shelf-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
+  .eh-e .ez-det { flex-basis: 100%; }
+  .eh-e .ez-windows { grid-template-columns: minmax(0, 1fr); }
+  .eh-e .ez-windows li { grid-template-columns: auto 1fr; align-items: baseline; gap: 4px 10px; }
+  .eh-e .ez-windows small { grid-column: 1 / -1; }
+  .eh-e .ez-dots { grid-template-columns: repeat(10, 12px); }
+  .eh-e .ez-dots i { width: 12px; height: 12px; }
+}
+@media (max-width: 380px) {
+  .eh-e .ez-sq { grid-template-columns: repeat(10, 9px); gap: 3px; }
+  .eh-e .ez-sq i { width: 9px; height: 9px; }
+  .eh-e .ez-n-l { font-size: 11.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eh-e .ez-fan-b, .eh-e .ez-cap-img, .eh-e .ez-unitcard-media img { transition: none; animation: none; }
+}
+/* Product pages give the diagram room to read. */
+.eh-e .ezp-detail .ez-n { min-height: 84px; padding-top: 38px; }
+.eh-e .ezp-detail .ez-n-l { top: 10px; left: 12px; font-size: 15px; }
+.eh-e .ezp-detail .ez-n-3, .eh-e .ezp-detail .ez-n-rest { min-height: 116px; }
+.eh-e .ezp-detail .ez-n-rest .ez-n-l { font-size: 11px; }
+.eh-e .ezp-detail .ez-ring { max-width: 340px; }
+.eh-e .ezp-detail .ez-dots { grid-template-columns: repeat(15, 18px); gap: 8px; }
+.eh-e .ezp-detail .ez-dots i { width: 18px; height: 18px; }
+.eh-e .ezp-detail .ez-sq { grid-template-columns: repeat(10, 18px); gap: 6px; }
+.eh-e .ezp-detail .ez-sq i { width: 18px; height: 18px; }
+.eh-e .ezp-detail .ez-sq.is-one { grid-template-columns: 18px; }
+.eh-e .ezp-detail .ez-tab { width: 72px; height: 72px; font-size: 15px; }
+@media (max-width: 640px) {
+  .eh-e .ezp-detail .ez-dots { grid-template-columns: repeat(10, 14px); gap: 6px; }
+  .eh-e .ezp-detail .ez-dots i { width: 14px; height: 14px; }
+  .eh-e .ezp-detail .ez-sq { grid-template-columns: repeat(10, 11px); gap: 4px; }
+  .eh-e .ezp-detail .ez-sq i { width: 11px; height: 11px; }
+  .eh-e .ezp-detail .ez-sq.is-one { grid-template-columns: 11px; }
+  .eh-e .ezp-detail .ez-n-l { font-size: 12.5px; left: 8px; }
+  .eh-e .ezp-detail .ez-n-3, .eh-e .ezp-detail .ez-n-rest { min-height: 84px; }
+}

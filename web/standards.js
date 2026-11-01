@@ -86,8 +86,8 @@
       { id: "lot", title: "Read the record.", text: "Find the record for the lot your bottle came from, and see exactly what it covers.", state: "demo" },
     ],
     glanceNow: {
-      published: ["Product names, ingredients in view and formats for all seven", "A working lot lookup, with clearly labelled demonstration records", "Sourced guides to reading labels and lot reports"],
-      pending: ["Approved rear labels", "Sourcing and manufacturer details", "The documented quality process", "Laboratory documents"],
+      published: ["Label amounts, pack sizes, directions and cautions for all seven products", "A working lot lookup, with clearly labelled demonstration records", "Sourced guides to reading labels and lot reports"],
+      pending: ["Ingredient-origin records", "Manufacturer documentation beyond the label", "The documented quality process", "Laboratory documents"],
     },
 
     formula: {
@@ -110,7 +110,7 @@
         ["Read the actives, not the total.", "With fish oil, EPA and DHA matter more than the total amount of oil."],
       ],
       pendingList: "amount per serving, serving size, units per pack, other ingredients, allergens, directions and cautions",
-      status: "Product names, ingredients in view and formats are published for all seven products. Approved rear labels haven't been supplied, so amounts, serving sizes, other ingredients, allergens, directions and cautions aren't published yet. Creatine Chews' complete formulation is still pending.",
+      status: "All seven product pages include ingredient amounts, serving and pack sizes, other ingredients, allergens, directions and cautions transcribed from supplied final label artwork. Batch-specific evidence and testing documents remain separate.",
       care: S.CARE_NOTE,
     },
 
@@ -179,7 +179,7 @@
     },
 
     faqs: [
-      ["Where do your ingredients come from?", "We haven't published sourcing or manufacturing details yet. When we do, each product will show the ingredient origin, processing location and finished-product manufacturer separately. Until then, we don't describe a source we can't confirm."],
+      ["Where do your ingredients come from?", "The finished-product manufacturers printed on the supplied labels are named on product pages. Ingredient origin and processing records are not supplied; those stages remain separate from final manufacture."],
       ["Are your products tested?", "No test results or laboratory documents have been published, so we don't describe any product as tested. When a report is published, it will be linked to the lot it describes."],
       ["Do you hold any certifications?", "None is claimed on this site. A certification would only appear with exactly what it covers, a facility, a process or a product, and a link to the certifier's own listing."],
       ["Is an FSSAI licence a quality certification?", "No. An FSSAI licence or registration is what a food business needs to operate in India. It isn't a test of a particular product's quality."],
@@ -258,12 +258,12 @@
       ps.map(function (p, i) { return '<button type="button" class="sx-pick" data-sx-pick="' + p.id + '" aria-pressed="' + (i === 0) + '" aria-controls="sx-panel-' + p.id + '" style="--cap:' + p.color + '"><span class="sx-pick-dot" aria-hidden="true"></span><span>' + ctx.escape(p.name) + "</span></button>"; }).join("") +
       "</div>" + ps.map(function (p, i) {
         var r = RECORDS[p.id], n = (S.notes && S.notes[p.id]) || { check: [] };
-        var pendingForm = r.formulation === "pending";
+        var pendingForm = !p.label_source && r.formulation === "pending";
         return '<section class="sx-panel" id="sx-panel-' + p.id + '" data-sx-panel="' + p.id + '" aria-label="' + ctx.escape(p.name) + '"' + (i ? " hidden" : "") + ' style="--cap:' + p.color + '">' +
           '<div class="sx-panel-img">' + bottle(ctx, p, "sx-panel-bottle") + "</div>" +
           '<div class="sx-panel-body"><h3>' + ctx.escape(p.name) + "</h3>" +
           '<dl class="sx-facts"><div><dt>Format</dt><dd>' + ctx.escape(ctx.format[p.id] || "") + "</dd></div><div><dt>Ingredient in view</dt><dd>" + ctx.escape(inView(p)) + (pendingForm ? " <em>(complete formulation pending)</em>" : "") + "</dd></div>" +
-          '<div class="is-pending"><dt>Awaiting approved label</dt><dd>' + M.formula.pendingList.charAt(0).toUpperCase() + M.formula.pendingList.slice(1) + "</dd></div></dl>" +
+          (p.label_source ? '<div><dt>Labelled serving</dt><dd>' + ctx.escape(p.amount_per_serving) + '</dd></div><div><dt>Pack</dt><dd>' + ctx.escape(p.pack_size) + '</dd></div>' : '<div class="is-pending"><dt>Awaiting approved label</dt><dd>' + M.formula.pendingList + '</dd></div>') + '</dl>' +
           (n.check && n.check.length ? '<p class="sx-panel-k">Check first on this label</p><ul class="sx-checkfirst">' + n.check.slice(0, 2).map(function (c) { return "<li><strong>" + c[0] + "</strong> " + c[1] + "</li>"; }).join("") + "</ul>" : "") +
           '<p class="sx-panel-links">' + link("/products/" + p.id, "Product page") + link("/learn/" + p.id, "Ingredient note") + link("/reports?product=" + p.id, "Lot record") + "</p></div></section>";
       }).join("") + "</div>";

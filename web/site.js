@@ -39,7 +39,7 @@
       guidance: [
         ["Start with the ingredient", "Every product is named after what's in it. If you already know the ingredient you're looking for, go straight to it."],
         ["Then pick the format", "Capsules, softgels or chewable tablets. Format changes how you take it, not what the label must tell you."],
-        ["Read before you add", "Each page separates what's confirmed now from what the approved rear label will add: amounts, directions, cautions and allergens."],
+        ["Read before you add", "Each page shows the label's amounts, serving size, directions, cautions and allergens in readable text."],
       ],
       care: CARE_NOTE,
       compareTitle: "The seven, side by side",
@@ -70,7 +70,7 @@
           summary: "A product page should carry everything the approved rear label carries.",
           body: "That means the full product name, the form of each ingredient, the amount per serving, the serving size, units per pack, directions, storage, allergens, cautions and the manufacturer's details. A headline ingredient on its own isn't enough to compare products.",
           points: ["Amounts are given per serving, with the serving size stated", "Each ingredient is named in full, including its form", "Directions, cautions and allergens sit next to the facts, not behind a link"],
-          now: "Product names, ingredients in view and formats are published. Approved rear labels haven't been supplied yet, so amounts, directions and cautions are marked as awaiting approval on every product page.",
+          now: "Amounts per serving, serving and pack sizes, directions, cautions, allergens and the named manufacturer are published for all seven products, transcribed from the supplied final label artwork.",
         },
         {
           id: "identity",
@@ -106,7 +106,7 @@
         },
       ],
       documented: ["Seven product names, ingredients in view and formats", "A product-and-lot lookup with clearly marked sample states", "Plain explanations of what a report should identify and its limits", "Prices and stock shown as preview samples"],
-      planned: ["Approved rear labels and complete product records for all seven", "Lot-linked report summaries with publishable source documents", "Report versions and withdrawal notices", "A pack guide showing where to find the lot number"],
+      planned: ["Ingredient-origin and testing documents for each product", "Lot-linked report summaries with publishable source documents", "Report versions and withdrawal notices", "A pack guide showing where to find the lot number"],
       wont: ["Display testing or certification badges without documents", "Turn an ingredient name into a health claim", "Publish reviews, ratings or results that haven't happened"],
     },
     story: {
@@ -145,7 +145,7 @@
       lede: "Body Café Co. makes seven everyday supplements and puts the details where you can find them: the ingredient, the format, the label and the record for your lot.",
       blocks: [
         ["What we make", "Seven everyday supplements: Iron Bisglycinate, L-Theanine, Vitamin D3 + K2, Omega-3 Fish Oil, Myo & D-Chiro Inositol, Creatine Chews and Psyllium Husk. Each is named for what's in it, and each has its own cap colour."],
-        ["How we work", "Detail you can check comes before badges you can't. Product pages separate what's confirmed now from what the approved rear label will add, and every pack carries a lot number that leads to its record."],
+        ["How we work", "Detail you can check comes before badges you can't. Product pages show the label facts in readable text, and every pack carries a lot number that leads to its record."],
         ["Where things stand", "This is a preview. Prices are samples, packaging is a draft, and lot reports are demonstration records until approved labels and reports are published."],
         ["Who it's for", "Curious, sceptical shoppers in India who read labels, compare products and would rather check than be told."],
       ],
@@ -222,7 +222,7 @@
       topics: [
         ["orders", "Orders & delivery", "Track a preview order, understand delivery charges and what happens after you pay.", "/account", "Track an order"],
         ["returns", "Returns & replacements", "What's decided, what isn't, and how to raise an issue with an order.", "/policies/returns", "Read the working policy"],
-        ["labels", "Products & labels", "Ingredients, formats and which label details are still awaiting approval.", "/learn/reading-a-label", "Read the label guide"],
+        ["labels", "Products & labels", "Ingredients, formats and how to read the label facts.", "/learn/reading-a-label", "Read the label guide"],
         ["reports", "Lot reports", "Find the record for your pack, and what each result state means.", "/reports", "Look up a lot"],
         ["account", "Account & sign-in", "Sign in with your mobile number and claim orders placed as a guest.", "/account", "Go to your account"],
         ["safety", "Product safety", "Something wrong with a product? Open a priority case and we'll keep it separate.", "/contact?kind=safety", "Report a product issue"],
@@ -233,7 +233,7 @@
         ["orders", "Are these the final prices?", "No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved."],
         ["returns", "How do returns work?", "Return eligibility, timing and remedies are still being approved. The working policy explains what's undecided; the preview doesn't promise a return window."],
         ["returns", "Can I cancel an order?", "In the preview you can cancel while an order is pending or paid. Once it's marked shipped, open a support case. The final cancellation rule is still being confirmed."],
-        ["labels", "Where are the full product details?", "Each product page separates what's confirmed now from the amounts, directions, cautions and allergens that will come from the approved rear label."],
+        ["labels", "Where are the full product details?", "Each product page shows the amounts, serving size, directions, cautions and allergens from the supplied label, in readable text."],
         ["labels", "Is everything vegetarian?", "Not necessarily. Omega-3 Fish Oil comes from fish, and capsule and softgel materials aren't confirmed yet. Dietary marks will appear only from approved labels."],
         ["reports", "Where do I find my lot report?", "Choose your product on the lot reports page and enter the lot number printed on the pack. The preview has sample records so you can try it."],
         ["reports", "Does a report prove my bottle is genuine?", "No. A report describes a sample from one lot. Checking an individual pack would need a separate unit code, and that hasn't been decided."],
@@ -319,7 +319,7 @@
         { id: "compound", h: "Compound weight versus active amount", html: "<p>Minerals and some other ingredients come bound to something else. The weight of the whole compound isn't the same as the weight of the active part. The NIH Office of Dietary Supplements gives iron as an example: ferrous fumarate is 33% elemental iron by weight, ferrous sulfate 20% and ferrous gluconate 12%. So “100 mg” of one iron compound and “100 mg” of another don't contain the same amount of iron.</p><p>Creatine is similar. The same source notes that creatine monohydrate, the most widely studied form, is 88% creatine by weight.</p>" },
         { id: "units", h: "Same nutrient, different units", html: "<p>Vitamin D can be stated in micrograms (mcg) or International Units (IU). According to the NIH Office of Dietary Supplements, 1 mcg of vitamin D equals 40 IU. Convert before you compare, so you're comparing like with like.</p>" },
         { id: "named", h: "Named forms", html: "<p>Some vitamins come in several named forms. Vitamin D appears in supplements as D2 or D3. Vitamin K appears as K1 (phylloquinone) or as K2 menaquinones such as MK-4 or MK-7. A label should say which.</p>" },
-        { id: "oils", h: "Oils: the total and the actives", html: "<p>For fish oil, the amount of oil and the amount of omega-3s are different numbers. The NIH Office of Dietary Supplements describes a typical fish oil supplement as about 1,000 mg of fish oil containing around 180 mg EPA and 120 mg DHA, and notes that amounts vary widely. Look for EPA and DHA stated separately.</p><p>Omega-3s also come in different chemical forms, including natural triglycerides, ethyl esters, re-esterified triglycerides, free fatty acids and phospholipids. Our Vitamin D3 + K2 includes omega-3 as triglycerides; its amounts await the approved label.</p>" },
+        { id: "oils", h: "Oils: the total and the actives", html: "<p>For fish oil, the amount of oil and the amount of omega-3s are different numbers. The NIH Office of Dietary Supplements describes a typical fish oil supplement as about 1,000 mg of fish oil containing around 180 mg EPA and 120 mg DHA, and notes that amounts vary widely. Look for EPA and DHA stated separately.</p><p>Omega-3s also come in different chemical forms, including natural triglycerides, ethyl esters, re-esterified triglycerides, free fatty acids and phospholipids. Our Vitamin D3 + K2 includes omega-3 as triglycerides; its label states 200 mg total Omega-3 per softgel, including EPA 100 mg and DHA 75 mg.</p>" },
         { id: "compare", h: "Compare like with like", html: "<p>For a formula with several ingredients, compare each declared component on its own. Line up the form, the amount, the unit and the serving size. If any of these is missing, you can't make a fair comparison yet. Our product pages will use the approved quantities and wording from each label.</p>" },
       ],
       example: {
@@ -368,7 +368,7 @@
     },
     "creatine-chews": {
       lead: "A chew is a convenient format, but it adds a few things to check: how much creatine is in each chew, how many chews make a serving, and what else the chew contains.",
-      check: [["Creatine form", "Which form of creatine is used. Our complete formulation is still pending."], ["Per chew and per serving", "Creatine per chew, and per serving if a serving is more than one chew."], ["Chews per pack, flavour and texture", "The count, the flavour and what the chew is like."], ["Nutrition information", "Chews can contain sugars, sweeteners and other ingredients; the full nutrition panel matters."]],
+      check: [["Creatine form", "Which form of creatine is used. The supplied label names creatine monohydrate, 3,000 mg per 2 chewable tablets."], ["Per chew and per serving", "Creatine per chew, and per serving if a serving is more than one chew."], ["Chews per pack, flavour and texture", "The count, the flavour and what the chew is like."], ["Nutrition information", "Chews can contain sugars, sweeteners and other ingredients; the full nutrition panel matters."]],
       compound: "Different creatine forms contain different amounts of creatine by weight. NIH's Office of Dietary Supplements notes that creatine monohydrate, the most widely used and studied form, is 88% creatine by weight.",
       sources: [SRC.creatine],
     },

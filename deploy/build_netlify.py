@@ -26,8 +26,8 @@ def api_target(mode, origin):
     return origin.rstrip('/')
 
 
-OTHER_DIRECTIONS = ['site-a', 'site-c', 'site-d', 'direction-d', 'pdp-a', 'pdp-c', 'pdp-d', 'cinema', 'live', 'site-eh',
-                    'site-e', 'site-f', 'site-g', 'site-h', 'typography-a']
+OTHER_DIRECTIONS = ['site-a', 'site-c', 'site-d', 'direction-d', 'pdp-a', 'pdp-c', 'pdp-d', 'cinema', 'live', 'site-b', 'pdp-b', 'editorial-b', 'variant-b', 'pdp-hero-b', 'pages-b', 'signature-b',
+                    'site-f', 'site-g', 'site-h', 'typography-a']
 
 
 def release_target(release, site_url):
@@ -66,12 +66,12 @@ def build():
         shutil.copy2(ROOT / 'deploy/hosted-preview.js', out / 'web/hosted-preview.js')
         html = html.replace('<script src="/web/homepage.js">', '<script src="/web/hosted-preview.js"></script>\n<script src="/web/homepage.js">')
     if site:
-        # Variant B only, no fixtures or design switcher, indexable. Payments and providers are unaffected.
+        # Variant E only, no fixtures or design switcher, indexable. Payments and providers are unaffected.
         html = html.replace('<meta name="robots" content="noindex,nofollow">', '<meta name="robots" content="index,follow">\n<meta name="bcc-release" content="production">')
         html = html.replace('<meta name="description" content="Explore seven everyday supplements from Body Café Co. Preview product information, ingredient guides and the lot-report experience.">',
                             '<meta name="description" content="Everyday supplements from Body Café Co., with ingredient guides, clear product details and a lot-record lookup.">')
-        # B-only entry: drop stylesheets/scripts that only serve other design directions (about 790 KB uncompressed).
-        # Verified to render B routes identically; shared modules (world/creative/atelier/home-flow) stay loaded.
+        # E-only entry: keep both the shared E–H engine and E templates/styles.
+        # Shared modules (world/creative/atelier/home-flow) stay loaded.
         html = '\n'.join(line for line in html.split('\n')
                           if not any('/web/' + name + ext + '"' in line for name in OTHER_DIRECTIONS for ext in ('.css', '.js')))
     (out / 'index.html').write_text(html, encoding='utf-8')

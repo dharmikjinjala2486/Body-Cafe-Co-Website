@@ -1,0 +1,140 @@
+[
+  {
+    "route": "/help/orders/track-order",
+    "excerpt": "HELP · ORDERS · BODY CAFÉ CO.\n\nWHERE IS MY ORDER?\nHelp Centre\nOrders\nWhere is my order?\n\nOpen the order in your account to see where it is. Courier tracking isn’t connected yet, so for now the order page shows our own status steps.\n\nEvery order has a page with its status: order created, payment received, shipped and delivered. Once a courier is connected, the tracking number and courier updates will appear on the same page.\n\nOrdered as a guest? The order is listed in the account area of the brow",
+    "heading": "Where is my order?",
+    "title": "Where is my order? — Body Café Co."
+  },
+  {
+    "route": "/help/orders/guest-order",
+    "excerpt": "HELP · ORDERS · BODY CAFÉ CO.\n\nI ORDERED WITHOUT AN ACCOUNT. HOW DO I SEE MY ORDER?\nHelp Centre\nOrders\nI ordered without an account. How do I see my order?\n\nIn the same browser, your order is listed under Account. To keep it, sign in with the mobile number you used at checkout.\n\nSigning in uses a one-time code sent to your mobile number. Orders from that browser session that used the same number join your account.\n\nWe don’t show order details to anyone who can’t verify the mobile number on the o",
+    "heading": "I ordered without an account. How do I see my order?",
+    "title": "I ordered without an account. How do I see my order? — Body Café Co."
+  },
+  {
+    "route": "/help/orders/cancel-order",
+    "excerpt": "HELP · ORDERS · BODY CAFÉ CO.\n\nCAN I CANCEL MY ORDER?\nHelp Centre\nOrders\nCan I cancel my order?\n\nYou can cancel from the order page until it’s dispatched. You’ll see what happens to your payment before you confirm.\n\nOpen the order and choose Cancel order. If you’ve paid, the full amount is refunded. If payment is still being confirmed, check its status first.\n\nOnce an order has been dispatched it can’t be cancelled. Contact us about it, or see Returns & Refunds when it arrives.\n\nRequest cancella",
+    "heading": "Can I cancel my order?",
+    "title": "Can I cancel my order? — Body Café Co."
+  },
+  {
+    "route": "/help/orders/change-order",
+    "excerpt": "HELP · ORDERS · BODY CAFÉ CO.\n\nCAN I CHANGE AN ORDER AFTER PLACING IT?\nHelp Centre\nOrders\nCan I change an order after placing it?\n\nOrders can’t be edited yet. Before dispatch you can cancel and order again; for a delivery address change, contact us with the order reference.\n\nWe’ll tell you whether a change is still possible. A change isn’t confirmed until we reply on your case.\n\nContact support\n\nDid this answer your question?\nYes\nNo\n\nRelated\nWhere is my order?\nI ordered without an account. How d",
+    "heading": "Can I change an order after placing it?",
+    "title": "Can I change an order after placing it? — Body Café Co."
+  },
+  {
+    "route": "/help/delivery/delivery-areas",
+    "excerpt": "HELP · DELIVERY · BODY CAFÉ CO.\n\nWHERE DO YOU DELIVER?\nHelp Centre\nDelivery\nWhere do you deliver?\n\nWe plan to deliver within India. Which pincodes we can reach hasn’t been confirmed yet, so the pincode check only checks that a pincode is valid.\n\nWhen delivery partners are connected, the check will tell you whether we deliver to your pincode and roughly when. Until then we won’t promise a date.\n\nShipping & Delivery\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow much is delivery?\nMy parcel is",
+    "heading": "Where do you deliver?",
+    "title": "Where do you deliver? — Body Café Co."
+  },
+  {
+    "route": "/help/delivery/delivery-charges",
+    "excerpt": "HELP · DELIVERY · BODY CAFÉ CO.\n\nHOW MUCH IS DELIVERY?\nHelp Centre\nDelivery\nHow much is delivery?\n\nDelivery charges haven’t been confirmed. This preview uses a sample rule — ₹75, free when the subtotal after discount is ₹1,499 or more — which isn’t the final policy.\n\nWhatever the final charge is, it will be shown in your bag and at checkout before you pay, as part of a single total.\n\nShipping & Delivery\n\nDid this answer your question?\nYes\nNo\n\nRelated\nWhere do you deliver?\nMy parcel is late, lost",
+    "heading": "How much is delivery?",
+    "title": "How much is delivery? — Body Café Co."
+  },
+  {
+    "route": "/help/delivery/parcel-problem",
+    "excerpt": "HELP · DELIVERY · BODY CAFÉ CO.\n\nMY PARCEL IS LATE, LOST, DAMAGED OR INCOMPLETE\nHelp Centre\nDelivery\nMy parcel is late, lost, damaged or incomplete\n\nTell us from the order page or the contact form. Include your order reference; a photo helps with damage but isn’t required.\n\nLate or lost: we’ll check with the courier and update your case. Damaged or incomplete: we’ll arrange a remedy. You’re entitled to a refund or replacement for goods that arrive damaged, wrong or late, whatever the policy says",
+    "heading": "My parcel is late, lost, damaged or incomplete",
+    "title": "My parcel is late, lost, damaged or incomplete — Body Café Co."
+  },
+  {
+    "route": "/help/delivery/change-address",
+    "excerpt": "HELP · DELIVERY · BODY CAFÉ CO.\n\nCAN I CHANGE MY DELIVERY ADDRESS?\nHelp Centre\nDelivery\nCan I change my delivery address?\n\nBefore dispatch, contact us with the order reference and the new address. It isn’t changed until we confirm on your case.\n\nAfter dispatch the courier decides whether a change is possible. Courier rules aren’t confirmed yet.\n\nContact support\n\nDid this answer your question?\nYes\nNo\n\nRelated\nWhere do you deliver?\nHow much is delivery?\nMy parcel is late, lost, damaged or incomple",
+    "heading": "Can I change my delivery address?",
+    "title": "Can I change my delivery address? — Body Café Co."
+  },
+  {
+    "route": "/help/returns/something-wrong",
+    "excerpt": "HELP · RETURNS · BODY CAFÉ CO.\n\nSOMETHING IS WRONG WITH MY ORDER\nHelp Centre\nReturns\nSomething is wrong with my order\n\nStart a request from the order page: choose the item, what went wrong and whether you’d prefer a refund or replacement.\n\nDamaged, wrong, missing, faulty or expired items are always looked at. A photo can help us act faster but you don’t have to send one.\n\nIf you think a product has made someone unwell or isn’t safe, report it as a product safety concern instead, so it’s handled ",
+    "heading": "Something is wrong with my order",
+    "title": "Something is wrong with my order — Body Café Co."
+  },
+  {
+    "route": "/help/returns/change-of-mind",
+    "excerpt": "HELP · RETURNS · BODY CAFÉ CO.\n\nCAN I RETURN SOMETHING I NO LONGER WANT?\nHelp Centre\nReturns\nCan I return something I no longer want?\n\nChange-of-mind returns haven’t been decided yet. You can still ask from the order page and we’ll reply on your case.\n\nBecause supplements are consumed, the conditions for unopened returns will be set out in Returns & Refunds once they’re approved.\n\nReturns & Refunds\n\nDid this answer your question?\nYes\nNo\n\nRelated\nSomething is wrong with my order\nWhere is my refun",
+    "heading": "Can I return something I no longer want?",
+    "title": "Can I return something I no longer want? — Body Café Co."
+  },
+  {
+    "route": "/help/returns/refund-status",
+    "excerpt": "HELP · RETURNS · BODY CAFÉ CO.\n\nWHERE IS MY REFUND?\nHelp Centre\nReturns\nWhere is my refund?\n\nThe order page shows the refund status. Refunds are reviewed before they’re released; in this preview no money moves.\n\nRefunds go back to the original payment method. The time it takes to reach your account depends on the bank or payment provider; final timings will be published once payments are connected.\n\nYour orders\nReturns & Refunds\n\nDid this answer your question?\nYes\nNo\n\nRelated\nSomething is wrong ",
+    "heading": "Where is my refund?",
+    "title": "Where is my refund? — Body Café Co."
+  },
+  {
+    "route": "/help/payments/payment-methods",
+    "excerpt": "HELP · PAYMENTS · BODY CAFÉ CO.\n\nHOW CAN I PAY?\nHelp Centre\nPayments\nHow can I pay?\n\nOnline prepaid payment (UPI, cards, wallets and net banking) is planned. Cash on delivery isn’t available.\n\nPayments aren’t connected in this preview, so no money is taken. We never ask for card details on a support form, email or chat.\n\nTerms\n\nDid this answer your question?\nYes\nNo\n\nRelated\nMy payment failed, or I’m not sure it went through\nHow do discount codes work?\nCan I get a GST invoice?\nStill need help?\n\nC",
+    "heading": "How can I pay?",
+    "title": "How can I pay? — Body Café Co."
+  },
+  {
+    "route": "/help/payments/payment-unclear",
+    "excerpt": "HELP · PAYMENTS · BODY CAFÉ CO.\n\nMY PAYMENT FAILED, OR I’M NOT SURE IT WENT THROUGH\nHelp Centre\nPayments\nMy payment failed, or I’m not sure it went through\n\nDon’t pay again yet. Open the order and choose Check payment status; we’ll tell you whether the payment arrived.\n\nIf money left your account but the order shows unpaid, contact us with the order reference. Don’t send card or bank details.\n\nYour orders\nContact support\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow can I pay?\nHow do disco",
+    "heading": "My payment failed, or I’m not sure it went through",
+    "title": "My payment failed, or I’m not sure it went through — Body Café Co."
+  },
+  {
+    "route": "/help/payments/discounts",
+    "excerpt": "HELP · PAYMENTS · BODY CAFÉ CO.\n\nHOW DO DISCOUNT CODES WORK?\nHelp Centre\nPayments\nHow do discount codes work?\n\nEnter a code in your bag under “Have a discount code?”. The discount is shown before checkout.\n\nPREVIEW10 is a sample code for trying the preview. Real offers and their conditions will be listed with the offer.\n\nYour bag\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow can I pay?\nMy payment failed, or I’m not sure it went through\nCan I get a GST invoice?\nStill need help?\n\nContact us ",
+    "heading": "How do discount codes work?",
+    "title": "How do discount codes work? — Body Café Co."
+  },
+  {
+    "route": "/help/payments/gst-invoice",
+    "excerpt": "HELP · PAYMENTS · BODY CAFÉ CO.\n\nCAN I GET A GST INVOICE?\nHelp Centre\nPayments\nCan I get a GST invoice?\n\nCheckout has an optional GSTIN field. Invoices aren’t issued yet: tax invoicing will be connected before the store opens.\n\nTerms\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow can I pay?\nMy payment failed, or I’m not sure it went through\nHow do discount codes work?\nStill need help?\n\nContact us and we’ll pick it up from here. You get a case reference straight away.\n\nContact support",
+    "heading": "Can I get a GST invoice?",
+    "title": "Can I get a GST invoice? — Body Café Co."
+  },
+  {
+    "route": "/help/account/sign-in",
+    "excerpt": "HELP · ACCOUNT · BODY CAFÉ CO.\n\nHOW DO I SIGN IN?\nHelp Centre\nAccount\nHow do I sign in?\n\nWith your mobile number and a one-time code. Checkout doesn’t need an account.\n\nCodes last five minutes. You can ask for a new one after a short wait. In this preview the code appears on screen and no SMS is sent.\n\nSign in\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow do I change my mobile number?\nCan I get a copy of my data or delete my account?\nHow do I stop marketing messages?\nStill need help?\n\nCont",
+    "heading": "How do I sign in?",
+    "title": "How do I sign in? — Body Café Co."
+  },
+  {
+    "route": "/help/account/change-number",
+    "excerpt": "HELP · ACCOUNT · BODY CAFÉ CO.\n\nHOW DO I CHANGE MY MOBILE NUMBER?\nHelp Centre\nAccount\nHow do I change my mobile number?\n\nContact us. Your orders are tied to your verified number, so we check the change before making it.\n\nContact support\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow do I sign in?\nCan I get a copy of my data or delete my account?\nHow do I stop marketing messages?\nStill need help?\n\nContact us and we’ll pick it up from here. You get a case reference straight away.\n\nContact sup",
+    "heading": "How do I change my mobile number?",
+    "title": "How do I change my mobile number? — Body Café Co."
+  },
+  {
+    "route": "/help/account/your-data",
+    "excerpt": "HELP · ACCOUNT · BODY CAFÉ CO.\n\nCAN I GET A COPY OF MY DATA OR DELETE MY ACCOUNT?\nHelp Centre\nAccount\nCan I get a copy of my data or delete my account?\n\nYes. Signed-in customers can download their data from Profile & security and make privacy requests there.\n\nRequests are verified by your sign-in, get a reference and appear in your account’s Support section.\n\nPrivacy requests\nPrivacy\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow do I sign in?\nHow do I change my mobile number?\nHow do I stop",
+    "heading": "Can I get a copy of my data or delete my account?",
+    "title": "Can I get a copy of my data or delete my account? — Body Café Co."
+  },
+  {
+    "route": "/help/account/marketing",
+    "excerpt": "HELP · ACCOUNT · BODY CAFÉ CO.\n\nHOW DO I STOP MARKETING MESSAGES?\nHelp Centre\nAccount\nHow do I stop marketing messages?\n\nTurn them off in Preferences. Order and service messages aren’t marketing and aren’t affected.\n\nPreferences\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow do I sign in?\nHow do I change my mobile number?\nCan I get a copy of my data or delete my account?\nStill need help?\n\nContact us and we’ll pick it up from here. You get a case reference straight away.\n\nContact support",
+    "heading": "How do I stop marketing messages?",
+    "title": "How do I stop marketing messages? — Body Café Co."
+  },
+  {
+    "route": "/help/products/product-question",
+    "excerpt": "HELP · PRODUCTS · BODY CAFÉ CO.\n\nI HAVE A QUESTION ABOUT A PRODUCT\nHelp Centre\nProducts\nI have a question about a product\n\nAsk on the product page or contact us. We can’t give medical advice; please speak to a doctor about your own health.\n\nLabel details such as serving size, directions and cautions will appear once the approved labels are published.\n\nContact support\n\nDid this answer your question?\nYes\nNo\n\nRelated\nI think a product is unsafe or made someone unwell\nStill need help?\n\nContact us an",
+    "heading": "I have a question about a product",
+    "title": "I have a question about a product — Body Café Co."
+  },
+  {
+    "route": "/help/products/safety",
+    "excerpt": "HELP · PRODUCTS · BODY CAFÉ CO.\n\nI THINK A PRODUCT IS UNSAFE OR MADE SOMEONE UNWELL\nHelp Centre\nProducts\nI think a product is unsafe or made someone unwell\n\nStop using it and report it as a product safety concern. It’s handled as a priority case. If someone needs urgent care, contact a doctor or emergency services first.\n\nTell us the product, the lot number on the pack and what happened. Keep the pack if you can.\n\nReport a safety concern\n\nDid this answer your question?\nYes\nNo\n\nRelated\nI have a q",
+    "heading": "I think a product is unsafe or made someone unwell",
+    "title": "I think a product is unsafe or made someone unwell — Body Café Co."
+  },
+  {
+    "route": "/help/reports/find-lot",
+    "excerpt": "HELP · LOT REPORTS · BODY CAFÉ CO.\n\nHOW DO I FIND THE REPORT FOR MY PACK?\nHelp Centre\nLot Reports\nHow do I find the report for my pack?\n\nChoose your product on Lot Reports and enter the lot number printed on the pack.\n\nThe preview has demonstration lots so you can try it. Where the lot number sits on each pack will be shown once final labels are approved.\n\nLot Reports\n\nDid this answer your question?\nYes\nNo\n\nRelated\nMy lot number isn’t found\nStill need help?\n\nContact us and we’ll pick it up from ",
+    "heading": "How do I find the report for my pack?",
+    "title": "How do I find the report for my pack? — Body Café Co."
+  },
+  {
+    "route": "/help/reports/lot-not-found",
+    "excerpt": "HELP · LOT REPORTS · BODY CAFÉ CO.\n\nMY LOT NUMBER ISN’T FOUND\nHelp Centre\nLot Reports\nMy lot number isn’t found\n\nCheck for letters that look like numbers (O and 0, I and 1). If it still isn’t found, ask us from the result page; the lot is attached to your question.\n\nLot Reports\nContact support\n\nDid this answer your question?\nYes\nNo\n\nRelated\nHow do I find the report for my pack?\nStill need help?\n\nContact us and we’ll pick it up from here. You get a case reference straight away.\n\nContact support",
+    "heading": "My lot number isn’t found",
+    "title": "My lot number isn’t found — Body Café Co."
+  }
+]

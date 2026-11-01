@@ -20,7 +20,7 @@ function layers(ctx,report=false){
  return `<section class="atelier-layers" data-layers><header><span class="atelier-eyebrow">${report?'FOLLOW THE NUMBER':'THE ANATOMY OF A CLEARER CHOICE'}</span><h2>${report?'A number.<br>A trail to follow.':titles[ctx.design][1]}</h2></header><div class="atelier-layer-layout"><div class="atelier-layer-art" aria-hidden="true"><span class="atelier-orbit orbit-one"></span><span class="atelier-orbit orbit-two"></span><span class="atelier-orbit orbit-three"></span><strong data-layer-glyph>${report?'LOT':'?'}</strong><span class="atelier-diagram-note">${report?'PRODUCT → LOT → RECORD':'LOOK / READ / UNDERSTAND'}</span></div><div class="atelier-layer-reader"><div class="atelier-tabs" role="tablist" aria-label="${report?'Follow a lot record':'Explore the bottle'}">${chapters.map((c,i)=>`<button role="tab" id="layer-tab-${i}" aria-controls="layer-panel-${i}" aria-selected="${i===0}" tabindex="${i===0?'0':'-1'}" data-layer-tab="${i}"><span>${no(i)}</span>${c[0]}</button>`).join('')}</div>${chapters.map((c,i)=>`<article role="tabpanel" id="layer-panel-${i}" aria-labelledby="layer-tab-${i}" ${i?'hidden':''} data-layer-panel="${i}"><span class="atelier-eyebrow">0${i+1} / ${c[0]}</span><h3>${c[1]}</h3><p>${c[2]}</p><a href="${c[3]}">${c[4]} <span aria-hidden="true">↗</span></a></article>`).join('')}</div></div></section>`;
 }
 for(const d of ['a','b','c','d']){
- const base=S.themes[d],next={...base};
+ const base=S.themes[d];if(!base)continue;const next={...base};
  for(const key of ['home','shop','story','standards','reports','learn']){
   if(typeof base[key]!=='function')continue;
   next[key]=function(ctx,...args){const html=base[key](ctx,...args);if(key==='learn'&&args[0])return html;
