@@ -194,6 +194,7 @@
       related: [["/story", "Our story"], ["/learn", "Learn"], ["/help", "Help centre"]],
     },
   };
+  if (window.BCCContentE) window.BCCContentE.merge("standards", M);
 
   /* ====================================================================================================
      2. SHARED BUILDERS — semantic HTML with sx-* hooks. Directions restyle these; they never change facts.

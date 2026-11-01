@@ -152,7 +152,7 @@
   }
   function hub(v, ctx) {
     var q = ctx.query.get("q") || "";
-    var intro = '<header class="lr-hero" id="top"><div class="lr-hero-in"><p class="lr-kicker">' + (v.kicker || "Learn") + '</p><h1 class="lr-h1">A little more knowing.</h1><p class="lr-hero-lede">Short, sourced guides to our seven products, to reading any supplement label, and to what evidence and lot reports can and can\'t show. Free to read; no account needed.</p>' +
+    var intro = '<header class="lr-hero" id="top"><div class="lr-hero-in"><p class="lr-kicker">' + (v.kicker || "Learn") + '</p><h1 class="lr-h1">A little more knowing.</h1><p class="lr-hero-lede">' + (v.lede ? h(v.lede) : "Short, sourced guides to our seven products, to reading any supplement label, and to what evidence and lot reports can and can't show. Free to read; no account needed.") + '</p>' +
       '<form class="lr-search" role="search" data-lr-search action="/learn" method="get"><label for="lr-q">Search Learn</label><div class="lr-search-row"><input id="lr-q" name="q" type="search" value="' + h(q) + '" placeholder="Try “elemental iron” or “mcg and IU”" autocomplete="off" maxlength="80"><button type="submit" class="lr-btn">Search</button></div>' +
       '<p class="lr-try">Try: ' + EXAMPLES.map(function (e) { return '<button type="button" class="lr-chip" data-lr-try="' + h(e) + '">' + h(e) + "</button>"; }).join("") + '</p></form><div class="lr-results-box" data-lr-results>' + resultsHtml(q) + "</div></div></header>";
     var start = hubSection(v, "start", 1, "Start here", '<ol class="lr-paths">' + [
@@ -307,6 +307,7 @@
     g: { key: "g", kicker: "Learn / contact sheet", k: function (n) { return "Frame " + pad(n) + " / 08"; } },
     h: { key: "h", kicker: "Learn · Reference", k: function (n) { return "§ " + n; }, guideKicker: function (k) { return "Reference · " + k; } },
   };
+  if (window.BCCContentE) window.BCCContentE.merge("learnV", V.e);
   Object.keys(V).forEach(function (d) {
     if (!S.themes[d]) return;
     var base = S.themes[d], next = {};

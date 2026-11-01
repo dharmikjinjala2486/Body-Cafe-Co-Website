@@ -5,6 +5,9 @@
 (function () {
   "use strict";
   var S = window.BCCSite, E = window.BCCEH, h = E.h;
+  /* Version E copy lives in content-e.js; each string below falls back to the original wording. */
+  var CE = window.BCCContentE || null, T = (CE && CE.active && CE.e) || {};
+  function line(p) { return CE ? CE.line(p) : p.subtitle; }
   var MENU = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>';
 
   function capInk(ctx, p) { return ctx.onCap(p.color); }
@@ -41,7 +44,7 @@
       '<div class="e-mnav-caps">' + ctx.published.map(function (p) { return '<a href="/products/' + p.id + '" style="background:' + p.color + ";color:" + capInk(ctx, p) + '"><span>' + h.no(ctx, p) + "</span>" + ctx.escape(p.name) + "</a>"; }).join("") + "</div>" +
       '<p class="e-mnav-foot"><a href="/account">Account</a><a href="/cart">Bag (<span data-cart-count>' + ctx.count + "</span>)</a></p></nav>" +
       '<main id="main" tabindex="-1">' + content + "</main>" +
-      '<footer class="e-footer">' + stripe(ctx, "e-stripe-foot") + '<div class="e-foot-grid"><div class="e-foot-brand"><img src="/web/media/brand-original.svg" alt="Body Café Co." width="456" height="443"><p>Seven everyday supplements, each with its own cap colour.</p></div>' +
+      '<footer class="e-footer">' + stripe(ctx, "e-stripe-foot") + '<div class="e-foot-grid"><div class="e-foot-brand"><img src="/web/media/brand-original.svg" alt="Body Café Co." width="456" height="443"><p>' + (T.footer || "Seven everyday supplements, each with its own cap colour.") + '</p></div>' +
       '<div><h2>Shop</h2><a href="/shop">All seven</a>' + ctx.published.map(function (p) { return '<a href="/products/' + p.id + '"><i style="background:' + p.color + '" aria-hidden="true"></i>' + ctx.escape(p.name) + "</a>"; }).join("") + "</div>" +
       '<div><h2>Read</h2><a href="/about">About</a><a href="/story">Story</a><a href="/standards">Standards</a><a href="/learn">Learn</a><a href="/reports">Lot reports</a></div>' +
       S.careGroups().map(function (g) { return '<div><h2>' + g.group + '</h2>' + g.items.map(function (x) { return '<a href="' + x[1] + '">' + x[0] + '</a>'; }).join('') + '</div>'; }).join('') + "</div>" +
@@ -55,19 +58,19 @@
     var first = ctx.product("iron-bisglycinate") || list[0];
     return (
       /* 1 · Hero */
-      '<section class="e-hero" data-home-section="hero" aria-labelledby="e-hero-t"><div class="e-hero-copy"><p class="x-kicker">01 — 07 · Seven daily supplements</p><h1 id="e-hero-t">Seven supplements. <span>One colour each.</span></h1><p class="x-lede">' + H.hero + '</p><div class="e-actions"><a class="x-btn" href="/shop"><span>Shop all seven</span></a><a class="x-link" href="/reports">Find a lot report</a></div><p class="x-small">Prices are samples. Packaging shown is a draft.</p></div>' +
+      '<section class="e-hero" data-home-section="hero" aria-labelledby="e-hero-t"><div class="e-hero-copy"><p class="x-kicker">' + (T.heroKicker || "01 — 07 · Seven daily supplements") + '</p><h1 id="e-hero-t">' + (T.heroTitle || "Seven supplements. <span>One colour each.</span>") + '</h1><p class="x-lede">' + (T.heroLede || H.hero) + '</p><div class="e-actions"><a class="x-btn" href="/shop"><span>Shop all seven</span></a><a class="x-link" href="/reports">Find a lot report</a></div><p class="x-small">Prices are samples. Packaging shown is a draft.</p></div>' +
       '<ol class="e-tray" aria-label="The seven, by cap colour">' + list.map(function (p) { return '<li style="' + ctx.capStyle(p) + '"><a href="/products/' + p.id + '"><span class="e-tray-cap">' + h.render(ctx, p, "cap", { alt: "", eager: true }) + '</span><span class="e-tray-no">' + h.no(ctx, p) + "</span>" + name(ctx, p) + "</a></li>"; }).join("") + "</ol></section>" +
 
       /* 2 · Meet the collection: the fan deck */
-      '<section class="e-collection" id="collection" data-home-section="collection" aria-labelledby="e-col-t"><header class="e-sec-head"><p class="x-kicker">Meet the collection</p><h2 id="e-col-t">Open a colour.</h2><p>Every chip is a product. Choose one to see the bottle, the format and the sample price.</p></header>' +
+      '<section class="e-collection" id="collection" data-home-section="collection" aria-labelledby="e-col-t"><header class="e-sec-head"><p class="x-kicker">Meet the collection</p><h2 id="e-col-t">' + (T.colTitle || "Open a colour.") + '</h2><p>' + (T.colLede || "Every chip is a product. Choose one to see the bottle, the format and the sample price.") + '</p></header>' +
       '<div class="e-deck" data-eh-tabs data-eh-hover>' + list.map(function (p, i) {
         var on = p.id === first.id;
         return '<div class="e-chip" style="' + ctx.capStyle(p) + '"><button type="button" class="e-chip-cap" data-eh-tab="' + i + '" aria-expanded="' + on + '" aria-controls="e-chip-' + p.id + '"><span class="e-chip-no">' + h.no(ctx, p) + '</span><span class="e-chip-fmt">' + ctx.escape(ctx.format[p.id]) + '</span><span class="e-chip-label">' + ctx.escape(p.name) + "</span></button>" +
-          '<div class="e-chip-body"><span class="e-chip-vert" aria-hidden="true">' + ctx.escape(p.name) + '</span><div class="e-chip-panel" id="e-chip-' + p.id + '" data-eh-panel="' + i + '"' + (on ? "" : " hidden") + '><a class="e-chip-media" href="/products/' + p.id + '" tabindex="-1" aria-hidden="true">' + h.front(ctx, p, { alt: "" }) + "</a>" + name(ctx, p, "h3") + '<p class="e-chip-sub">' + ctx.escape(p.subtitle) + '</p><div class="e-chip-foot"><p class="e-price">' + ctx.money(p.price) + '<small>Sample price</small></p>' + h.addBtn(ctx, p, "x-btn e-add") + '</div><a class="x-link" href="/products/' + p.id + '">View ' + ctx.escape(p.name) + "</a></div></div></div>";
+          '<div class="e-chip-body"><span class="e-chip-vert" aria-hidden="true">' + ctx.escape(p.name) + '</span><div class="e-chip-panel" id="e-chip-' + p.id + '" data-eh-panel="' + i + '"' + (on ? "" : " hidden") + '><a class="e-chip-media" href="/products/' + p.id + '" tabindex="-1" aria-hidden="true">' + h.front(ctx, p, { alt: "" }) + "</a>" + name(ctx, p, "h3") + '<p class="e-chip-sub">' + ctx.escape(line(p)) + '</p><div class="e-chip-foot"><p class="e-price">' + ctx.money(p.price) + '<small>Sample price</small></p>' + h.addBtn(ctx, p, "x-btn e-add") + '</div><a class="x-link" href="/products/' + p.id + '">View ' + ctx.escape(p.name) + "</a></div></div></div>";
       }).join("") + "</div></section>" +
 
       /* 3 · Generate curiosity */
-      '<section class="e-curious" data-home-section="curiosity" aria-labelledby="e-cur-t"><header class="e-sec-head"><p class="x-kicker">One question per cap</p><h2 id="e-cur-t">Start with the detail that matters.</h2><p>' + H.curiosity + '</p></header><div class="e-ask" data-eh-tabs data-eh-orient="vertical"><div class="e-ask-list" role="tablist" aria-label="Choose a product" aria-orientation="vertical">' +
+      '<section class="e-curious" data-home-section="curiosity" aria-labelledby="e-cur-t"><header class="e-sec-head"><p class="x-kicker">One question per cap</p><h2 id="e-cur-t">Start with the detail that matters.</h2><p>' + (T.curLede || H.curiosity) + '</p></header><div class="e-ask" data-eh-tabs data-eh-orient="vertical"><div class="e-ask-list" role="tablist" aria-label="Choose a product" aria-orientation="vertical">' +
       list.map(function (p, i) { return '<button type="button" role="tab" id="e-ask-t' + i + '" aria-controls="e-ask-p' + i + '" aria-selected="' + (i === 0) + '" tabindex="' + (i === 0 ? 0 : -1) + '" data-eh-tab="' + i + '" style="' + ctx.capStyle(p) + '"><i aria-hidden="true"></i>' + ctx.escape(p.name) + "</button>"; }).join("") + "</div>" +
       list.map(function (p, i) { var a = h.ask(p); return '<div class="e-ask-panel" role="tabpanel" id="e-ask-p' + i + '" aria-labelledby="e-ask-t' + i + '" data-eh-panel="' + i + '"' + (i ? " hidden" : "") + ' style="' + ctx.capStyle(p) + '"><div class="e-ask-art">' + h.render(ctx, p, "tq", { alt: "" }) + '</div><div class="e-ask-copy"><p class="x-kicker">' + ctx.escape(p.name) + " · " + ctx.escape(ctx.format[p.id]) + "</p><h3>" + a.q + '</h3><p class="e-ask-d">' + a.d + "</p><p>" + a.lead + '</p><p class="e-ask-links"><a class="x-link" href="/learn/' + p.id + '">Read the ingredient note</a><a class="x-link" href="/products/' + p.id + '">View the product</a></p></div></div>'; }).join("") + "</div></section>" +
 
@@ -79,10 +82,10 @@
       '<section class="e-lot-sec" data-home-section="lot" aria-labelledby="e-lot-t"><div class="e-lot-copy"><p class="x-kicker">Lot report</p><h2 id="e-lot-t">Find the lot. Read its record.</h2><p>' + S.copy.reports.what + "</p>" + h.numbered(S.copy.reports.steps) + '</div><div class="e-lot-panel"><p class="x-kicker">Try a lookup</p>' + h.homeLotForm(ctx, "x-lotform e-lotform") + '<h3>What a report can’t tell you</h3>' + h.dash(S.copy.reports.limits) + "</div></section>" +
 
       /* 6 · Customer voices */
-      '<section class="e-voices" data-home-section="voices" aria-labelledby="e-vo-t"><p class="x-kicker" id="e-vo-t">Customer voices</p><p class="e-voices-lead">' + H.voices + '</p><div class="e-voices-body"><p>' + H.voicesBody + '</p><p class="x-small">' + H.voicesSmall + "</p></div>" + stripe(ctx, "e-stripe-thin") + "</section>" +
+      '<section class="e-voices" data-home-section="voices" aria-labelledby="e-vo-t"><p class="x-kicker" id="e-vo-t">Customer voices</p><p class="e-voices-lead">' + (T.voices || H.voices) + '</p><div class="e-voices-body"><p>' + H.voicesBody + '</p><p class="x-small">' + H.voicesSmall + "</p></div>" + stripe(ctx, "e-stripe-thin") + "</section>" +
 
       /* 7 · Before you order */
-      '<section class="e-faq" data-home-section="faq" aria-labelledby="e-faq-t"><header><p class="x-kicker">Before you order</p><h2 id="e-faq-t">Good questions welcome here.</h2><a class="x-link" href="/help">Visit the help centre</a></header><div class="x-faqs">' + h.faqs(H.faq) + "</div></section>"
+      '<section class="e-faq" data-home-section="faq" aria-labelledby="e-faq-t"><header><p class="x-kicker">Before you order</p><h2 id="e-faq-t">' + (T.faqTitle || "Good questions welcome here.") + '</h2><a class="x-link" href="/help">Visit the help centre</a></header><div class="x-faqs">' + h.faqs(H.faq) + "</div></section>"
     );
   }
 
@@ -104,7 +107,7 @@
     var m = h.pdp(ctx, p), ink = capInk(ctx, p);
     var others = ctx.catalog.filter(function (x) { return x.published || x.id === p.id; });
     return '<article class="e-pdp" style="' + ctx.capStyle(p) + '">' +
-      '<div class="e-pdp-band"><div class="e-pdp-band-in">' + K.crumbs([["/", "Home"], ["/shop", "Shop"], ["/shop?format=" + encodeURIComponent(ctx.format[p.id]), m.format], ["", m.name]]) + '<p class="e-pdp-no">' + m.no + " / " + m.total + " · " + m.format + "</p><h1>" + m.name + '</h1><p class="e-pdp-sub">' + m.sub + "</p></div></div>" +
+      '<div class="e-pdp-band"><div class="e-pdp-band-in">' + K.crumbs([["/", "Home"], ["/shop", "Shop"], ["/shop?format=" + encodeURIComponent(ctx.format[p.id]), m.format], ["", m.name]]) + '<p class="e-pdp-no">' + m.no + " / " + m.total + " · " + m.format + "</p><h1>" + m.name + '</h1><p class="e-pdp-sub">' + ctx.escape(line(p)) + "</p></div></div>" +
       '<div class="e-pdp-body"><figure class="e-pdp-fig">' + h.front(ctx, p, { eager: true, cls: "e-pdp-bottle" }) + "<figcaption>" + h.MOCKUP + "</figcaption></figure>" +
       '<div class="e-pdp-main"><p class="e-pdp-inview"><span>Ingredients in view</span>' + m.inView + "</p>" + (m.note ? '<p class="x-small">' + m.note + "</p>" : "") +
       h.dl(m.facts.filter(function (f) { return f[0] !== "Ingredient in view"; }), "x-dl e-facts") +
@@ -112,7 +115,7 @@
       m.care.map(function (c) { return '<details class="x-faq"><summary><span>' + c[0] + '</span><span class="x-faq-mark" aria-hidden="true">+</span></summary><p><strong>' + h.PENDING + ".</strong> " + c[1] + "</p></details>"; }).join("") +
       '<details class="x-faq"><summary><span>Delivery and returns</span><span class="x-faq-mark" aria-hidden="true">+</span></summary><p>Pincode estimates are illustrative. Sample delivery is ₹75, waived on sample orders of ₹1,499 or more. Final return eligibility, timing and remedies are still being approved.</p><p><a class="x-link" href="/policies/shipping">Shipping</a> · <a class="x-link" href="/policies/returns">Returns</a></p></details></div>' +
       '<aside class="e-buy" aria-label="Buy ' + m.name + '"><div class="e-buy-top"><p class="e-price e-price-lg">' + m.price + '</p><p class="x-small">Sample price</p></div><p class="e-stock' + (m.off ? " is-off" : "") + '">' + m.stockLine + '</p><p class="x-small">One-time purchase. Prices, tax and delivery are samples.</p><div class="e-buy-row" data-pd-buy>' + h.qtySelect(m) + h.addMain(m, "x-btn e-buy-add") + '</div><p class="x-small">Preview order only. No payment or dispatch.</p>' + h.pincodeForm("x-inline-form e-pin") + "</aside></div>" +
-      '<section class="e-pdp-lot" aria-labelledby="e-pl-t"><div><p class="x-kicker">Lot report</p><h2 id="e-pl-t">Every pack points to its lot.</h2><p>' + S.copy.reports.what + "</p>" + h.dash(S.copy.reports.limits) + "</div>" + h.pdpLotForm(m, "x-inline-form e-pdp-lotform") + "</section>" +
+      '<section class="e-pdp-lot" aria-labelledby="e-pl-t"><div><p class="x-kicker">Lot report</p><h2 id="e-pl-t">' + (T.pdpLotTitle || "Every pack points to its lot.") + '</h2><p>' + S.copy.reports.what + "</p>" + h.dash(S.copy.reports.limits) + "</div>" + h.pdpLotForm(m, "x-inline-form e-pdp-lotform") + "</section>" +
       '<section class="e-pdp-faq" aria-labelledby="e-pf-t"><h2 id="e-pf-t">Questions about ' + m.name + '</h2><div class="x-faqs">' + h.faqs(m.faqs) + '</div><p class="e-pdp-links"><a class="x-link" href="/learn/' + p.id + '">Ingredient note</a><a class="x-link" href="/learn/reading-a-label">Read a label with confidence</a><a class="x-link" href="/contact">Contact support</a></p></section>' +
       '<nav class="e-sibs" aria-label="Other products">' + others.map(function (o) { var on = o.id === p.id; return '<a href="/products/' + o.id + '" style="background:' + o.color + ";color:" + capInk(ctx, o) + '"' + (on ? ' aria-current="page"' : "") + '><span>' + h.no(ctx, o) + '</span><span class="e-sib-name">' + ctx.escape(o.name) + "</span></a>"; }).join("") + "</nav></article>";
   }

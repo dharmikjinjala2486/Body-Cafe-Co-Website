@@ -1189,6 +1189,7 @@ async function render(scroll = true) {
             .map((x) => x.replaceAll("-", " "))
             .join(" · ")) + " — Body Café Co.";
     if (shown) document.querySelector('meta[name="description"]')?.setAttribute("content", shown.seo_description || shown.subtitle || shown.name);
+    window.BCCContentE?.seo(path, shown);
     if (scroll) {
       const anchor = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
       if (anchor) anchor.scrollIntoView();
@@ -1514,7 +1515,8 @@ document.addEventListener("submit", async (e) => {
 });
 document.addEventListener("change", (e) => {
   if (e.target.matches("[data-design-select]") && availableDesigns().includes(e.target.value)) {
-    navigate(designHref(e.target.value));
+    // Full load, so direction-specific content (content-e.js) is applied or left out cleanly.
+    location.assign(designHref(e.target.value));
     return;
   }
   if (e.target.id === "report-product") {
