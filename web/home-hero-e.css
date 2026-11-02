@@ -1,0 +1,138 @@
+/* Body Café Co. — Variant E · homepage hero, launch range and proof; a still site (stakeholder reviews, 2 November 2026). */
+
+/* ---------- 1. No decorative motion anywhere in E ---------- */
+.eh-e *, .eh-e *::before, .eh-e *::after { animation: none !important; }
+html:has(body.eh-e) { scroll-behavior: auto; }
+.eh-e .ssy.is-js .ssy-rv, .eh-e [data-ss-reveal] .ezst-copy > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+.ss-flood { display: none !important; }
+.eh-e .ss-play { display: none !important; }
+
+/* ---------- 2. Hero: seven top-view caps ---------- */
+.eh-e .ht-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(28px, 5vw, 80px); align-items: center; padding: clamp(36px, 5vw, 72px) var(--pad); min-height: min(820px, calc(100vh - 80px)); }
+.eh-e .ht-copy { display: grid; gap: 18px; align-content: center; }
+.eh-e .ht-copy .ez-k { margin: 0; }
+.eh-e .ht-hero .ht-copy h1 { margin: 0; font-size: clamp(52px, 7vw, 112px); line-height: .95; letter-spacing: -0.04em; }
+.eh-e .ht-hero .ht-copy h1 span { display: inline; color: #aa472e; }
+.eh-e .ht-sub { margin: 0; font-size: clamp(22px, 2.2vw, 32px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; }
+.eh-e .ht-copy .ez-lede { margin: 0; max-width: 46ch; font-size: clamp(16px, 1.2vw, 18px); color: var(--muted); }
+.eh-e .ht-copy .ez-actions { margin-top: 6px; }
+.eh-e .ht-dots { margin: 8px 0 0; display: flex; gap: 6px; }
+.eh-e .ht-dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--cap); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08); }
+.eh-e .ht-stage { width: 100%; max-width: 620px; justify-self: center; padding: clamp(24px, 3vw, 42px); border-radius: 40px;
+  background: radial-gradient(110% 80% at 30% 10%, #fbf9f5 0%, #f3efe7 60%, #ebe5da 100%); box-shadow: inset 0 0 0 1px rgb(45 41 38 / .06); }
+.eh-e .ht-caps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(20px, 2.5vw, 36px) clamp(8px, 1.2vw, 18px); }
+.eh-e .ht-caps li { grid-column: span 2; position: relative; min-width: 0; }
+.eh-e .ht-caps li:nth-child(1), .eh-e .ht-caps li:nth-child(6) { grid-column: 2 / span 2; }
+.eh-e .ht-caps li:nth-child(2), .eh-e .ht-caps li:nth-child(7) { grid-column: 4 / span 2; }
+.eh-e .ht-caps a { display: block; position: relative; aspect-ratio: 1; border-radius: 50%; color: var(--ink); text-decoration: none; }
+.eh-e .ht-cap { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 50%; filter: drop-shadow(0 7px 5px rgb(45 41 38 / .16)); }
+.eh-e .ht-cap-name { position: absolute; z-index: 2; left: 50%; bottom: -12px; transform: translateX(-50%); width: max-content; max-width: min(180px, 40vw); padding: 8px 12px; border-radius: 16px; background: var(--ink); color: var(--surface); font-size: 13px; font-weight: 600; line-height: 1.25; text-align: center; opacity: 0; pointer-events: none; }
+.eh-e .ht-caps li:hover, .eh-e .ht-caps li:focus-within { z-index: 3; }
+.eh-e .ht-caps a:hover .ht-cap-name, .eh-e .ht-caps a:focus-visible .ht-cap-name { opacity: 1; }
+.eh-e .ht-caps a:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
+@media (hover: none) {
+  .eh-e .ht-cap-name { opacity: 1; font-size: 11px; padding: 5px 8px; }
+}
+@media (max-width: 960px) {
+  .eh-e .ht-hero { grid-template-columns: 1fr; min-height: 0; }
+  .eh-e .ht-stage { max-width: 520px; }
+}
+@media (max-width: 560px) {
+  .eh-e .ht-stage { border-radius: 28px; padding: 24px 18px 30px; }
+  .eh-e .ht-caps { row-gap: 30px; }
+}
+
+/* The closing invitation shares the hero caps and its product interactions. */
+.eh-e .hx-invite .ht-stage { --ink: #2d2926; --surface: #fff; max-width: 520px; }
+
+/* ---------- 3. Launch range: the shop card ---------- */
+.eh-e .hr-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+.eh-e .hr-card { display: grid; grid-template-rows: auto auto 1fr; border-radius: 10px; overflow: hidden; background: var(--surface); }
+.eh-e .hr-band { margin: 0; display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: var(--cap); color: var(--on-cap, #fff); font: 600 12px/1 "Lemon Milk", sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+.eh-e .hr-media { display: grid; place-items: center; padding: 26px 22px 10px; }
+/* A shared image height keeps the range consistent across different bottle widths. */
+.eh-e .hr-media img { display: block; width: 100%; height: 240px; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 12px 14px rgb(45 41 38 / .14)); }
+.eh-e .hr-body { display: grid; gap: 12px; align-content: end; padding: 14px 20px 20px; }
+.eh-e .hr-name { margin: 0; font: 700 clamp(17px, 1.35vw, 20px)/1.2 "Lemon Milk", sans-serif; text-transform: uppercase; letter-spacing: .01em; min-height: 2.4em; }
+.eh-e .hr-name a { color: inherit; text-decoration: none; }
+.eh-e .hr-name a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.eh-e .hr-pack { margin: 0; color: var(--muted); font-size: 16px; }
+.eh-e .hr-buy { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.eh-e .hr-price { margin: 0; }
+.eh-e .hr-price strong { font-size: 22px; font-weight: 700; }
+.eh-e .hr-price span { font-size: 13px; color: var(--muted); }
+.eh-e .hr-avail { margin: 0; display: inline-flex; align-items: center; gap: 7px; font-size: 15px; }
+.eh-e .hr-avail span { width: 9px; height: 9px; border-radius: 50%; background: #2f8a4a; }
+.eh-e .hr-avail[data-state="out"] span { background: #9b2b17; }
+.eh-e .hr-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 4px; }
+.eh-e .hr-view { color: inherit; font-size: 16px; text-underline-offset: 5px; }
+.eh-e .hr-add { min-height: 48px; padding: 0 20px; border: 0; border-radius: 4px; background: var(--ink); color: #fff; font: inherit; font-size: 16px; cursor: pointer; }
+.eh-e .hr-add:hover { background: #000; }
+.eh-e .hr-add[disabled] { background: var(--line-strong); cursor: not-allowed; }
+@media (max-width: 760px) {
+  .eh-e .hr-grid { display: flex; overflow-x: auto; contain: paint; scroll-snap-type: x mandatory; gap: 14px; margin-inline: calc(var(--pad) * -1); padding: 0 var(--pad) 8px; scrollbar-width: none; }
+  .eh-e .hr-card { flex: 0 0 78%; scroll-snap-align: start; }
+}
+
+/* ---------- 4. Proof: records anyone can check ---------- */
+.eh-e .hp-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 18px; }
+.eh-e .hp-k { margin: 0 0 8px; font: 600 11px/1.3 "Lemon Milk", sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+.eh-e .hp-grid h3 { margin: 0; font-size: clamp(22px, 2vw, 30px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.15; }
+.eh-e .hp-id { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 1.02em; letter-spacing: .02em; }
+/* Licence record: dark, formal */
+.eh-e .hp-record { grid-row: span 2; display: grid; align-content: start; gap: 22px; padding: clamp(24px, 3vw, 40px); border-radius: 20px; background: var(--ink); color: #fff; }
+.eh-e .hp-record .hp-k { color: rgb(255 255 255 / .7); }
+.eh-e .hp-record-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.eh-e .hp-record-head h3 { max-width: 14ch; }
+.eh-e .hp-seal { flex: none; width: clamp(96px, 9vw, 132px); height: auto; color: #e9dfc8; }
+.eh-e .hp-rows { margin: 0; display: grid; }
+.eh-e .hp-rows > div { display: grid; grid-template-columns: minmax(120px, 160px) minmax(0, 1fr) auto; gap: 6px 18px; align-items: center; padding: 18px 0; border-top: 1px solid rgb(255 255 255 / .16); }
+.eh-e .hp-rows dt { font-size: 13px; color: rgb(255 255 255 / .7); }
+.eh-e .hp-rows dd { margin: 0; display: grid; gap: 3px; }
+.eh-e .hp-rows dd small { font-size: 12.5px; color: rgb(255 255 255 / .62); }
+.eh-e .hp-rows .hp-id { font-size: clamp(17px, 1.5vw, 21px); color: #fff; }
+.eh-e .hp-verify { justify-self: end; white-space: nowrap; padding: 9px 14px; border-radius: 999px; background: #fff; color: var(--ink); font-size: 13.5px; font-weight: 600; text-decoration: none; }
+.eh-e .hp-verify:hover { background: #e9dfc8; }
+/* Labels */
+.eh-e .hp-labels { display: grid; gap: 14px; padding: clamp(22px, 2.6vw, 32px); border-radius: 20px; background: var(--surface); }
+.eh-e .hp-fan { position: relative; height: 190px; margin: 6px 0 2px; max-width: 460px; }
+.eh-e .hp-fan img { position: absolute; bottom: 0; left: calc(6% + var(--i) * 22%); width: min(22%, 104px); height: auto; transform: rotate(calc((var(--i) - 1.5) * 5deg)); transform-origin: 50% 100%; filter: drop-shadow(0 10px 12px rgb(45 41 38 / .18)); }
+.eh-e .hp-pdfs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.eh-e .hp-pdfs a { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: #fff; color: inherit; text-decoration: none; font-size: 13.5px; box-shadow: 0 0 0 1px rgb(45 41 38 / .08); }
+.eh-e .hp-pdfs i { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--cap); }
+.eh-e .hp-pdfs small { margin-left: auto; font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.eh-e .hp-pdfs a:hover { box-shadow: 0 0 0 1.5px var(--cap); }
+/* Checks */
+.eh-e .hp-checks { display: grid; gap: 16px; align-content: start; padding: clamp(22px, 2.6vw, 32px); border-radius: 20px; border: 1.5px solid var(--ink); }
+.eh-e .hp-checks ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.eh-e .hp-checks li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 2px 12px; }
+.eh-e .hp-checks li::before { content: ""; grid-row: span 2; width: 22px; height: 22px; border-radius: 50%; background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E") center / 15px no-repeat; }
+.eh-e .hp-checks b { font-weight: 600; }
+.eh-e .hp-checks span { color: var(--muted); font-size: 14px; }
+.eh-e .hp-btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 20px; border-radius: 999px; background: var(--ink); color: #fff; text-decoration: none; font-weight: 600; font-size: 15px; }
+.eh-e .hp-btn:hover { background: #000; }
+.eh-e .hp-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; padding-top: 6px; }
+/* Makers */
+.eh-e .hp-makers { grid-column: 1 / -1; padding: clamp(22px, 2.6vw, 32px); border-radius: 20px; background: var(--surface); }
+.eh-e .hp-makers ol { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.eh-e .hp-makers li { display: grid; gap: 6px; align-content: start; padding: 20px; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1px rgb(45 41 38 / .08); }
+.eh-e .hp-city { margin: 0; font-size: clamp(28px, 2.6vw, 40px); font-weight: 300; letter-spacing: -0.03em; line-height: 1; }
+.eh-e .hp-makers h4 { margin: 2px 0 0; font-size: 16px; font-weight: 600; }
+.eh-e .hp-lic { margin: 0; font-size: 13px; color: var(--muted); }
+.eh-e .hp-makes { margin: 8px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.eh-e .hp-makes span { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: var(--surface); font-size: 12.5px; }
+.eh-e .hp-makes i { width: 8px; height: 8px; border-radius: 50%; background: var(--cap); }
+@media (max-width: 1080px) { .eh-e .hp-grid { grid-template-columns: 1fr; } .eh-e .hp-record { grid-row: auto; } }
+@media (max-width: 760px) {
+  .eh-e .hp-rows > div { grid-template-columns: 1fr; }
+  .eh-e .hp-verify { justify-self: start; }
+  .eh-e .hp-makers ol { grid-template-columns: 1fr; }
+  .eh-e .hp-pdfs { grid-template-columns: 1fr; }
+  .eh-e .hp-seal { width: 84px; }
+}
+
+/* The Super Sevens page uses the same cap selector as the homepage. */
+.eh-e .ss-page-head.ss-caps-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(28px, 5vw, 80px); }
+@media (max-width: 960px) {
+  .eh-e .ss-page-head.ss-caps-hero { grid-template-columns: 1fr; }
+}

@@ -85,7 +85,7 @@ def build():
     redirects = ('/api/* ' + target + '/api/:splat 200!\n') if target else ''
     redirects += '/feedback /feedback/index.html 200\n/feedback/ /feedback/index.html 200\n/* /index.html 200\n'
     (out / '_redirects').write_text(redirects, encoding='utf-8')
-    (out / '_headers').write_text('/api/*\n  Cache-Control: no-store\n/ops*\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: same-origin\n', encoding='utf-8')
+    (out / '_headers').write_text('/api/*\n  Cache-Control: no-store\n/ops*\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: same-origin\n  X-Frame-Options: DENY\n  Content-Security-Policy: frame-ancestors \'none\'; base-uri \'self\'; object-src \'none\'\n  Strict-Transport-Security: max-age=31536000\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(self)\n', encoding='utf-8')
     if site:
         routes = ['/', '/shop', '/bundles', '/standards', '/about', '/story', '/learn', '/reports', '/help', '/contact',
                   '/policies/shipping', '/policies/returns', '/policies/cancellation', '/policies/privacy', '/policies/terms']

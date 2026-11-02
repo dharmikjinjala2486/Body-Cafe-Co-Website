@@ -6,8 +6,8 @@
 .eh-e { --ss-ink: #2d2926; --ss-cream: #f6f3ec; --ss-cream-2: #efebe2; --ss-ease: cubic-bezier(.2, .7, .2, 1); --ss-spring: cubic-bezier(.34, 1.56, .64, 1); }
 
 /* ---------- Segment glyphs ---------- */
-.eh-e .ss-g { display: inline-block; flex: none; height: 1em; width: calc(1em * 143 / 200); min-width: 0; max-width: none; overflow: visible; vertical-align: -0.08em; fill: currentColor; stroke: none; }
-.eh-e .ss-g polygon, .eh-e .ss-mark polygon { stroke: none; }
+.eh-e .ss-g { display: inline-block; flex: none; height: 1em; width: calc(1em * 122 / 200); min-width: 0; max-width: none; overflow: visible; vertical-align: -0.08em; fill: currentColor; stroke: none; }
+.eh-e .ss-g path, .eh-e .ss-mark path { stroke: none; }
 .eh-e .ss-s { fill: var(--c); transition: opacity .35s var(--ss-ease); }
 .eh-e .ss-s.is-off { opacity: .1; }
 .eh-e .ss-s.is-off.is-cast { opacity: .16; }
@@ -17,7 +17,7 @@
 .eh-e .ss-g-mini { height: 1.4em; }
 
 /* ---------- The mark ---------- */
-.eh-e .ss-mark { display: block; height: 100%; width: auto; max-width: none; aspect-ratio: 143 / 200; overflow: visible; stroke: none; }
+.eh-e .ss-mark { display: block; height: 100%; width: auto; max-width: none; aspect-ratio: 122 / 200; overflow: visible; stroke: none; }
 .eh-e .ss-ms { fill: var(--c); opacity: .18; transform-box: fill-box; transform-origin: center; transition: opacity .45s var(--ss-ease), transform .45s var(--ss-spring), filter .3s; }
 .eh-e .ss-ms.is-seven { opacity: 1; }
 
@@ -642,3 +642,6 @@
 .eh-e .ezs > .ss-shelfnav { margin-top: 12px; margin-bottom: 32px; }
 .eh-e .x-page > .ss-numbers, .eh-e .x-page > .ss-chips { padding-inline: 0; }
 .eh-e .ss-numbers .ss-s.is-off { opacity: .08; }
+
+/* Whole numerals follow the bold geometric brand typography throughout Variant E. */
+.eh-e .ss-brand-digit text { font-family: "Lemon Milk", sans-serif; font-weight: 700; font-size: 180px; fill: currentColor; stroke: none; }

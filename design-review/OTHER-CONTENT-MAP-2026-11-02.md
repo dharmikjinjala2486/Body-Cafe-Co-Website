@@ -390,3 +390,213 @@ Step 8 of §5. **New files:** `web/footer-e.js` and `web/footer-e.css` (E only, 
 10. Specialist review of Learn articles before they are presented as guidance.
 11. Customer reviews: none yet. The rating rows show an empty state.
 12. Homepage hero preview line: remove it now, or keep it until `BCCRelease.production` is switched on at launch.
+
+## 14. SharePoint check, prices and signed-out account (2 November 2026)
+
+**Prices:** the owner's MRP list matches the catalogue exactly, so nothing changed:
+
+| Product | MRP |
+|---|---|
+| Iron | ₹899 |
+| L-Theanine | ₹1,699 |
+| D3 + K2 | ₹1,049 |
+| Fish Oil | ₹1,949 |
+| Myo & D-Chiro Inositol | ₹1,499 |
+| Creatine | ₹749 |
+| Isabgol (Psyllium) | ₹949 |
+
+Magnesium Bisglycinate (₹1,399) and Beetroot (₹1,749) are not in the seven-product range.
+
+**Applied from SharePoint (BodyCafe site)**
+- **GST:** GSTIN 24AAOCB2181Q1Z6 and the full registered office (Company and Legal › FSSAI Docx › GST certificate, REG-06): Office No. 202, 2nd Floor, Primate, Opp. Mother Milk Palace, Nr. Judges Bungalows Cross Road, Bodakdev, Ahmedabad, Gujarat 380054.
+- **FSSAI:** Central Licence 10726994000121, issued 3 Feb 2026 and valid to 2 Feb 2029. It matches the site.
+- **Where it shows:** these now appear in Contact › Business details and in "Who we are" on the Privacy and Terms pages (`web/support-content.js`, `web/support.js`).
+- **L-Theanine:** marked "Received" in Material › Material_Tracker_Status.xlsx. The Story "supply being confirmed" hold is removed and it now appears under Morning (`web/story-e.js`; exceptions recorded in `test-story-e-parity.mjs`).
+- **Story:** "Timings as printed on each label." becomes "Timings from each product's directions."
+
+**Approved direction, not yet policy text** (CEO Functional Requirements deck, 3 Aug 2026):
+- Guest-first prepaid checkout; no cash on delivery in v1.
+- Returns are support-managed and issue-based only (damaged, wrong or missing). Cancellation needs support approval.
+- GSTIN is optional on invoices.
+- Purchasers must be 18 or older.
+- Mobile one-time-code sign-in, with email as fallback.
+- Reviews from verified buyers only.
+- Support through one inbox covering WhatsApp, email and web.
+
+The site's policy drafts already follow this.
+
+**Not found in SharePoint (still open)**
+- **Policies and support:** the launch audit (AI Claude_Analysis › BCC_Launch_Audit_ThingsMissed_v1.xlsx) lists the returns policy, support hours and response time, and GST invoicing as undefined. Also missing: the grievance officer, the final delivery charge, and the return window in days.
+- **Test reports:** only quotations and request forms (Eurofins, Choksilab) exist. There are no finished-product batch reports and no manufacturer GMP certificates.
+- **Sourcing:** Vendors › Raw Material Documents holds several candidate suppliers per ingredient, with raw-material COAs. Nothing records which supplier went into each launch batch.
+- **Fish oil:** the raw material is marked "In Transit" (ETA 27 Oct 2026) in the material tracker. Stock records were not changed.
+
+**Signed-out account (Variant E)**
+- `/account` now opens on a sign-in screen. The mobile-number form sits on the right on desktop and directly under the heading on phones, next to a list of what an account keeps.
+- "No account? You can still" offers checkout as a guest, lot lookup and Contact.
+- The empty dashboard tabs show only when this browser has orders or cases.
+- On the hosted deployment (`BCCConnectedHosted`), SMS codes are not connected. The card there says sign-in opens with ordering instead of showing a form that cannot send a code.
+
+## 15. Final policies and store copy, Version 1.0 (2 November 2026)
+
+**Owner decisions applied**
+- Delivery: ₹75, free from ₹1,499 after discount.
+- Returns: issue-based only, reported within 7 days of delivery. Approved refunds are released within 7 business days.
+- Support: Monday to Saturday, 10:00–18:00 IST, first reply within one business day.
+- Grievance Officer: Nayan Solanki (care@bodycafeco.com, +91-9274248974). Grievances are acknowledged within 48 hours and resolved within one month.
+
+**Policies** (`web/support-content.js`)
+- All five policies are now Version 1.0 (updated 2 November 2026). There's no "Draft" chip and no "Not yet confirmed" items (`open` flags removed).
+- Terms: an order is a contract on payment confirmation. Courts at Ahmedabad have jurisdiction. Prices are MRP inclusive of taxes. A tax invoice comes from Bluebell Lifecare (GSTIN shown). Payment is through Razorpay, prepaid only.
+- Privacy names the processors: Razorpay, courier partners, the SMS provider, Netlify and Supabase. Retention: order and invoice records 8 years; account data until deletion. Data may be processed outside India.
+- Shipping says orders are packed Monday to Saturday. It gives no dispatch-time promise.
+- Help articles, Contact (hours, reply time, grievance officer, GSTIN, FSSAI) and the policy header (`web/support.js`) are updated.
+
+**Checkout and bag** (`web/app.js`, `web/site.js`, `web/site-eh.js`, `web/bag.js`, `app/account.py`, `app/server.py`)
+- No "sample", "preview order" or "illustrative tax" wording remains.
+- The order button reads "Place order and pay". Delivery and tax notes are now final.
+
+**Facts used that the owner should confirm with legal review**
+- Ahmedabad jurisdiction.
+- The 8-year retention period.
+- The 48-hour acknowledgement and one-month resolution, which follow E-Commerce Rules 2020 rule 4.
+- The processor list.
+- The refund timing wording.
+
+**Copy now ahead of the integrations** (each statement is true only once its integration is live)
+- Razorpay payment: the payment step is still the local simulator, which offers "Simulate successful payment".
+- SMS sign-in codes.
+- Courier serviceability and tracking.
+- GST invoice generation.
+- The local server's top bar ("Local preview · No live payment or dispatch") is environment chrome and is unchanged.
+
+## 16. Full QA pass: storefront, admin and backend (2 November 2026)
+
+**Storefront (Variant E)**
+- 29 routes tested at 1440, 820 and 375 px: home, shop, Super Sevens, all seven products, story, about, learn and an article, standards, lot reports, help, contact, five policies, bag, checkout, account, sign-in, settings and 404.
+- Checks on each: sideways overflow, text cut off at the screen edge, broken images, one visible h1, error screens and console errors. Everything passes after the fixes below.
+- The mobile menu opens and closes.
+- **End-to-end purchase** on a throwaway copy of the database (port 4175):
+  - add to bag (₹1,049 + ₹75 = ₹1,124), then guest checkout
+  - order BCC-7FBA3C6D, simulated successful payment, then the order page
+  - admin "Record shipment" with courier and tracking, after which the order shows Shipped
+
+**Admin panel (`/ops`):** tested with a throwaway admin on the QA copy. All 10 sections load at desktop, tablet and phone: Overview, Orders, Sales, Products, Inventory, Lot reports, Support & safety, Reviews & questions, Channels and Feature flags.
+
+**Backend**
+- Python suite: 103 tests pass.
+- Supabase suites: 33 PostgreSQL migration checks, 46 hosted API/authorization checks, and the media checks all pass.
+- All Node content tests pass.
+- Unauthenticated admin API calls return 403.
+
+**Fixed in this pass**
+1. The signed-out account page linked "Look up a lot" to `/lots`, which is a 404. It now goes to `/reports` (`web/account.js`).
+2. About › "Why colour?" on phones: the format column was cut off ("Softgels" clipped at the screen edge). The row grid is rebuilt (`web/living-e-pages.css`).
+3. Payment, order and account pages still said "Sample total", "Paid (preview)", "(sample)", "prepaid (preview)", "isn't connected in the preview" and "GST invoicing isn't set up". These now use final wording (`web/account.js`, `app/account.py`).
+4. The hosted build (`deploy/build_netlify.py` `_headers`) sent only two security headers. It now adds X-Frame-Options, a frame-ancestors/base-uri/object-src policy, HSTS and a Permissions-Policy. A full content policy is left for a tested hosted deploy.
+
+**Not run:** `deploy/test_hosted_preview.mjs` needs a fresh `dist/` build (not rebuilt here). No real hosted deploy was tested.
+
+## 17. Home and product page flow, About merged into Story (2 November 2026)
+
+**Research:** home and product pages of Thorne, Sports Research, MyProtein, Wellbeing Nutrition and The Ordinary.
+- Shop and bestsellers come right after the hero, usually with a short trust bar (Sports Research).
+- Proof is grouped in one place: certifications, testing and experts (Thorne, Wellbeing Nutrition, Sports Research).
+- Product pages put trust points under the buy button (Sports Research, Thorne).
+- Product pages use a sticky section bar (Thorne): overview, ingredients, how to use, quality, reviews, FAQ.
+
+**Home** (`web/home-content-e.js`, `web/home-content-e.css`; hero untouched)
+- New order: hero, trust bar, launch range, **Proof, not promises**, lot lookup, everyday, one serving, voices, belief, four rules, sourcing, journal, FAQ, invitation.
+- The repeated "Super Sevens cards" section is replaced by Proof, not promises, which has six document cards:
+  1. FSSAI Central Licence, with a FoSCoS verify link
+  2. Full product labels as PDFs
+  3. Lot reports
+  4. Manufacturer licences
+  5. GST registration, with a GST portal verify link
+  6. GMP certificates and test reports, on request
+- Label PDFs: six are copied from "Full FInal Label/Pdfs" to `web/media/labels/`. **The Inositol PDF supplied is a blank page**, so that label shows "On request" until a real file is supplied.
+- The home lot field placeholder no longer says "DEMO-01-01".
+
+**Product page** (`web/pdp-flow-e.js`, `web/pdp-flow-e.css`)
+- A sticky section bar (Overview · Ingredients · How to use · Quality & lot report · Reviews · Questions) highlights the section in view.
+- New order: overview, defining detail, ingredients, how to use, one serving, quality, turn the bottle, reviews, questions, more products.
+- Under Add to bag: pack length (servings, about N days at one a day) and four trust points.
+- Quality has a "Download the full label (PDF)" link.
+- The pincode note is final.
+
+**About** (`web/story-about-e.js`)
+- Story gains "About Body Café Co.": why we exist, why colour, why café and how we behave, taken from the About renderer.
+- `/about` opens Story at #about.
+- About is removed from E's navigation and footer, the mobile menu is renumbered, and other About links point to /story#about.
+- About's "Our belief", numbers and colour book were not carried over, because they repeat Story and the homepage.
+
+## 18. Curvy segments with a bottle-cap finish (2 November 2026)
+
+**Stakeholder feedback:** the seven-segment "7/8" looked too sharp and edgy. They wanted it curvy, perhaps with a bottle-cap feel.
+
+**Changes** (`web/super-sevens.js`, `web/super-sevens.css`)
+- Every segment is now a rounded capsule drawn as an SVG path, with no pointed ends and no 6° slant. Segments are a little thicker (20) with wider gaps (7).
+- This applies everywhere the system draws digits: hero, product numbers, proof and rule numerals, the bag tray and Story.
+- **Large marks** (hero, Story, closing band) get a bottle-cap finish on each segment: fine ridges like a cap's knurled edge, plus a soft highlight, in its cap colour. Each segment is now a `<g class="ss-ms">`, so the hero hover, focus and replay animations work unchanged (verified).
+- Digit width ratio updated from 143/200 to 122/200.
+
+**Unchanged:** hero text and accessible labels.
+**Backups:** in the session scratchpad (`super-sevens.before-curvy.*`).
+
+## 19. Bottle-cap hero, minimal launch range, no animation (2 November 2026)
+
+**Stakeholder feedback:**
+- Remove the seven-segment hero completely and make something creative with the seven bottle caps, keeping the Super Sevens concept.
+- No animations.
+- The launch range made people scroll too much, so make it minimal.
+
+**Changes** (`web/home-hero-e.js`, `web/home-hero-e.css`, loaded after `home-content-e`)
+- **Hero:** the seven real cap renders (`web/media/renders/*-cap.webp`) laid flat to form the numeral **7**: four caps across the top, three down the stroke.
+  - Each cap is a link to its product and shows its number; on desktop the name appears on hover or focus.
+  - Caption: "Seven caps. One seven."
+  - The segment stage, readout, replay, sound toggle and segment legend are removed.
+  - **The hero text is kept exactly**, including the lede, which still describes "a seven-segment seven". Owner decision needed.
+- **Launch range:** one row of seven cards, each with cap, number, name, key fact, MRP and Add to bag. It wraps to four per row on tablet and scrolls sideways on phone. Height drops from about 5,750 px of scroll animation to about 790 px.
+- "Pour one serving" is removed from the homepage; it stays on product pages.
+- **No motion in Variant E:** all CSS animations are off, scroll reveals show their content immediately, and the page-to-page colour flood and the footer play strip (segment mark plus sound) are switched off.
+
+**Verified:** desktop, tablet and phone with no overflow; no hidden text on Story or Standards; no console errors; all tests pass.
+
+## 20. Hero of bottles, shop-card launch range, credible proof section (2 November 2026)
+
+**Feedback:** the trust section did not feel trustworthy, the cap hero was not attractive enough, and the launch range should match the shop cards exactly.
+
+**Changes** (`web/home-hero-e.js`, `web/home-hero-e.css`)
+- **Hero:** the seven real bottle renders (`renders/*-three-quarter.webp`), each under its own cap, stand in the shape of a **7**. Four bottles are across the back; three step forward and grow down the stroke.
+  - Each bottle has a pool of its cap colour and is a link to its product, with a name tag on hover.
+  - The stage is a soft cream rounded panel, with a colour-dot caption: "Seven caps, seven colours, one seven."
+  - Static, and the hero text is unchanged.
+- **Launch range:** the shop card design. Each card has:
+  - a cap-colour band with number and format
+  - the bottle image
+  - the name in Lemon Milk capitals and the pack size
+  - MRP, an in-stock indicator, View product and Add to bag
+
+  Compare isn't included; it's a shop-page feature. The cards scroll sideways on phone (with `contain: paint`, which fixed a 434 px page scroll).
+- **Proof: "Licensed. Labelled. Traceable."**
+  - **Licence record:** a dark panel with our own seal, holding FSSAI Central Licence, GSTIN, licensee and customer care. IDs are in monospace and there are Verify buttons for FoSCoS, the GST portal and Contact.
+  - **Published labels:** a bottle fan plus the PDF list, with Inositol on request.
+  - **Checks:** GMP, third-party tested and lot traceable, with Look up your lot (jumps to the lot section) and Ask for a certificate or test report.
+  - **Makers:** the three named manufacturers, each with city, FSSAI licence number and the products it makes.
+
+## 21. The cap tower hero (2 November 2026)
+
+**Owner direction:** caps only, no bottles, not just the numeral 7; the main headline should be "The Super Sevens". This supersedes the earlier "keep the hero text exactly" rule for the hero.
+
+**Changes** (`web/home-hero-e.js`, `web/home-hero-e.css`)
+- **Copy:**
+  - Kicker: "Body Café Co. · Seven everyday supplements"
+  - H1: **"The Super Sevens."** (rust full stop)
+  - Sub: "Seven caps. Seven colours. One clear label each."
+  - Lede about cap colours and readable label facts
+  - Buttons: Shop all seven / Meet the Super Sevens, plus a seven-dot colour row
+- **Visual:** the seven caps drawn side-on in SVG, stacked into a tower like cups on a café counter.
+  - Each cap has its colour, ridged knurling, cylindrical shading, a top highlight and a rim, and each sits slightly askew.
+  - Each layer links to its product, with a dotted leader to a label (number chip, name, key fact).
+  - Static apart from a small nudge on hover. Phones show the number and name only.
+- **Verified:** desktop, tablet and phone with no overflow or overlaps; tests pass.

@@ -34,8 +34,8 @@ OTP_HOURLY_PER_MOBILE = 5
 OTP_HOURLY_PER_SESSION = 10
 MAX_QTY = 10
 DISCOUNTS = {'PREVIEW10': {'label': 'PREVIEW10 · sample 10% off', 'condition': 'Sample code for testing the preview. 10% off the subtotal, rounded to the nearest rupee.'}}
-SHIPPING_RULE = {'fee': 75, 'free_from': 1499, 'note': 'Sample delivery rule: ₹75, free when the subtotal after discount is ₹1,499 or more. Not an approved shipping policy.'}
-TAX_NOTE = 'Sample prices include illustrative tax. Actual GST awaits approved rates.'
+SHIPPING_RULE = {'fee': 75, 'free_from': 1499, 'note': 'Delivery is ₹75, free when your subtotal after discount is ₹1,499 or more.'}
+TAX_NOTE = 'Prices are MRP, inclusive of all taxes.'
 KEY = re.compile(r'[A-Za-z0-9-]{8,64}')
 
 SCHEMA = '''
@@ -414,13 +414,13 @@ class AccountMixin:
                 return {'id': oid, 'state': 'pending', 'payment': 'processing',
                         'message': 'We didn’t get a final answer from the payment provider. Don’t pay again: check the status first.'}
             self.capture(c, s, oid, p)
-        return {'id': oid, 'state': 'paid', 'payment': 'captured', 'message': 'Preview payment only. No money moved.'}
+        return {'id': oid, 'state': 'paid', 'payment': 'captured', 'message': 'Payment received. Thank you.'}
 
     # ---------------- account view ----------------
     NEXT = {
         'pending': ('Complete payment', 'Your stock is reserved while the payment step is open.'),
-        'paid': ('Preparing your order', 'Next: it ships. Shipping isn’t connected in the preview, so this step is simulated by operations.'),
-        'shipped': ('On its way', 'Next: delivery. Tracking is simulated in the preview.'),
+        'paid': ('Preparing your order', 'Next: we pack it and hand it to our courier partner. Tracking appears here once it ships.'),
+        'shipped': ('On its way', 'Next: delivery. Follow the courier’s tracking below.'),
         'delivered': ('Delivered', 'You can review what you received.'),
         'cancelled': ('Cancelled', 'Nothing further is needed unless a refund is pending.'),
         'expired': ('Reservation expired', 'This order wasn’t paid in time. Start a new checkout if you still want these products.'),

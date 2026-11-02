@@ -73,3 +73,9 @@
 .eh-e .ss-chipbook { padding-inline: 2%; }
 .eh-e .ss-chipbook li:last-child { margin-right: 0; }
 @media (max-width: 860px) { .eh-e .ss-chipbook { padding-inline: 4px; } }
+
+/* Story · the merged "About Body Café Co." part. */
+.eh-e .ssy-about { padding-left: var(--pad); padding-right: var(--pad); border-top: 12px solid; border-image: linear-gradient(90deg, #aa472e 0 14.28%, #777d51 0 28.56%, #35306f 0 42.84%, #84919b 0 57.12%, #b184b9 0 71.4%, #07566a 0 85.68%, #9c9274 0) 1; }
+.eh-e .ssy-about-head { padding: var(--ez-sec-y) 0 calc(var(--ez-sec-y) / 2); }
+.eh-e .ssy-about-head .ez-k { margin: 0 0 16px; }
+.eh-e .ssy-about-head h2 { margin: 0; font-weight: 300; letter-spacing: -0.03em; line-height: 1.02; font-size: clamp(40px, 5.4vw, 84px); max-width: 16ch; }

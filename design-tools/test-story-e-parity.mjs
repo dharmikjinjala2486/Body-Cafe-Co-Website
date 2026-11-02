@@ -7,7 +7,12 @@ import { execFileSync } from 'node:child_process';
 
 // One owner-approved change (2026-11-02): the site speaks for itself, so the board footer no longer cites "the label".
 const reference = execFileSync('node', ['design-tools/story-source-text.mjs']).toString()
-  .replace('Every amount above is printed on the label.', 'Every amount above is stated in full.');
+  .replace('Every amount above is printed on the label.', 'Every amount above is stated in full.')
+  // L-Theanine supply received (SharePoint › Material › Material_Tracker_Status.xlsx), so it is no longer held:
+  // no "supply being confirmed" note, and it joins the Morning group.
+  .replace('1 capsule · morning · supply being confirmed', '1 capsule · morning')
+  .replace('Myo & D-Chiro Inositol\nYour chosen time', 'Myo & D-Chiro Inositol\nL-Theanine\nYour chosen time')
+  .replace('Timings as printed on each label.', "Timings from each product's directions.");
 const ids = ['iron-bisglycinate', 'l-theanine', 'vitamin-d3-k2', 'omega-3-fish-oil', 'myo-d-chiro-inositol', 'creatine-chews', 'psyllium-husk'];
 const catalog = ids.map((id) => ({ id, name: id, color: '#123456', published: true }));
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);

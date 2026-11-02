@@ -62,7 +62,7 @@
     offer: "No offers are running.",
     shipping: "Delivery ₹75, free on orders of ₹1,499 or more after any discount.",
     returns: "Return eligibility, timing and remedies haven't been decided yet. If something's wrong with an order, open a support case.",
-    delivery: "The check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.",
+    delivery: "We deliver across India. If we can't reach your pincode, we tell you before you pay. Delivery dates are estimates.",
     directions: "Directions will come from the approved label. This page doesn't suggest a dose.",
     storage: "Storage instructions will come from the approved label.",
     age: "Purchases are limited to adults: checkout asks you to confirm you're 18 or older.",

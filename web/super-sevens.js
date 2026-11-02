@@ -34,14 +34,17 @@
   function segOf(ctx, p) { var i = ctx.catalog.indexOf(p); return i >= 0 && i < 7 ? i : -1; }
 
   /* ====================================================================== 1. Seven-segment glyphs */
-  var W = 120, H = 200, T = 18, G = 4.5, SKEW = 21;
-  function hSeg(x0, x1, y) { var t = T / 2; return [[x0, y], [x0 + t, y - t], [x1 - t, y - t], [x1, y], [x1 - t, y + t], [x0 + t, y + t]]; }
-  function vSeg(x, y0, y1) { var t = T / 2; return [[x, y0], [x + t, y0 + t], [x + t, y1 - t], [x, y1], [x - t, y1 - t], [x - t, y0 + t]]; }
+  /* Segments are soft capsules (stakeholder review, 2 November 2026: "curvy, not sharp"), upright and slightly apart,
+     so each one reads like a softgel or the rounded edge of a cap. GEO holds SVG path data. */
+  var W = 120, H = 200, T = 20, G = 7, SKEW = 0;
+  function f(v) { return v.toFixed(1); }
+  function hSeg(x0, x1, y) { var r = T / 2; return "M" + f(x0 + r) + " " + f(y - r) + "H" + f(x1 - r) + "A" + r + " " + r + " 0 0 1 " + f(x1 - r) + " " + f(y + r) + "H" + f(x0 + r) + "A" + r + " " + r + " 0 0 1 " + f(x0 + r) + " " + f(y - r) + "Z"; }
+  function vSeg(x, y0, y1) { var r = T / 2; return "M" + f(x - r) + " " + f(y0 + r) + "A" + r + " " + r + " 0 0 1 " + f(x + r) + " " + f(y0 + r) + "V" + f(y1 - r) + "A" + r + " " + r + " 0 0 1 " + f(x - r) + " " + f(y1 - r) + "Z"; }
   var X0 = T / 2, X1 = W - T / 2, Y0 = T / 2, YM = H / 2, Y1 = H - T / 2;
   var GEO = [
     hSeg(X0 + G, X1 - G, Y0), vSeg(X1, Y0 + G, YM - G), vSeg(X1, YM + G, Y1 - G), hSeg(X0 + G, X1 - G, Y1),
     vSeg(X0, YM + G, Y1 - G), vSeg(X0, Y0 + G, YM - G), hSeg(X0 + G, X1 - G, YM),
-  ].map(function (pts) { return pts.map(function (q) { return q[0].toFixed(1) + "," + q[1].toFixed(1); }).join(" "); });
+  ];
   var MAP = {
     "0": "abcdef", "1": "bc", "2": "abdeg", "3": "abcdg", "4": "bcfg", "5": "acdfg", "6": "acdefg", "7": "abc", "8": "abcdefg", "9": "abcdfg",
     "-": "g", "_": "d", A: "abcefg", B: "cdefg", C: "adef", D: "bcdeg", E: "adefg", F: "aefg", G: "acdef", H: "bcefg", I: "ef", J: "bcde",
@@ -52,15 +55,19 @@
      o.ghost: "cast" draws unlit segments faintly in their own colours, true draws them as a faint rule. */
   function glyph(ch, o) {
     o = o || {};
+    // Complete digits use the bold brand typeface; segment-only diagrams keep their geometry.
+    if (/^[0-9]$/.test(String(ch)) && o.only == null) {
+      return '<svg class="ss-g ss-brand-digit' + (o.cls ? ' ' + o.cls : '') + '" viewBox="0 0 122 200" aria-hidden="true" focusable="false" style="color:' + esc(o.color || 'currentColor') + '"><text x="61" y="174" text-anchor="middle" textLength="112" lengthAdjust="spacingAndGlyphs">' + esc(ch) + '</text></svg>';
+    }
     var on = MAP[String(ch).toUpperCase()] || "";
     var only = o.only == null ? -1 : o.only;
     var polys = GEO.map(function (pts, i) {
       var lit = only >= 0 ? i === only : on.indexOf(LETTERS[i]) !== -1;
       if (!lit && !o.ghost) return "";
       var c = o.color || CAST.colors[i] || "currentColor";
-      return '<polygon class="ss-s' + (lit ? " is-on" : " is-off") + (o.ghost === "cast" ? " is-cast" : "") + '" data-seg="' + i + '" points="' + pts + '" style="--c:' + c + '"/>';
+      return '<path class="ss-s' + (lit ? " is-on" : " is-off") + (o.ghost === "cast" ? " is-cast" : "") + '" data-seg="' + i + '" d="' + pts + '" style="--c:' + c + '"/>';
     }).join("");
-    return '<svg class="ss-g' + (o.cls ? " " + o.cls : "") + '" viewBox="0 0 ' + (W + SKEW + 2) + " " + H + '" aria-hidden="true" focusable="false"><g transform="translate(' + (SKEW + 1) + ' 0) skewX(-6)">' + polys + "</g></svg>";
+    return '<svg class="ss-g' + (o.cls ? " " + o.cls : "") + '" viewBox="0 0 ' + (W + SKEW + 2) + " " + H + '" aria-hidden="true" focusable="false"><g transform="translate(' + (SKEW + 1) + ' 0)">' + polys + "</g></svg>";
   }
   /* A string in segments. Characters with no segment form (₹ , . / ·) are set as type beside the glyphs. */
   function num(str, o) {
@@ -72,21 +79,32 @@
     }).join("");
     return '<span class="ss-num' + (o.numCls ? " " + o.numCls : "") + '"' + (o.label === false ? ' aria-hidden="true"' : ' role="img" aria-label="' + esc(o.label || str) + '"') + ">" + html + "</span>";
   }
+  var markSeq = 0;
   /* The mark: the 7 bright, the four other members present as faint colour. */
   function mark(o) {
     o = o || {};
+    // Each segment is finished like a bottle cap: its cap colour, fine ridges like a cap's knurled edge, and a soft
+    // highlight. The group carries the class and data attributes the hero animation uses.
+    var id = "ssm" + (++markSeq), HORIZ = { 0: 1, 3: 1, 6: 1 };
+    var defs = '<defs>' +
+      '<pattern id="' + id + 'kh" width="3.2" height="10" patternUnits="userSpaceOnUse"><rect width="1.2" height="10" fill="#000" opacity=".16"/></pattern>' +
+      '<pattern id="' + id + 'kv" width="10" height="3.2" patternUnits="userSpaceOnUse"><rect width="10" height="1.2" fill="#000" opacity=".16"/></pattern>' +
+      '<linearGradient id="' + id + 'gh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>' +
+      '<linearGradient id="' + id + 'gv" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>' +
+      "</defs>";
     var polys = GEO.map(function (pts, i) {
-      var c = CAST.colors[i] || "#2d2926", in7 = i < 3;
-      return '<polygon class="ss-ms' + (in7 ? " is-seven" : "") + '" data-ss-seg="' + i + '" points="' + pts + '" style="--c:' + c + ";--d:" + i + '"/>';
+      var c = CAST.colors[i] || "#2d2926", in7 = i < 3, k = HORIZ[i] ? "h" : "v";
+      return '<g class="ss-ms' + (in7 ? " is-seven" : "") + '" data-ss-seg="' + i + '" style="--c:' + c + ";--d:" + i + '"><path d="' + pts + '"/>' +
+        '<path class="ss-cap-knurl" d="' + pts + '" fill="url(#' + id + "k" + k + ')"/><path class="ss-cap-gloss" d="' + pts + '" fill="url(#' + id + "g" + k + ')"/></g>';
     }).join("");
-    return '<svg class="ss-mark' + (o.cls ? " " + o.cls : "") + '" viewBox="0 0 ' + (W + SKEW + 2) + " " + H + '" aria-hidden="true" focusable="false"><g transform="translate(' + (SKEW + 1) + ' 0) skewX(-6)">' + polys + "</g></svg>";
+    return '<svg class="ss-mark' + (o.cls ? " " + o.cls : "") + '" viewBox="0 0 ' + (W + SKEW + 2) + " " + H + '" aria-hidden="true" focusable="false">' + defs + '<g transform="translate(' + (SKEW + 1) + ' 0)">' + polys + "</g></svg>";
   }
   function markSVGString(lit) {
     var polys = GEO.map(function (pts, i) {
       var c = CAST.colors[i] || "#2d2926", on = lit == null ? i < 3 : i === lit;
-      return '<polygon points="' + pts + '" fill="' + c + '" opacity="' + (on ? 1 : 0.2) + '"/>';
+      return '<path d="' + pts + '" fill="' + c + '" opacity="' + (on ? 1 : 0.2) + '"/>';
     }).join("");
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + (W + SKEW + 2) + " " + H + '"><g transform="translate(' + (SKEW + 1) + ' 0) skewX(-6)">' + polys + "</g></svg>";
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + (W + SKEW + 2) + " " + H + '"><g transform="translate(' + (SKEW + 1) + ' 0)">' + polys + "</g></svg>";
   }
   function segName(i) { return "Segment " + LETTERS[i]; }
 
@@ -1092,8 +1110,8 @@
       var q = {}; body.querySelectorAll("[data-bg-line]").forEach(function (li) { var o = li.querySelector("output"); q[li.getAttribute("data-bg-line")] = (q[li.getAttribute("data-bg-line")] || 0) + (o ? int(o.textContent) || 1 : 1); });
       var key = JSON.stringify(q); if (key === last) return; last = key;
       var any = Object.keys(q).length;
-      var polys = GEO.map(function (pts, i) { var p = CAST.list[i]; return '<polygon class="ss-s ' + (p && q[p.id] ? "is-on" : "is-off") + '" points="' + pts + '" style="--c:' + (CAST.colors[i] || "#2d2926") + '"/>'; }).join("");
-      tray.innerHTML = '<div class="ss-tray-g"><svg class="ss-g" viewBox="0 0 ' + (W + SKEW + 2) + " " + H + '" aria-hidden="true"><g transform="translate(' + (SKEW + 1) + ' 0) skewX(-6)">' + polys + "</g></svg></div>" +
+      var polys = GEO.map(function (pts, i) { var p = CAST.list[i]; return '<path class="ss-s ' + (p && q[p.id] ? "is-on" : "is-off") + '" d="' + pts + '" style="--c:' + (CAST.colors[i] || "#2d2926") + '"/>'; }).join("");
+      tray.innerHTML = '<div class="ss-tray-g"><svg class="ss-g" viewBox="0 0 ' + (W + SKEW + 2) + " " + H + '" aria-hidden="true"><g transform="translate(' + (SKEW + 1) + ' 0)">' + polys + "</g></svg></div>" +
         '<ol class="ss-tray-slots">' + CAST.list.map(function (p) { var n = q[p.id]; return '<li style="--cap:' + p.color + '"' + (n ? " data-in" : "") + ">" + (n ? '<img class="ss-tray-cap" src="/web/media/renders/' + esc(p.id) + '-cap.webp" alt="" width="400" height="400">' + (n > 1 ? '<span class="ss-tray-q">×' + n + "</span>" : "") : '<span class="ss-tray-ghost" aria-hidden="true"></span>') + '<span class="sr-only">' + esc(p.name) + (n ? ", " + n + " in your bag" : ", not in your bag") + "</span></li>"; }).join("") + "</ol>" +
         '<p class="ss-tray-t">' + (any ? "Your tray lights the segment of each product you chose." : "Your tray is empty. Each product you add lights its own segment.") + "</p>";
     }

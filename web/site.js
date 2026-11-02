@@ -198,19 +198,19 @@
     },
     cart: {
       empty: ["Your bag is empty", "Start with an ingredient you already know, or browse all seven."],
-      note: "One-time purchases. Prices, tax and delivery shown here are samples, and no money is collected in the preview.",
+      note: "One-time purchases. Prices are MRP, inclusive of all taxes. Delivery is ₹75, free from ₹1,499 after discount.",
       next: [["/policies/shipping", "How delivery works"], ["/policies/returns", "Returns and refunds"], ["/help", "Help centre"]],
     },
     checkout: {
-      lede: "Check out as a guest. Use sample details only: no payment is taken and no messages are sent.",
+      lede: "Check out as a guest, or sign in to save the order to your account. Every order is prepaid.",
       steps: ["Delivery", "Payment", "Confirm"],
       after: [
-        ["We hold your items", "Creating the order reserves preview stock for 15 minutes."],
-        ["You complete payment", "The preview payment step lets you try a success or a failure."],
+        ["We hold your items", "Placing the order reserves your items for 15 minutes while you pay."],
+        ["You complete payment", "Pay securely by UPI, card, wallet or net banking through Razorpay."],
         ["You can sign in later", "Use your mobile number to bring guest orders into an account."],
       ],
-      privacy: "We use these details only to fulfil and support this preview order. Marketing choices are separate and start unticked.",
-      cod: "Cash on delivery isn't available yet. How the ₹150 COD amount and courier charge would work is still being decided.",
+      privacy: "We use these details only to deliver and support this order. Marketing choices are separate and start unticked.",
+      cod: "Every order is prepaid. Cash on delivery isn't available.",
     },
     account: {
       lede: "Track orders, keep addresses and follow support cases with your mobile number.",

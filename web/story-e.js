@@ -20,7 +20,7 @@
     { slug: "psyllium-husk", name: "Psyllium Husk (Isabgol)", key: "2000 mg husk", keySub: "5 capsules · night, with water", time: ["night"] },
     { slug: "myo-d-chiro-inositol", name: "Myo & D-Chiro Inositol", key: "2000 + 50 mg", keySub: "40:1 · 3 capsules, morning", time: ["morning"] },
     { slug: "creatine-chews", name: "Creatine Chews", key: "3000 mg creatine", keySub: "2 orange chews · your chosen time", time: ["any"] },
-    { slug: "l-theanine", name: "L-Theanine", key: "200 mg", keySub: "1 capsule · morning", time: ["morning"], hold: true },
+    { slug: "l-theanine", name: "L-Theanine", key: "200 mg", keySub: "1 capsule · morning", time: ["morning"] },
   ];
   function P(slug) { return PRODUCTS.filter(function (p) { return p.slug === slug; })[0]; }
 
@@ -71,7 +71,7 @@
       ["pull", "Because trust is not built by promises. It is built by being able to look."]] },
   ];
   var BOARD = { title: "Today's menu", eyebrow: "Amount per serving", hold: " · supply being confirmed", foot: "Every amount above is stated in full. No hidden blends." };
-  var DAY = { slots: [["Morning", "morning"], ["Your chosen time", "any"], ["Night", "night"]], chai: "(before chai)", foot: "Timings as printed on each label." };
+  var DAY = { slots: [["Morning", "morning"], ["Your chosen time", "any"], ["Night", "night"]], chai: "(before chai)", foot: "Timings from each product's directions." };
   var MANIFESTO = { dim: ["We don't make loud promises.", "We don't hide behind small print.", "We don't sell miracles in a bottle."], lines: ["We name the form. We state the amount. We tell you when. We show our work.", "Read the label. Ask your question. Take what makes sense for you."] };
   var FINAL = { title: "Start with one. Read the whole label.", cta: "Explore our products" };
 
