@@ -647,21 +647,34 @@
   }
   function setFrame(el, f) {
     f = ((Math.round(f) % FRAMES) + FRAMES) % FRAMES;
-    if (el._f === f) return; el._f = f;
+    el._requestedFrame = f;
+    if (el._waitFrame) { el._waitFrame.image.removeEventListener("load", el._waitFrame.apply); el._waitFrame = null; }
+    if (el._f === f) return;
     var id = el.getAttribute("data-ss-spin"), im = el.querySelector("img"); if (!im) return;
-    var src = "/web/media/spin/" + id + "-" + pad(f) + ".webp";
-    var cached = frameCache[id] && frameCache[id][f];
-    if (!cached || cached.complete) im.src = src;
-    el.setAttribute("aria-valuenow", String(f * 15));
-    el.setAttribute("aria-valuetext", f ? "Turned " + f * 15 + " degrees from the front" : "Front of the bottle");
-    var lens = el.querySelector("[data-ss-lens]"); if (lens) lens.style.backgroundImage = 'url("' + src + '")';
+    var cached = frames(id)[f];
+    function apply() {
+      // A slow request must never replace a newer scroll position, or blank a working image.
+      if (!el.isConnected || el._requestedFrame !== f || !cached.naturalWidth) return;
+      im.src = cached.src;
+      el._f = f;
+      el._waitFrame = null;
+      el.setAttribute("aria-valuenow", String(f * 15));
+      el.setAttribute("aria-valuetext", f ? "Turned " + f * 15 + " degrees from the front" : "Front of the bottle");
+      var lens = el.querySelector("[data-ss-lens]"); if (lens) lens.style.backgroundImage = 'url("' + cached.src + '")';
+    }
+    if (cached.complete && cached.naturalWidth) apply();
+    else { el._waitFrame = { image: cached, apply: apply }; cached.addEventListener("load", apply, { once: true }); }
   }
   function spinBehaviour(main, signal) {
     var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { frames(e.target.getAttribute("data-ss-spin")); io.unobserve(e.target); } }); }, { rootMargin: "300px" }) : null;
     signal.addEventListener("abort", function () { if (io) io.disconnect(); });
     main.querySelectorAll("[data-ss-spin]").forEach(function (el) {
-      el._f = 0;
-      if (io) io.observe(el); else frames(el.getAttribute("data-ss-spin"));
+      if (el._f == null) el._f = 0;
+      // The scroll sequence preloads its active and next bottles; hidden members share the
+      // same rectangle, so observing all of them would fetch every turntable at once.
+      if (!el.closest("[data-ss-roll]")) {
+        if (io) io.observe(el); else frames(el.getAttribute("data-ss-spin"));
+      }
       var down = null;
       el.addEventListener("pointerdown", function (e) { if (e.button) return; down = { x: e.clientX, f: el._f || 0, id: e.pointerId, moved: false }; frames(el.getAttribute("data-ss-spin")); }, { signal: signal });
       el.addEventListener("pointermove", function (e) {
@@ -743,7 +756,7 @@
   function rollBehaviour(main, signal) {
     var sec = main.querySelector("[data-ss-roll]"); if (!sec) return;
     var track = sec.querySelector("[data-ss-roll-track]"), members = [].slice.call(sec.querySelectorAll("[data-ss-member]")), dots = [].slice.call(sec.querySelectorAll("[data-ss-roll-go]"));
-    var n = members.length, cur = -1;
+    var n = members.length, cur = -1, stage = sec.querySelector(".ss-roll-stage"), raf = 0;
     var scrub = !reduced();
     sec.classList.toggle("is-scrub", scrub);
     function show(i) {
@@ -757,8 +770,11 @@
     }
     function onScroll() {
       if (!scrub) return;
-      var r = track.getBoundingClientRect(), span = r.height - window.innerHeight;
-      var p = Math.min(0.9999, Math.max(0, -r.top / Math.max(1, span)));
+      var r = track.getBoundingClientRect();
+      if (r.top > window.innerHeight + 600 || r.bottom < 0) return;
+      var stickyTop = parseFloat(getComputedStyle(stage).top) || 0;
+      var span = r.height - stage.getBoundingClientRect().height;
+      var p = Math.min(0.9999, Math.max(0, (stickyTop - r.top) / Math.max(1, span)));
       var f = p * n, i = Math.floor(f), local2 = f - i;
       show(i);
       var sp = members[i].querySelector("[data-ss-spin]");
@@ -769,11 +785,14 @@
       d.addEventListener("click", function () {
         var i = Number(d.getAttribute("data-ss-roll-go"));
         if (!scrub) { show(i); members[i].scrollIntoView({ block: "center" }); return; }
-        var top = track.getBoundingClientRect().top + window.scrollY, span = track.offsetHeight - window.innerHeight;
-        window.scrollTo({ top: top + span * (i + 0.02) / n, behavior: reduced() ? "auto" : "smooth" });
+        var stickyTop = parseFloat(getComputedStyle(stage).top) || 0;
+        var top = track.getBoundingClientRect().top + window.scrollY, span = track.offsetHeight - stage.getBoundingClientRect().height;
+        window.scrollTo({ top: top - stickyTop + span * (i + 0.02) / n, behavior: reduced() ? "auto" : "smooth" });
       }, { signal: signal });
     });
-    if (scrub) { window.addEventListener("scroll", onScroll, { passive: true, signal: signal }); window.addEventListener("resize", onScroll, { signal: signal }); onScroll(); }
+    function schedule() { if (!raf) raf = requestAnimationFrame(function () { raf = 0; onScroll(); }); }
+    signal.addEventListener("abort", function () { if (raf) cancelAnimationFrame(raf); });
+    if (scrub) { window.addEventListener("scroll", schedule, { passive: true, signal: signal }); window.addEventListener("resize", schedule, { signal: signal }); onScroll(); }
     else show(0);
   }
 
@@ -1144,7 +1163,7 @@
     document.documentElement.style.setProperty("--ss-top", top + "px");
     document.querySelectorAll("[data-ss-sound]").forEach(Sound.sync);
     if (flood && Date.now() - floodAt < 2600) setTimeout(drain, 60);
-    [heroBehaviour, rollBehaviour, spinBehaviour, pourBehaviour, cardBehaviour, deckBehaviour, voicesBehaviour, contactBehaviour, revealBehaviour, baseBehaviour, shopBehaviour, lostBehaviour, trayBehaviour].forEach(function (fn) { try { fn(main, signal); } catch (e) { if (window.console) console.warn("Super Sevens:", e); } });
+    [heroBehaviour, spinBehaviour, rollBehaviour, pourBehaviour, cardBehaviour, deckBehaviour, voicesBehaviour, contactBehaviour, revealBehaviour, baseBehaviour, shopBehaviour, lostBehaviour, trayBehaviour].forEach(function (fn) { try { fn(main, signal); } catch (e) { if (window.console) console.warn("Super Sevens:", e); } });
     try { stripeBehaviour(signal); playBehaviour(signal); favicon(); cursorSetup(); } catch (e) { if (window.console) console.warn("Super Sevens:", e); }
     if (location.pathname === "/super-sevens") document.title = "The Super Sevens — Body Café Co.";
   });
