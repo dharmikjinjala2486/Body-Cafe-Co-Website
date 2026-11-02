@@ -123,8 +123,8 @@
       '<div class="lt-lotfield"><label for="lt-lot">2. Lot number</label><span class="lt-hint" id="lt-lot-hint">Exactly as printed on the pack. Spaces at either end and letter case don’t matter; every other character does.</span>' +
       '<input id="lt-lot" name="lot" value="' + h(st.lot) + '" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="lt-lot-hint lt-lot-error"><p class="lt-error" id="lt-lot-error" hidden></p></div>' +
       '<button type="submit" class="lt-submit"><span>Find the record</span><span aria-hidden="true">→</span></button>' +
-      '<p class="lt-note" id="lt-form-note">No account, email or marketing consent needed. This preview has demonstration records only: try <button type="button" class="lt-try" data-lt-try="01">DEMO-0N-01</button> for any product, where N is its place in the collection.</p>' +
-      '<details class="lt-samples"><summary>Other demonstration states</summary><div>' + [["DEMO-UNPUBLISHED", "Under review"], ["DEMO-NOTICE", "Batch notice"], ["DEMO-SUPERSEDED", "Version history"], ["DEMO-OUTAGE", "Service unavailable"], ["UNKNOWN-123", "No match"]].map(function (x) {
+      '<p class="lt-note" id="lt-form-note">No account, email or marketing consent needed.</p>' +
+      '<details class="lt-samples"' + (document.body.dataset.design === "e" ? " hidden" : "") + '><summary>Other demonstration states</summary><div>' + [["DEMO-UNPUBLISHED", "Under review"], ["DEMO-NOTICE", "Batch notice"], ["DEMO-SUPERSEDED", "Version history"], ["DEMO-OUTAGE", "Service unavailable"], ["UNKNOWN-123", "No match"]].map(function (x) {
         return '<button type="button" data-lt-sample="' + x[0] + '">' + x[1] + "</button>";
       }).join("") + "</div></details></form>";
   }
@@ -435,6 +435,7 @@
           return '<li class="lt-arch-row' + (x.demo ? " is-demo" : "") + '" style="--lt-dot:' + h(pr ? pr.color : "#999") + '"><a href="' + withDesign(recordUrl(x.product, x.lot)) + '"><span class="lt-arch-p">' + h(pr ? pr.name : x.product) + '</span><span class="lt-mono lt-arch-lot">' + h(x.lot) + "</span>" +
             '<span class="lt-arch-meta">' + chip("is-" + x.availability, L[x.availability] || x.availability) + (x.version ? " v" + x.version : "") + (x.published ? " · " + day(x.published) : "") + (x.expiry ? " · exp. " + h(day(x.expiry)) : "") + (x.notice ? " " + chip("is-notice", "Batch notice") : "") + (x.demo ? " " + chip("is-demo", "Demonstration") : "") + '</span><span class="lt-arr" aria-hidden="true">→</span></a></li>';
         };
+        if (document.body.dataset.design === "e") demo = []; // E is the launch storefront: demonstration lots are not listed.
         count.textContent = real.length ? real.length + " published lot record" + (real.length === 1 ? "" : "s") + (demo.length ? ", plus " + demo.length + " demonstration lots" : "") + "." : "No published lot records yet" + (demo.length ? ". " + demo.length + " demonstration lots are listed so you can try the lookup." : ".");
         list.innerHTML = (real.length ? '<h3 class="lt-arch-h">Published records</h3><ul class="lt-arch-ul">' + real.map(row).join("") + "</ul>" : '<p class="lt-empty">No laboratory reports have been published yet.</p>') +
           (demo.length ? '<h3 class="lt-arch-h">Demonstration lots</h3><p class="lt-small">No laboratory document is connected to these.</p><ul class="lt-arch-ul">' + demo.map(row).join("") + "</ul>" : "");

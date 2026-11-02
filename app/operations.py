@@ -143,7 +143,8 @@ class OperationsMixin:
         pid = raw.get('id', '')
         if not isinstance(pid, str) or not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', pid) or len(pid) > 60: raise Error('Use a product ID with lowercase letters, numbers and hyphens (up to 60 characters).')
         row = c.execute('SELECT data FROM products WHERE id=?', (pid,)).fetchone()
-        old = json.loads(row['data']) if row else None
+        if not row: raise Error('Adding products is disabled. Choose an existing product.', 403)
+        old = json.loads(row['data'])
         dr = c.execute('SELECT * FROM product_drafts WHERE product=?', (pid,)).fetchone()
         current_version = dr['version'] if dr else (old or {}).get('version', 0)
         if data.get('version', 0) != current_version: raise Error('This product changed in another window. Reload it before saving.', 409)
@@ -171,13 +172,11 @@ class OperationsMixin:
             alt = item.get('alt', p['name'])
             if not isinstance(alt, str) or not 1 <= len(alt.strip()) <= 300: raise Error('Add image alt text (up to 300 characters).')
             dimensions=c.execute('SELECT width,height FROM catalog_media WHERE id=?',(src.rsplit('/',1)[1],)).fetchone() if src.startswith('/api/') else None
-            p['gallery'].append({'src': src, 'alt': alt.strip(), 'w': dimensions['width'] if dimensions else 720, 'h': dimensions['height'] if dimensions else 1000})
+            if any(type(item.get(k,n)) != int or not 1 <= item.get(k,n) <= 12000 for k,n in [('w',720),('h',1000)]): raise Error('Check the product image dimensions.')
+            p['gallery'].append({'src': src, 'alt': alt.strip(), 'w': dimensions['width'] if dimensions else item.get('w',720), 'h': dimensions['height'] if dimensions else item.get('h',1000)})
         p['version'] = current_version + 1
         p['preview'] = True
         p.setdefault('published', False)
-        if not row:
-            placeholder = {**p, 'published': False, 'version': 0}
-            c.execute('INSERT INTO products VALUES(?,?)', (pid, json.dumps(placeholder)))
         c.execute('INSERT OR REPLACE INTO product_drafts VALUES(?,?,?,?)', (pid, json.dumps(p), p['version'], int(time.time())))
         self.operation_log(c, s['user_id'], 'product_draft_saved', pid, old, p, str(data.get('remarks', ''))[:1000])
         return {'ok': True, 'id': pid, 'version': p['version']}

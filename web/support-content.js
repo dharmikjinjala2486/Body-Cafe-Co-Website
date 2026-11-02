@@ -15,10 +15,10 @@
   // Confirmed business and contact details. Everything null is still to be supplied by the business.
   var BUSINESS = {
     brand: "Body Café Co.",
-    legalName: "Bluebell Lifecare Pvt. Ltd. (marketed by on the supplied labels)",
-    address: "Ahmedabad, Gujarat, 380054, India (as printed on the supplied labels)",
+    legalName: "Bluebell Lifecare Pvt. Ltd.",
+    address: "Ahmedabad, Gujarat, 380054, India",
     gstin: null,
-    fssai: null,
+    fssai: "10726994000121", // Bluebell Lifecare Pvt. Ltd., from the product labels
     grievanceOfficer: null, // name, designation, email, phone (E-Commerce Rules 2020, rule 4)
     privacyContact: "care@bodycafeco.com",
     channels: {
@@ -74,7 +74,7 @@
       actions: [{ label: "Shipping & Delivery", href: "/policies/shipping#where" }],
       words: "pincode serviceable deliver area region city" },
     { id: "delivery-charges", cat: "delivery", title: "How much is delivery?",
-      answer: "Delivery charges haven’t been confirmed. This preview uses a sample rule — ₹75, free when the subtotal after discount is ₹1,499 or more — which isn’t the final policy.",
+      answer: "Delivery is ₹75, free when the subtotal after discount is ₹1,499 or more.",
       body: ["Whatever the final charge is, it will be shown in your bag and at checkout before you pay, as part of a single total."],
       actions: [{ label: "Shipping & Delivery", href: "/policies/shipping#charges" }],
       words: "shipping cost fee free delivery charge price" },
@@ -100,7 +100,7 @@
       actions: [{ label: "Returns & Refunds", href: "/policies/returns#change-of-mind" }],
       words: "return unwanted change of mind unopened" },
     { id: "refund-status", cat: "returns", title: "Where is my refund?",
-      answer: "The order page shows the refund status. Refunds are reviewed before they’re released; in this preview no money moves.",
+      answer: "The order page shows the refund status. Refunds are reviewed before they’re released.",
       body: ["Refunds go back to the original payment method. The time it takes to reach your account depends on the bank or payment provider; final timings will be published once payments are connected."],
       actions: [{ label: "Your orders", href: "/account/orders", kind: "track" }, { label: "Returns & Refunds", href: "/policies/returns#refunds" }],
       words: "refund money back status when" },
@@ -146,7 +146,7 @@
       words: "unsubscribe marketing email whatsapp stop messages" },
     { id: "product-question", cat: "products", title: "I have a question about a product",
       answer: "Ask on the product page or contact us. We can’t give medical advice; please speak to a doctor about your own health.",
-      body: ["Each product page shows the serving size, directions and cautions from the supplied label. The label on your own pack is the authority."],
+      body: ["Each product page shows the serving size, directions and cautions. Always read the label on your own pack."],
       actions: [{ label: "Contact support", href: "/contact?topic=product", kind: "contact" }],
       words: "product question ingredient dose serving label" },
     { id: "safety", cat: "products", title: "I think a product is unsafe or made someone unwell",
@@ -156,7 +156,7 @@
       words: "safety unwell reaction allergy side effect unsafe recall" },
     { id: "find-lot", cat: "reports", title: "How do I find the report for my pack?",
       answer: "Choose your product on Lot Reports and enter the lot number printed on the pack.",
-      body: ["The preview has demonstration lots so you can try it. Where the lot number sits on each pack will be shown once final labels are approved."],
+      body: ["Enter the lot number printed on your pack in our lot lookup."],
       actions: [{ label: "Lot Reports", href: "/reports" }],
       words: "lot batch report certificate test coa" },
     { id: "lot-not-found", cat: "reports", title: "My lot number isn’t found",

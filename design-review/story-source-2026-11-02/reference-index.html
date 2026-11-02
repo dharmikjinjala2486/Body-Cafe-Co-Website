@@ -1,0 +1,911 @@
+<title>Body Café Co.</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Everyday supplements that name the form, state the amount and tell you when to take it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Poppins:wght@400;500;600&family=Young+Serif&display=swap">
+<style>
+/* Layout: an open café menu. Chalk page, one dark menu board as the signature, saucers carry each product's real dosage form in its label colour. */
+:root{
+  --bg:#F6F5F1; --surface:#FFFFFF; --ink:#2B2929; --muted:#67625F; --line:#DCD8D1;
+  --board:#2B2929; --board-ink:#F4F1EA; --board-muted:#B9B2A8; --chalk:#F6F5F1;
+  --focus:#465665; --ok:#3F6B4F; --warn:#8A5A1E;
+  --display:"Young Serif",Georgia,"Times New Roman",serif;
+  --body:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --s1:clamp(2.6rem,1.6rem + 4.6vw,5.4rem); --s2:clamp(1.9rem,1.3rem + 2.6vw,3.3rem); --s3:clamp(1.35rem,1.1rem + 1vw,1.9rem);
+  --wrap:1180px; --read:640px; --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1B1A19; --surface:#242221; --ink:#EEEBE5; --muted:#ABA49B; --line:#3A3735;
+  --board:#0F0E0E; --board-ink:#F4F1EA; --board-muted:#A39B90; --chalk:#1B1A19;
+  --focus:#A9B8C7; --ok:#8BC2A0; --warn:#E0B070; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1B1A19; --surface:#242221; --ink:#EEEBE5; --muted:#ABA49B; --line:#3A3735;
+  --board:#0F0E0E; --board-ink:#F4F1EA; --board-muted:#A39B90; --chalk:#1B1A19;
+  --focus:#A9B8C7; --ok:#8BC2A0; --warn:#E0B070; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.08;letter-spacing:-.01em;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media(min-width:768px){.wrap{padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
+.read{max-width:var(--read)}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:clamp(1.08rem,1rem + .4vw,1.3rem);line-height:1.6}
+.muted{color:var(--muted)}
+.section{padding-block:clamp(64px,8vw,120px)}
+.stack{display:grid;gap:18px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:999px;border:1.5px solid var(--ink);background:var(--ink);color:var(--bg);font-weight:500;font-size:.98rem;text-decoration:none;transition:transform .2s ease,background .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.small{min-height:40px;padding:0 16px;font-size:.9rem}
+.tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--surface)}
+.tag.hold{color:var(--warn);border-color:currentColor}
+/* header */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
+.mark{display:flex;flex-direction:column;line-height:1;text-decoration:none;background:none;border:0;padding:6px 0}
+.mark b{font-family:var(--display);font-weight:400;font-size:1.32rem;letter-spacing:.02em}
+.mark span{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.nav{display:none;gap:4px}
+.nav button{background:none;border:0;padding:10px 12px;border-radius:8px;font-size:.92rem;color:var(--muted)}
+.nav button[aria-current="page"]{color:var(--ink);font-weight:500}
+.nav button:hover{color:var(--ink)}
+.menu-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.9rem}
+@media(min-width:1024px){.nav{display:flex}.menu-btn{display:none}}
+.sheet{position:fixed;inset:0;z-index:80;background:var(--bg);padding-top:calc(env(safe-area-inset-top,0px) + 12px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 24px);overflow:auto}
+.sheet .wrap{display:grid;gap:8px}
+.sheet .top{display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.sheet nav{display:grid;margin-top:12px}
+.sheet nav button{text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 0;font-family:var(--display);font-size:1.7rem}
+.sheet nav button small{display:block;font-family:var(--body);font-size:.85rem;color:var(--muted)}
+/* hero */
+.hero{padding-block:clamp(40px,6vw,88px) clamp(48px,6vw,96px)}
+.hero-grid{display:grid;gap:40px;align-items:center}
+@media(min-width:960px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:56px}}
+.hero h1{font-size:var(--s1);margin-top:14px}
+.hero .lede{margin-top:20px;max-width:34ch}
+.hero .btns{margin-top:28px}
+.rise{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+.rise.d1{animation-delay:.08s}.rise.d2{animation-delay:.16s}.rise.d3{animation-delay:.24s}.rise.d4{animation-delay:.36s}
+@keyframes rise{from{transform:translateY(14px)}to{transform:none}}
+/* menu board */
+.board{background:var(--board);color:var(--board-ink);border-radius:20px;padding:clamp(22px,3.4vw,40px);position:relative;overflow:hidden}
+.board::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,255,255,.06),transparent 60%)}
+.board h3{font-size:var(--s3);color:var(--board-ink)}
+.board .eyebrow{color:var(--board-muted)}
+.board-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px dashed rgba(244,241,234,.28);padding-bottom:14px;margin-bottom:6px}
+.mline{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:10px;padding:11px 0;width:100%;background:none;border:0;color:inherit;text-align:left;border-bottom:1px solid rgba(244,241,234,.08)}
+.mline:last-child{border-bottom:0}
+.mline .nm{font-weight:500;font-size:.98rem;display:flex;align-items:center;gap:10px;min-width:0}
+.mline .nm i{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+.mline .dots{border-bottom:1.5px dotted rgba(244,241,234,.35);transform:translateY(-4px);min-width:16px}
+.mline .amt{font-family:var(--mono);font-size:.82rem;color:var(--board-muted);text-align:right;white-space:nowrap}
+.mline .sub{grid-column:1/-1;font-family:var(--mono);font-size:.72rem;color:var(--board-muted);margin-top:-2px;padding-left:20px}
+button.mline:hover .nm{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:420px){.mline .amt{white-space:normal;max-width:12ch}}
+.board-foot{margin-top:14px;font-family:var(--mono);font-size:.7rem;color:var(--board-muted);letter-spacing:.04em}
+/* saucers */
+.saucer{aspect-ratio:1;max-width:100%;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle at 50% 50%,var(--surface) 0 47%,transparent 47.5%),var(--acc);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 18px 40px -24px rgba(0,0,0,.45)}
+.saucer svg{width:46%;height:auto}
+.prod-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr))}
+.pcard{display:grid;grid-template-rows:auto 1fr;gap:16px;padding:20px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);text-align:left;transition:transform .25s ease,box-shadow .25s ease;width:100%}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 20px 40px -28px rgba(0,0,0,.4)}
+.pcard .saucer{width:62%;margin-inline:auto}
+.pcard h3{font-size:1.4rem}
+.pcard .line{color:var(--muted);font-size:.95rem;margin-top:4px}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.facts span{font-family:var(--mono);font-size:.72rem;padding:3px 8px;border-radius:6px;background:var(--bg);border:1px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-block:22px}
+.chip{min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+/* sections */
+.split{display:grid;gap:32px}
+@media(min-width:900px){.split{grid-template-columns:5fr 7fr;gap:64px}}
+.big{font-size:var(--s2)}
+.quote{font-family:var(--display);font-size:clamp(1.6rem,1.1rem + 2.2vw,2.9rem);line-height:1.15;text-wrap:balance}
+.rules{display:grid;gap:0;border-top:1px solid var(--line)}
+.rule{display:grid;gap:8px;padding:22px 0;border-bottom:1px solid var(--line)}
+@media(min-width:700px){.rule{grid-template-columns:220px 1fr;gap:28px}}
+.rule h3{font-size:1.45rem}
+.tension{background:var(--surface);border-block:1px solid var(--line)}
+.shout{font-family:var(--display);font-size:clamp(1.5rem,1rem + 2vw,2.4rem);line-height:1.2}
+.shout s{text-decoration-thickness:2px;color:var(--muted)}
+.proof{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.proof div{padding:20px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface)}
+.proof b{display:block;font-family:var(--display);font-weight:400;font-size:1.25rem;margin-bottom:6px}
+.proof p{font-size:.95rem;color:var(--muted)}
+.hold-note{font-family:var(--mono);font-size:.72rem;color:var(--warn);margin-top:10px}
+.day{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));margin-top:32px}
+.slot{border-radius:var(--r);padding:20px;background:var(--surface);border:1px solid var(--line)}
+.slot .eyebrow{margin-bottom:10px}
+.slot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.slot li{display:flex;gap:10px;align-items:center;font-size:.95rem}
+.slot li i{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.manifesto{background:var(--board);color:var(--board-ink)}
+.manifesto p{font-family:var(--display);font-size:clamp(1.45rem,1rem + 2vw,2.5rem);line-height:1.2}
+.manifesto p.dim{color:var(--board-muted)}
+.manifesto .stack{gap:10px}
+.journal{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.journal article{padding:22px;border-top:2px solid var(--ink);background:var(--surface);border-radius:0 0 var(--r) var(--r)}
+.journal h3{font-size:1.3rem;margin-block:8px}
+.journal p{color:var(--muted);font-size:.95rem}
+.final{text-align:center}
+.final .quote{max-width:20ch;margin-inline:auto}
+.final .btns{justify-content:center;margin-top:28px}
+/* footer */
+footer{border-top:1px solid var(--line);padding-block:48px calc(48px + env(safe-area-inset-bottom,0px));font-size:.9rem}
+.fgrid{display:grid;gap:28px}
+@media(min-width:800px){.fgrid{grid-template-columns:1.2fr 1fr 1.4fr}}
+.flinks{display:grid;gap:4px}
+.flinks button{background:none;border:0;text-align:left;padding:6px 0;min-height:40px;color:var(--muted)}
+.flinks button:hover{color:var(--ink)}
+.legal{font-size:.8rem;color:var(--muted);line-height:1.55}
+.sel{user-select:all;font-family:var(--mono);font-size:.85rem}
+/* our story */
+.story-hero{padding-block:clamp(56px,9vw,140px) clamp(40px,6vw,80px)}
+.story-hero h1{font-size:var(--s1);max-width:14ch}
+.chapter{padding-block:clamp(48px,7vw,104px);border-top:1px solid var(--line)}
+.chapter .num{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;color:var(--muted)}
+.chapter h2{font-size:var(--s2);margin-block:12px 28px;max-width:18ch}
+.prose{display:grid;gap:1.1em;max-width:62ch;font-size:clamp(1.05rem,1rem + .25vw,1.2rem);line-height:1.75}
+.prose .first::first-letter{font-family:var(--display);float:left;font-size:4.2em;line-height:.82;padding:6px 10px 0 0}
+.pull{font-family:var(--display);font-size:clamp(1.5rem,1.1rem + 1.8vw,2.4rem);line-height:1.2;max-width:24ch;padding-left:20px;border-left:3px solid var(--ink);margin-block:16px}
+.formlist{display:grid;gap:10px;margin-top:8px}
+.formrow{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);text-align:left;width:100%}
+.formrow .saucer{width:44px}
+.formrow b{font-weight:500}
+.formrow span{display:block;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-weight:500;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* product page */
+.crumb{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--muted);padding-top:20px}
+.crumb button{background:none;border:0;padding:6px 0;min-height:40px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.phero{display:grid;gap:32px;padding-block:24px clamp(48px,6vw,88px);align-items:center}
+@media(min-width:900px){.phero{grid-template-columns:.9fr 1.1fr;gap:64px}}
+.phero .saucer{width:min(78%,420px);margin-inline:auto}
+.phero h1{font-size:var(--s2);margin-block:12px 18px}
+.claim{display:inline-block;margin-top:16px;font-size:.92rem;padding:8px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--line)}
+.claim small{display:block;font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.timing{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.timing div{border-radius:12px;padding:14px 10px;text-align:center;border:1px solid var(--line);background:var(--surface)}
+.timing div.best{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.timing b{display:block;font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase}
+.timing span{font-size:.82rem}
+.pgrid{display:grid;gap:40px}
+@media(min-width:900px){.pgrid{grid-template-columns:1fr 1fr;gap:56px}}
+.pblock h2{font-size:var(--s3);margin-bottom:14px}
+.pblock p{max-width:60ch}
+.label-panel{border:1px dashed var(--line);border-radius:var(--r);padding:20px;font-size:.9rem;display:grid;gap:10px}
+.label-panel b{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.pnav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:24px;margin-top:48px}
+.banner{display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:12px;border:1px solid currentColor;color:var(--warn);font-size:.92rem;margin-top:16px}
+/* sourcing */
+.makers{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.maker{padding:24px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);display:grid;gap:12px;align-content:start}
+.maker h3{font-size:1.35rem}
+.maker .where{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.maker ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.maker li{display:flex;gap:10px;align-items:center}
+.maker li i{width:12px;height:12px;border-radius:50%;flex:none}
+.explorer{display:grid;gap:24px}
+@media(min-width:900px){.explorer{grid-template-columns:320px 1fr}}
+.xlist{display:grid;gap:8px;align-content:start}
+.xlist button{text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:flex;gap:10px;align-items:center}
+.xlist button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.xlist i{width:12px;height:12px;border-radius:50%;flex:none}
+.xpanel{border-radius:var(--r);background:var(--surface);border:1px solid var(--line);padding:clamp(20px,3vw,32px);display:grid;gap:16px;min-width:0}
+.xpanel h3{font-size:var(--s3)}
+.kv{display:grid;gap:0;border-top:1px solid var(--line)}
+.kv div{display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.93rem}
+.kv dt{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.kv dd{margin:0;min-width:0}
+.pending{color:var(--muted);font-style:italic}
+/* feedback */
+.fb{display:grid;gap:28px;max-width:760px}
+.q{display:grid;gap:12px;padding:22px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line)}
+.q legend,.q label.qt{font-weight:500;font-size:1rem;padding:0}
+fieldset.q{margin:0;min-width:0}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale input{position:absolute;opacity:0;pointer-events:none}
+.scale label{display:grid;place-items:center;min-height:48px;border-radius:10px;border:1px solid var(--line);font-family:var(--mono);font-size:.95rem;cursor:pointer;background:var(--bg)}
+.scale input:checked+label{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.scale input:focus-visible+label{outline:2px solid var(--focus);outline-offset:2px}
+.ends{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted)}
+textarea,input[type=text]{width:100%;font:inherit;font-size:1rem;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+textarea{min-height:96px;resize:vertical}
+.consent{display:flex;gap:12px;align-items:flex-start;font-size:.95rem}
+.consent input{width:22px;height:22px;margin-top:2px;flex:none}
+.status{padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:.95rem}
+.status.ok{border-color:var(--ok);color:var(--ok)}
+.status.err{border-color:var(--warn);color:var(--warn)}
+.results{display:grid;gap:16px}
+.bar{display:grid;grid-template-columns:minmax(0,170px) 1fr 52px;gap:12px;align-items:center;font-size:.92rem}
+.bar .track{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar .fill{height:100%;background:var(--ink);border-radius:99px}
+.bar .v{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+/* review notes */
+.notes-btn{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:70;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.85rem;box-shadow:0 10px 30px -14px rgba(0,0,0,.4)}
+.drawer{position:fixed;inset:auto 0 0 0;z-index:90;max-height:80vh;overflow:auto;background:var(--surface);border-top:1px solid var(--line);border-radius:20px 20px 0 0;box-shadow:0 -20px 60px -30px rgba(0,0,0,.5);padding-block:20px calc(24px + env(safe-area-inset-bottom,0px))}
+@media(min-width:768px){.drawer{inset:auto calc(16px + env(safe-area-inset-right,0px)) 76px auto;width:440px;border-radius:18px;border:1px solid var(--line);max-height:70vh}}
+.drawer ul{margin:12px 0 0;padding-left:18px;display:grid;gap:8px;font-size:.9rem}
+.view{animation:fade .45s ease both}
+@keyframes fade{from{transform:translateY(6px)}to{transform:none}}
+.reveal{transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.pre{transform:translateY(18px)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal.pre{transform:none}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+
+<a class="sr" href="#main" id="skip">Skip to content</a>
+<header class="hdr">
+  <div class="wrap">
+    <button class="mark" data-go="" aria-label="Body Café Co. home"><b>Body Café Co.</b><span>Est. India</span></button>
+    <nav class="nav" aria-label="Main" id="nav"></nav>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sheet">Menu</button>
+  </div>
+</header>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Site menu">
+  <div class="wrap">
+    <div class="top"><span class="mark"><b>Body Café Co.</b></span><button class="menu-btn" id="closeBtn" style="display:inline-flex">Close</button></div>
+    <nav id="sheetNav" aria-label="Mobile"></nav>
+  </div>
+</div>
+<main id="main"></main>
+<footer id="footer"></footer>
+<button class="notes-btn" id="notesBtn" aria-expanded="false" aria-controls="drawer">Review notes</button>
+<div class="drawer" id="drawer" hidden role="dialog" aria-label="Review notes"></div>
+
+<script>
+/* ======================= CONTENT (single source of truth) =======================
+   Brand copy: BCC_Master_Brand_Story / Content Bible / Website Copy (31 Oct 2026).
+   Product facts: All Final Label 1.pdf (SharePoint, 14 Oct 2026). Colours: Body Cafe Co Colours_.xlsx. */
+const BRAND = {
+  tagline: "Built on research. Made for real life.",
+  signature: "You should always know what you're being served.",
+  belief: "You should always know exactly what you are taking, and why.",
+  email: "care@bodycafeco.com", phone: "+91-9274248974",
+  legalEntity: "Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat 380054, India",
+  fssai: "10726994000121"
+};
+const MAKERS = {
+  asoj:{name:"Asoj Soft Caps Pvt. Ltd.",place:"Baroda, Gujarat",lic:"10721024000068",what:"Softgels"},
+  vebe:{name:"Vebe Lifecare Pvt. Ltd.",place:"Baroda, Gujarat",lic:"10725997000051",what:"Capsules and chewable tablets"},
+  uliva:{name:"U-Liva Nutrition LLP",place:"Rajkot, Gujarat",lic:"10017021002540",what:"Capsules"}
+};
+const PRODUCTS = [
+ {slug:"vitamin-d3-k2",name:"Vitamin D3 + K2",acc:"#000080",dose:"softgel",maker:"asoj",time:["morning"],filters:["Morning","Softgels"],
+  headline:"Two vitamins, one oil, nothing hidden.",
+  key:"600 IU D3 · 55 mcg K2",keySub:"Softgel · morning, with food",
+  chips:["D3 600 IU","K2 55 mcg (MK-7)","Softgel","Morning, with food"],
+  form:"Vitamin D3 (cholecalciferol); vitamin K2 as MK-7; in anchovy fish oil, omega-3 as triglycerides",
+  serving:"1 softgel",pack:"60 softgels",
+  amounts:[["Vitamin D3 (cholecalciferol)","600 IU","100% RDA"],["Vitamin K2 (as MK-7)","55 mcg","100% RDA"],["Fish oil concentrate (anchovy)","250 mg","—"],["Omega-3 as triglycerides","200 mg","—"],["EPA as TG","100 mg","—"],["DHA as TG","75 mg","—"]],
+  when:"1 softgel daily in the morning, with food.",keep:"Contains gelatin, fish oil and soy.",best:"morning",
+  claim:"Supports Bone, Muscle & Heart Health",
+  intro:"Vitamin D3 and vitamin K2 (as MK-7) in one softgel, carried in omega-3 fish oil as triglycerides. 600 IU of D3 and 55 mcg of K2 per softgel, each 100% of the ICMR RDA. One softgel every morning, with food.",
+  why:"Vitamin D3 is cholecalciferol. Vitamin K2 exists in several forms; we use MK-7, also called menaquinone-7, and we name it on the front of the pack. Because both vitamins are fat-soluble, they come dissolved in a softgel of anchovy fish-oil concentrate rather than a dry tablet, and the label asks you to take it with food. That oil is in triglyceride form and adds 200 mg of omega-3 per softgel, including 100 mg EPA and 75 mg DHA.",
+  trust:"Made by Asoj Soft Caps Pvt. Ltd., Baroda, Gujarat, in a GMP-certified facility. Third-party tested, made with traceable ingredients, with no hidden blends. %RDA values as per ICMR 2020. 60 softgels per bottle. Scan the code on the pack for more.",
+  story:"Vitamin D3 and vitamin K2 are both fat-soluble, which means they belong in oil. So rather than pressing them into a dry tablet, we put them in a softgel filled with omega-3 fish oil, in triglyceride form. Then we told you everything. Each softgel contains 600 IU of vitamin D3 and 55 mcg of vitamin K2 as MK-7, each 100% of the ICMR recommended daily allowance, plus 200 mg of omega-3. The label also tells you when to take it: one softgel in the morning, with food. That is how we approach every product. Name the form. State the amount. Make the routine obvious. Prove it, with a named manufacturer and third-party testing. What is left for you is simple: a softgel beside breakfast, and the quiet confidence of knowing exactly what it is.",
+  other:"Gelatin, Glycerin, Sorbitol, Soyabean Oil, Corn Oil, Sunflower Oil, Sodium Benzoate, Natural Mixed Tocopherols.",
+  caution:"For adults only. Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Contains gelatin, fish oil & soy. Gelatin food grade. Polyols may have laxative effects."},
+ {slug:"omega-3-fish-oil",name:"Omega-3 Fish Oil",acc:"#C0C0C0",dose:"softgel",maker:"asoj",time:["morning"],filters:["Morning","Softgels"],
+  headline:"800 mg of omega-3. Form on the front.",
+  key:"800 mg omega-3",keySub:"EPA 400 · DHA 300 · as triglycerides",
+  chips:["Omega-3 800 mg","EPA 400 · DHA 300","Triglyceride form","Morning, with food"],
+  form:"Anchovy (Engraulis ringens) fish oil concentrate; omega-3 as triglycerides",
+  serving:"1 softgel",pack:"60 softgels",
+  amounts:[["Fish oil concentrate (anchovy)","1000 mg","—"],["Total omega-3 as triglycerides","800 mg","—"],["EPA as TG","400 mg","—"],["DHA as TG","300 mg","—"]],
+  when:"1 softgel daily in the morning, with food.",keep:"Contains gelatin, fish oil and soy.",best:"morning",
+  claim:"Supports Heart, Brain & Joint Health",
+  intro:"Anchovy fish-oil concentrate with 800 mg of omega-3 per softgel, in triglyceride form: 400 mg EPA and 300 mg DHA. One softgel every morning with food. Third-party tested, with every amount on the label.",
+  why:"Omega-3s in fish oil are found as triglycerides. During concentration, fish oil can be converted into other forms, so the form on a label is worth reading. Ours is supplied as triglycerides, and the label says so. The source is anchovy (Engraulis ringens). We list the oil (1000 mg) and the omega-3 inside it (800 mg) separately, and break the omega-3 down into EPA (400 mg) and DHA (300 mg), so you can compare like with like.",
+  trust:"Made by Asoj Soft Caps Pvt. Ltd., Baroda, Gujarat, in a GMP-certified facility. Third-party tested, traceable ingredients, no hidden blends. Per softgel: fish oil concentrate 1000 mg, omega-3 800 mg as triglycerides (EPA 400 mg, DHA 300 mg). 60 softgels. Contains fish, gelatin and soy.",
+  story:"Fish oil labels love a big number. Often it is the weight of the oil, not the omega-3 inside it. We think you deserve both numbers, clearly separated. Each of our softgels holds 1000 mg of anchovy fish-oil concentrate, which contains 800 mg of omega-3: 400 mg of EPA and 300 mg of DHA. We also tell you the form. Our omega-3 is in triglyceride form, and we print that on the front, because form is one of the first things a careful buyer asks about. The routine is simple: one softgel each morning, with food. It is made by a manufacturer we name on the pack, in a GMP-certified facility in Gujarat, and it is third-party tested. No guesswork, no small print. Just one softgel, and everything you need to know about it.",
+  other:"Gelatin, Glycerin, Sorbitol, Soyabean Oil, Corn Oil, Sunflower Oil, Sodium Benzoate, Natural Mixed Tocopherols.",
+  caution:"For adults only. Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Contains gelatin, fish oil & soy. Gelatin food grade. Polyols may have laxative effects."},
+ {slug:"iron-bisglycinate",name:"Iron Bisglycinate",acc:"#B87333",dose:"capsule",maker:"vebe",time:["morning"],filters:["Morning","Capsules"],
+  headline:"Iron first. Chai later.",
+  key:"29 mg iron",keySub:"Ferrochel® · morning, empty stomach",
+  chips:["Iron 29 mg","Ferrochel®","Capsule","Morning, empty stomach"],
+  form:"Ferrochel® ferrous bisglycinate chelate",
+  serving:"1 capsule",pack:"60 capsules",
+  amounts:[["Iron (as Ferrochel® ferrous bisglycinate chelate)","29 mg","100% RDA*"]],
+  rdaNote:"*%RDA as per ICMR 2020 guidelines (women, moderate work).",
+  when:"1 capsule daily in the morning, on an empty stomach.",keep:"Avoid milk for 2 hours before or after taking the capsule.",best:"morning",
+  claim:"Supports Hemoglobin Formation & Energy Metabolism",
+  intro:"29 mg of iron per capsule, as Ferrochel® ferrous bisglycinate chelate, 100% of the ICMR RDA. Take one capsule each morning on an empty stomach, and keep milk away for two hours before or after. Iron first, chai later.",
+  why:"Ferrous bisglycinate chelate is iron bound to two molecules of glycine, an amino acid. Ferrochel® is a branded version of this form, and we name it on the front of the pack. The label states the elemental iron per capsule, 29 mg, so you know exactly how much iron you get rather than the weight of the compound. The label also explains when to take it and what to avoid alongside.",
+  trust:"Made by Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, in a GMP-certified facility. Third-party tested, traceable ingredients, no hidden blends. Per capsule: iron 29 mg as Ferrochel® ferrous bisglycinate chelate, 100% RDA as per ICMR 2020 (women, moderate work). 60 HPMC capsules per bottle.",
+  story:"Iron is one of the most common supplements in Indian homes, and one of the least explained. Which form is it? How much iron does each capsule actually give you? When should you take it, and with what? We answer all three on the label. Our iron is Ferrochel® ferrous bisglycinate chelate: iron bound to the amino acid glycine. Each capsule provides 29 mg of iron, 100% of the ICMR recommended daily allowance for women doing moderate work. And the routine matters as much as the form: one capsule in the morning, on an empty stomach, with no milk for two hours before or after. In most Indian homes, that means one simple rule: iron first, chai later. It is made by a manufacturer we name on the pack, in a GMP-certified facility, and third-party tested. Nothing hidden, including the timing.",
+  other:"Microcrystalline Cellulose, Croscarmellose Sodium, Colloidal Silicon Dioxide, Magnesium Stearate, HPMC Capsule.",
+  caution:"For adults only. Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. May contain nuts."},
+ {slug:"psyllium-husk",name:"Psyllium Husk (Isabgol)",acc:"#B4AF91",dose:"capsule",maker:"uliva",time:["night"],filters:["Night","Capsules"],
+  headline:"The isabgol you know, measured in capsules.",
+  key:"2000 mg husk",keySub:"5 capsules · night, with water",
+  chips:["Psyllium 2000 mg","Fibre 1600 mg","5 capsules","Night, with water"],
+  form:"Psyllium husk (isabgol)",
+  serving:"5 capsules",pack:"150 capsules (30 servings)",
+  amounts:[["Psyllium husk (isabgol)","2000 mg","—"],["Dietary fibre","1600 mg","—"],["Soluble fibre","400 mg","—"],["Added sugar","0 g","0%"]],
+  when:"5 capsules once daily at night, with food and a full glass of water.",keep:"Always take with a full glass of water.",best:"night",
+  claim:"Supports Digestive Health & Regularity",
+  intro:"Psyllium husk, the isabgol you already know, measured into capsules. Five capsules give you 2000 mg of psyllium husk and 1600 mg of dietary fibre. Take once daily at night, with food and a full glass of water. 150 capsules: 30 servings.",
+  why:"Psyllium husk, known in India as isabgol, is the outer coat of psyllium seeds and a familiar source of dietary fibre. Ours comes in capsules so each serving is the same: 2000 mg of husk across five capsules, giving 1600 mg of dietary fibre, of which 400 mg is soluble. Because fibre needs water, the label asks for a full glass with every serving.",
+  trust:"Made by U-Liva Nutrition LLP, Rajkot, Gujarat, in a GMP-certified facility. Third-party tested, traceable ingredients, no hidden blends. Per 5 capsules: psyllium husk 2000 mg; dietary fibre 1600 mg; soluble fibre 400 mg; no added sugar. 150 capsules per bottle.",
+  story:"Isabgol needs no introduction in most Indian homes. What it usually lacks is measurement. A spoonful here, a heaped spoon there, stirred into water and finished in a hurry. We kept the ingredient everyone knows and made the amount exact. Five capsules give you 2000 mg of psyllium husk, which provides 1600 mg of dietary fibre, including 400 mg of soluble fibre. The label also tells you when: once a day, at night, with food and a full glass of water. That last part matters, so we put it where you can see it. As with everything we make, the manufacturer is named on the pack: U-Liva Nutrition LLP, Rajkot, in a GMP-certified facility. It is third-party tested, with no hidden blends. Familiar ingredient, clear amount, simple routine.",
+  other:"Magnesium Stearate, Silicon Dioxide, HPMC Capsule.",
+  caution:"For adults only. Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. May contain nuts."},
+ {slug:"myo-d-chiro-inositol",name:"Myo & D-Chiro Inositol",acc:"#D1C4E9",dose:"capsule",maker:"uliva",time:["morning"],filters:["Morning","Capsules"],
+  headline:"Two inositols, in a ratio you can read.",
+  key:"2000 + 50 mg",keySub:"40:1 · 3 capsules, morning",
+  chips:["Myo 2000 mg","D-chiro 50 mg","40:1","Morning, with food"],
+  form:"Myo-inositol + D-chiro-inositol, 40:1 ratio",
+  serving:"3 capsules",pack:"90 capsules (30 servings)",
+  amounts:[["Myo-inositol","2000 mg","—"],["D-chiro-inositol","50 mg","—"]],
+  when:"3 capsules in the morning, with food.",keep:"—",best:"morning",
+  claim:"Supports Hormonal & Metabolic Balance",claimHold:true,
+  intro:"Myo-inositol and D-chiro-inositol in a 40:1 ratio, printed on the front. Three capsules give you 2000 mg of myo-inositol and 50 mg of D-chiro-inositol. Take three capsules each morning with food. 90 capsules: 30 servings.",
+  why:"Inositol occurs in more than one form. Myo-inositol and D-chiro-inositol are two of them, and they are often combined. Because a combined total hides how much of each you get, we list them separately: 2000 mg of myo-inositol and 50 mg of D-chiro-inositol per three-capsule serving. The ratio, 40:1, is printed on the pack so you can compare like with like.",
+  trust:"Made by U-Liva Nutrition LLP, Rajkot, Gujarat, in a GMP-certified facility. Third-party tested, traceable ingredients, no hidden blends. Per 3 capsules: myo-inositol 2000 mg, D-chiro-inositol 50 mg (40:1). 90 capsules per bottle. Consult a healthcare professional if pregnant, lactating or under medical care.",
+  story:"Some products are easy to misread. Inositol is one of them, because two different forms are often sold together, and labels rarely show how much of each you get. We print both, and the ratio between them. Three capsules give you 2000 mg of myo-inositol and 50 mg of D-chiro-inositol: a 40:1 ratio, stated on the front of the pack. The routine is simple: three capsules in the morning, with food. It is made by U-Liva Nutrition LLP in Rajkot, Gujarat, in a GMP-certified facility, and third-party tested, with no hidden blends. This is the same principle behind every Body Café Co. product. Name the form. State the amount. Tell you when. When two ingredients work together, you deserve to see both numbers, not one total.",
+  other:"Magnesium Stearate, Silicon Dioxide, HPMC Capsule.",
+  caution:"For adults only. Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. May contain nuts."},
+ {slug:"creatine-chews",name:"Creatine Chews",acc:"#465665",dose:"chew",maker:"vebe",time:["any"],filters:["Chewables"],
+  headline:"3 grams of creatine. Two chews. Your time.",
+  key:"3000 mg creatine",keySub:"2 orange chews · your chosen time",
+  chips:["Creatine 3000 mg","Monohydrate","Orange chewable","One time daily"],
+  form:"Creatine monohydrate",
+  serving:"2 chewable tablets",pack:"60 chewable tablets (30 servings)",
+  amounts:[["Creatine monohydrate","3000 mg","—"],["Added sugar","3.6 g","7.2%"]],
+  when:"Chew 2 tablets once daily. Choose one time (morning, noon or night) and stay consistent.",keep:"Chew; do not swallow the tablets whole.",best:"morning",anytime:true,
+  claim:"Supports Strength & Performance",
+  intro:"3000 mg of creatine monohydrate in two orange chewable tablets. Choose one time of day, morning, noon or night, and stay consistent. Chew; don't swallow whole. 60 chewable tablets: 30 servings. Contains 3.6 g added sugar per serving.",
+  why:"Creatine monohydrate is creatine bound to one molecule of water, and it is the form we use and name on the pack. Two chewable tablets deliver 3000 mg. Because the tablets are flavoured with orange, they contain dextrose and steviol glycosides, listed in full on the label. Creatine works through regular use, which is why the label stresses consistency over timing.",
+  trust:"Made by Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, in a GMP-certified facility. Third-party tested, traceable ingredients, no hidden blends. Per 2 tablets: creatine monohydrate 3000 mg; added sugar 3.6 g. 60 chewable tablets per bottle. Adults only. Not for medicinal use.",
+  story:"Creatine is one of the simplest supplements there is, and one of the easiest to forget. Scoops get skipped, shakers get left at the gym. So we made it something you chew. Two orange-flavoured chewable tablets give you 3000 mg of creatine monohydrate. The label is honest about everything else, too: the flavour comes with 3.6 g of added sugar per serving, and we print that clearly. The routine on the label is the one that actually works with creatine: choose one time, morning, noon or night, and stay consistent. Chew the tablets; do not swallow them whole. Like every Body Café Co. product, it is made by a manufacturer we name on the pack, Vebe Lifecare in Baroda, in a GMP-certified facility, and it is third-party tested. One form, one number, and a routine you can actually keep.",
+  other:"Citric Acid, Silicon Dioxide, Natural Flavouring Substances, Steviol Glycosides and Dextrose.",
+  caution:"For adults only. Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. May contain nuts."},
+ {slug:"l-theanine",name:"L-Theanine",acc:"#9A9F90",dose:"capsule",maker:"uliva",time:["morning"],filters:["Morning","Capsules"],hold:true,
+  headline:"From green tea, measured to the milligram.",
+  key:"200 mg",keySub:"1 capsule · morning",
+  chips:["L-Theanine 200 mg","Capsule","Morning","With or without food"],
+  form:"L-Theanine (naturally found in green tea)",
+  serving:"1 capsule",pack:"30 capsules",
+  amounts:[["L-Theanine","200 mg","—"]],
+  when:"1 capsule daily in the morning, with food or on an empty stomach.",keep:"—",best:"morning",
+  claim:"Supports Calm Mind & Clear Focus",
+  intro:"200 mg of L-theanine, the amino acid found naturally in green tea, in one capsule. Take one capsule a day, best in the morning, with food or on an empty stomach. A single ingredient, clearly measured.",
+  why:"L-theanine is an amino acid that occurs naturally in tea leaves, including green tea. In our capsule it is the only active ingredient: 200 mg per serving, with the supporting ingredients listed in full on the label (microcrystalline cellulose, magnesium stearate, silicon dioxide and an HPMC capsule). There is no blend, so the number on the label is the number you take.",
+  trust:"Made by U-Liva Nutrition LLP, Rajkot, Gujarat, in a GMP-certified facility. Third-party tested, traceable ingredients, no hidden blends. Per capsule: L-theanine 200 mg. 30 capsules per bottle.",
+  story:"L-theanine is an amino acid found naturally in green tea. You may have met it already, in your evening cup. We offer it in a simple, measured form: 200 mg in one capsule, with nothing else alongside it except what is listed on the label. The routine is flexible: one capsule a day, best in the morning, with food or on an empty stomach. That is the whole product, and we like it that way. Every Body Café Co. label follows the same rules: name the ingredient, state the amount, tell you when, and show who made it. This one is made by U-Liva Nutrition LLP in Rajkot, Gujarat, in a GMP-certified facility, and third-party tested. One ingredient, one number, one capsule. Easy to understand, easy to keep.",
+  other:"Microcrystalline Cellulose, Magnesium Stearate, Silicon Dioxide, HPMC Capsule.",
+  caution:"For adults only. Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. May contain nuts."}
+];
+const ROUTES = [
+  {id:"",label:"Home"},{id:"our-story",label:"Our story",sub:"Why we exist"},{id:"products",label:"Products",sub:"The full menu"},
+  {id:"science-and-quality",label:"Science & quality",sub:"What we can show you"},{id:"ingredients-and-sourcing",label:"Ingredients & sourcing",sub:"Forms and makers"},
+  {id:"feedback",label:"Brand feedback",sub:"Team review"}
+];
+const NOTES = [
+  "Logo: the official logo file could not be read as an image through the SharePoint connector, so the wordmark is set in type. Supply the logo SVG/PNG to replace it.",
+  "Product photography: no approved bottle renders were found. Products are shown by their real dosage form (softgel, capsule, chewable) in each SKU's label colour, not as recreated packaging.",
+  "Founder perspective is held until the founder story, title and photo are approved (project files list Yagnik as founder; the brief names Nayan).",
+  "Third-party test reports per batch: not found in available files. 'Third-party tested' appears as printed on the labels; link reports behind the QR code before launch.",
+  "Ingredient suppliers and raw material country of origin: not found in available files. Shown as 'Being confirmed'.",
+  "L-Theanine is marked as held: supply was last recorded as blocked (import paperwork).",
+  "Label claims are shown as printed. The inositol claim needs FSSAI consultant review before advertising use.",
+  "Prices: MRP is blank on the final labels, so no prices or cart are shown."
+];
+
+/* ======================= HELPERS ======================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const P = slug => PRODUCTS.find(p=>p.slug===slug);
+function glyph(d){
+  if(d==="softgel") return `<svg viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="50" rx="40" ry="24" transform="rotate(-28 50 50)" fill="#E8B54A" stroke="#B5832A" stroke-width="2"/><ellipse cx="38" cy="40" rx="12" ry="5" transform="rotate(-28 38 40)" fill="#fff" opacity=".55"/></svg>`;
+  if(d==="capsule") return `<svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(-35 50 50)"><rect x="12" y="34" width="76" height="32" rx="16" fill="#F2EFE8" stroke="#BDB6AA" stroke-width="2"/><path d="M50 34h22a16 16 0 0 1 0 32H50z" fill="#E4DFD4" stroke="#BDB6AA" stroke-width="2"/><rect x="22" y="40" width="22" height="5" rx="2.5" fill="#fff" opacity=".8"/></g></svg>`;
+  return `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="34" fill="#F3A64A" stroke="#C97A22" stroke-width="2"/><circle cx="50" cy="50" r="26" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/><path d="M30 50h40" stroke="#C97A22" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+}
+const saucer = (p,label) => `<div class="saucer" style="--acc:${p.acc}" role="img" aria-label="${esc(label||p.name+' '+p.dose)}">${glyph(p.dose)}</div>`;
+const doseWord = d => d==="softgel"?"Softgel":d==="capsule"?"Capsule":"Chewable tablet";
+const go = id => { location.hash = id ? id : ""; if(!id) render(); };
+
+/* ======================= SHARED BLOCKS ======================= */
+function boardHTML(clickable=true){
+  return `<div class="board" aria-label="Today's menu">
+    <div class="board-head"><h3>Today's menu</h3><span class="eyebrow">Amount per serving</span></div>
+    ${PRODUCTS.map(p=>{const tag=clickable?"button":"div";return `<${tag} class="mline" ${clickable?`data-go="p-${p.slug}"`:""}>
+      <span class="nm"><i style="background:${p.acc}"></i>${esc(p.name)}</span><span class="dots"></span><span class="amt">${esc(p.key)}</span>
+      <span class="sub">${esc(p.keySub)}${p.hold?" · supply being confirmed":""}</span></${tag}>`}).join("")}
+    <p class="board-foot">Every amount above is printed on the label. No hidden blends.</p>
+  </div>`;
+}
+function cardHTML(p){
+  return `<button class="pcard" data-go="p-${p.slug}" aria-label="${esc(p.name)}: see what's inside">
+    ${saucer(p)}
+    <div><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><span class="eyebrow">${doseWord(p.dose)} · ${esc(p.pack.split(" (")[0])}</span>${p.hold?'<span class="tag hold">Supply being confirmed</span>':""}</div>
+    <h3 style="margin-top:8px">${esc(p.name)}</h3><p class="line">${esc(p.headline)}</p>
+    <div class="facts">${p.chips.map(c=>`<span>${esc(c)}</span>`).join("")}</div></div>
+  </button>`;
+}
+function dayHTML(){
+  const m=PRODUCTS.filter(p=>p.time.includes("morning")&&!p.hold), n=PRODUCTS.filter(p=>p.time.includes("night")), a=PRODUCTS.filter(p=>p.time.includes("any"));
+  const li=list=>list.map(p=>`<li><i style="background:${p.acc}"></i>${esc(p.name)}${p.slug==="iron-bisglycinate"?" <span class='muted'>(before chai)</span>":""}</li>`).join("");
+  return `<div class="day">
+    <div class="slot"><p class="eyebrow">Morning</p><ul>${li(m)}</ul></div>
+    <div class="slot"><p class="eyebrow">Your chosen time</p><ul>${li(a)}</ul></div>
+    <div class="slot"><p class="eyebrow">Night</p><ul>${li(n)}</ul></div>
+  </div><p class="muted" style="font-size:.85rem;margin-top:12px">Timings as printed on each label.</p>`;
+}
+function manifestoHTML(){
+  return `<section class="section manifesto"><div class="wrap"><div class="stack read" style="max-width:820px">
+    <p class="eyebrow" style="color:var(--board-muted);margin-bottom:14px">What we stand for</p>
+    <p>We name the form.</p><p>We state the amount.</p><p>We tell you when.</p><p>We show our work.</p>
+    <p class="dim">We don't make loud promises, and we don't hide behind small print.</p>
+    <p class="dim">Read the label. Ask us anything. Take what makes sense for you.</p>
+  </div></div></section>`;
+}
+function finalCTA(){
+  return `<section class="section final"><div class="wrap">
+    <p class="eyebrow">${esc(BRAND.tagline)}</p>
+    <h2 class="quote" style="margin-top:14px">${esc(BRAND.signature)}</h2>
+    <p class="lede muted" style="max-width:46ch;margin:18px auto 0">Start with one product. Read the whole label. If something isn't clear, ask us, and expect an answer you can check.</p>
+    <div class="btns"><button class="btn" data-go="products">Shop the range</button><button class="btn ghost" data-go="contact-us">Ask us anything</button></div>
+  </div></section>`;
+}
+
+/* ======================= PAGES ======================= */
+function home(){
+  return `
+  <section class="hero"><div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow rise">Everyday supplements, nothing hidden</p>
+      <h1 class="rise d1">Know what you're taking.</h1>
+      <p class="lede rise d2">Every Body Café Co. product names its ingredient form, states the amount per serving and tells you when to take it. Like a good café, the whole menu is on the board.</p>
+      <div class="btns rise d3"><button class="btn" data-go="products">Shop the range</button><button class="btn ghost" data-go="our-story">Read our story</button></div>
+    </div>
+    <div class="rise d4">${boardHTML()}</div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap split reveal">
+    <div><p class="eyebrow">Our belief</p><h2 class="big" style="margin-top:12px">You should always know what you're being served.</h2></div>
+    <div class="stack"><p class="lede">A good café never hides the recipe. You can read the menu, see what goes into your cup, and ask what you like. We think supplements deserve the same openness.</p>
+    <p>So every label we print answers the three questions careful people ask: what form is this ingredient in, how much of it do I get, and when should I take it? If a label cannot answer those, it is not finished.</p></div>
+  </div></section>
+
+  <section class="section tension"><div class="wrap split reveal">
+    <div><p class="eyebrow">Why we exist</p><h2 class="big" style="margin-top:12px">The front of the label shouts. The back whispers.</h2></div>
+    <div class="stack">
+      <p class="shout"><s>More energy.</s> <s>More strength.</s> <s>More glow.</s></p>
+      <p>You check the date on the milk packet. You read reviews before buying a phone cover. Then you reach the supplement shelf, and the facts that matter most are in tiny type, inside a "blend", or missing.</p>
+      <p>Advice arrives from every direction, and very little of it is clear. So people either buy on faith, or quietly stop. Neither is a real choice. A choice needs information.</p>
+    </div>
+  </div></section>
+
+  <section class="section"><div class="wrap">
+    <p class="eyebrow">Our product philosophy</p><h2 class="big" style="margin-block:12px 32px;max-width:16ch">Four rules on every bottle.</h2>
+    <div class="rules reveal">
+      <div class="rule"><h3>We name the form.</h3><p>Triglyceride-form omega-3. Vitamin K2 as MK-7. Ferrochel® ferrous bisglycinate chelate. If a form was chosen for a reason, you should see it.</p></div>
+      <div class="rule"><h3>We state the amount.</h3><p>Per serving, ingredient by ingredient. No hidden blends, no totals that could mean anything.</p></div>
+      <div class="rule"><h3>We tell you when.</h3><p>Morning, noon or night; with food or without; what to keep apart. It is printed on every pack.</p></div>
+      <div class="rule"><h3>We show our work.</h3><p>Named manufacturers, GMP-certified facilities, third-party testing and a code on every bottle with more to read.</p></div>
+    </div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:28px">
+      <div><p class="eyebrow">The launch range</p><h2 class="big" style="margin-top:12px">A short menu, made with care.</h2><p class="muted" style="margin-top:10px">Each product earns its place on the shelf, and each one is explained the same way.</p></div>
+      <button class="btn ghost small" data-go="products">See all products</button>
+    </div>
+    <div class="prod-grid">${PRODUCTS.map(cardHTML).join("")}</div>
+  </div></section>
+
+  <section class="section tension"><div class="wrap split reveal">
+    <div><p class="eyebrow">Formulation thinking</p><h2 class="big" style="margin-top:12px">The form is part of the product.</h2>
+      <p style="margin-top:18px">The same nutrient can arrive in very different forms, and a careful buyer asks which one. So we answer on the front of the pack. Different products, one habit: tell people exactly what they are getting.</p>
+      <div class="btns" style="margin-top:22px"><button class="btn ghost small" data-go="ingredients-and-sourcing">Explore every ingredient</button></div></div>
+    <div class="formlist">
+      ${[["vitamin-d3-k2","D3 and K2 travel in oil","Fat-soluble, so they sit in a softgel of omega-3 oil, not a dry tablet."],["iron-bisglycinate","Iron as a chelate","The label gives the elemental iron, 29 mg, not the weight of the compound."],["omega-3-fish-oil","Oil and omega-3, counted separately","1000 mg of oil is never mistaken for 1000 mg of omega-3."],["myo-d-chiro-inositol","Two forms, one ratio","Both amounts and the 40:1 ratio are printed, not one total."]].map(([s,t,d])=>`<button class="formrow" data-go="p-${s}">${saucer(P(s))}<div><b>${t}</b><span>${d}</span></div></button>`).join("")}
+    </div>
+  </div></section>
+
+  <section class="section"><div class="wrap split reveal">
+    <div><p class="eyebrow">Sourcing and transparency</p><h2 class="big" style="margin-top:12px">Who makes it, where, and how it's checked.</h2></div>
+    <div class="stack"><p>Our softgels are made by Asoj Soft Caps in Baroda. Our iron and creatine chews are made by Vebe Lifecare in Baroda. Our capsules for psyllium, inositol and L-theanine are made by U-Liva Nutrition in Rajkot.</p>
+    <p>All are GMP-certified facilities in Gujarat, and every manufacturer is named on the label. We are adding the origin of each raw material to our sourcing page as supplier documents are confirmed.</p>
+    <div class="btns"><button class="btn ghost small" data-go="ingredients-and-sourcing">Ingredients and sourcing</button></div></div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <p class="eyebrow">Science and quality</p><h2 class="big" style="margin-block:12px 28px;max-width:20ch">Things you can check, not things you have to trust.</h2>
+    <div class="proof reveal">
+      <div><b>Made in Gujarat</b><p>GMP-certified facilities in Baroda and Rajkot, with every manufacturer named on the label.</p></div>
+      <div><b>Third-party tested</b><p>Every product carries the third-party tested mark on its label.</p></div>
+      <div><b>No hidden blends</b><p>Every active ingredient is listed with its own amount per serving.</p></div>
+      <div><b>Scan for more</b><p>Every bottle carries a code that leads to more about what is inside.</p></div>
+      <div><b>FSSAI licensed</b><p>Marketed by Bluebell Lifecare Pvt. Ltd., FSSAI Lic. No. ${BRAND.fssai}.</p></div>
+    </div>
+    <div class="btns" style="margin-top:24px"><button class="btn ghost small" data-go="science-and-quality">How we approach science</button></div>
+  </div></section>
+
+  <section class="section tension"><div class="wrap">
+    <div class="split reveal"><div><p class="eyebrow">Everyday life</p><h2 class="big" style="margin-top:12px">A small part of a good day.</h2></div>
+    <div class="stack"><p class="lede">A softgel with breakfast. Iron before the first chai. A few capsules with dinner and a full glass of water.</p>
+    <p>Supplements should sit quietly inside the day you already have, not take it over. A good life is built mostly elsewhere: in meals, sleep, movement and the people around you. Our job is to make the small part clear, so you can get on with the rest.</p></div></div>
+    ${dayHTML()}
+  </div></section>
+
+  ${manifestoHTML()}
+
+  <section class="section"><div class="wrap">
+    <p class="eyebrow">Journal</p><h2 class="big" style="margin-block:12px 28px">Learn to read any label. Including ours.</h2>
+    <div class="journal">
+      <article><p class="eyebrow">Label reading</p><h3>How to read a supplement label in ten seconds</h3><p>Three questions that tell you more than any front-of-pack promise: which form, how much, and when.</p></article>
+      <article><p class="eyebrow">Routines</p><h3>Iron first, chai later: why timing is on the label</h3><p>Some supplements care about what you take them with. Here is why our iron label talks about milk.</p></article>
+      <article><p class="eyebrow">Forms</p><h3>What "triglyceride form" means on an omega-3 label</h3><p>The oil, the omega-3 inside it, and the form it comes in are three different numbers. Here is how to read them.</p></article>
+    </div>
+    <p class="muted" style="font-size:.85rem;margin-top:12px">Full articles publish with the journal.</p>
+  </div></section>
+
+  ${finalCTA()}`;
+}
+
+function ourStory(){
+  const ch=(n,title,body)=>`<section class="chapter"><div class="wrap"><p class="num">${n}</p><h2>${title}</h2>${body}</div></section>`;
+  return `
+  <section class="story-hero"><div class="wrap">
+    <p class="eyebrow rise">Our story</p>
+    <h1 class="rise d1" style="margin-top:14px">You should always know what you're being served.</h1>
+    <p class="lede muted rise d2" style="margin-top:20px;max-width:40ch">A good café shows you the menu. So do we.</p>
+  </div></section>
+
+  ${ch("I","Careful people.",`<div class="prose">
+    <p class="first">Think about how carefully you choose things.</p>
+    <p>You check the expiry date on the milk packet. You read three reviews before buying a phone cover. You ask the chemist which brand to take, and then you ask a friend whether the chemist is right. When something goes into your body, or into your family's, you want to know what it is.</p>
+    <p>And then there is the supplement shelf.</p></div>`)}
+
+  ${ch("II","An opaque shelf.",`<div class="prose">
+    <p>It is loud. Every bottle promises more energy, more strength, more glow. The front of the label shouts and the back of it whispers. The facts that matter most are buried in small type, folded into a "proprietary blend", or missing altogether: what form the ingredient is in, how much of it you actually get, and when you should take it.</p>
+    <p>Advice arrives from everywhere: a forwarded message, a trainer at the gym, a relative who swears by something. Most of it is well meant. Very little of it is clear.</p>
+    <p>So people do one of two things. They buy on faith and hope it works. Or they quietly give up, because it was never clear why they started.</p>
+    <p class="pull">Neither is a real choice. A choice needs information.</p></div>`)}
+
+  ${ch("III","Why Body Café Co. exists.",`<div class="split"><div class="prose">
+    <p>Body Café Co. began with a simple belief: you should always know exactly what you are taking, and why.</p>
+    <p>It is the idea behind every good café. You can read the menu. You can see what goes into your cup. Nobody hides the recipe, because the recipe is the reason you walked in. We wanted supplements to feel like that: open, specific, and made with care for the person who will actually use them.</p>
+    <p>That belief shapes everything we make.</p></div><div>${boardHTML(true)}</div></div>`)}
+
+  ${ch("IV","The thinking behind our products.",`<div class="prose" style="margin-bottom:32px">
+    <p><b>It starts with the form.</b> The same nutrient can come in very different forms, so we name the one we chose, every time. If a form was chosen for a reason, you deserve to see it.</p>
+    <p><b>Then the amount.</b> Every label states how much is in a serving, ingredient by ingredient. There are no hidden blends and no totals that could mean anything.</p>
+    <p><b>Then the moment.</b> A supplement only earns its place if it fits into a real day, so every bottle tells you when to take it, whether to take it with food, and what to keep apart.</p>
+    <p><b>And then the proof.</b> Our products are made in GMP-certified facilities in Gujarat, by manufacturers we name on every pack. They are third-party tested. Their ingredients are traceable. Scan the code on any bottle and there is more to read.</p></div>
+    <div class="tbl"><table><thead><tr><th>Product</th><th>The decision</th><th>Why we show it</th></tr></thead><tbody>
+    ${[["vitamin-d3-k2","D3 and K2 (as MK-7) in a softgel of omega-3 oil, not a dry tablet","Both vitamins are fat-soluble; the label asks you to take it with food"],["omega-3-fish-oil","Omega-3 as triglycerides; oil and omega-3 listed separately","So 1000 mg of oil is never mistaken for 1000 mg of omega-3"],["iron-bisglycinate","Ferrochel® ferrous bisglycinate chelate; elemental iron stated","You see the iron you get (29 mg), plus when to take it and what to avoid"],["psyllium-husk","Familiar isabgol, measured into capsules","Every serving is the same: 2000 mg, with water, at night"],["myo-d-chiro-inositol","Both forms listed separately, 40:1 ratio on the front","A single total would hide how much of each you get"],["creatine-chews","Creatine monohydrate as an orange chew; added sugar printed","Easier to take every day, and you should know about the sugar too"]].map(([s,a,b])=>`<tr><td><button class="crumb" style="padding:0" data-go="p-${s}"><b style="color:var(--ink)">${esc(P(s).name)}</b></button></td><td>${a}</td><td>${b}</td></tr>`).join("")}
+    </tbody></table></div>`)}
+
+  ${ch("V","What we believe.",`<div class="stack" style="max-width:780px">
+    ${["We believe the form of an ingredient deserves a name.","We believe an amount should be a number, not a blend.","We believe “when” and “with what” matter as much as “what”.","We believe a label is a promise you should be able to check.","We believe in a short shelf, made with care."].map(t=>`<p class="quote" style="font-size:clamp(1.3rem,1rem + 1.4vw,2rem)">${t}</p>`).join("")}</div>`)}
+
+  ${ch("VI","What we can demonstrate.",`<div class="proof">
+    <div><b>Amounts</b><p>Every active ingredient listed with its own amount per serving, on every label.</p></div>
+    <div><b>Forms</b><p>The form of each ingredient named on the pack.</p></div>
+    <div><b>Directions</b><p>When and how to take each product, printed on the bottle.</p></div>
+    <div><b>Makers</b><p>Asoj Soft Caps (Baroda), Vebe Lifecare (Baroda), U-Liva Nutrition (Rajkot), all GMP-certified.</p></div>
+    <div><b>Standards</b><p>%RDA values calculated as per ICMR 2020 guidelines where established.</p></div>
+    <div><b>Licence</b><p>FSSAI licence for Bluebell Lifecare Pvt. Ltd.: ${BRAND.fssai}.</p></div></div>`)}
+
+  ${ch("VII","Our place in everyday life.",`<div class="prose">
+    <p>None of this is complicated. That is the point. Care, done properly, usually looks simple from the outside.</p>
+    <p>We do not think supplements should take over your life. They are a small part of it: a softgel with breakfast, a few capsules before bed, a habit that sits quietly between the alarm and the first meeting of the day. A good life is built mostly elsewhere, in meals and sleep, in movement, in time with the people you love. Our job is to make the small part honest, so you can stop thinking about it and get on with the rest.</p>
+    <p>So we keep our shelf short and make each product with care. We would rather explain one thing well than sell you ten things you do not understand. If a question is not answered on the label, ask us, and expect an answer you can check.</p>
+    <p class="pull">Because trust is not built by promises. It is built by being able to look.</p></div>
+    ${dayHTML()}`)}
+
+  <section class="section manifesto"><div class="wrap"><div class="stack" style="max-width:820px">
+    <p class="dim">We don't make loud promises.</p><p class="dim">We don't hide behind small print.</p><p class="dim">We don't sell miracles in a bottle.</p>
+    <p>We name the form. We state the amount. We tell you when. We show our work.</p>
+    <p>Read the label. Ask your question. Take what makes sense for you.</p>
+    <p class="eyebrow" style="color:var(--board-muted);margin-top:18px">${esc(BRAND.tagline)}</p>
+  </div></div></section>
+
+  <section class="section final"><div class="wrap"><h2 class="quote">Start with one. Read the whole label.</h2><div class="btns"><button class="btn" data-go="products">Explore our products</button></div></div></section>`;
+}
+
+let filter="All";
+function products(){
+  const fs=["All","Morning","Night","Softgels","Capsules","Chewables"];
+  const list=PRODUCTS.filter(p=>filter==="All"||p.filters.includes(filter));
+  return `<section class="section" style="padding-top:clamp(40px,6vw,80px)"><div class="wrap">
+    <p class="eyebrow">Products</p><h1 class="big" style="margin-top:12px">The menu.</h1>
+    <p class="lede muted" style="margin-top:14px;max-width:52ch">Every product below names its form, states its amount and tells you when to take it. Tap any one to see the full label.</p>
+    <div class="chips" role="group" aria-label="Filter products">${fs.map(f=>`<button class="chip" data-filter="${f}" aria-pressed="${f===filter}">${f}</button>`).join("")}</div>
+    <p class="sr" aria-live="polite">${list.length} products shown</p>
+    <div class="prod-grid">${list.map(cardHTML).join("")}</div>
+  </div></section>`;
+}
+
+function product(slug){
+  const p=P(slug); if(!p) return notFound();
+  const i=PRODUCTS.indexOf(p), prev=PRODUCTS[(i+PRODUCTS.length-1)%PRODUCTS.length], next=PRODUCTS[(i+1)%PRODUCTS.length];
+  const m=MAKERS[p.maker];
+  const slot=(k,label)=>{const best=p.anytime?false:p.best===k;return `<div class="${best?"best":""}"><b>${label}</b><span>${p.anytime?"Pick one":best?"Best":"Also fine"}</span></div>`};
+  return `<div class="wrap">
+    <div class="crumb"><button data-go="products">Products</button><span aria-hidden="true">/</span><span>${esc(p.name)}</span></div>
+    <section class="phero">
+      <div>${saucer(p, p.name+": "+doseWord(p.dose).toLowerCase()+" shown on a saucer in the product's label colour")}</div>
+      <div>
+        <p class="eyebrow">${doseWord(p.dose)} · ${esc(p.pack)}</p>
+        <h1>${esc(p.headline)}</h1>
+        <p class="lede">${esc(p.intro)}</p>
+        <div class="claim"><small>On the label</small>${esc(p.claim)}</div>
+        ${p.hold?`<div class="banner" role="note">L-Theanine supply is being confirmed. This page is shown for review only.</div>`:""}
+        ${p.claimHold?`<p class="hold-note">Claim shown as printed; advertising use pending consultant review.</p>`:""}
+        <div class="btns" style="margin-top:24px"><button class="btn" data-go="contact-us">Ask about this product</button></div>
+      </div>
+    </section>
+
+    <section class="pgrid" style="padding-bottom:56px">
+      <div class="pblock"><h2>What's inside</h2>
+        <div class="tbl"><table><thead><tr><th>Per ${esc(p.serving)}</th><th>Amount</th><th>% RDA</th></tr></thead><tbody>
+        ${p.amounts.map(a=>`<tr><td>${esc(a[0])}</td><td class="num">${esc(a[1])}</td><td class="num">${esc(a[2])}</td></tr>`).join("")}
+        </tbody></table></div>
+        <p class="muted" style="font-size:.82rem;margin-top:8px">${esc(p.rdaNote||"%RDA as per ICMR 2020 guidelines (men, moderate work). — = %RDA not established.")}</p>
+      </div>
+      <div class="pblock"><h2>When to take it</h2>
+        <div class="timing">${slot("morning","Morning")}${slot("noon","Noon")}${slot("night","Night")}</div>
+        <dl class="kv" style="margin-top:18px">
+          <div><dt>Directions</dt><dd>${esc(p.when)}</dd></div>
+          <div><dt>Keep in mind</dt><dd>${esc(p.keep)}</dd></div>
+          <div><dt>Form</dt><dd>${esc(p.form)}</dd></div>
+          <div><dt>Dosage form</dt><dd>${doseWord(p.dose)} · ${esc(p.serving)} per serving</dd></div>
+        </dl>
+      </div>
+      <div class="pblock"><h2>Why this form</h2><p>${esc(p.why)}</p></div>
+      <div class="pblock"><h2>How we check it</h2><p>${esc(p.trust)}</p>
+        <dl class="kv" style="margin-top:18px">
+          <div><dt>Made by</dt><dd>${esc(m.name)}, ${esc(m.place)}</dd></div>
+          <div><dt>Raw material origin</dt><dd class="pending">Being confirmed</dd></div>
+          <div><dt>Batch report</dt><dd class="pending">Scan the code on your pack</dd></div>
+        </dl></div>
+      <div class="pblock" style="grid-column:1/-1"><h2>The story</h2><p class="lede" style="max-width:68ch">${esc(p.story)}</p></div>
+      <div class="pblock" style="grid-column:1/-1"><h2>Full label</h2>
+        <div class="label-panel"><div><b>Other ingredients</b><p>${esc(p.other)}</p></div><div><b>Caution</b><p>${esc(p.caution)}</p></div>
+        <div><b>Storage</b><p>Store below 30°C. Protect from sunlight, heat and moisture. Keep out of reach of children. Keep desiccant inside the bottle.</p></div>
+        <div><b>Not for medicinal use</b><p>Not intended to diagnose, treat, cure or prevent any disease. Do not exceed the recommended dose. Not a substitute for a varied diet.</p></div></div>
+        <p class="muted" style="margin-top:14px">Something not clear on this label? Ask us, and expect an answer you can check.</p></div>
+    </section>
+    <nav class="pnav" aria-label="More products" style="margin-bottom:64px">
+      <button class="btn ghost small" data-go="p-${prev.slug}">← ${esc(prev.name)}</button>
+      <button class="btn ghost small" data-go="p-${next.slug}">${esc(next.name)} →</button>
+    </nav>
+  </div>`;
+}
+
+function science(){
+  return `<section class="section" style="padding-top:clamp(40px,6vw,80px)"><div class="wrap">
+    <p class="eyebrow">Science and quality</p><h1 class="big" style="margin-top:12px;max-width:18ch">What we can show you, and what we won't claim.</h1>
+    <p class="lede" style="margin-top:20px;max-width:60ch">Science, for us, starts with honesty about what a supplement is. Our products are nutraceuticals: they are not medicines, and they are not intended to diagnose, treat, cure or prevent any disease. What we can do is make every product easy to understand and easy to check.</p>
+  </div></section>
+  <section class="section tension"><div class="wrap"><div class="rules">
+    <div class="rule"><h3>How we choose a form</h3><p>We pick the ingredient form for each product and name it on the label, so you can compare it with anything else on the shelf. Where a form needs particular directions, such as iron on an empty stomach, or D3 and K2 with food, those directions are on the bottle.</p></div>
+    <div class="rule"><h3>How products are made</h3><p>Each product is made in a GMP-certified facility in Gujarat by a manufacturer we name on the label: Asoj Soft Caps (Baroda), Vebe Lifecare (Baroda) and U-Liva Nutrition (Rajkot).</p></div>
+    <div class="rule"><h3>How products are checked</h3><p>Every product carries the third-party tested mark on its label, and every bottle has a code that leads to more about what is inside.</p></div>
+    <div class="rule"><h3>How amounts are reported</h3><p>Each active ingredient has its own amount per serving. Where a recommended daily allowance exists, the %RDA follows ICMR 2020 guidelines and the label says which reference group it uses.</p></div>
+    <div class="rule"><h3>How we write claims</h3><p>We use only the claim printed on each label, reviewed for compliance with Indian food regulations. We don't use fear, miracle language or comparisons we can't source.</p></div>
+  </div></div></section>
+  <section class="section"><div class="wrap">
+    <h2 class="big" style="margin-bottom:24px">Every label, side by side.</h2>
+    <div class="tbl"><table><thead><tr><th>Product</th><th>Form</th><th>Per serving</th><th>Serving</th><th>Made by</th></tr></thead><tbody>
+    ${PRODUCTS.map(p=>`<tr><td><b>${esc(p.name)}</b>${p.hold?' <span class="tag hold">Held</span>':""}</td><td>${esc(p.form)}</td><td class="num">${esc(p.key)}</td><td>${esc(p.serving)}</td><td>${esc(MAKERS[p.maker].name)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="btns" style="margin-top:28px"><button class="btn" data-go="contact-us">Ask us anything</button></div>
+  </div></section>`;
+}
+
+let xsel="vitamin-d3-k2";
+function sourcing(){
+  const p=P(xsel), m=MAKERS[p.maker];
+  return `<section class="section" style="padding-top:clamp(40px,6vw,80px)"><div class="wrap">
+    <p class="eyebrow">Ingredients and sourcing</p><h1 class="big" style="margin-top:12px;max-width:18ch">Every ingredient, and who makes the product.</h1>
+    <p class="lede" style="margin-top:20px;max-width:60ch">Below is every active ingredient in our range, the form we use, and the manufacturer that makes the finished product. We are adding the origin of each raw material as supplier documents are confirmed, and we will update this page when we do.</p>
+  </div></section>
+  <section class="section tension" style="padding-top:48px"><div class="wrap">
+    <h2 class="big" style="margin-bottom:24px">Explore the forms.</h2>
+    <div class="explorer">
+      <div class="xlist" role="group" aria-label="Choose a product">${PRODUCTS.map(q=>`<button data-x="${q.slug}" aria-pressed="${q.slug===xsel}"><i style="background:${q.acc}"></i>${esc(q.name)}</button>`).join("")}</div>
+      <div class="xpanel" aria-live="polite">
+        <div style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:center">${saucer(p)}<div><p class="eyebrow">${doseWord(p.dose)}</p><h3>${esc(p.name)}</h3></div></div>
+        <p>${esc(p.why)}</p>
+        <dl class="kv">
+          <div><dt>Ingredient form</dt><dd>${esc(p.form)}</dd></div>
+          <div><dt>Per serving</dt><dd>${p.amounts.filter(a=>!/sugar/i.test(a[0])).map(a=>esc(a[0]+": "+a[1])).join("<br>")}</dd></div>
+          <div><dt>Finished product made by</dt><dd>${esc(m.name)}, ${esc(m.place)}</dd></div>
+          <div><dt>Ingredient supplier</dt><dd class="pending">Being confirmed</dd></div>
+          <div><dt>Raw material origin</dt><dd class="pending">Being confirmed</dd></div>
+        </dl>
+        <div><button class="btn ghost small" data-go="p-${p.slug}">See the full product</button></div>
+      </div>
+    </div>
+  </div></section>
+  <section class="section"><div class="wrap">
+    <h2 class="big" style="margin-bottom:24px">Three makers, all in Gujarat.</h2>
+    <div class="makers">${Object.entries(MAKERS).map(([k,m])=>`<div class="maker"><p class="where">${esc(m.place)} · FSSAI Lic. ${m.lic}</p><h3>${esc(m.name)}</h3><p class="muted">${esc(m.what)}</p>
+      <ul>${PRODUCTS.filter(p=>p.maker===k).map(p=>`<li><i style="background:${p.acc}"></i>${esc(p.name)}</li>`).join("")}</ul></div>`).join("")}</div>
+    <p class="muted" style="margin-top:18px;font-size:.9rem">Marketed by ${esc(BRAND.legalEntity)}. FSSAI Lic. No. ${BRAND.fssai}.</p>
+  </div></section>`;
+}
+
+function contact(){
+  return `<section class="section" style="padding-top:clamp(40px,6vw,80px)"><div class="wrap read">
+    <p class="eyebrow">Contact</p><h1 class="big" style="margin-top:12px">Ask us anything.</h1>
+    <p class="lede" style="margin-top:18px">If something isn't clear on a label, or you want to know more about how a product is made, write to us. We'll answer in plain language, and we'll tell you where the answer comes from.</p>
+    <dl class="kv" style="margin-top:28px">
+      <div><dt>Email</dt><dd><span class="sel">${BRAND.email}</span> <button class="btn ghost small" data-copy="${BRAND.email}" style="margin-left:8px">Copy</button></dd></div>
+      <div><dt>Phone</dt><dd><span class="sel">${BRAND.phone}</span></dd></div>
+      <div><dt>Address</dt><dd>${esc(BRAND.legalEntity)}</dd></div>
+    </dl>
+    <p class="muted" style="margin-top:20px">We can explain our products, but we can't give medical advice. For questions about your health, please speak with a doctor.</p>
+  </div></section>`;
+}
+
+const DIMS=[["understanding","Brand understanding","I understood what Body Café Co. stands for."],["emotion","Emotional connection","The story made me feel something."],["trust","Trust","The brand feels credible and honest."],["premium","Premium perception","The brand feels premium."],["memorable","Memorability","I will remember this brand tomorrow."],["interest","Product interest","I want to learn more about the products."],["overall","Overall impression","My overall impression is positive."]];
+function feedback(){
+  return `<section class="section" style="padding-top:clamp(40px,6vw,80px)"><div class="wrap">
+    <p class="eyebrow">Team review</p><h1 class="big" style="margin-top:12px;max-width:18ch">Tell us what the story did for you.</h1>
+    <p class="lede" style="margin-top:16px;max-width:58ch">Explore the site first: the homepage, Our story and two or three products. Then answer below. Your answers are saved to this shared review, one response per person, and you can update yours later.</p>
+    <div id="fbStatus" class="status" style="margin-top:24px">Connecting to the response store…</div>
+    <form class="fb" id="fbForm" style="margin-top:28px" novalidate>
+      <div class="q"><label class="qt" for="f_says">In one sentence, what does Body Café Co. stand for?</label><textarea id="f_says" name="says"></textarea></div>
+      <div class="q"><label class="qt" for="f_diff">What makes it different from other supplement brands?</label><textarea id="f_diff" name="diff"></textarea></div>
+      <div class="q"><label class="qt" for="f_mem">Which part of the story was most memorable?</label><textarea id="f_mem" name="mem"></textarea></div>
+      ${DIMS.map(([k,t,s])=>`<fieldset class="q"><legend>${t}<span class="muted" style="display:block;font-weight:400;font-size:.92rem">${s}</span></legend>
+        <div class="scale">${[1,2,3,4,5].map(v=>`<input type="radio" id="r_${k}_${v}" name="${k}" value="${v}"><label for="r_${k}_${v}">${v}</label>`).join("")}</div>
+        <div class="ends"><span>Strongly disagree</span><span>Strongly agree</span></div></fieldset>`).join("")}
+      <div class="q"><label class="qt" for="f_like">What did you like most?</label><textarea id="f_like" name="like"></textarea></div>
+      <div class="q"><label class="qt" for="f_confuse">What was confusing or felt unsupported?</label><textarea id="f_confuse" name="confuse"></textarea></div>
+      <div class="q"><label class="qt" for="f_trust">What would make you trust the brand more?</label><textarea id="f_trust" name="trustmore"></textarea></div>
+      <label class="consent" for="f_consent"><input type="checkbox" id="f_consent" name="consent"><span>I agree that my answers are stored with this review and seen by the Body Café Co. team. No other personal details are collected.</span></label>
+      <div class="btns"><button class="btn" type="submit" id="fbSubmit">Save my response</button></div>
+      <div id="fbMsg" role="status" aria-live="polite"></div>
+    </form>
+    <section id="fbResults" hidden style="margin-top:56px"></section>
+  </div></section>`;
+}
+
+function notFound(){return `<section class="section"><div class="wrap"><h1 class="big">That page isn't on the menu.</h1><div class="btns" style="margin-top:20px"><button class="btn" data-go="">Back to home</button></div></div></section>`}
+
+/* ======================= ROUTER ======================= */
+function navHTML(cur,sheet){
+  return ROUTES.filter(r=>r.id!==""||sheet).map(r=>`<button data-go="${r.id}" ${r.id===cur?'aria-current="page"':""}>${r.label}${sheet&&r.sub?`<small>${r.sub}</small>`:""}</button>`).join("");
+}
+function footerHTML(){
+  return `<div class="wrap fgrid">
+    <div class="stack" style="gap:10px"><span class="mark"><b>Body Café Co.</b></span><p class="muted">${esc(BRAND.tagline)}</p>
+      <p><span class="sel">${BRAND.email}</span><br><span class="sel">${BRAND.phone}</span></p></div>
+    <div class="flinks">${ROUTES.map(r=>`<button data-go="${r.id}">${r.label}</button>`).join("")}<button data-go="contact-us">Contact</button></div>
+    <p class="legal">Body Café Co. is a brand of ${esc(BRAND.legalEntity)}. FSSAI Lic. No. ${BRAND.fssai}. Nutraceuticals and health supplements are not for medicinal use and are not intended to diagnose, treat, cure or prevent any disease. Do not exceed the recommended dose. Not a substitute for a varied diet. Pregnant or lactating women and people under medical care should consult a healthcare professional before use.<br><br>© 2026 Bluebell Lifecare Pvt. Ltd.</p>
+  </div>`;
+}
+let feedbackBooted=false;
+function render(){
+  const h=decodeURIComponent(location.hash.replace(/^#/,""));
+  let html, cur=h, title="Body Café Co.";
+  if(!h){html=home();}
+  else if(h==="our-story"){html=ourStory();title="Our story · Body Café Co."}
+  else if(h==="products"){html=products();title="Products · Body Café Co."}
+  else if(h.startsWith("p-")){html=product(h.slice(2));cur="products";const p=P(h.slice(2));if(p)title=p.name+" · Body Café Co."}
+  else if(h==="science-and-quality"){html=science();title="Science & quality · Body Café Co."}
+  else if(h==="ingredients-and-sourcing"){html=sourcing();title="Ingredients & sourcing · Body Café Co."}
+  else if(h==="contact-us"){html=contact();title="Contact · Body Café Co."}
+  else if(h==="feedback"){html=feedback();title="Brand feedback · Body Café Co."}
+  else if(h==="main"){return}
+  else html=notFound();
+  const main=$("#main"); main.innerHTML=`<div class="view">${html}</div>`;
+  document.title=title;
+  $("#nav").innerHTML=navHTML(cur,false); $("#sheetNav").innerHTML=navHTML(cur,true);
+  closeSheet(false);
+  window.scrollTo({top:0,behavior:"instant"});
+  setupReveal();
+  if(h==="feedback") bootFeedback();
+}
+function setupReveal(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window)) return;
+  const els=[...document.querySelectorAll(".reveal")];
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove("pre");io.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
+  els.forEach(el=>{const r=el.getBoundingClientRect(); if(r.top>innerHeight){el.classList.add("pre");io.observe(el)}});
+}
+
+/* ======================= MENU + NOTES ======================= */
+let lastFocus=null;
+function openSheet(){lastFocus=document.activeElement;$("#sheet").hidden=false;$("#menuBtn").setAttribute("aria-expanded","true");document.body.style.overflow="hidden";$("#closeBtn").focus()}
+function closeSheet(restore=true){if($("#sheet").hidden)return;$("#sheet").hidden=true;$("#menuBtn").setAttribute("aria-expanded","false");document.body.style.overflow="";if(restore&&lastFocus)lastFocus.focus()}
+$("#menuBtn").addEventListener("click",openSheet);
+$("#closeBtn").addEventListener("click",()=>closeSheet());
+$("#drawer").innerHTML=`<div class="wrap" style="max-width:none"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><b>Review notes</b><button class="btn ghost small" id="notesClose">Close</button></div>
+  <p class="muted" style="font-size:.88rem;margin-top:6px">For the team only. What is held, missing or pending approval on this preview.</p><ul>${NOTES.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>`;
+$("#notesBtn").addEventListener("click",()=>{const d=$("#drawer");d.hidden=!d.hidden;$("#notesBtn").setAttribute("aria-expanded",String(!d.hidden));if(!d.hidden)$("#notesClose").focus()});
+document.addEventListener("click",e=>{
+  if(e.target.id==="notesClose"){$("#drawer").hidden=true;$("#notesBtn").setAttribute("aria-expanded","false");$("#notesBtn").focus();return}
+  const g=e.target.closest("[data-go]"); if(g){e.preventDefault();go(g.dataset.go);return}
+  const f=e.target.closest("[data-filter]"); if(f){filter=f.dataset.filter;const y=scrollY;$("#main").innerHTML=`<div>${products()}</div>`;window.scrollTo(0,y);document.querySelector(`[data-filter="${filter}"]`).focus();return}
+  const x=e.target.closest("[data-x]"); if(x){xsel=x.dataset.x;const y=scrollY;$("#main").innerHTML=`<div>${sourcing()}</div>`;window.scrollTo(0,y);document.querySelector(`[data-x="${xsel}"]`).focus();return}
+  const c=e.target.closest("[data-copy]"); if(c){const t=c.dataset.copy;const done=()=>{c.textContent="Copied"};try{navigator.clipboard.writeText(t).then(done,()=>selectNear(c))}catch(_){selectNear(c)}}
+});
+function selectNear(btn){const s=btn.parentElement.querySelector(".sel");if(!s)return;const r=document.createRange();r.selectNodeContents(s);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);btn.textContent="Press Ctrl/⌘+C"}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSheet();if(!$("#drawer").hidden){$("#drawer").hidden=true;$("#notesBtn").setAttribute("aria-expanded","false")}}});
+$("#skip").addEventListener("click",e=>{e.preventDefault();$("#main").setAttribute("tabindex","-1");$("#main").focus()});
+$("#footer").innerHTML=footerHTML();
+addEventListener("hashchange",render);
+
+/* ======================= FEEDBACK STORE (db capability) ======================= */
+let DB=null, USER=null, UID=null, unsub=null;
+const capP = (window.claude && claude.use) ? Promise.all([claude.use("db"),claude.use("user")]) : Promise.resolve([null,null]);
+function setStatus(cls,msg){const s=$("#fbStatus");if(s){s.className="status "+cls;s.textContent=msg}}
+async function bootFeedback(){
+  const form=$("#fbForm"); if(!form) return;
+  form.addEventListener("submit",submitFeedback);
+  const timer=setTimeout(()=>setStatus("err","The response store didn't answer. Open this page from its shared link while signed in to claude.ai to save a response."),10000);
+  let db,user; try{[db,user]=await capP}catch(_){db=null;user=null}
+  clearTimeout(timer);
+  if(!$("#fbForm")) return;
+  if(!db){setStatus("err","Responses can't be saved in this view. Open the shared link while signed in to claude.ai. Nothing you type here is stored.");$("#fbSubmit").disabled=true;return}
+  DB=db; USER=user;
+  try{UID=user?await user.id():null}catch(_){UID=null}
+  if(!UID){setStatus("err","We couldn't identify your account, so responses can't be saved here.");$("#fbSubmit").disabled=true;return}
+  const canWrite=user&&user.can?await user.can("data.write"):null;
+  setStatus("", canWrite===false?"You can read this page but not save a response. Ask the owner for Contributor access.":"Connected. Your response is saved to this shared review.");
+  try{const snap=await DB.doc("responses/"+UID).get(); const d=snap&&snap.exists?snap.data():null; if(d) prefill(d)}catch(_){}
+  const isAdmin=user&&((user.isOwner&&await user.isOwner())||(user.canEdit&&await user.canEdit()));
+  if(isAdmin) watchResults();
+}
+function prefill(d){
+  ["says","diff","mem","like","confuse","trustmore"].forEach(k=>{const el=document.querySelector(`[name="${k}"]`);if(el&&d[k])el.value=d[k]});
+  DIMS.forEach(([k])=>{if(d[k]){const r=$(`#r_${k}_${d[k]}`);if(r)r.checked=true}});
+  if(d.consent) $("#f_consent").checked=true;
+  $("#fbMsg").innerHTML=`<div class="status">You submitted a response on ${esc(new Date(d.submittedAt).toLocaleString())}. Saving again updates it.</div>`;
+}
+async function submitFeedback(e){
+  e.preventDefault();
+  const fd=new FormData(e.target), msg=$("#fbMsg");
+  const missing=DIMS.filter(([k])=>!fd.get(k)).map(d=>d[1]);
+  if(missing.length){msg.innerHTML=`<div class="status err">Please rate: ${esc(missing.join(", "))}.</div>`;return}
+  if(!fd.get("consent")){msg.innerHTML=`<div class="status err">Tick the consent box to save your response.</div>`;return}
+  if(!DB||!UID){msg.innerHTML=`<div class="status err">This view can't save responses. Open the shared link while signed in.</div>`;return}
+  const data={v:1,submittedAt:new Date().toISOString(),consent:true};
+  ["says","diff","mem","like","confuse","trustmore"].forEach(k=>data[k]=String(fd.get(k)||"").slice(0,2000));
+  DIMS.forEach(([k])=>data[k]=Number(fd.get(k)));
+  const btn=$("#fbSubmit"); btn.disabled=true; btn.textContent="Saving…";
+  try{await DB.doc("responses/"+UID).set(data);msg.innerHTML=`<div class="status ok">Saved. Thank you. You can change your answers and save again at any time.</div>`}
+  catch(err){msg.innerHTML=`<div class="status err">Your response wasn't saved (${esc(err&&err.code||"error")}). If you only have view access, ask the owner for Contributor access.</div>`}
+  btn.disabled=false; btn.textContent="Save my response";
+}
+function watchResults(){
+  const box=$("#fbResults"); if(!box) return; box.hidden=false;
+  box.innerHTML=`<p class="eyebrow">Owner view</p><h2 class="big" style="margin-top:10px">Responses so far</h2><p class="muted" style="margin-top:8px">Loading…</p>`;
+  if(unsub){try{unsub()}catch(_){}}
+  unsub=DB.collection("responses").onSnapshot(snap=>{
+    const rows=[];snap.forEach(d=>rows.push(d.data()));
+    if(!$("#fbResults")) return;
+    if(!rows.length){box.innerHTML=`<p class="eyebrow">Owner view</p><h2 class="big" style="margin-top:10px">No responses yet</h2><p class="muted" style="margin-top:8px">Share this page with the team. Responses appear here as they arrive.</p>`;return}
+    const avg=k=>rows.reduce((s,r)=>s+(r[k]||0),0)/rows.length;
+    const open=(k,t)=>{const v=rows.map(r=>r[k]).filter(Boolean);return v.length?`<div class="q"><b>${t}</b><ul style="margin:0;padding-left:18px;display:grid;gap:6px">${v.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""};
+    box.innerHTML=`<p class="eyebrow">Owner view · only you and Editors see this</p><h2 class="big" style="margin-top:10px">${rows.length} response${rows.length>1?"s":""}</h2>
+      <div class="results" style="margin-top:24px">${DIMS.map(([k,t])=>{const a=avg(k);return `<div class="bar"><span>${t}</span><div class="track"><div class="fill" style="width:${a/5*100}%"></div></div><span class="v">${a.toFixed(1)}</span></div>`}).join("")}</div>
+      <div class="fb" style="margin-top:28px">${open("says","What the brand stands for")}${open("diff","What makes it different")}${open("mem","Most memorable")}${open("like","Liked most")}${open("confuse","Confusing or unsupported")}${open("trustmore","Would build more trust")}</div>`;
+  },err=>{box.innerHTML=`<div class="status err">Couldn't load responses (${esc(err&&err.code||"error")}).</div>`});
+}
+
+render();
+</script>

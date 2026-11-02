@@ -1,0 +1,39 @@
+{
+  "captured": "2026-11-02, http://127.0.0.1:4174/?design=e at 1440x900, [data-home-section=\"hero\"] after the light-up",
+  "renderer": "hero(ctx) in web/super-sevens.js",
+  "text": [
+    "p.ez-k: The Super Sevens · Body Café Co.",
+    "h1: Seven supplements.",
+    "span: One colour each.",
+    "p.ez-lede: A seven-segment seven has exactly seven parts. So do we. Each supplement owns one segment, in its own cap colour, with every label fact in readable text.",
+    "span: Shop all seven",
+    "a.x-link: Meet the Super Sevens",
+    "p.ez-small: Review preview · current project prices · ordering is not live.",
+    "span: Seven segments",
+    "strong: Seven supplements",
+    "span.ss-legend-no: a · 01",
+    "span.ss-legend-name: Iron Bisglycinate",
+    "span.ss-legend-no: b · 02",
+    "span.ss-legend-name: L-Theanine",
+    "span.ss-legend-no: c · 03",
+    "span.ss-legend-name: Vitamin D3 + K2",
+    "span.ss-legend-no: d · 04",
+    "span.ss-legend-name: Omega-3 Fish Oil",
+    "span.ss-legend-no: e · 05",
+    "span.ss-legend-name: Myo & D-Chiro Inositol",
+    "span.ss-legend-no: f · 06",
+    "span.ss-legend-name: Creatine Chews",
+    "span.ss-legend-no: g · 07",
+    "span.ss-legend-name: Psyllium Husk",
+    "span: Sound off"
+  ],
+  "accessible": ["aria-label: Replay the light-up", "aria-label: The Super Sevens, one segment each", "aria-labelledby: ss-hero-t"],
+  "dynamic": {
+    "readout while hovering a segment": "\"Segment <letter> · <NN>\" / <catalogue product name>",
+    "readout during light-up": "\"All seven lit\" / \"That’s an eight\"",
+    "sound toggle": "\"Sound off\" / \"Sound on\" (per-browser preference)",
+    "preview note": "hidden when BCCRelease.production is true",
+    "links": "/shop, /super-sevens, /products/<id> for each legend entry"
+  },
+  "shared_inputs": "Catalogue order, names, colours and published count (ctx.catalog / ctx.published), RELEASE.production. Changing any of these changes the hero."
+}

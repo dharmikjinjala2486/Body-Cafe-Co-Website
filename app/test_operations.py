@@ -16,13 +16,18 @@ class OperationsTests(unittest.TestCase):
         self.store.setup_admin('owner.example','fixture-password-123')
         anon=self.store.session('')[0];login=self.store.admin_signin(anon,{'username':'owner.example','password':'fixture-password-123'})
         self.admin=self.store.session(login['_sid'])[0];self.customer=self.store.session('')[0]
+        # Exercise the draft/publish lifecycle on an existing hidden product with isolated stock.
+        with self.store.db() as c:
+            p=json.loads(c.execute("SELECT data FROM products WHERE id='iron-bisglycinate'").fetchone()[0]);p['published']=False
+            c.execute("UPDATE products SET data=? WHERE id='iron-bisglycinate'",(json.dumps(p),))
+            c.execute("UPDATE batches SET state='quarantined' WHERE product='iron-bisglycinate'")
     def tearDown(self):self.tmp.cleanup()
     def product(self):
-        return {'id':'new-product','sku':'NEW-01','name':'A new product','subtitle':'A clear description','description':'Details entered by the admin.','ingredients':'Ingredient list','format':'Capsules','price':825,'color':'#35306f','gallery':[{'src':'/web/media/l-theanine.webp','alt':'Product bottle'}]}
+        return {'id':'iron-bisglycinate','sku':'NEW-01','name':'A new product','subtitle':'A clear description','description':'Details entered by the admin.','ingredients':'Ingredient list','format':'Capsules','price':825,'color':'#35306f','gallery':[{'src':'/web/media/l-theanine.webp','alt':'Product bottle'}]}
     def save(self,p=None,version=0):return self.store.admin(self.admin,'product_save',{'product':p or self.product(),'version':version})
     def publish(self,pid,version):return self.store.admin(self.admin,'product_publish',{'id':pid,'version':version,'remarks':'Reviewed catalog details.'})
     def batch(self):
-        self.store.admin(self.admin,'batch_create',{'id':'NEW-LOT-001','product':'new-product','expiry':int(time.time())+86400*90,'quantity':3,'remarks':'Opening stock received.'})
+        self.store.admin(self.admin,'batch_create',{'id':'NEW-LOT-001','product':'iron-bisglycinate','expiry':int(time.time())+86400*90,'quantity':3,'remarks':'Opening stock received.'})
         self.store.admin(self.admin,'batch_release',{'id':'NEW-LOT-001','evidence_confirmed':True,'remarks':'Reviewed batch evidence.'})
     def test_owner_is_the_only_seeded_admin_and_demo_login_is_retired(self):
         with self.store.db() as c:
@@ -43,24 +48,24 @@ class OperationsTests(unittest.TestCase):
         self.store.admin_password(self.admin,{'current_password':'fixture-password-123','new_password':'replacement-pass-123'})
         self.assertEqual(self.store.session(self.admin['id'])[0]['role'],'customer')
         new=self.store.admin_signin(self.customer,{'username':'owner.example','password':'replacement-pass-123'});self.assertTrue(new['_sid'])
-    def test_new_product_draft_publish_inventory_order_and_history(self):
-        r=self.save();self.assertNotIn('new-product',[p['id'] for p in self.store.products()])
-        self.assertEqual(self.store.snapshot(self.admin)['products'][-1]['draft']['name'],'A new product')
+    def test_existing_product_draft_publish_inventory_order_and_history(self):
+        r=self.save();self.assertNotIn('iron-bisglycinate',[p['id'] for p in self.store.products()])
+        self.assertEqual(next(p for p in self.store.snapshot(self.admin)['products'] if p['id']=='iron-bisglycinate')['draft']['name'],'A new product')
         self.publish(r['id'],r['version']);self.batch()
-        public=next(p for p in self.store.products() if p['id']=='new-product');self.assertEqual(public['stock'],3)
-        payload={'adult':True,'items':[{'id':'new-product','quantity':1}],'contact':{'name':'Test buyer','mobile':'9876543210','address':'Test address 123','city':'Surat','state':'Gujarat','pincode':'395001'}}
+        public=next(p for p in self.store.products() if p['id']=='iron-bisglycinate');self.assertEqual(public['stock'],3)
+        payload={'adult':True,'items':[{'id':'iron-bisglycinate','quantity':1}],'contact':{'name':'Test buyer','mobile':'9876543210','address':'Test address 123','city':'Surat','state':'Gujarat','pincode':'395001'}}
         order=self.store.order(self.customer,payload)
         changed={**self.product(),'name':'Changed product','price':950};r=self.save(changed,r['version']);self.publish(r['id'],r['version'])
         self.assertEqual(self.store.account_view(self.customer)['orders'][0]['items'][0]['name'],'A new product')
         self.assertEqual(self.store.account_view(self.customer)['orders'][0]['items'][0]['unit_price'],825)
-        reopened=Store(self.path);self.assertEqual(next(p for p in reopened.products() if p['id']=='new-product')['price'],950)
+        reopened=Store(self.path);self.assertEqual(next(p for p in reopened.products() if p['id']=='iron-bisglycinate')['price'],950)
         self.assertEqual(reopened.snapshot(self.admin)['movements'][0]['kind'],'reservation')
-        self.assertEqual(order['items'][0]['id'],'new-product')
+        self.assertEqual(order['items'][0]['id'],'iron-bisglycinate')
     def test_stale_draft_and_duplicate_sku_are_rejected(self):
         self.save()
         with self.assertRaises(Error):self.save()
         with self.assertRaises(Error):self.save({**self.product(),'id':'another-product'})
-        with self.assertRaises(Error):self.publish('new-product',0)
+        with self.assertRaises(Error):self.publish('iron-bisglycinate',0)
     def test_publish_requires_image_and_remarks(self):
         r=self.save({**self.product(),'gallery':[]})
         with self.assertRaises(Error):self.publish(r['id'],r['version'])
@@ -87,14 +92,14 @@ class OperationsTests(unittest.TestCase):
         with self.assertRaises(Error):self.store.admin(self.customer,'product_save',{'product':self.product(),'version':0})
     def test_order_actions_require_remarks_and_validate_states(self):
         r=self.save();self.publish(r['id'],r['version']);self.batch()
-        order=self.store.order(self.customer,{'adult':True,'items':[{'id':'new-product','quantity':1}],'contact':{'name':'Test buyer','mobile':'9876543210','address':'Test address 123','city':'Surat','state':'Gujarat','pincode':'395001'}})
+        order=self.store.order(self.customer,{'adult':True,'items':[{'id':'iron-bisglycinate','quantity':1}],'contact':{'name':'Test buyer','mobile':'9876543210','address':'Test address 123','city':'Surat','state':'Gujarat','pincode':'395001'}})
         with self.assertRaises(Error):self.store.admin(self.admin,'order_update',{'id':order['id'],'state':'delivered','remarks':'Invalid transition.'})
         self.store.pay(self.customer,order['id'],{'outcome':'success'})
         self.store.admin(self.admin,'order_update',{'id':order['id'],'state':'packing','remarks':'Private fulfillment instructions.','public_note':'Your order is being packed.'})
         self.store.admin(self.admin,'order_update',{'id':order['id'],'state':'cancelled','remarks':'Cancellation requested.'})
-        self.assertEqual(next(p for p in self.store.products() if p['id']=='new-product')['stock'],3)
+        self.assertEqual(next(p for p in self.store.products() if p['id']=='iron-bisglycinate')['stock'],3)
         with self.assertRaises(Error):self.store.admin(self.admin,'order_update',{'id':order['id'],'state':'cancelled','remarks':'Duplicate cancellation.'})
-        self.assertEqual(next(p for p in self.store.products() if p['id']=='new-product')['stock'],3)
+        self.assertEqual(next(p for p in self.store.products() if p['id']=='iron-bisglycinate')['stock'],3)
     def test_repeated_stock_operation_applies_once(self):
         self.save();self.batch()
         payload={'id':'NEW-LOT-001','quantity':2,'remarks':'Receive additional units.','request_id':'stock-request-00000001'}

@@ -1,4 +1,4 @@
-/* Body Café Co. — Operations (Variant B).
+/* Body Café Co. — Operations (Variant E).
    Calm admin built on the storefront's paper, indigo and lilac. Every mutation goes to an authenticated server
    endpoint and applies directly: there is no approval queue. Lot reports live in lots-ops.js. */
 (() => {
@@ -145,7 +145,7 @@
       ['Open cases', fmt(open.length), safety.length ? `${safety.length} safety priority` : 'No safety cases open', safety.length ? 'warning' : ''],
       ['Available units', fmt(inv.available), `${fmt(inv.reserved)} reserved · ${fmt(inv.quarantined)} quarantined`],
       ['Stock alerts', fmt(inv.low_stock_batches + inv.expiring_batches), `${inv.low_stock_batches} low · ${inv.expiring_batches} expiring`, inv.low_stock_batches + inv.expiring_batches ? 'warning' : ''],
-    ]) + `<div class="op-two"><section class="op-card" aria-labelledby="att-t"><div class="op-card-title"><h2 id="att-t">Needs attention</h2></div><ul class="op-attention">${attention.map(([l, n, u]) => `<li><a href="${u}"><span>${h(l)}</span><strong class="${n ? 'is-on' : ''}">${fmt(n)}</strong></a></li>`).join('')}</ul></section><section class="op-card" aria-labelledby="ro-t"><div class="op-card-title"><h2 id="ro-t">Recent orders</h2>${link('All orders', '/ops/orders', 'op-small')}</div>${recent.length ? `<ul class="op-list">${recent.map(x => `<li><a href="/ops/orders?order=${encodeURIComponent(x.id)}"><span><strong>${h(x.id)}</strong><small>${h(x.contact?.name || '')} · ${when(x.created)}</small></span><span class="op-list-end">${tag(x.state)}<b>${cash(x.total)}</b></span></a></li>`).join('')}</ul>` : '<p class="op-muted">No orders yet.</p>'}</section></div><div class="op-quicklinks">${link('＋ Add product', '/ops/products?product=new')}${link('＋ Add batch', '/ops/inventory?new=1')}${link('View sales', '/ops/sales')}${link('Lot reports', '/ops/lots')}</div>`;
+    ]) + `<div class="op-two"><section class="op-card" aria-labelledby="att-t"><div class="op-card-title"><h2 id="att-t">Needs attention</h2></div><ul class="op-attention">${attention.map(([l, n, u]) => `<li><a href="${u}"><span>${h(l)}</span><strong class="${n ? 'is-on' : ''}">${fmt(n)}</strong></a></li>`).join('')}</ul></section><section class="op-card" aria-labelledby="ro-t"><div class="op-card-title"><h2 id="ro-t">Recent orders</h2>${link('All orders', '/ops/orders', 'op-small')}</div>${recent.length ? `<ul class="op-list">${recent.map(x => `<li><a href="/ops/orders?order=${encodeURIComponent(x.id)}"><span><strong>${h(x.id)}</strong><small>${h(x.contact?.name || '')} · ${when(x.created)}</small></span><span class="op-list-end">${tag(x.state)}<b>${cash(x.total)}</b></span></a></li>`).join('')}</ul>` : '<p class="op-muted">No orders yet.</p>'}</section></div><div class="op-quicklinks">${link('＋ Add batch', '/ops/inventory?new=1')}${link('View sales', '/ops/sales')}${link('Lot reports', '/ops/lots')}</div>`;
   }
 
   /* ---------------------------------------------------------------- products */
@@ -154,7 +154,13 @@
   const AWAIT = 'Leave blank to show “Awaiting approved label”.';
   const SECTIONS = [
     { id: 'essentials', label: 'Essentials', intro: 'Name, identifiers, price and the purchase panel at the top of the product page.' },
-    { id: 'images', label: 'Images', intro: 'Website order is the order below. Image 1 is the product card, image 2 is the card hover, and the product page gallery follows the same order.' },
+    { id: 'editorial', label: 'Variant E copy', intro: 'Copy shown on the Variant E product page and homepage.', fields: [
+      F('headline', 'Product headline', {max:300}), F('product_intro', 'Product introduction', {max:6000}),
+      F('form_description', 'Ingredient form', {max:3000}), F('why_this_form', 'Why this form', {max:6000}),
+      F('product_story', 'Product story', {max:10000,rows:8}), F('quality_summary', 'How we check it', {max:6000}),
+      F('quality_note', 'Quality document note', {max:3000}), F('keep_in_mind', 'Keep in mind', {max:3000}), F('detail_title', 'Defining detail heading', {max:300}), F('segment_name', 'Super Sevens name', {max:160}), F('segment_description', 'Super Sevens description', {max:3000}), F('home_highlight', 'Homepage highlight', {max:100,help:'At most four words.'}) ] },
+    { id: 'label', label: 'Pack & supplement facts', intro: 'Edit the printed pack details, timing and supplement facts displayed on Variant E.' },
+    { id: 'images', label: 'Images', intro: 'Website order is the order below. Image 1 is the product card; the product page gallery follows the same order.' },
     { id: 'overview', label: 'Overview', intro: 'Product page section 2 · Overview.', fields: [
       F('description', 'Product description', { max: 6000, rows: 6, help: 'Opening paragraph of the Overview.' }),
       F('purpose', 'Purpose statement', { max: 1500, help: 'Approved purpose wording. Leave blank to keep the “no purpose supplied” note.' }) ] },
@@ -190,11 +196,11 @@
 
   function normGallery(p, saved) {
     let g = Array.isArray(p.gallery) ? p.gallery : [];
-    if (!g.length && saved && DEFAULT_IMG.includes(p.id)) g = [{ src: '/web/media/' + p.id + '.webp', alt: (p.name || '') + ' bottle' }];
+    if (!Array.isArray(p.gallery) && saved && DEFAULT_IMG.includes(p.id)) g = window.BCCPDP.defaultImages(p, {design:'e'});
     return g.map(x => ({ ...x, alt: x.alt || '', label: x.label || '', caption: x.caption || '', visible: x.visible !== false }));
   }
   const visibleImages = g => (g || []).filter(x => x.visible !== false);
-  function galleryRole(pos) { return pos === 1 ? 'Primary card image' : pos === 2 ? 'Hover image on cards' : 'Product page gallery'; }
+  function galleryRole(pos) { return pos === 1 ? 'Primary card image' : 'Product page gallery'; }
   function galleryRows(gallery) {
     let pos = 0;
     const shown = visibleImages(gallery).length;
@@ -222,6 +228,7 @@
 
   function sectionCount(s, p) {
     if (s.fields) return `${s.fields.filter(f => String(p[f.name] ?? '').trim()).length}/${s.fields.length}`;
+    if (s.id === 'label') return (p.supplement_facts?.rows || []).length + ' rows';
     if (s.id === 'images') return `${visibleImages(p.gallery).length} shown`;
     if (s.id === 'faqs') return `${(p.faqs || []).length} · ${(p.sources || []).length}`;
     if (s.id === 'related') return `${(p.related_product_ids || []).length}/6`;
@@ -232,9 +239,30 @@
       ? field({ name: f.name, label: f.label, value: p[f.name], attrs: `maxlength="${f.max}"`, help: f.help })
       : area({ name: f.name, label: f.label, value: p[f.name], rows: f.rows, attrs: `maxlength="${f.max}"`, help: f.help })).join('')}</div>`;
   }
+
+  function factRows(rows) {
+    return rows.map((r,i)=>'<li class="op-repeat-row" data-fact-row><div class="op-form-grid">'+
+      field({name:'',label:'Nutrient / ingredient',value:r.name,attrs:'data-k="name" maxlength="300"'})+
+      field({name:'',label:'Amount',value:r.amount,attrs:'data-k="amount" maxlength="160"'})+
+      field({name:'',label:'% RDA',value:r.rda,attrs:'data-k="rda" maxlength="160"'})+
+      select({name:'',label:'Indent',value:r.level||0,items:[[0,'Main row'],[1,'Sub-row'],[2,'Nested row']],attrs:'data-k="level"'})+
+      '<label><input type="checkbox" data-k="active" '+(r.active?'checked':'')+'> Active ingredient</label></div>'+button('Remove','fact-remove','','op-small op-danger')+'</li>').join('');
+  }
+  function labelEditor(p) {
+    const front=p.label_front||{}, timing=p.label_timing||{}, facts=p.supplement_facts||{};
+    return '<div class="op-form-grid">'+Object.entries({category:'Product type',descriptor:'Front description',claim:'Front claim',mark:'Diet mark',barcode:'Barcode'}).map(([k,label])=>field({name:'front_'+k,label,value:front[k],attrs:'maxlength="1000"'})).join('')+
+      ['morning','noon','night'].map(k=>field({name:'timing_'+k,label:k+' timing',value:timing[k],attrs:'maxlength="300"'})).join('')+
+      ['directions_tag','customer_care','pack_printed'].map(k=>area({name:k,label:k.replaceAll('_',' '),value:p[k],attrs:'maxlength="3000"'})).join('')+
+      area({name:'label_badges',label:'Pack badges (one per line)',value:(p.label_badges||[]).join('\n'),attrs:'maxlength="6000"'})+
+      field({name:'facts_serving',label:'Supplement facts serving',value:facts.serving,attrs:'maxlength="300"'})+
+      area({name:'facts_notes',label:'Supplement facts footnotes (one per line)',value:(facts.notes||[]).join('\n'),attrs:'maxlength="6000"'})+
+      '</div><ol class="op-repeat" id="op-facts">'+factRows(facts.rows||[])+'</ol>'+button('Add fact row','fact-add');
+  }
+
   function panelBody(s, p, saved, o) {
+    if (s.id === 'label') return labelEditor(p);
     if (s.fields) return sectionFields(s, p);
-    if (s.id === 'essentials') return `<div class="op-form-grid">${field({ name: 'name', label: 'Product name', value: p.name, attrs: 'maxlength="160"', required: true })}${field({ name: 'price', label: 'Selling price (₹, MRP)', value: p.price, type: 'number', attrs: 'min="0" max="1000000" step="1" inputmode="numeric"', required: true })}${field({ name: 'subtitle', label: 'Short description', value: p.subtitle, attrs: 'maxlength="300"', wide: true, help: 'Under the product name and on product cards.' })}${field({ name: 'id', label: 'Product ID / URL', value: p.id, attrs: `${saved ? 'readonly' : ''} pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="60" spellcheck="false"`, required: true, help: saved ? 'Fixed after creation.' : 'Lowercase words and hyphens, e.g. vitamin-d3-k2.' })}${field({ name: 'sku', label: 'SKU', value: p.sku || (p.id || '').toUpperCase(), attrs: 'maxlength="80" spellcheck="false"', required: true })}${field({ name: 'category', label: 'Collection', value: p.category, attrs: 'maxlength="100"' })}${field({ name: 'format', label: 'Format', value: p.format, attrs: 'maxlength="100" list="op-formats"', help: 'e.g. Capsules, Softgels, Chewable tablets.' })}<datalist id="op-formats"><option value="Capsules"><option value="Softgels"><option value="Chewable tablets"><option value="Powder"></datalist>${field({ name: 'pack_size', label: 'Pack size', value: p.pack_size, attrs: 'maxlength="160"', help: 'Shown as Pack quantity. Leave blank to show “Awaiting approved label”.' })}${field({ name: 'color', label: 'Cap colour', value: p.color || '#35306f', type: 'color', help: 'Used for accents on the product page.' })}</div>`;
+    if (s.id === 'essentials') return `<div class="op-form-grid">${field({ name: 'name', label: 'Product name', value: p.name, attrs: 'maxlength="160"', required: true })}${field({ name: 'price', label: 'Selling price (₹, MRP)', value: p.price, type: 'number', attrs: 'min="0" max="1000000" step="1" inputmode="numeric"', required: true })}${field({ name: 'subtitle', label: 'Short description', value: p.subtitle, attrs: 'maxlength="300"', wide: true, help: 'Under the product name and on product cards.' })}${field({ name: 'id', label: 'Catalogue ID', value: p.id, attrs: `${saved ? 'readonly' : ''} pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="60" spellcheck="false"`, required: true, help: 'Fixed to preserve printed QR links.' })}${field({ name: 'sku', label: 'SKU', value: p.sku || (p.id || '').toUpperCase(), attrs: 'maxlength="80" spellcheck="false"', required: true })}${field({ name: 'category', label: 'Collection', value: p.category, attrs: 'maxlength="100"' })}${field({ name: 'format', label: 'Format', value: p.format, attrs: 'maxlength="100" list="op-formats"', help: 'e.g. Capsules, Softgels, Chewable tablets.' })}<datalist id="op-formats"><option value="Capsules"><option value="Softgels"><option value="Chewable tablets"><option value="Powder"></datalist>${field({ name: 'pack_size', label: 'Pack size', value: p.pack_size, attrs: 'maxlength="160"', help: 'Shown as Pack quantity. Leave blank to show “Awaiting approved label”.' })}${field({ name: 'color', label: 'Cap colour', value: p.color || '#35306f', type: 'color', help: 'Used for accents on the product page.' })}</div>`;
     if (s.id === 'images') return `<div id="op-gallery">${galleryRows(p.gallery)}</div><label class="op-upload"><span class="op-upload-title">＋ Upload images</span><input id="op-image-upload" type="file" accept="image/jpeg,image/png,image/webp" multiple aria-describedby="op-upload-h"><small id="op-upload-h">JPEG, PNG or WebP · up to 5 MB each · 12 images in total, including hidden ones. New images are shown and added at the end.</small></label><p id="op-upload-status" class="op-help" role="status"></p>`;
     if (s.id === 'faqs') return `<h3 class="op-h3">Common questions</h3><p class="op-muted">Up to 20. Leave empty to hide the common questions list.</p><ol class="op-repeat" id="op-faqs">${faqRows(p.faqs || [])}</ol>${button('＋ Add a question', 'faq-add', '', '', (p.faqs || []).length >= 20 ? 'disabled' : '')}<h3 class="op-h3">Sources</h3><p class="op-muted">Up to 20 references for “Reading this ingredient”.</p><ol class="op-repeat" id="op-sources">${sourceRows(p.sources || [])}</ol>${button('＋ Add a source', 'source-add', '', '', (p.sources || []).length >= 20 ? 'disabled' : '')}`;
     if (s.id === 'related') {
@@ -245,16 +273,16 @@
   }
   function productEditor(o, id) {
     const saved = o.products.find(p => p.id === id);
-    if (id !== 'new' && !saved) return empty('Product not found', 'Return to products and choose an existing record.', link('← All products', '/ops/products'));
-    const base = saved?.draft || saved || { id: '', name: '', price: 0, color: '#35306f', sku: '', format: 'Capsules' };
-    const p = { ...base, gallery: normGallery(base, saved) };
+    if (!saved) return empty('Product not found', 'Return to products and choose an existing record.', link('← All products', '/ops/products'));
+    const base = saved.draft || saved;
+    const p = { ...base, gallery: normGallery(base, saved), faqs: Array.isArray(base.faqs) ? base.faqs : window.BCCPDP.defaultFaqs(base), related_product_ids: Array.isArray(base.related_product_ids) ? base.related_product_ids : o.products.filter(x=>x.published && x.id !== base.id).slice(o.products.findIndex(x=>x.id===base.id)).concat(o.products.filter(x=>x.published && x.id !== base.id)).slice(0,3).map(x=>x.id) };
     const version = saved?.edit_version || 0;
     const section = SECTIONS.some(s => s.id === q().get('section')) ? q().get('section') : 'essentials';
     const savedGallery = saved ? (saved.draft || saved).gallery : null;
     const savedVisible = visibleImages(savedGallery).length;
     const canPublish = saved && (saved.draft || !saved.published);
-    const status = !saved ? tag('New product', 'info') : `${tag(saved.published ? 'Published' : 'Hidden')}${saved.draft ? tag('Unpublished changes', 'warning') : ''}`;
-    return `<div class="op-subnav">${link('← All products', '/ops/products', 'op-quiet')}<span>${status}</span></div><form data-op-form="product" data-version="${version}" novalidate><div class="op-editor"><div class="op-editor-main"><div class="op-tabs" role="tablist" aria-label="Product page sections">${SECTIONS.map((s, i) => `<button type="button" role="tab" id="pt-${s.id}" aria-controls="pp-${s.id}" aria-selected="${s.id === section}" tabindex="${s.id === section ? 0 : -1}" data-op="editor-tab" data-id="${s.id}"><span class="op-tab-n">${i + 1}</span><span>${s.label}</span><small data-count="${s.id}">${sectionCount(s, p)}</small></button>`).join('')}</div>${SECTIONS.map(s => `<section class="op-card op-panel" role="tabpanel" id="pp-${s.id}" aria-labelledby="pt-${s.id}" tabindex="-1" ${s.id === section ? '' : 'hidden'}><div class="op-card-title"><h2>${s.label}</h2></div><p class="op-intro">${s.intro}</p>${panelBody(s, p, saved, o)}</section>`).join('')}</div><aside class="op-editor-side"><section class="op-card op-sticky" aria-labelledby="pub-t"><h2 id="pub-t">Save &amp; publish</h2><p class="op-muted">Saving keeps a private draft. The website changes only when you publish.</p>${area({ name: 'remarks', label: 'Change note (optional)', rows: 2, attrs: 'maxlength="1000"' })}${formEnd(saved ? 'Save draft' : 'Create draft')}${saved ? `<ul class="op-checklist" aria-label="Publish checklist"><li class="${(saved.draft || saved).name ? 'is-ok' : ''}">Name and price</li><li class="${savedVisible ? 'is-ok' : ''}">At least one visible image${savedVisible ? '' : ' in the saved draft'}</li></ul>` : ''}${canPublish ? button(saved.draft ? 'Publish saved draft' : 'Publish product', 'product-publish', saved.id, 'op-primary op-block', savedVisible ? '' : 'disabled aria-describedby="pub-why"') + (savedVisible ? '' : '<p class="op-help" id="pub-why">Save the draft with a visible image first.</p>') : ''}${saved?.draft ? button('Preview saved draft', 'product-preview', saved.id, 'op-block') : ''}${saved?.published ? link('View on website ↗', '/products/' + saved.id + '?design=e', 'op-block') : ''}${saved?.published ? button('Hide from website', 'product-archive', saved.id, 'op-danger op-block') : ''}</section></aside></div></form>`;
+    const status = `${tag(saved.published ? 'Published' : 'Hidden')}${saved.draft ? tag('Unpublished changes', 'warning') : ''}`;
+    return `<div class="op-subnav">${link('← All products', '/ops/products', 'op-quiet')}<span>${status}</span></div><form data-op-form="product" data-version="${version}" novalidate><div class="op-editor"><div class="op-editor-main"><div class="op-tabs" role="tablist" aria-label="Product page sections">${SECTIONS.map((s, i) => `<button type="button" role="tab" id="pt-${s.id}" aria-controls="pp-${s.id}" aria-selected="${s.id === section}" tabindex="${s.id === section ? 0 : -1}" data-op="editor-tab" data-id="${s.id}"><span class="op-tab-n">${i + 1}</span><span>${s.label}</span><small data-count="${s.id}">${sectionCount(s, p)}</small></button>`).join('')}</div>${SECTIONS.map(s => `<section class="op-card op-panel" role="tabpanel" id="pp-${s.id}" aria-labelledby="pt-${s.id}" tabindex="-1" ${s.id === section ? '' : 'hidden'}><div class="op-card-title"><h2>${s.label}</h2></div><p class="op-intro">${s.intro}</p>${panelBody(s, p, saved, o)}</section>`).join('')}</div><aside class="op-editor-side"><section class="op-card op-sticky" aria-labelledby="pub-t"><h2 id="pub-t">Save &amp; publish</h2><p class="op-muted">Saving keeps a private draft. The website changes only when you publish.</p>${area({ name: 'remarks', label: 'Change note (optional)', rows: 2, attrs: 'maxlength="1000"' })}${formEnd('Save draft')}${saved ? `<ul class="op-checklist" aria-label="Publish checklist"><li class="${(saved.draft || saved).name ? 'is-ok' : ''}">Name and price</li><li class="${savedVisible ? 'is-ok' : ''}">At least one visible image${savedVisible ? '' : ' in the saved draft'}</li></ul>` : ''}${canPublish ? button(saved.draft ? 'Publish saved draft' : 'Publish product', 'product-publish', saved.id, 'op-primary op-block', savedVisible ? '' : 'disabled aria-describedby="pub-why"') + (savedVisible ? '' : '<p class="op-help" id="pub-why">Save the draft with a visible image first.</p>') : ''}${saved?.draft ? button('Preview saved draft', 'product-preview', saved.id, 'op-block') : ''}${saved?.published ? link('View on website ↗', window.BCCProductRoutes.href('/products/' + saved.id + '?design=e', 'e'), 'op-block') : ''}${saved?.published ? button('Hide from website', 'product-archive', saved.id, 'op-danger op-block') : ''}</section></aside></div></form>`;
   }
   function products(o) {
     const id = q().get('product');
@@ -262,8 +290,8 @@
     const list = filtered(o.products.map(p => ({ ...p, state: p.draft ? 'draft' : p.published ? 'published' : 'hidden' })));
     return tools({ statuses: ['published', 'draft', 'hidden'] }) + `<section class="op-card op-flush">${table(['Product', 'SKU', ['Price', 'num'], 'Website', 'Images', ''], list.map(p => {
       const img = visibleImages(p.draft?.gallery || p.gallery)[0]?.src || (window.BCCBottleAssets ? window.BCCBottleAssets.url(p.id) : '/web/media/' + p.id + '.webp');
-      return [`<div class="op-product-cell"><img src="${h(img)}" alt=""><div><strong>${h(p.name)}</strong><small>${h(p.id)}</small></div></div>`, h(p.sku || p.id), cash(p.price), `${tag(p.published ? 'Published' : 'Hidden')}${p.draft ? tag('Unpublished changes', 'warning') : ''}`, `${visibleImages(p.draft?.gallery || p.gallery).length} shown`, link('Edit', '/ops/products?product=' + encodeURIComponent(p.id), 'op-small', `aria-label="Edit ${h(p.name)}"`)];
-    }), { caption: 'Products', emptyTitle: 'No products match', emptyText: 'Try another filter, or add a product.' })}</section>`;
+      return [`<div class="op-product-cell"><img src="${h(img)}" alt=""><div><strong>${h(p.name)}</strong><small>${h(p.id)}</small></div></div>`, h(p.sku || p.id), cash(p.price), `${tag(p.published ? 'Published' : 'Hidden')}${p.draft ? tag('Unpublished changes', 'warning') : ''}`, `${visibleImages(normGallery(p.draft || p, p)).length} shown`, link('Edit', '/ops/products?product=' + encodeURIComponent(p.id), 'op-small', `aria-label="Edit ${h(p.name)}"`)];
+    }), { caption: 'Products', emptyTitle: 'No products match', emptyText: 'Try another filter to find one of the seven products.' })}</section>`;
   }
 
   /* ---------------------------------------------------------------- inventory */
@@ -375,7 +403,7 @@
     records = o;
     const tab = location.pathname.split('/')[2] || 'overview', found = TABS.find(t => t[0] === tab);
     const pid = q().get('product');
-    const titles = { products: pid ? (pid === 'new' ? 'Add a product' : 'Edit product') : 'Products', orders: q().get('order') ? 'Order' : 'Orders', account: 'Account', analytics: 'Sales' };
+    const titles = { products: pid ? 'Edit product' : 'Products', orders: q().get('order') ? 'Order' : 'Orders', account: 'Account', analytics: 'Sales' };
     let content;
     try {
       content = ({ overview, products, inventory, orders, sales, cases, channels, flags, account })[tab]?.(o)
@@ -385,7 +413,7 @@
           : empty('Page not found', 'Choose a section from the menu.'));
     } catch (err) { console.error(err); content = empty('This page couldn’t load', err.message || 'Try Refresh.', button('Refresh', 'refresh')); }
     const badge = { orders: o.orders.filter(x => ['paid', 'packing'].includes(x.state)).length, cases: o.cases.filter(x => x.state !== 'resolved' && x.kind === 'safety').length };
-    const pageAction = tab === 'products' && !pid ? link('＋ Add product', '/ops/products?product=new', 'op-primary') : tab === 'inventory' ? link('＋ Add batch', '/ops/inventory?new=1' + (q().get('product') ? '&product=' + encodeURIComponent(q().get('product')) : ''), 'op-primary') : '';
+    const pageAction = tab === 'inventory' ? link('＋ Add batch', '/ops/inventory?new=1' + (q().get('product') ? '&product=' + encodeURIComponent(q().get('product')) : ''), 'op-primary') : '';
     const nav = NAV.map(([group, items]) => `${group ? `<p class="op-nav-label">${group}</p>` : ''}${items.map(([id, label, icon]) => `<a class="${id === tab ? 'is-active' : ''}" href="/ops${id === 'overview' ? '' : '/' + id}" ${id === tab ? 'aria-current="page"' : ''}><span class="op-nav-icon" aria-hidden="true">${icon}</span><span>${label}</span>${badge[id] ? `<b aria-label="${badge[id]} need attention">${badge[id]}</b>` : ''}</a>`).join('')}`).join('');
     return `<div class="op-layout"><a class="op-skip" href="#main">Skip to content</a><aside class="op-sidebar"><a class="op-brand" href="/ops" aria-label="Operations overview"><img src="/web/media/brand-horizontal.svg" alt="Body Café Co."><span>Operations</span></a><nav class="op-nav" aria-label="Operations sections">${nav}</nav><div class="op-sidebar-bottom">${link('View storefront ↗', '/?design=e', 'op-quiet op-block')}<a href="/ops/account" class="op-owner" ${tab === 'account' ? 'aria-current="page"' : ''}><span aria-hidden="true">BC</span><div><strong>Store admin</strong><small>Account & password</small></div></a>${button('Sign out', 'logout', '', 'op-block')}</div></aside><main id="main" class="op-main" tabindex="-1"><header class="op-topbar"><span class="op-crumb">Operations <i aria-hidden="true">/</i> ${h(found?.[1] || titles[tab] || 'Account')}</span><div class="op-topbar-actions">${button('Refresh', 'refresh', '', 'op-small')}<span class="op-mobile-account">${link('Account', '/ops/account', 'op-small')}${button('Sign out', 'logout', '', 'op-small')}</span></div></header><div class="op-content"><div class="op-page-title"><h1>${h(titles[tab] || found?.[1] || 'Account')}</h1>${pageAction}</div>${content}</div></main></div>`;
   }
@@ -473,6 +501,12 @@
     const v = k => { const el = f.elements.namedItem(k); return el && 'value' in el ? String(el.value).trim() : ''; };
     const product = Object.fromEntries(SCALARS.map(k => [k, v(k)]));
     product.price = Number(v('price'));
+    product.label_front = Object.fromEntries(['category','descriptor','claim','mark','barcode'].map(k => [k,v('front_' + k)]));
+    product.label_timing = Object.fromEntries(['morning','noon','night'].map(k => [k,v('timing_' + k)]));
+    for (const k of ['directions_tag','customer_care','pack_printed']) product[k] = v(k);
+    product.label_badges = v('label_badges').split('\n').map(x=>x.trim()).filter(Boolean);
+    product.supplement_facts = {serving:v('facts_serving'), notes:v('facts_notes').split('\n').map(x=>x.trim()).filter(Boolean),
+      rows:rowsFrom(f,'[data-fact-row]',['name','amount','rda','level']).map((x,i)=>({...x,level:Number(x.level)||0,active:f.querySelectorAll('[data-fact-row]')[i].querySelector('[data-k="active"]').checked})).filter(x=>x.name||x.amount||x.rda)};
     product.gallery = galleryFromForm(f);
     product.faqs = filledRows(rowsFrom(f, '[data-faq-row]', ['question', 'answer']), ['question', 'answer']);
     product.sources = filledRows(rowsFrom(f, '[data-source-row]', ['title', 'url']), ['title', 'url']);
@@ -490,6 +524,7 @@
   function validateProduct(f, p) {
     const bad = [...f.elements].find(el => el.willValidate && !el.checkValidity());
     if (bad) return invalid(f, bad);
+    if (p.home_highlight.split(/\s+/).filter(Boolean).length > 4) return invalid(f, f.elements.namedItem('home_highlight'), 'Use at most four words.');
     if (p.gallery.length > 12) throw Error('Use up to 12 images, including hidden ones.');
     const faq = [...f.querySelectorAll('[data-faq-row]')].find(r => { const a = r.querySelector('[data-k=question]').value.trim(), b = r.querySelector('[data-k=answer]').value.trim(); return !!a !== !!b; });
     if (faq) { const el = faq.querySelector('[data-k=question]').value.trim() ? faq.querySelector('[data-k=answer]') : faq.querySelector('[data-k=question]'); return invalid(f, el, 'Each question needs an answer.'); }
@@ -520,10 +555,14 @@
     dirty = true; refreshCounts(f);
     return box;
   }
+  function labelPreview(p) {
+    const sf=p.supplement_facts || {}, values={...(p.label_front || {}), ...(p.label_timing || {}), directions_tag:p.directions_tag, customer_care:p.customer_care, pack_printed:p.pack_printed, badges:(p.label_badges || []).join(' · ')};
+    return '<h3 class="op-h3">Pack &amp; supplement facts</h3><dl class="op-dl">'+Object.entries(values).filter(([,v])=>v).map(([k,v])=>'<div><dt>'+h(k.replaceAll('_',' '))+'</dt><dd>'+lines(v)+'</dd></div>').join('')+'</dl><p>'+h(sf.serving || '')+'</p>'+table(['Nutrient / ingredient','Amount','% RDA'],(sf.rows || []).map(r=>[h(r.name),h(r.amount),h(r.rda)]),{size:40})+(sf.notes || []).map(n=>'<p>'+h(n)+'</p>').join('');
+  }
   function previewModal(id, opener) {
     const p = records.products.find(x => x.id === id).draft, shown = visibleImages(p.gallery);
     const blocks = SECTIONS.filter(s => s.fields).map(s => { const items = s.fields.filter(f => String(p[f.name] || '').trim()); return items.length ? `<h3 class="op-h3">${s.label}</h3><dl class="op-dl">${items.map(f => `<div><dt>${h(f.label)}</dt><dd>${lines(p[f.name])}</dd></div>`).join('')}</dl>` : ''; }).join('');
-    modal('Saved draft preview', `<div class="op-draft-preview"><div class="op-draft-images">${shown.map((g, i) => `<figure><img src="${h(g.src)}" alt="${h(g.alt)}"><figcaption><strong>${i + 1}</strong> ${h(i === 0 ? 'Card' : i === 1 ? 'Hover' : 'Gallery')}${g.caption ? ' · ' + h(g.caption) : ''}</figcaption></figure>`).join('') || '<p class="op-muted">No visible images.</p>'}</div><p class="op-eyebrow">${h(p.category)} · ${h(p.format)}</p><h3 class="op-draft-name">${h(p.name)}</h3><p>${h(p.subtitle)}</p><p><strong>${cash(p.price)}</strong>${p.pack_size ? ' · ' + h(p.pack_size) : ''}</p>${blocks}${(p.faqs || []).length ? `<h3 class="op-h3">FAQs</h3><dl class="op-dl">${p.faqs.map(x => `<div><dt>${h(x.question)}</dt><dd>${lines(x.answer)}</dd></div>`).join('')}</dl>` : ''}${(p.sources || []).length ? `<h3 class="op-h3">Sources</h3><ol>${p.sources.map(x => `<li><a href="${h(x.url)}" target="_blank" rel="noopener">${h(x.title)}</a></li>`).join('')}</ol>` : ''}${(p.related_product_ids || []).length ? `<h3 class="op-h3">Related</h3><p>${p.related_product_ids.map(r => h(productName(r))).join(', ')}</p>` : ''}</div>`, opener);
+    modal('Saved draft preview', `<div class="op-draft-preview"><div class="op-draft-images">${shown.map((g, i) => `<figure><img src="${h(g.src)}" alt="${h(g.alt)}"><figcaption><strong>${i + 1}</strong> ${h(i === 0 ? 'Card' : 'Gallery')}${g.caption ? ' · ' + h(g.caption) : ''}</figcaption></figure>`).join('') || '<p class="op-muted">No visible images.</p>'}</div><p class="op-eyebrow">${h(p.category)} · ${h(p.format)}</p><h3 class="op-draft-name">${h(p.name)}</h3><p>${h(p.subtitle)}</p><p><strong>${cash(p.price)}</strong>${p.pack_size ? ' · ' + h(p.pack_size) : ''}</p>${blocks}${labelPreview(p)}${(p.faqs || []).length ? `<h3 class="op-h3">FAQs</h3><dl class="op-dl">${p.faqs.map(x => `<div><dt>${h(x.question)}</dt><dd>${lines(x.answer)}</dd></div>`).join('')}</dl>` : ''}${(p.sources || []).length ? `<h3 class="op-h3">Sources</h3><ol>${p.sources.map(x => `<li><a href="${h(x.url)}" target="_blank" rel="noopener">${h(x.title)}</a></li>`).join('')}</ol>` : ''}${(p.related_product_ids || []).length ? `<h3 class="op-h3">Related</h3><p>${p.related_product_ids.map(r => h(productName(r))).join(', ')}</p>` : ''}</div>`, opener);
   }
   function exportCurrent() {
     const tab = location.pathname.split('/')[2];
@@ -593,6 +632,8 @@
       }
       if (action === 'faq-add' || action === 'source-add') { const k = action.split('-')[0], box = rerenderRepeat(form, k, l => l.push(k === 'faq' ? { question: '', answer: '' } : { title: '', url: '' })); box.lastElementChild?.querySelector('input')?.focus(); return; }
       if (action === 'faq-remove' || action === 'source-remove') { const k = action.split('-')[0], box = rerenderRepeat(form, k, l => l.splice(Number(id), 1)); const next = (box.children[Number(id)] || box.lastElementChild)?.querySelector('input'); (next || form.querySelector(`[data-op="${k}-add"]`))?.focus(); return; }
+      if (action === 'fact-add') { const list=document.querySelector('#op-facts'); if(list.children.length>=40) throw Error('Use up to 40 fact rows.'); list.insertAdjacentHTML('beforeend',factRows([{name:'',amount:'',rda:'',level:0,active:false}])); dirty=true; return; }
+      if (action === 'fact-remove') { b.closest('[data-fact-row]').remove(); dirty=true; return; }
       if (action === 'product-preview') return previewModal(id, b);
       if (action === 'export') return exportCurrent();
       if (action === 'sales-export-periods') return exportSales('periods');

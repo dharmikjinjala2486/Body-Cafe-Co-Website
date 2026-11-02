@@ -1,0 +1,38 @@
+/* Body Café Co. — Variant E · Shop additions: card headline and key-fact chips, time-of-day filter. */
+.eh-e .spx-headline { margin: 6px 0 0; font-size: 15.5px; font-weight: 300; letter-spacing: -0.01em; line-height: 1.35; }
+.eh-e .spx-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
+.eh-e .spx-chips li { padding: 4px 9px; border-radius: 99px; background: color-mix(in srgb, var(--cap) 12%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cap) 35%, transparent); font-size: 12px; line-height: 1.3; }
+.eh-e .sp-times { margin-top: 14px; }
+
+/* Compact cards: one pack line and aligned actions; full formulation stays on the PDP. */
+.eh-e .ezs .sp-card { grid-template-rows: auto 1fr; background: #f2f0eb; }
+.eh-e .ezs .sp-plate { aspect-ratio: auto; height: clamp(180px, 19vw, 240px); }
+.eh-e .ezs .sp-plate img { inset: 7% 0; height: 86%; object-fit: contain; }
+.eh-e .ezs .sp-body { display: flex; flex-direction: column; gap: 10px; padding: 12px 14px 14px; }
+.eh-e .ezs .sp-name { min-height: 2.4em; font-size: 15px; line-height: 1.2; }
+.eh-e .ezs .sp-pack { font-size: 14px; color: var(--muted); }
+.eh-e .ezs .sp-buy { margin-top: auto; padding-top: 4px; }
+.eh-e .ezs .sp-actions { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; }
+.eh-e .ezs .sp-view { font-size: 14px; }
+.eh-e .ezs .sp-add { min-width: 0; margin: 0; padding: 9px 12px; font-size: 14px; }
+.eh-e .ezs .ez-cmp-pick { grid-column: 1 / -1; font-size: 12px; min-height: 30px; }
+@media (max-width: 760px) {
+  .eh-e .ezs .sp-card { grid-template-columns: 1fr; padding: 0; }
+  .eh-e .ezs .sp-plate { height: 180px; }
+  .eh-e .ezs .sp-body { padding: 10px; }
+  .eh-e .ezs .sp-actions { grid-template-columns: 1fr; gap: 4px; }
+  .eh-e .ezs .sp-add { width: 100%; }
+}
+/* The shared phone layout gives the first result oversized artwork. E keeps every result equal. */
+@media (max-width: 560px) {
+  .eh-e .ezs .sp-card { grid-template-columns: minmax(0, 36%) minmax(0, 1fr); grid-template-rows: auto; column-gap: 0; align-items: stretch; }
+  .eh-e .ezs .sp-card .sp-plate,
+  .eh-e .ezs .sp-card[data-lead] .sp-plate { height: 180px; min-height: 0; aspect-ratio: auto; }
+  .eh-e .ezs .sp-card[data-lead] .sp-name { font-size: 15px; }
+  .eh-e .ezs .sp-body { min-height: 258px; gap: 8px; }
+  .eh-e .ezs .sp-name { font-size: 15px; }
+  .eh-e .ezs .sp-band { font-size: 8px; padding-inline: 8px; }
+  .eh-e .ezs .sp-buy { gap: 4px; }
+  .eh-e .ezs .sp-price strong { font-size: 18px; }
+  .eh-e .ezs .sp-avail { font-size: 12px; }
+}

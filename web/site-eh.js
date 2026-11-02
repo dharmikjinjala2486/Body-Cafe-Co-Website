@@ -12,7 +12,7 @@
   "use strict";
   var S = window.BCCSite;
   var REVIEWS = "Reviews appear only after a verified delivery and moderation. We won't fill this space with made-up ones.";
-  var MOCKUP = "Front-of-pack design mockup. Wording printed on the pack is draft label artwork, not a claim made on this site.";
+  var MOCKUP = "";
   var PENDING = S.STATUS.label;
 
   /* ---------- Small shared helpers ---------- */
@@ -23,14 +23,14 @@
   function front(ctx, p, o) {
     o = o || {};
     var src = window.BCCBottleAssets.url(p.id);
-    return '<img class="' + (o.cls || "x-bottle") + '" src="' + ctx.escape(src) + '" alt="' + (o.alt === "" ? "" : ctx.escape(p.name) + " bottle, draft packaging") + '" width="' + ((ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720) + '" height="1000" decoding="async" ' + (o.eager ? 'fetchpriority="high"' : 'loading="lazy"') + ">";
+    return '<img class="' + (o.cls || "x-bottle") + '" src="' + ctx.escape(src) + '" alt="' + (o.alt === "" ? "" : ctx.escape(p.name) + " bottle") + '" width="' + ((ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720) + '" height="1000" decoding="async" ' + (o.eager ? 'fetchpriority="high"' : 'loading="lazy"') + ">";
   }
   function render(ctx, p, view, o) {
     o = o || {};
     if (!Object.prototype.hasOwnProperty.call(ctx.bottleWidth || {}, p.id)) return front(ctx, p, o);
     var file = view === "cap" ? p.id + "-cap" : p.id + "-three-quarter";
     var dims = view === "cap" ? ' width="400" height="400"' : ' width="' + (/iron|theanine|vitamin/.test(p.id) ? 629 : 517) + '" height="1000"';
-    return '<img class="' + (o.cls || "x-render") + '" src="/web/media/renders/' + file + '.webp" alt="' + (o.alt === "" ? "" : ctx.escape(p.name) + (view === "cap" ? " cap, seen from above" : " bottle, three-quarter view, draft packaging")) + '"' + dims + ' decoding="async" ' + (o.eager ? 'fetchpriority="high"' : 'loading="lazy"') + ">";
+    return '<img class="' + (o.cls || "x-render") + '" src="/web/media/renders/' + file + '.webp" alt="' + (o.alt === "" ? "" : ctx.escape(p.name) + (view === "cap" ? " cap, seen from above" : " bottle, three-quarter view")) + '"' + dims + ' decoding="async" ' + (o.eager ? 'fetchpriority="high"' : 'loading="lazy"') + ">";
   }
   function dash(list, cls) { return '<ul class="' + (cls || "x-list") + '">' + list.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>"; }
   function numbered(items, cls) {
@@ -81,11 +81,11 @@
     voicesBody: REVIEWS,
     voicesSmall: "Until then there are no sample quotes, star ratings or testimonials on this site.",
     faq: [
-      ["Where are the full product details?", "Each product page includes ingredient amounts, serving and pack sizes, directions, allergens and cautions from the supplied final label artwork. Check your own pack for its lot number and expiry date."],
-      ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved."],
-      ["When will my order arrive?", "Delivery dates depend on courier setup that isn't connected yet, so the preview doesn't promise a date. The pincode check confirms the format only."],
-      ["How do returns work?", "Return eligibility, timing and remedies are still being approved. The working policy explains what's undecided; the preview doesn't promise a return window."],
-      ["Where do I find my lot report?", "Choose your product on the lot reports page and enter the lot number printed on the pack. The preview has sample records so you can try it."],
+      ["Where are the full product details?", "Each product page includes ingredient amounts, serving and pack sizes, directions, allergens and cautions. Check your own pack for its lot number and expiry date."],
+      ["Are these the final prices?", "Prices are shown as MRP, inclusive of all taxes. Delivery charges are shown in your bag before you pay."],
+      ["When will my order arrive?", "Delivery timelines depend on your pincode. Our Shipping & Delivery page explains charges and timelines."],
+      ["How do returns work?", "Return eligibility, timing and remedies are still being approved. Our Returns & Refunds page explains how to raise a return."],
+      ["Where do I find my lot report?", "Choose your product on the lot reports page and enter the lot number printed on the pack."],
       ["How can I ask a question?", "Open a support case from Contact. Every case gets an ID and stays in your account. Product safety issues get their own priority case."],
     ],
   };
@@ -96,7 +96,7 @@
     return '<form id="home-lot" class="' + (cls || "x-lotform") + '"><div class="x-field"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">' +
       ctx.catalog.map(function (p, i) { return '<option value="' + p.id + '" data-sample="DEMO-' + pad(i + 1) + '-01">' + ctx.escape(p.name) + "</option>"; }).join("") +
       '</select></div><div class="x-field"><label for="home-lot-number">Lot number</label><input id="home-lot-number" name="lot" placeholder="DEMO-01-01" maxlength="60" required autocomplete="off"></div><button class="' + (btnCls || "x-btn") + '" type="submit"><span>Look up</span></button>' +
-      '<p class="x-micro">Demonstration only. Try <button type="button" class="x-linkbtn" data-fill-lot>the sample lot</button> for the product you picked. No laboratory document is connected.</p></form>';
+      '<p class="x-micro" hidden>Try <button type="button" class="x-linkbtn" data-fill-lot>the sample lot</button> for the product you picked. No laboratory document is connected.</p></form>';
   }
 
   /* ---------- Product page model (shared by the four product pages) ---------- */
@@ -118,14 +118,14 @@
       price: ctx.money(p.price), off: off, max: max, stock: p.stock, sample: "DEMO-" + pad(idx + 1) + "-01", confirm: confirm, related: related, next: related[0] || null,
       notes: S.notes[p.id] || { lead: "", check: [], compound: "", sources: [] },
     };
-    m.stockLine = off === "unpublished" ? "Not available. This product isn't published right now." : off === "stock" ? "Out of preview stock" : p.stock <= 5 ? "Only " + p.stock + " left in preview stock" : "In preview stock";
+    m.stockLine = off === "unpublished" ? "Not available. This product isn't published right now." : off === "stock" ? "Out of stock" : p.stock <= 5 ? "Only " + p.stock + " left" : "In stock";
     m.facts = [["Format", m.format], ["Ingredient in view", m.inView], ["Purchase", "One-time purchase"], ["Serving size", PENDING, true], ["Amount per serving", PENDING, true], ["Pack contents", PENDING, true]];
     m.care = [["Directions", "Directions are waiting on approved label data. The preview doesn't suggest a dose."], ["Storage", "Storage conditions will be added from the approved label."], ["Allergens", "Allergen information will be added from the approved label."], ["Cautions and warnings", "Cautions and warnings will be added from reviewed material. Nothing here is a diagnosis or personal health advice."]];
     m.faqs = [
       ["How much is in each serving?", "Amounts per serving come from the approved rear label, which hasn't been supplied yet. The preview doesn't suggest a dose."],
       ["Where's the lot number on my pack?", S.copy.reports.locationStatus + " Your lot number is different from your order number or barcode."],
-      ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, shipping rules and offers are still being approved."],
-      ["How do returns work?", "Final return eligibility, timing and remedies are still being approved. See the working returns policy; this preview does not promise a return window."],
+      ["Are these the final prices?", "Prices are shown as MRP, inclusive of all taxes. Delivery charges are shown in your bag before you pay."],
+      ["How do returns work?", "Final return eligibility, timing and remedies are still being approved. See our Returns & Refunds page."],
       ["Who do I contact about a product issue?", "Open a support case and choose Product safety. It's flagged as a priority and you get a case ID to follow."],
     ];
     return m;
@@ -295,7 +295,7 @@
       return W("x-bag", K.head({ kicker: "Your bag · " + ctx.count + " item" + (ctx.count === 1 ? "" : "s"), title: "Your bag", lede: c.note }) +
         '<div class="x-bag-grid"><ol class="x-bag-lines">' + items.map(function (x) {
           var p = x.p;
-          return '<li class="x-bag-line" style="' + ctx.capStyle(p) + '"><a class="x-bag-media" href="/products/' + p.id + '" aria-label="' + ctx.escape(p.name) + '">' + K.pic(ctx, p, { alt: "" }) + '</a><div class="x-bag-info"><h2><a href="/products/' + p.id + '">' + ctx.escape(p.name) + "</a></h2><p>" + ctx.escape(ctx.format[p.id]) + " · " + ctx.money(p.price) + ' each, sample price</p><div class="x-stepper quantity-control"><button data-quantity="' + p.id + '" data-change="-1" aria-label="Decrease ' + ctx.escape(p.name) + ' quantity">−</button><span aria-label="Quantity">' + x.q + '</span><button data-quantity="' + p.id + '" data-change="1" aria-label="Increase ' + ctx.escape(p.name) + ' quantity">+</button></div><button class="x-linkbtn remove" data-remove="' + p.id + '">Remove</button></div><strong class="x-bag-total">' + ctx.money(p.price * x.q) + "</strong></li>";
+          return '<li class="x-bag-line" style="' + ctx.capStyle(p) + '"><a class="x-bag-media" href="/products/' + p.id + '" aria-label="' + ctx.escape(p.name) + '">' + K.pic(ctx, p, { alt: "" }) + '</a><div class="x-bag-info"><h2><a href="/products/' + p.id + '">' + ctx.escape(p.name) + "</a></h2><p>" + ctx.escape(ctx.format[p.id]) + " · " + ctx.money(p.price) + ' each</p><div class="x-stepper quantity-control"><button data-quantity="' + p.id + '" data-change="-1" aria-label="Decrease ' + ctx.escape(p.name) + ' quantity">−</button><span aria-label="Quantity">' + x.q + '</span><button data-quantity="' + p.id + '" data-change="1" aria-label="Increase ' + ctx.escape(p.name) + ' quantity">+</button></div><button class="x-linkbtn remove" data-remove="' + p.id + '">Remove</button></div><strong class="x-bag-total">' + ctx.money(p.price * x.q) + "</strong></li>";
         }).join("") + "</ol>" +
         '<aside class="x-summary"><p class="x-kicker">Order summary</p><div class="sum-row"><span>Sample subtotal</span><strong>' + ctx.money(ctx.total) + '</strong></div><div class="sum-row"><span>Delivery</span><span>Calculated at checkout</span></div><p class="x-small">' + c.note + "</p>" + K.btn("/checkout", "Continue to checkout", "main") + '<p class="x-small">No money is collected.</p></aside></div>' +
         K.next(c.next.concat([["/shop", "Keep shopping"]])));

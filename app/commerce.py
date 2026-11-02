@@ -7,10 +7,10 @@ import time
 from datetime import datetime, date, timedelta, timezone
 try:
     from app.errors import Error
-    from app import media, lots
+    from app import media, lots, product_content
 except ImportError:
     from errors import Error
-    import media, lots
+    import media, lots, product_content
 
 IST = timezone(timedelta(hours=5, minutes=30))
 CONTENT_FIELDS = {'purpose':1500,'amount_per_serving':3000,'serving_size':3000,'servings_per_pack':3000,
@@ -64,7 +64,7 @@ class CommerceMixin:
     def product_save(self,c,s,data):
         raw=data.get('product')
         if not isinstance(raw,dict):raise Error('Complete the product details.')
-        extras={}
+        extras=product_content.validate_content(raw)
         for key,limit in CONTENT_FIELDS.items():
             if key in raw:
                 if not isinstance(raw[key],str) or len(raw[key])>limit:raise Error('Check the '+key.replace('_',' ')+' field.')

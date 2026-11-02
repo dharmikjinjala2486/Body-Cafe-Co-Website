@@ -39,6 +39,11 @@
   ];
   var ALIAS = { capsule: "capsules", capsules: "capsules", softgel: "softgels", softgels: "softgels", chew: "chews", chews: "chews", "chewable tablets": "chews", "chewable-tablets": "chews", chewable: "chews" };
   var PENDING = "Awaiting approved label";
+  /* Optional time-of-day filter. A direction turns it on by setting window.BCCShopTimes =
+     { label, designs: [keys], groups: [{ id, label, ids: [product ids] }] }. Without it, nothing below changes the listing. */
+  var DESIGN = "";
+  function times() { var t = window.BCCShopTimes; return t && Array.isArray(t.groups) && t.groups.length && (!t.designs || t.designs.indexOf(DESIGN) >= 0) ? t : null; }
+  function timesOf(id) { var t = times(); return t ? t.groups.filter(function (g) { return g.ids.indexOf(id) >= 0; }).map(function (g) { return g.id; }) : []; }
 
   var COPY = {
     lede: "Seven everyday supplements in capsules, softgels and chews. Each one shows its ingredient and format up front, and links to its label details and lot record.",
@@ -58,7 +63,7 @@
     standardsDemo: "Lot records in this preview are demonstrations. No laboratory document is connected yet.",
     helpTitle: "Need a hand?",
     helpText: "Questions about a product, an order or a delivery? Open a support case and we'll keep the whole conversation in one place.",
-    helpPolicy: "Find delivery charges, demonstration timelines and return information on the policy pages.",
+    helpPolicy: "Find delivery charges, timelines and return information on the policy pages.",
   };
 
   function formatId(ctx, p) {
@@ -78,33 +83,41 @@
     var sort = query.get("sort") || "recommended";
     if (sort === "catalogue") sort = "recommended";
     if (!SORTS.some(function (s) { return s[0] === sort; })) sort = "recommended";
-    return { formats: formats, unknown: unknown, stock: query.get("stock") === "in", sort: sort };
+    var t = times(), time = query.get("time") || "";
+    if (!t || !t.groups.some(function (g) { return g.id === time; })) time = "";
+    return { formats: formats, unknown: unknown, stock: query.get("stock") === "in", sort: sort, time: time };
   }
-  function isDefault(st) { return !st.formats.length && !st.unknown.length && !st.stock && st.sort === "recommended"; }
-  function hasFilters(st) { return !!(st.formats.length || st.unknown.length || st.stock); }
+  function isDefault(st) { return !st.formats.length && !st.unknown.length && !st.stock && !st.time && st.sort === "recommended"; }
+  function hasFilters(st) { return !!(st.formats.length || st.unknown.length || st.stock || st.time); }
 
   /* Product facts for the listing. Order index is the catalogue order (the brand's numbered set, 01–07). */
   function items(ctx) {
     return ctx.published.map(function (p, i) {
       var r = p.rating || { count: 0, average: null };
       return {
-        p: p, id: p.id, i: i, name: p.name, sub: p.subtitle || "", format: ctx.format[p.id] || "", fid: formatId(ctx, p),
+        p: p, id: p.id, i: i, name: p.name, sub: p.subtitle || "", format: ctx.format[p.id] || "", fid: formatId(ctx, p), times: DESIGN === "e" && p.label_timing ? Object.keys(p.label_timing).filter(function(k){return /^Best/i.test(p.label_timing[k]);}) : timesOf(p.id),
         price: Number(p.price) || 0, available: p.published && p.stock > 0, rating: r && r.count > 0 && r.average != null ? r : null,
       };
     });
   }
   function matchFormat(st, x) { return !(st.formats.length || st.unknown.length) || st.formats.indexOf(x.fid) >= 0; }
   function matchStock(st, x) { return !st.stock || x.available; }
+  function matchTime(st, x) { return !st.time || (x.times || []).indexOf(st.time) >= 0; }
   function compute(st, list) {
-    var shown = list.filter(function (x) { return matchFormat(st, x) && matchStock(st, x); });
+    var shown = list.filter(function (x) { return matchFormat(st, x) && matchStock(st, x) && matchTime(st, x); });
     var order = list.slice();
     if (st.sort === "price-asc") order.sort(function (a, b) { return a.price - b.price || a.i - b.i; });
     else if (st.sort === "price-desc") order.sort(function (a, b) { return b.price - a.price || a.i - b.i; });
     else if (st.sort === "name") order.sort(function (a, b) { return a.name.localeCompare(b.name, "en") || a.i - b.i; });
     else order.sort(function (a, b) { return a.i - b.i; });
     /* Counts are faceted: each option shows how many results choosing it would give with the other group applied. */
-    var counts = { all: list.filter(function (x) { return matchStock(st, x); }).length, stock: list.filter(function (x) { return x.available && matchFormat(st, x); }).length };
-    FORMATS.forEach(function (f) { counts[f.id] = list.filter(function (x) { return x.fid === f.id && matchStock(st, x); }).length; });
+    var counts = { all: list.filter(function (x) { return matchStock(st, x) && matchTime(st, x); }).length, stock: list.filter(function (x) { return x.available && matchFormat(st, x) && matchTime(st, x); }).length };
+    FORMATS.forEach(function (f) { counts[f.id] = list.filter(function (x) { return x.fid === f.id && matchStock(st, x) && matchTime(st, x); }).length; });
+    var t = times();
+    if (t) {
+      counts["time:"] = list.filter(function (x) { return matchFormat(st, x) && matchStock(st, x); }).length;
+      t.groups.forEach(function (g) { counts["time:" + g.id] = list.filter(function (x) { return (x.times || []).indexOf(g.id) >= 0 && matchFormat(st, x) && matchStock(st, x); }).length; });
+    }
     return { shown: shown, order: order, counts: counts, total: list.length };
   }
   function countText(r) {
@@ -128,10 +141,17 @@
     st.unknown.forEach(function (u) {
       out.push('<li><button type="button" class="sp-chip is-unknown" data-sp-remove="format:' + h(u) + '" aria-label="Remove filter: ' + h(u) + ' (not a format in this range)">' + h(u) + ' <em>not in this range</em><span aria-hidden="true">×</span></button></li>');
     });
+    var tg = st.time && times() && times().groups.filter(function (g) { return g.id === st.time; })[0];
+    if (tg) out.push('<li><button type="button" class="sp-chip" data-sp-remove="time" aria-label="Remove filter: ' + h(tg.label) + '">' + h(tg.label) + '<span aria-hidden="true">×</span></button></li>');
     if (st.stock) out.push('<li><button type="button" class="sp-chip" data-sp-remove="stock" aria-label="Remove filter: In stock only">In stock only<span aria-hidden="true">×</span></button></li>');
     return out.join("");
   }
 
+  function timeControls(st, r) {
+    var t = times(); if (!t) return "";
+    var opt = function (id, label) { return '<button type="button" class="sp-opt" data-sp-time="' + id + '" aria-pressed="' + (st.time === id) + '"><span class="sp-opt-l">' + h(label) + '</span> <span class="sp-n">' + r.counts["time:" + id] + "</span></button>"; };
+    return '<fieldset class="sp-formats sp-times"><legend class="sp-legend">' + h(t.label || "Time of day") + '</legend><div class="sp-opts">' + opt("", t.allLabel || "Any time") + t.groups.map(function (g) { return opt(g.id, g.label); }).join("") + "</div></fieldset>";
+  }
   function controls(v, st, r) {
     var all = !(st.formats.length || st.unknown.length);
     var fmt = '<button type="button" class="sp-opt" data-sp-format="all" aria-pressed="' + all + '"><span class="sp-opt-l">All products</span> <span class="sp-n">' + r.counts.all + "</span></button>" +
@@ -142,7 +162,7 @@
     var sort = '<div class="sp-sort"><label for="sp-sort">Sort</label><select id="sp-sort" data-sp-sort>' + SORTS.map(function (s) { return '<option value="' + s[0] + '"' + (s[0] === st.sort ? " selected" : "") + ">" + s[1] + "</option>"; }).join("") + "</select></div>";
     var stock = '<label class="sp-stock"><input type="checkbox" data-sp-stock' + (st.stock ? " checked" : "") + '><span class="sp-stock-l">In stock only</span> <span class="sp-n" data-sp-n="stock">' + r.counts.stock + "</span></label>";
     return '<div class="sp-bar" role="group" aria-label="Filter and sort products">' +
-      '<fieldset class="sp-formats"><legend class="sp-legend">Format <span>· choose any</span></legend><div class="sp-opts">' + fmt + "</div></fieldset>" +
+      '<fieldset class="sp-formats"><legend class="sp-legend">Format <span>· choose any</span></legend><div class="sp-opts">' + fmt + "</div></fieldset>" + timeControls(st, r) +
       '<div class="sp-tools">' + stock + sort + "</div></div>" +
       '<div class="sp-state"><p class="sp-count" role="status" data-sp-count>' + countText(r) + "</p>" +
       '<ul class="sp-chips" data-sp-chips aria-label="Active filters">' + chips(st) + "</ul>" +
@@ -166,7 +186,7 @@
       img = window.BCCBMedia.img(p, { alt: "", eager: eager }) + (second ? '<img class="bx-second sp-secondary" src="' + h(second.src) + '" alt="" width="' + (second.w || 1000) + '" height="' + (second.h || 1000) + '" loading="lazy" decoding="async">' : "");
     }
     if (ctx.design === "a") img = S.cardBottlePicture(ctx, p);
-    return '<li class="sp-card" data-sp-item="' + p.id + '" data-format="' + x.fid + '" data-price="' + x.price + '" data-i="' + x.i + '" data-available="' + x.available + '"' +
+    return '<li class="sp-card" data-sp-item="' + p.id + '" data-format="' + x.fid + '" data-price="' + x.price + '" data-i="' + x.i + '" data-available="' + x.available + '"' + (x.times.length ? ' data-times="' + x.times.join(" ") + '"' : "") +
       (shown ? "" : " hidden") + (lead ? " data-lead" : "") + ' style="' + ctx.capStyle(p) + '">' +
       '<a class="sp-media" href="' + href + '" tabindex="-1" aria-hidden="true">' + (v.deco ? v.deco(x) : "") + '<span class="sp-plate">' + img + '<span class="sp-fallback">' + h(p.name) + "</span></span></a>" +
       '<div class="sp-body">' +
@@ -235,6 +255,7 @@
     });
   }
   function compose(v, ctx) {
+    DESIGN = v.key;
     registerFormats(ctx);
     var list = items(ctx);
     var st = parse(ctx.query);
@@ -329,15 +350,16 @@
   function readItems(root) {
     return [].slice.call(root.querySelectorAll("[data-sp-item]")).map(function (el) {
       return { el: el, id: el.getAttribute("data-sp-item"), i: Number(el.getAttribute("data-i")), fid: el.getAttribute("data-format"), price: Number(el.getAttribute("data-price")),
-        available: el.getAttribute("data-available") === "true", name: el.querySelector(".sp-name a").textContent };
+        available: el.getAttribute("data-available") === "true", name: el.querySelector(".sp-name a").textContent, times: (el.getAttribute("data-times") || "").split(" ").filter(Boolean) };
     });
   }
   function urlFor(st) {
     var u = new URL(location.href);
-    u.searchParams.delete("format"); u.searchParams.delete("stock"); u.searchParams.delete("sort");
+    u.searchParams.delete("format"); u.searchParams.delete("stock"); u.searchParams.delete("sort"); u.searchParams.delete("time");
     var f = st.formats.concat(st.unknown);
     if (f.length) u.searchParams.set("format", f.join(","));
     if (st.stock) u.searchParams.set("stock", "in");
+    if (st.time) u.searchParams.set("time", st.time);
     if (st.sort !== "recommended") u.searchParams.set("sort", st.sort);
     /* Keep the design last so URLs read naturally; it is preserved, never dropped. */
     var d = u.searchParams.get("design");
@@ -366,6 +388,11 @@
       var id = b.getAttribute("data-sp-format");
       b.setAttribute("aria-pressed", String(id === "all" ? all : st.formats.indexOf(id) >= 0));
       b.querySelector(".sp-n").textContent = r.counts[id];
+    });
+    root.querySelectorAll("[data-sp-time]").forEach(function (b) {
+      var id = b.getAttribute("data-sp-time");
+      b.setAttribute("aria-pressed", String(id === st.time));
+      b.querySelector(".sp-n").textContent = r.counts["time:" + id];
     });
     var stock = root.querySelector("[data-sp-stock]");
     if (stock) stock.checked = st.stock;
@@ -444,14 +471,16 @@
     cleanup();
     var root = document.querySelector("[data-sp]");
     if (!root || !root.querySelector("[data-sp-grid]")) return;
+    DESIGN = root.getAttribute("data-sp-design") || "";
     var abort = new AbortController(), signal = abort.signal;
     var on = function (el, ev, fn) { if (el) el.addEventListener(ev, fn, { signal: signal }); };
 
     on(root, "click", function (e) {
-      var f = e.target.closest("[data-sp-format]"), rm = e.target.closest("[data-sp-remove]"), clr = e.target.closest("[data-sp-clear]");
-      if (!f && !rm && !clr) return;
+      var f = e.target.closest("[data-sp-format]"), rm = e.target.closest("[data-sp-remove]"), clr = e.target.closest("[data-sp-clear]"), tm = e.target.closest("[data-sp-time]");
+      if (!f && !rm && !clr && !tm) return;
       var st = current();
-      if (f) {
+      if (tm) { st.time = tm.getAttribute("data-sp-time"); commit(root, st); }
+      else if (f) {
         var id = f.getAttribute("data-sp-format");
         if (id === "all") { st.formats = []; st.unknown = []; }
         else {
@@ -464,6 +493,7 @@
       } else if (rm) {
         var what = rm.getAttribute("data-sp-remove");
         if (what === "stock") st.stock = false;
+        else if (what === "time") st.time = "";
         else {
           var v = what.slice(7);
           st.formats = st.formats.filter(function (x) { return x !== v; });
@@ -474,7 +504,7 @@
         var next = root.querySelector("[data-sp-chips] button") || root.querySelector('[data-sp-format="all"]');
         if (next) next.focus();
       } else {
-        commit(root, { formats: [], unknown: [], stock: false, sort: "recommended" });
+        commit(root, { formats: [], unknown: [], stock: false, sort: "recommended", time: "" });
         var all = root.querySelector('[data-sp-format="all"]');
         if (all) all.focus();
       }

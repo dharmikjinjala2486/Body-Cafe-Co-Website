@@ -163,7 +163,7 @@
     return '<ul class="su-channels">' + Object.keys(ch).filter(function (k) { return k !== "whatsapp" || ch[k].live; }).map(function (k) {
       var c = ch[k];
       var available = c.live && (k !== "web" || !isStatic());
-      var status = !available ? "Not available in this preview" : k === "web" ? "Local preview" : "Contact link";
+      var status = !available ? "Not available" : k === "web" ? "Open a case" : "Contact link";
       return '<li class="' + (available ? "is-live" : "is-off") + '"><strong>' + h(c.label) + "</strong><span>" + (c.href ? '<a href="' + h(c.href) + '">' + h(c.detail) + "</a>" : h(c.detail)) + '</span><span class="su-chip' + (available ? " is-ok" : "") + '">' + status + "</span></li>";
     }).join("") + "</ul>";
   }
@@ -265,7 +265,7 @@
       (signed ? '<form class="su-pref" data-su-pref-account novalidate aria-labelledby="pf-mk"><h2 class="' + H + '" id="pf-mk">Marketing messages</h2><p class="su-small">Saved to your account (+91 ••••••' + h(String(u.mobile).slice(-4)) + ").</p>" +
         '<label class="su-switch"><input type="checkbox" name="email"' + (ap.email ? " checked" : "") + '><span><strong>Email</strong><small>New products and guides. Needs an email address on your profile.</small></span></label>' +
         '<label class="su-switch"><input type="checkbox" name="whatsapp"' + (ap.whatsapp ? " checked" : "") + '><span><strong>WhatsApp</strong><small>New products and guides.</small></span></label>' +
-        '<p class="su-small">Marketing SMS isn’t offered. Order and service messages — about an order you place, a case you open or a safety notice — aren’t marketing and aren’t affected. In this preview no messages are sent at all.</p><button type="submit" class="su-btn">Save marketing choices</button><p class="su-small" role="status" data-su-pref-acct-status></p></form>'
+        '<p class="su-small">Marketing SMS isn’t offered. Order and service messages — about an order you place, a case you open or a safety notice — aren’t marketing and aren’t affected.</p><button type="submit" class="su-btn">Save marketing choices</button><p class="su-small" role="status" data-su-pref-acct-status></p></form>'
         : '<section class="su-pref" aria-labelledby="pf-mk"><h2 class="' + H + '" id="pf-mk">Marketing messages</h2><p>Email and WhatsApp marketing choices belong to your account, so we ask you to sign in first. They’re off unless you turn them on.</p><a class="su-btn" href="/sign-in?next=' + encodeURIComponent("/account/preferences") + '">Sign in to manage</a></section>') +
       "</div>";
   }

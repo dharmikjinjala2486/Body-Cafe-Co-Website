@@ -24,7 +24,7 @@
     live: "Published",
     partial: "Partly published",
     pending: "Not yet published",
-    demo: "Demonstration only",
+    demo: "Lookup available",
   };
 
   /* Per-product records. Every field that has not been supplied is null and renders as a status, never as a value.
@@ -49,7 +49,7 @@
       kicker: "Our standards",
       title: "The detail behind the bottle.",
       statement: "We'd rather earn your confidence with detail you can check than with badges you can't. This page explains what each of our products is made of, what each kind of record can show, and how to find the one for your bottle.",
-      caption: "Draft packaging. Front-of-pack design mockups; wording printed on the pack is label artwork, not a claim made on this site.",
+      caption: "The seven Body Café Co. packs.",
       primary: ["#glance", "Explore our standards"],
       secondary: ["/reports", "Find a lot report"],
     },
@@ -86,7 +86,7 @@
       { id: "lot", title: "Read the record.", text: "Find the record for the lot your bottle came from, and see exactly what it covers.", state: "demo" },
     ],
     glanceNow: {
-      published: ["Label amounts, pack sizes, directions and cautions for all seven products", "A working lot lookup, with clearly labelled demonstration records", "Sourced guides to reading labels and lot reports"],
+      published: ["Label amounts, pack sizes, directions and cautions for all seven products", "A working lot lookup, by product and lot number", "Sourced guides to reading labels and lot reports"],
       pending: ["Ingredient-origin records", "Manufacturer documentation beyond the label", "The documented quality process", "Laboratory documents"],
     },
 
@@ -110,7 +110,7 @@
         ["Read the actives, not the total.", "With fish oil, EPA and DHA matter more than the total amount of oil."],
       ],
       pendingList: "amount per serving, serving size, units per pack, other ingredients, allergens, directions and cautions",
-      status: "All seven product pages include ingredient amounts, serving and pack sizes, other ingredients, allergens, directions and cautions transcribed from supplied final label artwork. Batch-specific evidence and testing documents remain separate.",
+      status: "All seven product pages include ingredient amounts, serving and pack sizes, other ingredients, allergens, directions and cautions. Batch-specific evidence and testing documents remain separate.",
       care: S.CARE_NOTE,
     },
 
@@ -119,10 +119,10 @@
       places: [
         ["Ingredient origin", "Where the raw ingredient is grown, harvested or first produced."],
         ["Processing location", "Where the ingredient is purified or converted into the form named on the label."],
-        ["Finished-product manufacturer", "The facility that blends, fills and packs the product you buy."],
+        ["Finished-product manufacturer", "The facility that blends, fills and packs the product you buy.", "Named on every label"],
       ],
       check: "When these details are confirmed, each product will list all three separately. A single line that merges them can't tell you which step happened where.",
-      status: "No ingredient origins, processing locations, suppliers or manufacturer details have been published yet. We don't name a source we can't confirm.",
+      status: "Every label names the finished-product manufacturer and its licence number, and both are shown on every product page. Ingredient origins, processing locations and suppliers haven't been published yet. We don't name a source we can't confirm.",
     },
 
     checks: {
@@ -142,9 +142,9 @@
       cols: ["What it checks", "What it covers", "What it can't tell you", "Where to verify it", "Body Café Co. today"],
       rows: [
         { kind: "Ingredient research", cells: ["What studies have found about an ingredient, usually in a particular form and amount.", "The ingredient as studied, not a particular product.", "What's in a specific bottle, or how a product will work for you.", "The study itself, or an independent summary such as an NIH fact sheet.", "Cited as background in our guides. Not used as product claims."], state: "live" },
-        { kind: "Finished-product testing", cells: ["Whether a sample of the finished product meets its specification, using stated methods.", "The sample and lot that were tested.", "Other lots, an individual pack, or a health outcome.", "The report: laboratory, method, result with units, limit and date.", "No results published."], state: "pending" },
-        { kind: "Certification", cells: ["That an independent body assessed something against its own standard.", "Exactly what the certificate names: a facility, a process or a product.", "Anything outside that named scope.", "The certifier's own public listing, not the brand's page.", "None claimed."], state: "pending" },
-        { kind: "Lot report", cells: ["The records for one manufacturing lot, gathered in one place.", "One lot, through the sample tested from it.", "Whether a single pack is genuine, or how it will work for you.", "Our lot lookup, using the number printed on your pack.", "Demonstration records only."], state: "demo" },
+        { kind: "Finished-product testing", cells: ["Whether a sample of the finished product meets its specification, using stated methods.", "The sample and lot that were tested.", "Other lots, an individual pack, or a health outcome.", "The report: laboratory, method, result with units, limit and date.", "Labels state \u201cthird-party tested\u201d. No results published."], state: "pending" },
+        { kind: "Certification", cells: ["That an independent body assessed something against its own standard.", "Exactly what the certificate names: a facility, a process or a product.", "Anything outside that named scope.", "The certifier's own public listing, not the brand's page.", "Labels state \u201cGMP certified\u201d. Certificate not yet published."], state: "pending" },
+        { kind: "Lot report", cells: ["The records for one manufacturing lot, gathered in one place.", "One lot, through the sample tested from it.", "Whether a single pack is genuine, or how it will work for you.", "Our lot lookup, using the number printed on your pack.", "Lot records are added as they are published."], state: "pending" },
       ],
       libraryFields: [["Product and lot", "Which product, and which lot, the document describes."], ["Source", "Who issued it."], ["Date and version", "When it was issued, and whether it replaces an earlier version."], ["Scope", "What it covers, and what it doesn't."], ["Verification", "Where to confirm it independently, when that's possible."]],
       libraryStatus: "No documents have been published yet. When one is, it will appear here with each of these details.",
@@ -159,7 +159,7 @@
         ["Open its record", "Enter the number to see the record for that lot."],
       ],
       scope: "A lot report describes a tested sample from one batch. It doesn't authenticate an individual bottle, and it doesn't promise a health outcome.",
-      status: "The lookup works today with demonstration records, such as DEMO-01-01, each clearly labelled. No real lot records are connected yet.",
+      status: "The lookup works today. Lot records are added as each report is published.",
     },
 
     communicate: {
@@ -179,9 +179,9 @@
     },
 
     faqs: [
-      ["Where do your ingredients come from?", "The finished-product manufacturers printed on the supplied labels are named on product pages. Ingredient origin and processing records are not supplied; those stages remain separate from final manufacture."],
+      ["Where do your ingredients come from?", "Our finished-product manufacturers are named on every product page. Ingredient origin and processing records are not published yet; those stages remain separate from final manufacture."],
       ["Are your products tested?", "No test results or laboratory documents have been published, so we don't describe any product as tested. When a report is published, it will be linked to the lot it describes."],
-      ["Do you hold any certifications?", "None is claimed on this site. A certification would only appear with exactly what it covers, a facility, a process or a product, and a link to the certifier's own listing."],
+      ["Do you hold any certifications?", "Our labels state \u201cGMP certified\u201d. The certificate itself isn't published on this site yet. When it is, it will appear with exactly what it covers, a facility, a process or a product, and a link to the certifier's own listing."],
       ["Is an FSSAI licence a quality certification?", "No. An FSSAI licence or registration is what a food business needs to operate in India. It isn't a test of a particular product's quality."],
       ["What about allergens and dietary needs?", "Allergen statements come from approved labels, which haven't been published yet. Omega-3 Fish Oil comes from fish, and capsule and softgel materials aren't confirmed. Vitamin D3 + K2 includes omega-3 as triglycerides; its source will be stated on the approved label."],
       ["Does a lot report prove my bottle is genuine?", "No. A report describes a sample from one lot. Checking an individual pack would need a separate unit code, and that hasn't been decided."],
@@ -217,7 +217,7 @@
   function inView(p) { return String(p.ingredients || "").split(";")[0]; }
   function bottle(ctx, p, cls, alt, eager) {
     var w = (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 715;
-    return '<img class="' + (cls || "sx-bottle") + '" src="' + window.BCCBottleAssets.url(p.id) + '" alt="' + (alt === "" ? "" : ctx.escape(p.name) + ", draft packaging") + '" width="' + w + '" height="1000" ' + (eager ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async">';
+    return '<img class="' + (cls || "sx-bottle") + '" src="' + window.BCCBottleAssets.url(p.id) + '" alt="' + (alt === "" ? "" : ctx.escape(p.name) + " bottle") + '" width="' + w + '" height="1000" ' + (eager ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async">';
   }
   function link(href, text, cls) { return '<a class="' + (cls || "sx-link") + '" href="' + href + '">' + text + "</a>"; }
   function btn(href, text, cls) { return '<a class="' + (cls || "sx-btn") + '" href="' + href + '"><span>' + text + '</span><span class="sx-arrow" aria-hidden="true">' + (href.charAt(0) === "#" ? "↓" : "→") + "</span></a>"; }
@@ -273,7 +273,7 @@
 
   function places() {
     return '<ol class="sx-places">' + M.source.places.map(function (x, i) {
-      return '<li><span class="sx-pn" aria-hidden="true">' + pad(i + 1) + '</span><h3>' + x[0] + "</h3><p>" + x[1] + '</p><p class="sx-place-state">' + STATE.pending + "</p></li>";
+      return '<li><span class="sx-pn" aria-hidden="true">' + pad(i + 1) + '</span><h3>' + x[0] + "</h3><p>" + x[1] + '</p><p class="sx-place-state">' + (x[2] || STATE.pending) + "</p></li>";
     }).join("") + "</ol>";
   }
 
@@ -316,7 +316,7 @@
   function lotFigure(ctx) {
     /* No real photograph of the lot-number position exists yet, so this is a labelled schematic, not a photo. */
     var p = ctx.product("iron-bisglycinate") || ctx.published[0];
-    return '<figure class="sx-lotfig"><div class="sx-lotfig-art" aria-hidden="true">' + (p ? bottle(ctx, p, "sx-lotfig-bottle", "") : "") + '<span class="sx-lotfig-tag">LOT · DEMO-01-01</span></div><figcaption>Schematic only. A photograph of where the lot number sits on each pack will replace it with the final label.</figcaption></figure>';
+    return '<figure class="sx-lotfig"><div class="sx-lotfig-art" aria-hidden="true">' + (p ? bottle(ctx, p, "sx-lotfig-bottle", "") : "") + '<span class="sx-lotfig-tag">LOT · 0000000</span></div><figcaption>Schematic only. A photograph of where the lot number sits on each pack will replace it with the final label.</figcaption></figure>';
   }
 
   function practices() { return pairs(M.communicate.practices, "sx-practices", "ul"); }
@@ -345,7 +345,7 @@
       source: { lead: M.source.mean, html: sub("How it works") + places() + sub("What you can check") + '<p class="sx-p">' + M.source.check + "</p>", status: [M.source.status, "pending"] },
       checks: { lead: M.checks.mean, html: sub("Questions a quality process should answer") + checkQuestions(), status: [M.checks.status, "pending"] },
       evidence: { lead: M.evidence.mean, html: sub("What does each kind of evidence prove?") + proves() + library(), status: [M.evidence.status, "pending"] },
-      lot: { lead: M.lot.mean, html: sub("How it works") + '<div class="sx-lotgrid">' + lotFigure(ctx) + '<div>' + lotPath(ctx) + "</div></div>" + sub("What you can check") + '<p class="sx-p">' + link("/reports", "Try the lot lookup") + " with a demonstration record, or read " + link("/learn/understanding-reports", "what a lot report shows") + ".</p>", status: [M.lot.status, "demo"] },
+      lot: { lead: M.lot.mean, html: sub("How it works") + '<div class="sx-lotgrid">' + lotFigure(ctx) + '<div>' + lotPath(ctx) + "</div></div>" + sub("What you can check") + '<p class="sx-p">' + link("/reports", "Try the lot lookup") + ", or read " + link("/learn/understanding-reports", "what a lot report shows") + ".</p>", status: [M.lot.status, "demo"] },
       communicate: { lead: M.communicate.mean, html: sub("How it works") + practices() + more("Three kinds of statement, kept apart", kinds()) + sub("What you can check") + '<p class="sx-p">Every guide lists its sources at the end. ' + link("/learn/reading-a-label", "Read a label with confidence") + " is a good place to start.</p>" + correction(), status: [M.communicate.status, "pending"] },
       questions: { lead: "", html: faqs() },
       next: { lead: M.next.lede, html: nextActions() },
@@ -429,7 +429,7 @@
       key: "e",
       hero: function (ctx) {
         return '<header class="sx-hero"><div class="sx-hero-copy">' + heroCopy() + "</div>" +
-          '<figure class="sx-hero-art"><div class="sx-deck">' + ctx.published.map(function (p) { return '<span class="sx-chip" style="--cap:' + p.color + '">' + bottle(ctx, p, "sx-chip-bottle", "") + "</span>"; }).join("") + '</div><figcaption class="sx-caption">All seven, draft packaging. ' + M.hero.caption.replace(/^Draft packaging\. /, "") + "</figcaption></figure>" + indexNav() + "</header>";
+          '<figure class="sx-hero-art"><div class="sx-deck">' + ctx.published.map(function (p) { return '<span class="sx-chip" style="--cap:' + p.color + '">' + bottle(ctx, p, "sx-chip-bottle", "") + "</span>"; }).join("") + '</div><figcaption class="sx-caption">' + M.hero.caption + "</figcaption></figure>" + indexNav() + "</header>";
       },
       section: function (ctx, s, b) {
         return plainSection(s, b, { inner: true, style: "--band:" + CAPS[s.i % CAPS.length], label: s.label + ' <span class="sx-of">/ 10</span>' });

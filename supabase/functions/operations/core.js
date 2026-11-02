@@ -20,14 +20,31 @@ export function salesReport(orders,payments,query){
 }
 const limits={name:160,subtitle:300,description:6000,ingredients:4000,directions:3000,warnings:3000,storage:1500,allergens:1500,pack_size:160,format:100,category:100,sku:80,color:7,seo_title:160,seo_description:320,purpose:1500,ingredient_note:4000};
 for(const key of ['amount_per_serving','serving_size','servings_per_pack','other_ingredients','flavour_sweeteners','nutrition_information','dietary_suitability','manufacturer_details','ingredient_sourcing','manufacturer','testing_performed','supporting_documents','certifications','preparation','age_guidance','suitability','rear_label_note','label_checklist','ingredient_checks'])limits[key]=3000;
+
+const eLimits={headline:300,detail_title:300,segment_name:160,segment_description:3000,product_intro:6000,form_description:3000,why_this_form:6000,product_story:10000,quality_summary:6000,quality_note:3000,keep_in_mind:3000,home_highlight:100,directions_tag:3000,customer_care:3000,pack_printed:3000};
+export function validateProductContent(p){
+ for(const [k,n] of Object.entries(eLimits)) if(k in p)p[k]=clean(p[k],n);
+ if((p.home_highlight||'').split(/\s+/).filter(Boolean).length>4)throw new ApiError('Use at most four words for the homepage highlight.');
+ const object=(v,fields)=>{if(!v||typeof v!=='object'||Array.isArray(v))throw new ApiError('Check the product label fields.');return Object.fromEntries(Object.entries(fields).map(([k,n])=>[k,clean(v[k]??'',n)]));};
+ const strings=(v,n,max)=>{if(!Array.isArray(v)||v.length>n)throw new ApiError('Too many product label entries.');return v.map(x=>clean(x,max));};
+ if('label_front'in p)p.label_front=object(p.label_front,Object.fromEntries(['category','descriptor','claim','mark','barcode'].map(k=>[k,1000])));
+ if('label_timing'in p)p.label_timing=object(p.label_timing,{morning:300,noon:300,night:300});
+ if('label_badges'in p)p.label_badges=strings(p.label_badges,20,300);
+ if('supplement_facts'in p){const sf=p.supplement_facts;if(!sf||!Array.isArray(sf.rows)||sf.rows.length>40)throw new ApiError('Use up to 40 supplement fact rows.');
+  p.supplement_facts={serving:clean(sf.serving??'',300),notes:strings(sf.notes??[],20,1000),rows:sf.rows.map(r=>{const out=object(r,{name:300,amount:160,rda:160});if(!out.name||!out.amount)throw new ApiError('Complete each supplement fact name and amount.');if(![0,1,2].includes(r.level??0)||typeof(r.active??false)!=='boolean')throw new ApiError('Check supplement fact row settings.');return {...out,level:r.level??0,active:r.active??false};})};
+ }
+ return p;
+}
+
 export function validateProduct(p){
  if(!p||typeof p!=='object'||Array.isArray(p)||!/^([a-z0-9][a-z0-9-]{1,99})$/.test(p.id||''))throw new ApiError('Check the product details.');
  for(let[k,n]of Object.entries(limits))if(k in p)p[k]=clean(p[k],n);
  if(!p.name||!p.sku||!Number.isInteger(p.price)||p.price<0||p.price>1000000||!/^#[0-9a-fA-F]{6}$/.test(p.color))throw new ApiError('Complete name, SKU, price and colour.');
  if(!Array.isArray(p.gallery)||p.gallery.length>12)throw new ApiError('Use up to twelve images.');
- for(let g of p.gallery){if(!/^\/(api\/catalog-media\/CM-[a-f0-9]{16}|web\/media\/[A-Za-z0-9_./-]+\.(webp|png|jpe?g)|concepts\/media\/[A-Za-z0-9_-]+\.webp)$/.test(g.src||'')||g.src.includes('..'))throw new ApiError('Use uploaded or existing website images.');g.alt=clean(g.alt||p.name,300);if(!g.alt||('visible'in g&&typeof g.visible!=='boolean'))throw new ApiError('Check image visibility and alt text.');for(let k of['label','caption'])if(k in g)g[k]=clean(g[k],600);}
+ for(let g of p.gallery){if(!/^\/(api\/catalog-media\/CM-[a-f0-9]{16}|web\/media\/[A-Za-z0-9_./-]+\.(webp|png|jpe?g)|concepts\/media\/[A-Za-z0-9_-]+\.webp)$/.test(g.src||'')||g.src.includes('..'))throw new ApiError('Use uploaded or existing website images.');for(const [k,n] of [['w',720],['h',1000]])if(k in g&&(!Number.isInteger(g[k])||g[k]<1||g[k]>12000))throw new ApiError('Check the product image dimensions.');g.alt=clean(g.alt||p.name,300);if(!g.alt||('visible'in g&&typeof g.visible!=='boolean'))throw new ApiError('Check image visibility and alt text.');for(let k of['label','caption'])if(k in g)g[k]=clean(g[k],600);}
  for(let key of['faqs','sources']){if(!(key in p))continue;if(!Array.isArray(p[key])||p[key].length>20)throw new ApiError('Use up to twenty entries.');for(let x of p[key]){if(key==='faqs'){x.question=clean(x.question,300);x.answer=clean(x.answer,3000);if(!x.question||!x.answer)throw new ApiError('Complete every question and answer.');}else{x.title=clean(x.title,600);x.url=clean(x.url,1000);if(!x.title||!/^https:\/\/[^\s<>"']+$/.test(x.url))throw new ApiError('Use a source title and HTTPS link.');}}}
- if(p.related_product_ids&&(!Array.isArray(p.related_product_ids)||p.related_product_ids.length>6||new Set(p.related_product_ids).size!==p.related_product_ids.length||p.related_product_ids.includes(p.id)))throw new ApiError('Choose up to six distinct related products.');return p;
+ validateProductContent(p);
+ if(p.related_product_ids&&(!Array.isArray(p.related_product_ids)||p.related_product_ids.length>6||p.related_product_ids.some(id=>typeof id!=='string'||!id)||new Set(p.related_product_ids).size!==p.related_product_ids.length||p.related_product_ids.includes(p.id)))throw new ApiError('Choose up to six distinct related products.');return p;
 }
 export function assessmentSummary(rows=[]){const n=rows.length,meets=rows.filter(r=>r.assessment==='meets').length,fails=rows.filter(r=>r.assessment==='does_not_meet').length,open=n-meets-fails;return {overall:!n?'none':fails?'does_not_meet':!open?'meets':meets?'partly_assessed':'not_assessed',total:n,meets,does_not_meet:fails,not_assessed:open};}
 export function validateReport(raw){
@@ -168,7 +185,7 @@ export function createHandler(config){
    if(['/profile','/preferences','/addresses','/help/feedback','/learn/feedback'].includes(path)){let action={'/profile':'profile','/preferences':'preferences','/addresses':'address_save','/help/feedback':'help_feedback','/learn/feedback':'learn_feedback'}[path];return json(await rpc('customer_action',{p_user:user.id,p_action:action,p_data:data}));}
    if(/^\/addresses\/ADDR-[a-f0-9]{10}\/(delete|default)$/.test(path))return json(await rpc('customer_action',{p_user:user.id,p_action:path.endsWith('delete')?'address_delete':'address_default',p_data:{id:path.split('/')[2]}}));
    if(path==='/events')return json({ok:true});
-   if(path.startsWith('/admin/')){mustAdmin();let action=path.split('/').pop();if(['request','approve','lot_submit','lot_notice_request','lot_notice_retire_request','lot_withdraw_request'].includes(action))throw new ApiError('Endpoint removed.',404);if(action==='lot_update')data.record=validateReport(data.record);if(action==='product_save'){validateProduct(data.product);for(let g of data.product.gallery)if(g.src.startsWith('/api/catalog-media/')&&!(await db('media','id=eq.'+g.src.split('/').pop())).length)throw new ApiError('An uploaded image is missing.');}
+   if(path.startsWith('/admin/')){mustAdmin();let action=path.split('/').pop();if(['request','approve','lot_submit','lot_notice_request','lot_notice_retire_request','lot_withdraw_request'].includes(action))throw new ApiError('Endpoint removed.',404);if(action==='lot_update')data.record=validateReport(data.record);if(action==='product_save'){validateProduct(data.product);if(!(await db('products','id=eq.'+encodeURIComponent(data.product.id))).length)throw new ApiError('Adding products is disabled. Choose an existing product.',403);for(let g of data.product.gallery)if(g.src.startsWith('/api/catalog-media/')&&!(await db('media','id=eq.'+g.src.split('/').pop())).length)throw new ApiError('An uploaded image is missing.');}
     if(action==='order_update'&&!['note','packing','shipped','delivered','cancelled'].includes(data.state))throw new ApiError('Choose a supported fulfillment action.');
     if(action==='refund')throw new ApiError('Live refunds require a connected payment provider.',503);
     if(action==='batch_adjust')return json(await rpc('adjust_stock',{p_batch:data.id,p_quantity:data.quantity,p_kind:data.kind||'count_correction',p_reason:data.remarks,p_actor:user.id,p_request:data.request_id}));

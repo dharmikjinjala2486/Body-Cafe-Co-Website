@@ -1,0 +1,94 @@
+/* Body Café Co. — Variant E · Standards additions: science rules, labels side by side, forms explorer, three makers.
+   Same E system as Story: cap colours identify products, segment numerals count, cream panels hold reference facts. */
+.eh-e .ssx-science, .eh-e .ssx-side, .eh-e .ssx-sourcing { width: min(1192px, calc(100% - 2 * var(--gutter, 16px))); margin-inline: auto; padding: clamp(48px, 7vw, 104px) 0; border-top: 1px solid var(--rule); }
+.eh-e .ssx-sci-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px clamp(32px, 5vw, 80px); align-items: end; margin-bottom: clamp(28px, 4vw, 48px); }
+.eh-e .ssx-sci-head .ez-k { grid-column: 1 / -1; margin: 0; }
+.eh-e .ssx-sci-head h2, .eh-e .ssx-side h2 { margin: 0; font-size: clamp(32px, 4vw, 60px); font-weight: 300; letter-spacing: -0.04em; line-height: 1.02; max-width: 18ch; }
+.eh-e .ssx-lede { margin: 0; font-size: clamp(16.5px, 1.25vw, 19px); line-height: 1.6; color: var(--muted); max-width: 60ch; }
+
+/* Rules */
+.eh-e .ssx-rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ssx-rules li { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto 1fr; align-content: start; gap: 6px 18px; padding: 24px; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .1); border-top: 5px solid var(--cap); }
+.eh-e .ssx-rule-n { grid-row: 1 / span 2; align-self: start; font-size: 44px; display: flex; }
+.eh-e .ssx-rules h3 { margin: 0; font-size: 19px; }
+.eh-e .ssx-rules p { margin: 0; font-size: 15.5px; line-height: 1.55; color: var(--muted); }
+.eh-e .ssx-note { display: block; margin-top: 10px; padding: 8px 12px; border-radius: 8px; background: var(--ss-cream, #f6f3ec); color: var(--ink); font-size: 14px; }
+
+/* Side-by-side table */
+.eh-e .ssx-side h2 { margin-bottom: clamp(24px, 3vw, 36px); }
+.eh-e .ssx-tbl { overflow-x: auto; border-radius: 12px; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .12); }
+.eh-e .ssx-tbl table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14.5px; }
+.eh-e .ssx-tbl thead th { padding: 14px 16px; text-align: left; background: var(--ink); color: #fff; font-family: "Lemon Milk", sans-serif; font-weight: 400; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; }
+.eh-e .ssx-tbl tbody th, .eh-e .ssx-tbl td { padding: 15px 16px; text-align: left; vertical-align: top; border-top: 1px solid rgb(45 41 38 / .1); line-height: 1.45; }
+.eh-e .ssx-tbl tbody th { font-weight: 400; box-shadow: inset 4px 0 0 var(--cap); white-space: nowrap; }
+.eh-e .ssx-tbl tbody tr:hover { background: color-mix(in srgb, var(--cap) 8%, #fff); }
+.eh-e .ssx-tbl tbody th a { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.eh-e .ssx-tbl tbody th a:hover b { text-decoration: underline; text-underline-offset: 4px; }
+.eh-e .ssx-tbl tbody th a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 3px; }
+.eh-e .ssx-num { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+.eh-e .ssx-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--cap); flex: none; display: inline-block; }
+.eh-e .ssx-cta { margin: 28px 0 0; }
+
+/* Forms explorer */
+.eh-e .ssx-h3 { margin: 0 0 20px; font-size: clamp(24px, 2.4vw, 34px); font-weight: 300; letter-spacing: -0.03em; }
+.eh-e .ssx-explorer { display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: 20px; margin-bottom: clamp(48px, 6vw, 80px); }
+.eh-e .ssx-xlist { display: grid; gap: 6px; align-content: start; }
+.eh-e .ssx-xlist button { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 10px 14px; border: 0; border-radius: 10px; background: #fff; color: inherit; font: inherit; font-size: 15px; text-align: left; cursor: pointer; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .12); transition: box-shadow .2s, transform .25s var(--ss-spring, ease); }
+.eh-e .ssx-xlist button:hover { transform: translateX(4px); }
+.eh-e .ssx-xlist button[aria-selected="true"] { box-shadow: inset 0 0 0 2px var(--cap), inset 6px 0 0 var(--cap); font-weight: 600; }
+.eh-e .ssx-xlist button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.eh-e .ssx-xpanel { display: grid; gap: 18px; align-content: start; padding: clamp(22px, 3vw, 36px); border-radius: 14px; background: var(--ss-cream, #f6f3ec); border-top: 6px solid var(--cap); }
+.eh-e .ssx-xpanel[hidden] { display: none; }
+.eh-e .ssx-xpanel:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.eh-e .ssx-xhead { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; align-items: center; }
+.eh-e .ssx-xcap { width: 64px; height: 64px; border-radius: 50%; display: block; }
+.eh-e .ssx-xhead .ez-k { margin: 0 0 4px; }
+.eh-e .ssx-xhead h4 { margin: 0; font-family: "Lemon Milk", sans-serif; font-size: 20px; text-transform: uppercase; }
+.eh-e .ssx-why { margin: 0; max-width: 68ch; font-size: 16.5px; line-height: 1.6; }
+.eh-e .ssx-kv { display: grid; gap: 0; margin: 0; border-top: 1px solid rgb(45 41 38 / .14); }
+.eh-e .ssx-kv > div { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid rgb(45 41 38 / .1); }
+.eh-e .ssx-kv dt { font-family: "Lemon Milk", sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.eh-e .ssx-kv dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.eh-e .ssx-pending { color: var(--muted); font-style: italic; }
+.eh-e .ssx-xpanel p { margin: 0; }
+
+/* Makers */
+.eh-e .ssx-makers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.eh-e .ssx-maker { padding: 24px; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .12); }
+.eh-e .ssx-where { margin: 0 0 10px; font-family: "Lemon Milk", sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.eh-e .ssx-maker h4 { margin: 0; font-size: 20px; font-weight: 600; }
+.eh-e .ssx-what { margin: 4px 0 14px; color: var(--muted); font-size: 14.5px; }
+.eh-e .ssx-maker ul { display: grid; gap: 8px; margin: 0; padding: 14px 0 0; list-style: none; border-top: 1px solid rgb(45 41 38 / .1); }
+.eh-e .ssx-maker li { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.eh-e .ssx-marketer { margin: 18px 0 0; font-size: 14px; color: var(--muted); }
+
+@media (max-width: 960px) {
+  .eh-e .ssx-sci-head { grid-template-columns: 1fr; }
+  .eh-e .ssx-rules, .eh-e .ssx-makers { grid-template-columns: 1fr; }
+  .eh-e .ssx-explorer { grid-template-columns: 1fr; }
+  .eh-e .ssx-xlist { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 8px; }
+  .eh-e .ssx-xlist button { flex: 0 0 auto; width: auto; white-space: nowrap; scroll-snap-align: start; }
+  .eh-e .ssx-xlist button:hover { transform: none; }
+}
+@media (max-width: 760px) {
+  .eh-e .ssx-rules li { padding: 18px; }
+  .eh-e .ssx-rule-n { font-size: 36px; }
+  /* The side-by-side table becomes one card per product; header labels return as captions. */
+  .eh-e .ssx-tbl { overflow: visible; box-shadow: none; border-radius: 0; }
+  .eh-e .ssx-tbl table { min-width: 0; }
+  .eh-e .ssx-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .eh-e .ssx-tbl table, .eh-e .ssx-tbl tbody, .eh-e .ssx-tbl tr, .eh-e .ssx-tbl tbody th, .eh-e .ssx-tbl td { display: block; }
+  .eh-e .ssx-tbl tbody tr { margin-bottom: 12px; padding: 6px 0; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .12), inset 0 5px 0 var(--cap); }
+  .eh-e .ssx-tbl tbody th, .eh-e .ssx-tbl td { border-top: 0; padding: 8px 16px; white-space: normal; box-shadow: none; }
+  .eh-e .ssx-tbl td::before { display: block; margin-bottom: 2px; font-family: "Lemon Milk", sans-serif; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .eh-e .ssx-tbl td:nth-of-type(1)::before { content: "Form"; }
+  .eh-e .ssx-tbl td:nth-of-type(2)::before { content: "Per serving"; }
+  .eh-e .ssx-tbl td:nth-of-type(3)::before { content: "Serving"; }
+  .eh-e .ssx-tbl td:nth-of-type(4)::before { content: "Made by"; }
+  .eh-e .ssx-kv > div { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eh-e .ssx-xlist button { transition: none; }
+}
+/* Shared E table rules give row headers a heavy bottom border; these rows use one consistent rule. */
+.eh-e .ssx-tbl tbody th, .eh-e .ssy-tbl tbody th { border-bottom: 0; }

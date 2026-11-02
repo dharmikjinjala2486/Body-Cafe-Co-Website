@@ -1,0 +1,10 @@
+.eh-e .home-e-copy { padding: var(--ez-sec-y) var(--pad); border-top: 1px solid var(--line); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--ez-gap); }
+.eh-e .home-e-copy .ez-sec-head { margin: 0; }
+.eh-e .home-e-body { display: grid; gap: 20px; align-content: start; font-size: clamp(16px, 1.4vw, 20px); line-height: 1.5; }
+.eh-e .home-e-body > .x-link { justify-self: start; }
+.eh-e .home-e-points { display: grid; gap: 24px; list-style: none; padding: 0; margin: 0; }
+.eh-e .home-e-points h3 { font-size: 20px; margin-bottom: 6px; }
+.eh-e .home-e-directions summary { cursor: pointer; padding-block: 12px; text-decoration: underline; }
+.eh-e .home-e-directions[open] .home-e-points { margin-top: 20px; }
+.eh-e .ss-member-nick { font-size: clamp(18px, 2vw, 28px); line-height: 1.25; }
+@media (max-width: 760px) { .eh-e .home-e-copy { grid-template-columns: 1fr; gap: 24px; } }

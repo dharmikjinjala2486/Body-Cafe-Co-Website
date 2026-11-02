@@ -128,7 +128,7 @@
       cap: "Per 5 capsules, at night with food and a full glass of water (label directions) · 150 capsules",
     },
   };
-  function sigOf(p) { var s = SIG[p.id]; return s && s.ok(p) ? s : null; }
+  function sigOf(p) { var s = SIG[p.id]; return p.label_diagram_current !== false && s && s.ok(p) ? s : null; }
   function sigFigure(ctx, p, mini) {
     var s = sigOf(p);
     if (!s) return "";
@@ -156,7 +156,7 @@
       '<div class="ez-hero-copy"><p class="ez-k">Body Café Co. · ' + pad(1) + "–" + pad(n) + '</p><h1 id="ez-hero-t">Seven supplements. <span>One colour each.</span></h1>' +
       '<p class="ez-lede">Seven everyday supplements. Each has its own cap colour, and every label fact in readable text.</p>' +
       '<div class="ez-actions"><a class="x-btn" href="/shop"><span>Shop all ' + (n === 7 ? "seven" : n) + '</span></a><a class="x-link" href="/reports">Find a lot report</a></div>' +
-      (RELEASE.production ? "" : '<p class="ez-small">Review preview · current project prices · ordering is not live.</p>') + "</div>" +
+      "</div>" +
       '<div class="ez-deck" data-ez-deck data-ez-start="' + start + '">' +
       '<div class="ez-fan" data-ez-fan aria-hidden="true">' + list.map(function (p, i) {
         return '<span class="ez-fan-b" data-ez-b="' + i + '" style="--i:' + i + ";--o:" + (i - (n - 1) / 2) + ";z-index:" + (n - Math.abs(Math.round(i - (n - 1) / 2))) + ";" + ctx.capStyle(p) + '"' + (i === start ? " data-on" : "") + ">" + bottleImg(ctx, p, true) + "</span>";
@@ -187,9 +187,9 @@
   }
   function evidence() {
     var rows = [
-      ["Label facts", "Available for all seven", "Amounts, serving, directions, cautions, allergens and the named manufacturer, transcribed from the supplied final label artwork.", "/standards#record", "See the record sheet", "in"],
+      ["Label facts", "Available for all seven", "Amounts, serving, directions, cautions, allergens and the named manufacturer, for all seven.", "/standards#record", "See the record sheet", "in"],
       ["Ingredient origin and testing documents", "Not yet published", "These stay marked as unpublished until real documents are supplied. A manufacturer’s address doesn’t show where an ingredient comes from.", "/standards", "How we separate evidence", "pending"],
-      ["Lot records", RELEASE.production ? "Lookup by lot number" : "Demonstration records in this preview", "Each pack carries a lot number. A report describes a sample from one lot, not your individual pack.", "/reports", "Look up a lot", RELEASE.production ? "in" : "demo"],
+      ["Lot records", "Lookup by lot number", "Each pack carries a lot number. A report describes a sample from one lot, not your individual pack.", "/reports", "Look up a lot", RELEASE.production ? "in" : "demo"],
     ];
     return '<section class="ez-evidence" data-home-section="trust" aria-labelledby="ez-ev-t"><header class="ez-sec-head"><p class="ez-k">Behind the colour</p><h2 id="ez-ev-t">What you can check today.</h2></header><ol class="ez-ev-list">' +
       rows.map(function (r, i) { return '<li><p class="ez-ev-n">' + pad(i + 1) + '</p><h3>' + r[0] + '</h3><p class="ez-status" data-state="' + r[5] + '">' + r[1] + "</p><p>" + r[2] + '</p><a class="x-link" href="' + r[3] + '">' + r[4] + "</a></li>"; }).join("") + "</ol></section>";
@@ -220,7 +220,7 @@
     var band = pp.querySelector(".pp-band"); if (band) band.setAttribute("data-ez-band", "");
     var s = sigOf(p), ov = pp.querySelector("#overview");
     var desc = p.description || "";
-    var detail = '<section class="pp-sec ezp-detail" id="detail" aria-labelledby="detail-t"><div class="pp-sec-in"><header class="pp-head"><p class="pp-k"><span class="pp-k-n">02</span><span class="pp-k-l">The defining detail</span><span class="pp-k-of">/ 08</span></p><h2 id="detail-t">' + esc(s ? s.hook : "What is it?") + "</h2></header>" +
+    var detail = '<section class="pp-sec ezp-detail" id="detail" aria-labelledby="detail-t"><div class="pp-sec-in"><header class="pp-head"><p class="pp-k"><span class="pp-k-n">02</span><span class="pp-k-l">The defining detail</span><span class="pp-k-of">/ 08</span></p><h2 id="detail-t">' + esc(p.detail_title ?? (s ? s.hook : "What is it?")) + "</h2></header>" +
       '<div class="pp-body">' + (desc ? '<p class="pp-lead">' + esc(desc) + "</p>" : "") + (s ? sigFigure(ctx, p) : (ov ? ov.querySelector(".pp-body").innerHTML : "")) + "</div></div></section>";
     if (ov) ov.replaceWith(frag(detail));
     // Section numbers follow the order on the page.
@@ -277,12 +277,12 @@
     var a = e.target.closest && e.target.closest("a[data-ez-view], .e-sibs a, .ez-unitcard a, a.e-name");
     if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var path = (a.getAttribute("href") || "").split("#")[0];
-    if (!/^\/products\//.test(path)) return;
+    if (!window.BCCProductRoutes.productId(path)) return;
     var sw = a.closest("[data-ez-deck]") ? a.closest("[data-ez-deck]").querySelector("[data-ez-swatch]") : a.closest("li, .ez-unitcard");
     if (!sw) return;
     document.querySelectorAll("[data-ez-vt]").forEach(function (x) { x.style.viewTransitionName = ""; x.removeAttribute("data-ez-vt"); });
     sw.style.viewTransitionName = "ez-swatch"; sw.setAttribute("data-ez-vt", "");
-    handoff = { path: path.split("?")[0], at: Date.now() };
+    handoff = { path: window.BCCProductRoutes.href(path, "e").split("?")[0], at: Date.now() };
     setTimeout(function () { if (sw.isConnected) { sw.style.viewTransitionName = ""; sw.removeAttribute("data-ez-vt"); } }, 1500);
   }, true);
   function receive(main) {

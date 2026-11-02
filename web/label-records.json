@@ -9,21 +9,104 @@
     "other_ingredients": "Microcrystalline Cellulose, Croscarmellose Sodium, Colloidal Silicon Dioxide, Magnesium Stearate, HPMC Capsule.",
     "directions": "Take 1 capsule daily in the morning on an empty stomach. Avoid milk for 2 hours before or after taking the capsule, or as directed by a physician.",
     "nutrition_information": "Per 1 capsule (approximate): energy 1 kcal; protein 0 g; carbohydrate 0.14 g; total fat 0 g; total sugar 0 g; added sugar 0 g; sodium 0 mg.",
-    "manufacturer": "Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India.",
+    "manufacturer": "Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India, Lic. No. 10725997000051.",
     "storage": "Store below 30°C. Protect from sunlight, heat and moisture. Keep out of reach of children. Keep desiccant inside the bottle.",
     "age_guidance": "For adults only.",
     "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat.",
     "label_checklist": "The lot number and expiry date on your own pack\nThe complete directions, cautions and allergen statement\nLot-specific reports when published",
-    "rear_label_note": "Product facts below are transcribed from the supplied final label artwork. Batch number, manufacturing date, expiry and printed MRP are specific to your pack. Testing and certification documents are not supplied by this artwork. Source: master label page 4.",
-    "label_source": "Supplied Full Final Label.ai (seven-page master label artwork), page 4",
+    "rear_label_note": "Batch number, manufacturing date, expiry date and MRP are printed on each pack.",
+    "label_source": "Body Café Co. product label",
     "allergens": "May contain nuts.",
-    "manufacturer_details": "Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India. As printed on the supplied label.",
-    "purpose": "Read the ingredient amounts, directions and cautions from the supplied label below. No individual result is promised.",
+    "manufacturer_details": "Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India, Lic. No. 10725997000051. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India, Lic. No. 10726994000121.",
+    "certifications": "GMP certified. Third-party tested, made with traceable ingredients and no hidden blends. The GMP certificate and test reports are not published on this site yet.",
+    "purpose": "Read the ingredient amounts, directions and cautions below. No individual result is promised.",
     "seo_description": "Iron as Ferrochel® ferrous bisglycinate chelate. Each capsule provides 29 mg iron; each bottle contains 60 capsules.",
-    "label_note": "Product information from supplied final label artwork; lot-specific testing documents remain separate.",
-    "dietary_suitability": "The supplied label carries a vegetarian mark. Allergen cautions still apply.",
+    "label_note": "Lot-specific testing documents are separate from these product facts.",
+    "dietary_suitability": "Vegetarian. Allergen cautions still apply.",
     "suitability": "For adults only. Read the cautions and allergen statement before use.",
-    "ingredient_checks": "Serving basis | 1 capsule per labelled serving.\nPack count | 60 capsules.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack."
+    "ingredient_checks": "Serving basis | 1 capsule per labelled serving.\nPack count | 60 capsules.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack.",
+    "supplement_facts": {
+      "serving": "1 Capsule",
+      "rows": [
+        {
+          "name": "Energy",
+          "amount": "1 kcal",
+          "rda": "0.02%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Protein",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Carbohydrate",
+          "amount": "0.14 g",
+          "rda": "#",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Total Sugar",
+          "amount": "0 g",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Added Sugar",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Total Fat",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Sodium",
+          "amount": "0 mg",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Iron (as Ferrochel® Ferrous Bisglycinate Chelate)",
+          "amount": "29 mg",
+          "rda": "100%",
+          "level": 0,
+          "active": true
+        }
+      ],
+      "notes": [
+        "%RDA value established as per ICMR guidelines 2020 (women moderate work).",
+        "#%RDA values not established."
+      ]
+    },
+    "label_front": {
+      "category": "Health Supplement",
+      "descriptor": "Ferrochel® • Neutrally Charged",
+      "claim": "Supports Hemoglobin Formation & Energy Metabolism",
+      "mark": "Vegetarian mark",
+      "barcode": "8908032859035"
+    },
+    "directions_tag": "Empty stomach",
+    "label_timing": {
+      "morning": "Best in the morning",
+      "noon": "Also fine",
+      "night": "Also fine"
+    },
+    "label_badges": [],
+    "customer_care": "+91-9274248974 · care@bodycafeco.com · BodyCafeCo.com",
+    "pack_printed": "Batch No., Mfg. Date, Exp. Date, M.R.P. (incl. of all taxes) and U.S.P. (per capsule, incl. of all taxes) are printed on each pack. The label carries a code to scan for more.",
+    "preparation": "Take on an empty stomach, and avoid milk for 2 hours before or after."
   },
   "l-theanine": {
     "pack_size": "30 capsules",
@@ -35,21 +118,104 @@
     "other_ingredients": "Microcrystalline Cellulose, Magnesium Stearate, Silicon Dioxide, HPMC Capsule.",
     "directions": "Take 1 capsule daily in the morning, with food or empty stomach or as directed by a physician.",
     "nutrition_information": "Per 1 capsule (approximate): energy 2 kcal; protein 0.44 g; carbohydrate 0.06 g; total fat 0 g; total sugar 0.05 g; added sugar 0 g; sodium 0 mg.",
-    "manufacturer": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India.",
+    "manufacturer": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540.",
     "storage": "Store below 30°C. Protect from sunlight, heat and moisture. Keep out of reach of children. Keep desiccant inside the bottle.",
     "age_guidance": "For adults only.",
     "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat.",
     "label_checklist": "The lot number and expiry date on your own pack\nThe complete directions, cautions and allergen statement\nLot-specific reports when published",
-    "rear_label_note": "Product facts below are transcribed from the supplied final label artwork. Batch number, manufacturing date, expiry and printed MRP are specific to your pack. Testing and certification documents are not supplied by this artwork. Source: master label page 3.",
-    "label_source": "Supplied Full Final Label.ai (seven-page master label artwork), page 3",
+    "rear_label_note": "Batch number, manufacturing date, expiry date and MRP are printed on each pack.",
+    "label_source": "Body Café Co. product label",
     "allergens": "May contain nuts.",
-    "manufacturer_details": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India. As printed on the supplied label.",
-    "purpose": "Read the ingredient amounts, directions and cautions from the supplied label below. No individual result is promised.",
+    "manufacturer_details": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India, Lic. No. 10726994000121.",
+    "certifications": "GMP certified. Third-party tested, made with traceable ingredients and no hidden blends. The GMP certificate and test reports are not published on this site yet.",
+    "purpose": "Read the ingredient amounts, directions and cautions below. No individual result is promised.",
     "seo_description": "L-Theanine in a capsule format. Each capsule provides 200 mg L-Theanine; each bottle contains 30 capsules.",
-    "label_note": "Product information from supplied final label artwork; lot-specific testing documents remain separate.",
-    "dietary_suitability": "The supplied label carries a vegetarian mark. Allergen cautions still apply.",
+    "label_note": "Lot-specific testing documents are separate from these product facts.",
+    "dietary_suitability": "Vegetarian. Allergen cautions still apply.",
     "suitability": "For adults only. Read the cautions and allergen statement before use.",
-    "ingredient_checks": "Serving basis | 1 capsule per labelled serving.\nPack count | 30 capsules.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack."
+    "ingredient_checks": "Serving basis | 1 capsule per labelled serving.\nPack count | 30 capsules.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack.",
+    "supplement_facts": {
+      "serving": "1 Capsule",
+      "rows": [
+        {
+          "name": "Energy",
+          "amount": "2 kcal",
+          "rda": "0.10%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Protein",
+          "amount": "0.44 g",
+          "rda": "0.82%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Carbohydrate",
+          "amount": "0.06 g",
+          "rda": "#",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Total Sugar",
+          "amount": "0.05 g",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Added Sugar",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Total Fat",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Sodium",
+          "amount": "0 mg",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "L-Theanine",
+          "amount": "200 mg",
+          "rda": "#",
+          "level": 0,
+          "active": true
+        }
+      ],
+      "notes": [
+        "%RDA value established as per ICMR guidelines 2020 (men moderate work).",
+        "#%RDA values not established."
+      ]
+    },
+    "label_front": {
+      "category": "Nutraceutical",
+      "descriptor": "Naturally Found in Green Tea",
+      "claim": "Supports Calm Mind & Clear Focus",
+      "mark": "Vegetarian mark",
+      "barcode": "8908032859073"
+    },
+    "directions_tag": "With food or empty stomach",
+    "label_timing": {
+      "morning": "Best in the morning",
+      "noon": "Also fine",
+      "night": "Also fine"
+    },
+    "label_badges": [],
+    "customer_care": "+91-9274248974 · care@bodycafeco.com · BodyCafeCo.com",
+    "pack_printed": "Batch No., Mfg. Date, Exp. Date, M.R.P. (incl. of all taxes) and U.S.P. (per capsule, incl. of all taxes) are printed on each pack. The label carries a code to scan for more.",
+    "preparation": "Take with food or on an empty stomach."
   },
   "vitamin-d3-k2": {
     "pack_size": "60 softgels",
@@ -61,21 +227,143 @@
     "other_ingredients": "Gelatin, Glycerin, Sorbitol, Soyabean Oil, Corn Oil, Sunflower Oil, Sodium Benzoate, Natural Mixed Tocopherols.",
     "directions": "Take 1 softgel daily in the morning with food or as directed by a physician.",
     "nutrition_information": "Per 1 softgel (approximate): energy 2 kcal; protein 0.01 g; carbohydrate 0.22 g; total fat 0.10 g; total sugar 0 g; added sugar 0 g; sodium 0 mg.",
-    "manufacturer": "ASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India.",
+    "manufacturer": "ASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India, Lic. No. 10721024000068.",
     "storage": "Store below 30°C. Protect from sunlight, heat and moisture. Keep out of reach of children. Keep desiccant inside the bottle.",
     "age_guidance": "For adults only.",
-    "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat. Polyols may have a laxative effect, as stated on the label.",
+    "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat. Polyols may have a laxative effect.",
     "label_checklist": "The lot number and expiry date on your own pack\nThe complete directions, cautions and allergen statement\nLot-specific reports when published",
-    "rear_label_note": "Product facts below are transcribed from the supplied final label artwork. Batch number, manufacturing date, expiry and printed MRP are specific to your pack. Testing and certification documents are not supplied by this artwork. Source: master label page 1.",
-    "label_source": "Supplied Full Final Label.ai (seven-page master label artwork), page 1",
+    "rear_label_note": "Batch number, manufacturing date, expiry date and MRP are printed on each pack.",
+    "label_source": "Body Café Co. product label",
     "allergens": "Contains gelatin, fish oil and soy.",
-    "manufacturer_details": "ASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India. As printed on the supplied label.",
-    "purpose": "Read the ingredient amounts, directions and cautions from the supplied label below. No individual result is promised.",
+    "manufacturer_details": "ASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India, Lic. No. 10721024000068. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India, Lic. No. 10726994000121.",
+    "certifications": "GMP certified. Third-party tested, made with traceable ingredients and no hidden blends. The GMP certificate and test reports are not published on this site yet.",
+    "purpose": "Read the ingredient amounts, directions and cautions below. No individual result is promised.",
     "seo_description": "Vitamin D3, Vitamin K2 as MK-7 and Omega-3 as triglycerides, in one softgel. Bottle of 60 softgels.",
-    "label_note": "Product information from supplied final label artwork; lot-specific testing documents remain separate.",
-    "dietary_suitability": "Contains gelatin and fish oil; the supplied label carries a non-vegetarian mark.",
+    "label_note": "Lot-specific testing documents are separate from these product facts.",
+    "dietary_suitability": "Non-vegetarian: contains gelatin and fish oil.",
     "suitability": "For adults only. Read the cautions and allergen statement before use.",
-    "ingredient_checks": "Serving basis | 1 softgel per labelled serving.\nPack count | 60 softgels.\nAllergens | Contains gelatin, fish oil and soy.\nDirections and cautions | Read together on your own pack."
+    "ingredient_checks": "Serving basis | 1 softgel per labelled serving.\nPack count | 60 softgels.\nAllergens | Contains gelatin, fish oil and soy.\nDirections and cautions | Read together on your own pack.",
+    "supplement_facts": {
+      "serving": "1 Softgel",
+      "rows": [
+        {
+          "name": "Energy",
+          "amount": "2 kcal",
+          "rda": "0.09%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Protein",
+          "amount": "0.01 g",
+          "rda": "0.02%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Carbohydrate",
+          "amount": "0.22 g",
+          "rda": "#",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Total Sugar",
+          "amount": "0 g",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Added Sugar",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Total Fat",
+          "amount": "0.10 g",
+          "rda": "0.15%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Sodium",
+          "amount": "0 mg",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Vitamin D3 (Cholecalciferol)*",
+          "amount": "600 IU",
+          "rda": "100%",
+          "level": 0,
+          "active": true
+        },
+        {
+          "name": "Vitamin K2 (as MK-7)*",
+          "amount": "55 mcg",
+          "rda": "100%",
+          "level": 0,
+          "active": true
+        },
+        {
+          "name": "Fish Oil Concentrate (Anchovy – Engraulis ringens)",
+          "amount": "250 mg",
+          "rda": "#",
+          "level": 0,
+          "active": true
+        },
+        {
+          "name": "Total Omega-3 Fatty Acids as Triglycerides",
+          "amount": "200 mg",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "EPA (Eicosapentaenoic Acid) as TG",
+          "amount": "100 mg",
+          "rda": "#",
+          "level": 2,
+          "active": false
+        },
+        {
+          "name": "DHA (Docosahexaenoic Acid) as TG",
+          "amount": "75 mg",
+          "rda": "#",
+          "level": 2,
+          "active": false
+        }
+      ],
+      "notes": [
+        "%RDA value established as per ICMR guidelines 2020 (men moderate work).",
+        "#%RDA values not established.",
+        "*Appropriate overages are added to compensate for loss on storage."
+      ]
+    },
+    "label_front": {
+      "category": "Nutraceutical",
+      "descriptor": "with Omega-3 as Triglycerides",
+      "claim": "Supports Bone, Muscle & Heart Health",
+      "mark": "Non-vegetarian mark",
+      "barcode": "8908032859042"
+    },
+    "directions_tag": "With food",
+    "label_timing": {
+      "morning": "Best in the morning",
+      "noon": "Also fine",
+      "night": "Also fine"
+    },
+    "label_badges": [
+      "Gelatin food grade",
+      "Polyols may have laxative effect"
+    ],
+    "customer_care": "+91-9274248974 · care@bodycafeco.com · BodyCafeCo.com",
+    "pack_printed": "Batch No., Mfg. Date, Exp. Date, M.R.P. (incl. of all taxes) and U.S.P. (per softgel, incl. of all taxes) are printed on each pack. The label carries a code to scan for more.",
+    "preparation": "Take with food."
   },
   "omega-3-fish-oil": {
     "pack_size": "60 softgels",
@@ -87,21 +375,128 @@
     "other_ingredients": "Gelatin, Glycerin, Sorbitol, Soyabean Oil, Corn Oil, Sunflower Oil, Sodium Benzoate, Natural Mixed Tocopherols.",
     "directions": "Take 1 softgel daily in the morning with food or as directed by a physician.",
     "nutrition_information": "Per 1 softgel (approximate): energy 8 kcal; protein 0.06 g; carbohydrate 0.88 g; total fat 0.40 g; total sugar 0 g; added sugar 0 g; sodium 0 mg.",
-    "manufacturer": "ASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India.",
+    "manufacturer": "ASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India, Lic. No. 10721024000068.",
     "storage": "Store below 30°C. Protect from sunlight, heat and moisture. Keep out of reach of children. Keep desiccant inside the bottle.",
     "age_guidance": "For adults only.",
-    "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat. Polyols may have a laxative effect, as stated on the label.",
+    "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat. Polyols may have a laxative effect.",
     "label_checklist": "The lot number and expiry date on your own pack\nThe complete directions, cautions and allergen statement\nLot-specific reports when published",
-    "rear_label_note": "Product facts below are transcribed from the supplied final label artwork. Batch number, manufacturing date, expiry and printed MRP are specific to your pack. Testing and certification documents are not supplied by this artwork. Source: master label page 2.",
-    "label_source": "Supplied Full Final Label.ai (seven-page master label artwork), page 2",
+    "rear_label_note": "Batch number, manufacturing date, expiry date and MRP are printed on each pack.",
+    "label_source": "Body Café Co. product label",
     "allergens": "Contains gelatin, fish oil and soy.",
-    "manufacturer_details": "ASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India. As printed on the supplied label.",
-    "purpose": "Read the ingredient amounts, directions and cautions from the supplied label below. No individual result is promised.",
+    "manufacturer_details": "ASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India, Lic. No. 10721024000068. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India, Lic. No. 10726994000121.",
+    "certifications": "GMP certified. Third-party tested, made with traceable ingredients and no hidden blends. The GMP certificate and test reports are not published on this site yet.",
+    "purpose": "Read the ingredient amounts, directions and cautions below. No individual result is promised.",
     "seo_description": "Fish oil concentrate with Omega-3 in triglyceride form. Each softgel provides 800 mg total Omega-3, including 400 mg EPA and 300 mg DHA.",
-    "label_note": "Product information from supplied final label artwork; lot-specific testing documents remain separate.",
-    "dietary_suitability": "Contains gelatin and fish oil; the supplied label carries a non-vegetarian mark.",
+    "label_note": "Lot-specific testing documents are separate from these product facts.",
+    "dietary_suitability": "Non-vegetarian: contains gelatin and fish oil.",
     "suitability": "For adults only. Read the cautions and allergen statement before use.",
-    "ingredient_checks": "Serving basis | 1 softgel per labelled serving.\nPack count | 60 softgels.\nAllergens | Contains gelatin, fish oil and soy.\nDirections and cautions | Read together on your own pack."
+    "ingredient_checks": "Serving basis | 1 softgel per labelled serving.\nPack count | 60 softgels.\nAllergens | Contains gelatin, fish oil and soy.\nDirections and cautions | Read together on your own pack.",
+    "supplement_facts": {
+      "serving": "1 Softgel",
+      "rows": [
+        {
+          "name": "Energy",
+          "amount": "8 kcal",
+          "rda": "0.37%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Protein",
+          "amount": "0.06 g",
+          "rda": "0.11%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Carbohydrate",
+          "amount": "0.88 g",
+          "rda": "#",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Total Sugar",
+          "amount": "0 g",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Added Sugar",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Total Fat",
+          "amount": "0.40 g",
+          "rda": "0.59%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Sodium",
+          "amount": "0 mg",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Fish Oil Concentrate (Anchovy – Engraulis ringens)",
+          "amount": "1000 mg",
+          "rda": "#",
+          "level": 0,
+          "active": true
+        },
+        {
+          "name": "Total Omega-3 Fatty Acids as Triglycerides",
+          "amount": "800 mg",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "EPA (Eicosapentaenoic Acid) as TG",
+          "amount": "400 mg",
+          "rda": "#",
+          "level": 2,
+          "active": false
+        },
+        {
+          "name": "DHA (Docosahexaenoic Acid) as TG",
+          "amount": "300 mg",
+          "rda": "#",
+          "level": 2,
+          "active": false
+        }
+      ],
+      "notes": [
+        "%RDA value established as per ICMR guidelines 2020 (men moderate work).",
+        "#%RDA values not established."
+      ]
+    },
+    "label_front": {
+      "category": "Nutraceutical",
+      "descriptor": "as Triglycerides",
+      "claim": "Supports Heart, Brain & Joint Health",
+      "mark": "Non-vegetarian mark",
+      "barcode": "8908032859059"
+    },
+    "directions_tag": "With food",
+    "label_timing": {
+      "morning": "Best in the morning",
+      "noon": "Also fine",
+      "night": "Also fine"
+    },
+    "label_badges": [
+      "Gelatin food grade",
+      "Polyols may have laxative effect"
+    ],
+    "customer_care": "+91-9274248974 · care@bodycafeco.com · BodyCafeCo.com",
+    "pack_printed": "Batch No., Mfg. Date, Exp. Date, M.R.P. (incl. of all taxes) and U.S.P. (per softgel, incl. of all taxes) are printed on each pack. The label carries a code to scan for more.",
+    "preparation": "Take with food."
   },
   "myo-d-chiro-inositol": {
     "pack_size": "90 capsules",
@@ -113,21 +508,111 @@
     "other_ingredients": "Magnesium Stearate, Silicon Dioxide, HPMC Capsule.",
     "directions": "Take 3 capsules in the morning with food or as directed by a physician.",
     "nutrition_information": "Per 3 capsules (approximate): energy 10 kcal; protein 0.14 g; carbohydrate 2.29 g; total fat 0 g; total sugar 0 g; added sugar 0 g; sodium 2.50 mg.",
-    "manufacturer": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India.",
+    "manufacturer": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540.",
     "storage": "Store below 30°C. Protect from sunlight, heat and moisture. Keep out of reach of children. Keep desiccant inside the bottle.",
     "age_guidance": "For adults only.",
     "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat.",
     "label_checklist": "The lot number and expiry date on your own pack\nThe complete directions, cautions and allergen statement\nLot-specific reports when published",
-    "rear_label_note": "Product facts below are transcribed from the supplied final label artwork. Batch number, manufacturing date, expiry and printed MRP are specific to your pack. Testing and certification documents are not supplied by this artwork. Source: master label page 5.",
-    "label_source": "Supplied Full Final Label.ai (seven-page master label artwork), page 5",
+    "rear_label_note": "Batch number, manufacturing date, expiry date and MRP are printed on each pack.",
+    "label_source": "Body Café Co. product label",
     "allergens": "May contain nuts.",
-    "manufacturer_details": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India. As printed on the supplied label.",
-    "purpose": "Read the ingredient amounts, directions and cautions from the supplied label below. No individual result is promised.",
+    "manufacturer_details": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India, Lic. No. 10726994000121.",
+    "certifications": "GMP certified. Third-party tested, made with traceable ingredients and no hidden blends. The GMP certificate and test reports are not published on this site yet.",
+    "purpose": "Read the ingredient amounts, directions and cautions below. No individual result is promised.",
     "seo_description": "Myo-Inositol and D-Chiro Inositol in a 40:1 ratio. Each 3-capsule serving provides 2,000 mg Myo-Inositol and 50 mg D-Chiro Inositol. 30 servings per bottle.",
-    "label_note": "Product information from supplied final label artwork; lot-specific testing documents remain separate.",
-    "dietary_suitability": "The supplied label carries a vegetarian mark. Allergen cautions still apply.",
+    "label_note": "Lot-specific testing documents are separate from these product facts.",
+    "dietary_suitability": "Vegetarian. Allergen cautions still apply.",
     "suitability": "For adults only. Read the cautions and allergen statement before use.",
-    "ingredient_checks": "Serving basis | 3 capsules per labelled serving.\nPack count | 90 capsules.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack."
+    "ingredient_checks": "Serving basis | 3 capsules per labelled serving.\nPack count | 90 capsules.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack.",
+    "supplement_facts": {
+      "serving": "3 Capsules",
+      "rows": [
+        {
+          "name": "Energy",
+          "amount": "10 kcal",
+          "rda": "0.47%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Protein",
+          "amount": "0.14 g",
+          "rda": "0.26%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Carbohydrate",
+          "amount": "2.29 g",
+          "rda": "#",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Total Sugar",
+          "amount": "0 g",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Added Sugar",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Total Fat",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Sodium",
+          "amount": "2.50 mg",
+          "rda": "0.1%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Myo-Inositol",
+          "amount": "2000 mg",
+          "rda": "#",
+          "level": 0,
+          "active": true
+        },
+        {
+          "name": "D-Chiro Inositol",
+          "amount": "50 mg",
+          "rda": "#",
+          "level": 0,
+          "active": true
+        }
+      ],
+      "notes": [
+        "%RDA value established as per ICMR guidelines 2020 (men moderate work).",
+        "#%RDA values not established."
+      ]
+    },
+    "label_front": {
+      "category": "Nutraceutical",
+      "descriptor": "40:1 Ratio",
+      "claim": "Supports Hormonal & Metabolic Balance",
+      "mark": "Vegetarian mark",
+      "barcode": "8908032859028"
+    },
+    "directions_tag": "With food",
+    "label_timing": {
+      "morning": "Best in the morning",
+      "noon": "Also fine",
+      "night": "Also fine"
+    },
+    "label_badges": [],
+    "customer_care": "+91-9274248974 · care@bodycafeco.com · BodyCafeCo.com",
+    "pack_printed": "Batch No., Mfg. Date, Exp. Date, M.R.P. (incl. of all taxes) and U.S.P. (per capsule, incl. of all taxes) are printed on each pack. The label carries a code to scan for more.",
+    "preparation": "Take with food."
   },
   "creatine-chews": {
     "pack_size": "60 chewable tablets",
@@ -139,23 +624,105 @@
     "other_ingredients": "Citric Acid, Silicon Dioxide, Natural Flavouring Substances, Steviol Glycosides and Dextrose.",
     "flavour_sweeteners": "Orange flavour. Contains Steviol Glycosides and Dextrose. Not sugar-free: 3.60 g total and added sugar per 2 tablets.",
     "directions": "Choose one time — morning, noon, or night — and stay consistent. Chew 2 tablets once daily or as directed by a physician. Do not swallow the tablets whole.",
-    "preparation": "Chew; do not swallow whole. With food or on an empty stomach, as stated on the label.",
+    "preparation": "Chew; do not swallow whole. With food or on an empty stomach.",
     "nutrition_information": "Per 2 tablets (approximate): energy 15 kcal; protein 0.02 g; carbohydrate 3.60 g; total fat 0 g; total sugar 3.60 g; added sugar 3.60 g; sodium 0 mg.",
-    "manufacturer": "Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India.",
+    "manufacturer": "Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India, Lic. No. 10725997000051.",
     "storage": "Store below 30°C. Protect from sunlight, heat and moisture. Keep out of reach of children. Keep desiccant inside the bottle.",
     "age_guidance": "For adults only.",
     "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat.",
     "label_checklist": "The lot number and expiry date on your own pack\nThe complete directions, cautions and allergen statement\nLot-specific reports when published",
-    "rear_label_note": "Product facts below are transcribed from the supplied final label artwork. Batch number, manufacturing date, expiry and printed MRP are specific to your pack. Testing and certification documents are not supplied by this artwork. Source: master label page 6.",
-    "label_source": "Supplied Full Final Label.ai (seven-page master label artwork), page 6",
+    "rear_label_note": "Batch number, manufacturing date, expiry date and MRP are printed on each pack.",
+    "label_source": "Body Café Co. product label",
     "allergens": "May contain nuts.",
-    "manufacturer_details": "Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India. As printed on the supplied label.",
-    "purpose": "Read the ingredient amounts, directions and cautions from the supplied label below. No individual result is promised.",
+    "manufacturer_details": "Vebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India, Lic. No. 10725997000051. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India, Lic. No. 10726994000121.",
+    "certifications": "GMP certified. Third-party tested, made with traceable ingredients and no hidden blends. The GMP certificate and test reports are not published on this site yet.",
+    "purpose": "Read the ingredient amounts, directions and cautions below. No individual result is promised.",
     "seo_description": "Orange-flavoured creatine monohydrate chewable tablets. Each 2-tablet serving provides 3,000 mg creatine monohydrate. 60 tablets, 30 servings.",
-    "label_note": "Product information from supplied final label artwork; lot-specific testing documents remain separate.",
-    "dietary_suitability": "The supplied label carries a vegetarian mark. Allergen cautions still apply.",
+    "label_note": "Lot-specific testing documents are separate from these product facts.",
+    "dietary_suitability": "Vegetarian. Allergen cautions still apply.",
     "suitability": "For adults only. Read the cautions and allergen statement before use.",
-    "ingredient_checks": "Serving basis | 2 chewable tablets per labelled serving.\nPack count | 60 chewable tablets.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack."
+    "ingredient_checks": "Serving basis | 2 chewable tablets per labelled serving.\nPack count | 60 chewable tablets.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack.",
+    "supplement_facts": {
+      "serving": "2 Tablets",
+      "rows": [
+        {
+          "name": "Energy",
+          "amount": "15 kcal",
+          "rda": "0.72%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Protein",
+          "amount": "0.02 g",
+          "rda": "0.04%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Carbohydrate",
+          "amount": "3.60 g",
+          "rda": "#",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Total Sugar",
+          "amount": "3.60 g",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Added Sugar",
+          "amount": "3.60 g",
+          "rda": "7.20%",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Total Fat",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Sodium",
+          "amount": "0 mg",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Creatine Monohydrate",
+          "amount": "3000 mg",
+          "rda": "#",
+          "level": 0,
+          "active": true
+        }
+      ],
+      "notes": [
+        "%RDA value established as per ICMR guidelines 2020 (men moderate work).",
+        "#%RDA values not established."
+      ]
+    },
+    "label_front": {
+      "category": "Nutraceutical",
+      "descriptor": "Orange",
+      "claim": "Supports Strength & Performance",
+      "mark": "Vegetarian mark",
+      "barcode": "8908032859066"
+    },
+    "directions_tag": "With food or empty stomach",
+    "label_timing": {
+      "morning": "Best in the morning",
+      "noon": "Also fine",
+      "night": "Also fine"
+    },
+    "label_badges": [],
+    "customer_care": "+91-9274248974 · care@bodycafeco.com · BodyCafeCo.com",
+    "pack_printed": "Batch No., Mfg. Date, Exp. Date, M.R.P. (incl. of all taxes) and U.S.P. (per tablet, incl. of all taxes) are printed on each pack. The label carries a code to scan for more."
   },
   "psyllium-husk": {
     "pack_size": "150 capsules",
@@ -166,22 +733,118 @@
     "description": "Psyllium Husk (Isabgol) in capsules. Each 5-capsule serving provides 2,000 mg husk with 1,578 mg dietary fibre, including 1,362 mg soluble fibre.",
     "other_ingredients": "Magnesium Stearate, Silicon Dioxide, HPMC Capsule.",
     "directions": "Take 5 capsules once daily at night with food and a full glass of water, or as directed by a physician.",
-    "preparation": "Take with food and a full glass of water, as stated on the label.",
+    "preparation": "Take with food and a full glass of water.",
     "nutrition_information": "Per 5 capsules (approximate): energy 10 kcal; protein 0.18 g; carbohydrate 2.07 g; total fat 0 g; dietary fibre 1,578 mg (including soluble fibre 1,362 mg); total sugar 0 g; added sugar 0 g; sodium 0 mg.",
-    "manufacturer": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India.",
+    "manufacturer": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540.",
     "storage": "Store below 30°C. Protect from sunlight, heat and moisture. Keep out of reach of children. Keep desiccant inside the bottle.",
     "age_guidance": "For adults only.",
     "warnings": "Pregnant or lactating women and individuals under medical care should consult a healthcare professional before use. Do not exceed the recommended dose. Not for medicinal use. Not intended to diagnose, treat, cure or prevent any disease. Not a substitute for a varied diet. Desiccant inside — do not eat.",
     "label_checklist": "The lot number and expiry date on your own pack\nThe complete directions, cautions and allergen statement\nLot-specific reports when published",
-    "rear_label_note": "Product facts below are transcribed from the supplied final label artwork. Batch number, manufacturing date, expiry and printed MRP are specific to your pack. Testing and certification documents are not supplied by this artwork. Source: master label page 7.",
-    "label_source": "Supplied Full Final Label.ai (seven-page master label artwork), page 7",
+    "rear_label_note": "Batch number, manufacturing date, expiry date and MRP are printed on each pack.",
+    "label_source": "Body Café Co. product label",
     "allergens": "May contain nuts.",
-    "manufacturer_details": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India. As printed on the supplied label.",
-    "purpose": "Read the ingredient amounts, directions and cautions from the supplied label below. No individual result is promised.",
+    "manufacturer_details": "U-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540. Marketed by Bluebell Lifecare Pvt. Ltd., Ahmedabad, Gujarat, 380054, India, Lic. No. 10726994000121.",
+    "certifications": "GMP certified. Third-party tested, made with traceable ingredients and no hidden blends. The GMP certificate and test reports are not published on this site yet.",
+    "purpose": "Read the ingredient amounts, directions and cautions below. No individual result is promised.",
     "seo_description": "Psyllium Husk (Isabgol) in capsules. Each 5-capsule serving provides 2,000 mg husk with 1,578 mg dietary fibre, including 1,362 mg soluble fibre.",
-    "label_note": "Product information from supplied final label artwork; lot-specific testing documents remain separate.",
-    "dietary_suitability": "The supplied label carries a vegetarian mark. Allergen cautions still apply.",
+    "label_note": "Lot-specific testing documents are separate from these product facts.",
+    "dietary_suitability": "Vegetarian. Allergen cautions still apply.",
     "suitability": "For adults only. Read the cautions and allergen statement before use.",
-    "ingredient_checks": "Serving basis | 5 capsules per labelled serving.\nPack count | 150 capsules.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack."
+    "ingredient_checks": "Serving basis | 5 capsules per labelled serving.\nPack count | 150 capsules.\nAllergens | May contain nuts.\nDirections and cautions | Read together on your own pack.",
+    "supplement_facts": {
+      "serving": "5 Capsules",
+      "rows": [
+        {
+          "name": "Energy",
+          "amount": "10 kcal",
+          "rda": "0.43%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Protein",
+          "amount": "0.18 g",
+          "rda": "0.34%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Carbohydrate",
+          "amount": "2.07 g",
+          "rda": "#",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Dietary Fiber",
+          "amount": "1,578 mg",
+          "rda": "5.26%",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Soluble Fiber",
+          "amount": "1,362 mg",
+          "rda": "#",
+          "level": 2,
+          "active": false
+        },
+        {
+          "name": "Total Sugar",
+          "amount": "0 g",
+          "rda": "#",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Added Sugar",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 1,
+          "active": false
+        },
+        {
+          "name": "Total Fat",
+          "amount": "0 g",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Sodium",
+          "amount": "0 mg",
+          "rda": "0%",
+          "level": 0,
+          "active": false
+        },
+        {
+          "name": "Psyllium Husk (Isabgol)",
+          "amount": "2000 mg",
+          "rda": "#",
+          "level": 0,
+          "active": true
+        }
+      ],
+      "notes": [
+        "%RDA value established as per ICMR guidelines 2020 (men moderate work).",
+        "#%RDA values not established."
+      ]
+    },
+    "label_front": {
+      "category": "Nutraceutical",
+      "descriptor": "Isabgol · Fiber Supplement",
+      "claim": "Supports Digestive Health & Regularity",
+      "mark": "Vegetarian mark",
+      "barcode": "8908032859011"
+    },
+    "directions_tag": "With food",
+    "label_timing": {
+      "morning": "Also fine",
+      "noon": "Also fine",
+      "night": "Best at night"
+    },
+    "label_badges": [],
+    "customer_care": "+91-9274248974 · care@bodycafeco.com · BodyCafeCo.com",
+    "pack_printed": "Batch No., Mfg. Date, Exp. Date, M.R.P. (incl. of all taxes) and U.S.P. (per capsule, incl. of all taxes) are printed on each pack. The label carries a code to scan for more."
   }
 }

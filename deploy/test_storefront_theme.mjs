@@ -9,7 +9,7 @@ function select({connected = false, production = false, requested = '', stored =
   const body = {dataset: {}};
   const window = {BCCConnectedHosted: connected, BCCRelease: {production},
     BCCSite: {themes: Object.fromEntries(['e', 'f', 'g', 'h'].map(d => [d, {}]))}};
-  const sandbox = {window, URL, location: {href: 'https://store.example/' + requested},
+  const sandbox = {window, URL, location: {href: 'https://store.example/' + requested, pathname: new URL('https://store.example/' + requested).pathname},
     document: {body}, sessionStorage: {getItem: () => stored, setItem: (_key, value) => {stored = value;}}};
   vm.runInNewContext(selection + '\n' + source.slice(source.indexOf('function designHref('), source.indexOf('function shell(')) + '\nwindow.bar = previewBar();', sandbox);
   return {design: body.dataset.design, stored, bar: window.bar};
@@ -23,6 +23,7 @@ for (const options of [
   assert.equal(result.bar, '');
 }
 assert.equal(select().design, 'e');
+assert.equal(select({requested:'ops?design=b',stored:'h'}).design, 'e');
 assert.equal(select({requested: '?design=b'}).design, 'b');
 assert.equal(select({stored: 'h'}).design, 'h');
 assert.equal(select({requested: '?design=e', stored: 'b'}).design, 'e');
@@ -39,7 +40,7 @@ for (const connected of [false, true]) {
 }
 const ops = fs.readFileSync('web/operations.js', 'utf8');
 assert.ok(!ops.includes('?design=b'));
-assert.ok(ops.includes("'/products/' + saved.id + '?design=e'"));
+assert.ok(ops.includes("BCCProductRoutes.href('/products/' + saved.id + '?design=e', 'e')"));
 
 // E's homepage uses the shared media helpers. Admin-created products need a real image
 // rather than a fabricated render path; original product cap renders remain available.

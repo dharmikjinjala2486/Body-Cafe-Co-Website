@@ -1,0 +1,167 @@
+/* Body Café Co. — Variant E · Our story. Same E theme: white/cream, ink, Aileron, LEMON MILK, cap colours, segment marks.
+   Each of the seven chapters takes one cap colour and lights one segment of the rail mark. Scoped to .eh-e .ssy. */
+.eh-e .ssy { --ssy-read: 62ch; padding-bottom: 0; }
+.eh-e .ssy .ez-k { margin: 0; }
+
+/* ---------- Hero ---------- */
+.eh-e .ssy-hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px clamp(32px, 5vw, 80px); align-items: center; padding: clamp(48px, 8vw, 128px) 0 clamp(40px, 6vw, 88px); }
+.eh-e .ssy-hero h1 { margin: 16px 0 0; max-width: 16ch; font-size: clamp(44px, 6vw, 96px); font-weight: 300; letter-spacing: -0.045em; line-height: .96; }
+.eh-e .ssy-lede { margin: 24px 0 0; max-width: 40ch; font-size: clamp(18px, 1.6vw, 24px); line-height: 1.45; color: var(--muted); }
+.eh-e .ssy-hero-art { display: grid; justify-items: center; gap: 22px; }
+.eh-e .ssy-hero-mark { height: clamp(220px, 30vw, 420px); }
+.eh-e .ssy-hero-mark .ss-ms { opacity: .16; }
+.eh-e .ssy-hero-mark .ss-ms.is-seven { opacity: 1; }
+.eh-e .ssy-hero-caps { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ssy-hero-cap { width: clamp(26px, 2.6vw, 38px); height: auto; aspect-ratio: 1; border-radius: 50%; display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .eh-e .ssy-hero-mark .ss-ms { animation: ssy-light 1.1s var(--ss-ease) both; animation-delay: calc(200ms + var(--d) * 110ms); }
+  .eh-e .ssy-hero-caps li { animation: ss-drop .6s var(--ss-spring) both; animation-delay: calc(900ms + var(--i, 0) * 60ms); }
+}
+@keyframes ssy-light { from { opacity: 0; transform: scale(.85); } }
+
+/* ---------- Body: rail + chapters ---------- */
+.eh-e .ssy-body { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: clamp(24px, 4vw, 72px); border-top: 1.5px solid var(--ink); }
+.eh-e .ssy-rail { position: relative; }
+.eh-e .ssy-rail-in { position: sticky; top: calc(var(--ss-top, 80px) + 40px); display: grid; justify-items: center; gap: 18px; padding-top: 48px; }
+.eh-e .ssy-rail .ss-mark { height: 150px; }
+.eh-e .ssy-rail .ss-ms { opacity: .12; transition: opacity .5s var(--ss-ease), transform .5s var(--ss-spring); }
+.eh-e .ssy-rail .ss-ms.is-lit { opacity: 1; }
+.eh-e .ssy-rail-ticks { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ssy-rail-ticks li { width: 26px; height: 4px; border-radius: 2px; background: var(--cap); opacity: .18; transition: opacity .4s, width .4s var(--ss-spring); }
+.eh-e .ssy-rail-ticks li.is-lit { opacity: 1; }
+.eh-e .ssy-rail-ticks li.is-now { width: 44px; }
+
+.eh-e .ssy-ch { padding: clamp(56px, 8vw, 120px) 0; border-bottom: 1px solid var(--rule); scroll-margin-top: calc(var(--ss-top, 80px) + 16px); }
+.eh-e .ssy-ch:last-child { border-bottom: 0; }
+.eh-e .ssy-ch-head { display: grid; gap: 14px; margin-bottom: clamp(24px, 3vw, 40px); }
+.eh-e .ssy-num { display: flex; align-items: center; gap: 14px; margin: 0; }
+.eh-e .ssy-num-t { font-family: "Lemon Milk", sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .14em; color: var(--cap); filter: brightness(.85); }
+.eh-e .ssy-num-g { display: none; font-size: 30px; }
+.eh-e .ssy-num-g .ss-s.is-off { opacity: .14; }
+.eh-e .ssy-ch h2 { margin: 0; max-width: 20ch; font-size: clamp(36px, 4.6vw, 72px); font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
+.eh-e .ssy-ch h2::after { content: ""; display: block; width: 56px; height: 5px; margin-top: 22px; border-radius: 3px; background: var(--cap); }
+
+.eh-e .ssy-prose { max-width: var(--ssy-read); }
+.eh-e .ssy-prose p { margin: 0 0 1.1em; font-size: clamp(17px, 1.25vw, 19.5px); line-height: 1.62; }
+.eh-e .ssy-prose p.ssy-first { font-size: clamp(24px, 2.2vw, 34px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.25; }
+.eh-e .ssy-prose p.ssy-pull { margin: 1.6em 0 0; padding: 4px 0 4px 24px; border-left: 5px solid var(--cap); font-size: clamp(26px, 2.6vw, 40px); font-weight: 300; letter-spacing: -0.03em; line-height: 1.18; }
+.eh-e .ssy-prose p:last-child { margin-bottom: 0; }
+
+/* Chapter III: prose + menu board */
+.eh-e .ssy-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
+.eh-e .ssy-board { position: relative; padding: clamp(22px, 2.6vw, 34px); border-radius: 16px; background: var(--ss-cream); box-shadow: 0 0 0 1px rgb(45 41 38 / .08), 0 26px 50px -34px rgb(45 41 38 / .5); }
+.eh-e .ssy-board-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 10px; padding-bottom: 14px; margin-bottom: 6px; border-bottom: 1.5px dashed rgb(45 41 38 / .25); }
+.eh-e .ssy-board h3 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); font-weight: 300; letter-spacing: -0.02em; }
+.eh-e .ssy-menu { margin: 0; padding: 0; list-style: none; }
+.eh-e .ssy-menu li { border-bottom: 1px solid rgb(45 41 38 / .08); }
+.eh-e .ssy-menu li:last-child { border-bottom: 0; }
+.eh-e .ssy-mline { display: grid; grid-template-columns: 28px auto minmax(16px, 1fr) auto; grid-template-areas: "cap nm dots amt" ". sub sub sub"; align-items: baseline; gap: 2px 10px; margin: 0 -10px; padding: 11px 10px; border-radius: 8px; color: inherit; text-decoration: none; transition: background .2s; }
+.eh-e .ssy-mline-cap { grid-area: cap; align-self: center; width: 24px; height: 24px; border-radius: 50%; display: block; transition: transform .35s var(--ss-spring); }
+.eh-e .ssy-mline-nm { grid-area: nm; font-weight: 600; font-size: 15.5px; }
+.eh-e .ssy-mline-dots { grid-area: dots; border-bottom: 1.5px dotted rgb(45 41 38 / .35); transform: translateY(-4px); }
+.eh-e .ssy-mline-amt { grid-area: amt; font-variant-numeric: tabular-nums; font-size: 14px; text-align: right; white-space: nowrap; }
+.eh-e .ssy-mline-sub { grid-area: sub; font-size: 12.5px; color: var(--muted); }
+.eh-e .ssy-mline:hover { background: color-mix(in srgb, var(--cap) 12%, #fff); }
+.eh-e .ssy-mline:hover .ssy-mline-cap { transform: rotate(-60deg) scale(1.12); }
+.eh-e .ssy-mline:hover .ssy-mline-nm { text-decoration: underline; text-underline-offset: 4px; }
+.eh-e .ssy-mline:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.eh-e .ssy-board-foot { margin: 14px 0 0; font-size: 12px; letter-spacing: .02em; color: var(--muted); }
+
+/* Chapter IV: four steps + decision table */
+.eh-e .ssy-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: clamp(32px, 4vw, 52px); }
+.eh-e .ssy-step { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: start; padding: 22px; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .1); border-top: 5px solid var(--cap); }
+.eh-e .ssy-step-g { font-size: 46px; display: flex; }
+.eh-e .ssy-step p { margin: 0; font-size: 16.5px; line-height: 1.55; }
+.eh-e .ssy-step b { display: block; margin-bottom: 4px; font-size: 19px; }
+.eh-e .ssy-tbl { overflow-x: auto; border-radius: 12px; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .12); }
+.eh-e .ssy-tbl table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.eh-e .ssy-tbl thead th { padding: 14px 18px; text-align: left; background: var(--ink); color: #fff; font-family: "Lemon Milk", sans-serif; font-weight: 400; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; }
+.eh-e .ssy-tbl tbody th, .eh-e .ssy-tbl td { padding: 16px 18px; text-align: left; vertical-align: top; border-top: 1px solid rgb(45 41 38 / .1); line-height: 1.45; }
+.eh-e .ssy-tbl tbody tr { transition: background .2s; }
+.eh-e .ssy-tbl tbody th { box-shadow: inset 4px 0 0 var(--cap); }
+.eh-e .ssy-tbl tbody tr:hover { background: color-mix(in srgb, var(--cap) 8%, #fff); }
+.eh-e .ssy-tbl tbody th { font-weight: 400; white-space: nowrap; }
+.eh-e .ssy-tbl tbody th a { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.eh-e .ssy-tbl tbody th a:hover b { text-decoration: underline; text-underline-offset: 4px; }
+.eh-e .ssy-tbl tbody th a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 3px; }
+.eh-e .ssy-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--cap); flex: none; }
+
+/* Chapter V: beliefs */
+.eh-e .ssy-beliefs { display: grid; gap: 0; max-width: 900px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ssy-beliefs li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 22px; align-items: stretch; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.eh-e .ssy-beliefs li::before { content: ""; border-radius: 7px; background: var(--cap); }
+.eh-e .ssy-beliefs p { margin: 0; font-size: clamp(22px, 2.2vw, 34px); font-weight: 300; letter-spacing: -0.025em; line-height: 1.2; }
+
+/* Chapter VI: proof tiles */
+.eh-e .ssy-proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.eh-e .ssy-proof > div { padding: 22px; border-radius: 12px; background: var(--ss-cream); border-top: 5px solid var(--cap); }
+.eh-e .ssy-proof b { display: block; margin-bottom: 8px; font-family: "Lemon Milk", sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+.eh-e .ssy-proof p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--muted); }
+
+/* Chapter VII: the day */
+.eh-e .ssy-day { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: clamp(32px, 4vw, 52px); }
+.eh-e .ssy-slot { padding: 22px; border-radius: 14px; }
+.eh-e .ssy-slot.is-morning { background: linear-gradient(160deg, #fff6e4, var(--ss-cream) 70%); box-shadow: inset 0 0 0 1px rgb(45 41 38 / .08); }
+.eh-e .ssy-slot.is-any { background: #fff; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .12); }
+.eh-e .ssy-slot.is-night { background: linear-gradient(160deg, #2d2926, #3b3a52); color: #f6f3ec; }
+.eh-e .ssy-slot.is-night .ez-k { color: rgb(246 243 236 / .75); }
+.eh-e .ssy-slot .ez-k { margin-bottom: 14px; }
+.eh-e .ssy-slot ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.eh-e .ssy-slot li { display: flex; align-items: center; gap: 12px; font-size: 15.5px; }
+.eh-e .ssy-slot-cap { width: 28px; height: 28px; border-radius: 50%; flex: none; display: block; }
+.eh-e .ssy-muted { color: var(--muted); }
+.eh-e .ssy-slot.is-night .ssy-muted { color: rgb(246 243 236 / .7); }
+.eh-e .ssy-day-foot { margin: 12px 0 0; font-size: 13.5px; color: var(--muted); }
+
+/* ---------- Manifesto + final ---------- */
+.eh-e .ssy-manifesto { margin: 0 calc(var(--pad, 24px) * -1); padding: clamp(64px, 9vw, 140px) var(--pad, 24px); background: var(--ink); color: #f6f3ec; }
+.eh-e .ssy-manifesto-in { display: grid; gap: 12px; max-width: 900px; }
+.eh-e .ssy-manifesto p { margin: 0; font-size: clamp(26px, 3.2vw, 48px); font-weight: 300; letter-spacing: -0.03em; line-height: 1.15; }
+.eh-e .ssy-manifesto p.ssy-dim { color: rgb(246 243 236 / .55); }
+.eh-e .ssy-manifesto .ssy-tagline { margin-top: 22px; font-size: 11px; letter-spacing: .16em; line-height: 1.4; color: rgb(246 243 236 / .7); }
+.eh-e .ssy-final { display: grid; justify-items: center; gap: 28px; padding: clamp(64px, 9vw, 140px) 0; text-align: center; }
+.eh-e .ssy-final h2 { margin: 0; max-width: 18ch; font-size: clamp(36px, 5vw, 76px); font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
+
+/* ---------- Reveal (only once the behaviour runs, and never with reduced motion) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .eh-e .ssy.is-js .ssy-rv { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ss-ease), transform .7s var(--ss-ease); }
+  .eh-e .ssy.is-js .ssy-rv.is-in { opacity: 1; transform: none; }
+  .eh-e .ssy.is-js .ssy-ch-head.ssy-rv h2::after { width: 0; transition: width .9s var(--ss-ease) .25s; }
+  .eh-e .ssy.is-js .ssy-ch-head.ssy-rv.is-in h2::after { width: 56px; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .eh-e .ssy-body { grid-template-columns: minmax(0, 1fr); }
+  .eh-e .ssy-rail { display: none; }
+  .eh-e .ssy-num-g { display: inline-flex; }
+  .eh-e .ssy-split { grid-template-columns: 1fr; }
+  .eh-e .ssy-proof { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .eh-e .ssy-hero { grid-template-columns: 1fr; padding-top: 36px; }
+  .eh-e .ssy-hero-art { order: -1; justify-items: start; grid-template-columns: auto 1fr; align-items: end; }
+  .eh-e .ssy-hero-mark { height: 120px; }
+  .eh-e .ssy-hero-caps { flex-wrap: wrap; max-width: 180px; }
+  .eh-e .ssy-steps, .eh-e .ssy-proof, .eh-e .ssy-day { grid-template-columns: 1fr; }
+  .eh-e .ssy-step { padding: 18px; }
+  .eh-e .ssy-step-g { font-size: 36px; }
+  /* The decision table becomes one card per product; header labels come back as captions. */
+  .eh-e .ssy-tbl { overflow: visible; box-shadow: none; border-radius: 0; }
+  .eh-e .ssy-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .eh-e .ssy-tbl table, .eh-e .ssy-tbl tbody, .eh-e .ssy-tbl tr, .eh-e .ssy-tbl tbody th, .eh-e .ssy-tbl td { display: block; }
+  .eh-e .ssy-tbl tbody tr { margin-bottom: 12px; padding: 6px 0; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px rgb(45 41 38 / .12), inset 0 5px 0 var(--cap); }
+  .eh-e .ssy-tbl tbody th, .eh-e .ssy-tbl td { border-top: 0; padding: 10px 16px; white-space: normal; box-shadow: none; }
+  .eh-e .ssy-tbl td::before { display: block; margin-bottom: 3px; font-family: "Lemon Milk", sans-serif; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .eh-e .ssy-tbl td:nth-of-type(1)::before { content: "The decision"; }
+  .eh-e .ssy-tbl td:nth-of-type(2)::before { content: "Why we show it"; }
+  .eh-e .ssy-mline { grid-template-columns: 24px minmax(0, 1fr); grid-template-areas: "cap nm" ". amt" ". sub"; }
+  .eh-e .ssy-mline-dots { display: none; }
+  .eh-e .ssy-mline-amt { text-align: left; font-weight: 600; color: var(--ink); }
+  .eh-e .ssy-num-t { font-size: 17px; }
+  .eh-e .ssy-num-g { font-size: 34px; }
+  .eh-e .ssy-prose p.ssy-pull { padding-left: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eh-e .ssy .ss-ms, .eh-e .ssy-rail-ticks li, .eh-e .ssy-mline-cap { transition: none !important; animation: none !important; }
+}

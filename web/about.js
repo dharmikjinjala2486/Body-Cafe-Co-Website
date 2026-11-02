@@ -64,7 +64,7 @@
         practice: "Short guides and a glossary explain serving sizes, ingredient forms and lot numbers. Product pages take questions, answered by our support team after review.",
         links: [["/learn", "Open the guides"], ["/products/omega-3-fish-oil#questions", "Ask about a product"]] },
       { id: "accountability", title: "Accountability", line: "Statements connect to the records behind them.",
-        practice: "Each pack carries a lot number that leads to its batch record. Where an approval or document is still on its way, the page says so. Records in this preview are demonstrations.",
+        practice: "Each pack carries a lot number that leads to its batch record. Where a document is still on its way, the page says so.",
         links: [["/standards#lot", "How packs link to lots"], ["/reports", "Look up a lot"]] },
       { id: "care", title: "Care", line: "A clear, accessible route to a person.",
         practice: "Support works through cases: each one gets an ID you can follow in your account. Product safety questions are flagged as a priority.",
@@ -72,10 +72,10 @@
     ],
     collection: {
       lead: "We start with seven everyday supplements. Each is named for what's in it, and each has its own cap colour, so the range is easy to read from across the room.",
-      packaging: "Product pages include amounts, pack sizes, directions and cautions transcribed from the supplied final labels. Studio bottle images illustrate the collection; lot-specific reports remain separate.",
+      packaging: "Product pages include amounts, pack sizes, directions and cautions for every product. Lot-specific reports remain separate.",
     },
     gallery: [
-      { src: "/web/media/premium/iron-bisglycinate-detail.webp", w: 1800, h: 2400, alt: "Close-up of the Iron Bisglycinate pack: the Body Café Co. wordmark beneath a rust-red cap", title: "The pack, up close", caption: "Draft packaging for Iron Bisglycinate: the wordmark and cap. A studio render of the pack design, not a photograph." },
+      { src: "/web/media/premium/iron-bisglycinate-detail.webp", w: 1800, h: 2400, alt: "Close-up of the Iron Bisglycinate pack: the Body Café Co. wordmark beneath a rust-red cap", title: "The pack, up close", caption: "Iron Bisglycinate: the Body Café Co. wordmark beneath its rust-red cap." },
       { src: "/web/media/about/caps-row.webp", w: 2340, h: 360, alt: "Seven product caps seen from above, in rust, olive, indigo, grey-blue, lilac, teal and sand", title: "Seven caps, seen from above", caption: "One cap colour per product, in catalogue order from Iron Bisglycinate to Psyllium Husk. Studio renders." },
       { src: "/web/media/about/cap-colours.webp", w: 980, h: 850, alt: "Brand colour sheet listing each of the seven products beside its Pantone cap colour", title: "The cap-colour sheet", caption: "From our brand colour guide: the Pantone reference assigned to each product's cap." },
       { src: "/web/media/about/logo-clear-space.webp", w: 1000, h: 1024, alt: "The Body Café Co. logo inside a construction grid showing its clear space", title: "Room to breathe", caption: "From our brand guide: the clear space kept around the logo so it always reads cleanly." },
@@ -84,7 +84,7 @@
     behindNote: "These are our own design files and packaging renders. Photographs of the team at work will be added as they're taken.",
     talk: {
       lead: "Questions about who we are, the name or how we work are welcome. Send one to the team and you'll get a case ID to follow.",
-      contact: "Open a support case on this site, or find our email, WhatsApp and phone links on Contact. Support hours and reply targets in this preview are illustrative.",
+      contact: "Open a support case on this site, or find our email, WhatsApp and phone links on Contact.",
     },
   };
 
@@ -110,7 +110,7 @@
     return '<figure class="ab-lineup"><div class="ab-lineup-row">' + ctx.published.map(function (p, i) {
       var w = (ctx.bottleWidth && ctx.bottleWidth[p.id]) || 720;
       return '<img src="' + window.BCCBottleAssets.url(p.id) + '" alt="" width="' + w + '" height="1000" decoding="async"' + (i < 4 ? ' fetchpriority="high"' : ' loading="lazy"') + ' style="--i:' + i + ';--cap:' + p.color + '">';
-    }).join("") + '</div><figcaption class="ab-cap">The seven, as draft packaging: ' + ctx.published.map(function (p) { return h(p.name); }).join(", ") + ".</figcaption></figure>";
+    }).join("") + '</div><figcaption class="ab-cap">The seven: ' + ctx.published.map(function (p) { return h(p.name); }).join(", ") + ".</figcaption></figure>";
   }
 
   function meet(v, ctx) {

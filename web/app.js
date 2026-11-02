@@ -20,7 +20,7 @@ function syncDesign() {
   let stored = null;
   try { stored = sessionStorage.getItem("bcc-design"); } catch {}
   const available = availableDesigns();
-  activeDesign = available.includes(requested) ? requested : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "e";
+  activeDesign = location.pathname.startsWith("/ops") ? "e" : available.includes(requested) ? requested : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "e";
   try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
   document.body.dataset.design = activeDesign;
 }
@@ -697,9 +697,10 @@ function keepDesignOnLinks() {
     const h = a.getAttribute("href");
     if (/^\/(ops|web|concepts|assets)(\/|$)/.test(h) || a.hasAttribute("data-design-switch")) return;
     const u = new URL(h, location.origin);
-    if (u.searchParams.get("design") === activeDesign) return;
-    u.searchParams.set("design", activeDesign);
-    a.setAttribute("href", u.pathname + u.search + u.hash);
+    const pid = window.BCCProductRoutes.productId(u.pathname);
+    if (pid && activeDesign === "e") u.searchParams.delete("design");
+    else u.searchParams.set("design", activeDesign);
+    a.setAttribute("href", window.BCCProductRoutes.href(u.pathname + u.search + u.hash, activeDesign));
   });
 }
 function enhance() {
@@ -876,7 +877,7 @@ function siteCtx() {
   return {
     design: activeDesign, state, catalog: state.catalog, published: state.catalog.filter((p) => p.published), product, image, cap, capStyle, onCap,
     escape, money, date, format, shortName, bottleWidth, icon, link, badge, price, faqs, learning, count: count(), total: total(), staticPreview: !!window.BCCStaticPreview,
-    query: new URL(location.href).searchParams, path: location.pathname, forms, site: window.BCCSite, homeLot, menuBoard, user: state.user, account: state.account,
+    query: new URL(location.href).searchParams, path: window.BCCProductRoutes.internalPath(location.pathname), forms, site: window.BCCSite, homeLot, menuBoard, user: state.user, account: state.account,
     orderCard, caseCard, accountNav, sampleLot: (id) => "DEMO-" + String(Math.max(0, state.catalog.findIndex((p) => p.id === id)) + 1).padStart(2, "0") + "-01",
   };
 }
@@ -1083,9 +1084,15 @@ function focusKey(el) {
 async function render(scroll = true) {
   const version = ++renderVersion;
   syncDesign();
-  const path = location.pathname;
+  if (location.pathname.startsWith('/ops')) {
+    const adminURL = new URL(location.href);
+    if (adminURL.searchParams.has('design')) {adminURL.searchParams.delete('design'); history.replaceState(history.state, '', adminURL.pathname + adminURL.search + adminURL.hash);}
+  }
+  const canonical = window.BCCProductRoutes.href(location.href, activeDesign);
+  if (window.BCCProductRoutes.productId(location.pathname) && canonical !== location.pathname + location.search + location.hash) history.replaceState(history.state, "", canonical);
+  const path = window.BCCProductRoutes.internalPath(location.pathname);
   // Customer pages carry their direction in the URL so reload, back/forward and shared links reopen the same design.
-  if (!path.startsWith("/ops") && new URL(location.href).searchParams.get("design") !== activeDesign) {
+  if (!window.BCCProductRoutes.productId(location.pathname) && !path.startsWith("/ops") && new URL(location.href).searchParams.get("design") !== activeDesign) {
     const u = new URL(location.href);
     u.searchParams.set("design", activeDesign);
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
@@ -1099,6 +1106,7 @@ async function render(scroll = true) {
     if (path.startsWith("/ops") && ["admin", "viewer"].includes(state.user.role)) {
       if (!state.ops || Date.now() - state.opsLoadedAt > 30000) {
         state.ops = await api("/admin");
+        state.ops.products = await window.BCCLabelContent.enrich(state.ops.products);
         state.opsLoadedAt = Date.now();
       }
       if (path === "/ops/sales") state.ops.sales = await api("/admin/sales?" + new URL(location.href).searchParams.toString());
@@ -1166,7 +1174,7 @@ async function render(scroll = true) {
         (target && !target.disabled ? target : $("#main"))?.focus({ preventScroll: true });
       }
     };
-    if (scroll && document.startViewTransition && ["a", "b", "c", "d", "e"].includes(activeDesign) && !reducedMotion() && booted) {
+    if (!path.startsWith("/ops") && scroll && document.startViewTransition && ["a", "b", "c", "d", "e"].includes(activeDesign) && !reducedMotion() && booted) {
       document.documentElement.style.setProperty("--wipe", transitionColor);
       const transition = document.startViewTransition(paint);
       // A transition interrupted by a quicker navigation is skipped; that is expected, not an error.
@@ -1213,7 +1221,7 @@ function navigate(href, color) {
   closeMenu();
   clearTimeout(shopScrollTimer);
   rememberShopScroll();
-  history.pushState({}, "", href);
+  history.pushState({}, "", window.BCCProductRoutes.href(href, activeDesign));
   render();
 }
 async function refreshCatalog() {
@@ -1255,7 +1263,7 @@ document.addEventListener("click", async (e) => {
     e.preventDefault();
     if ($("#search-dialog")?.open) $("#search-dialog").close();
     const tint = anchor.closest("[style*='--cap']");
-    const pid = anchor.pathname.startsWith("/products/") ? product(anchor.pathname.split("/")[2]) : null;
+    const pid = product(window.BCCProductRoutes.productId(anchor.pathname));
     navigate(anchor.href, pid?.color || (tint ? getComputedStyle(tint).getPropertyValue("--cap").trim() : ""));
     return;
   }

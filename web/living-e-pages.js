@@ -135,11 +135,11 @@
     var demo = !RELEASE.production;
     var rows = [
       ["Label facts", p.label_source ? "in" : "pending", p.label_source ? "Published" : "Awaiting the approved label", p.label_source ? esc(p.amount_per_serving) + " · " + esc(p.serving_size) + " a serving · " + esc(p.pack_size) : "Amounts, directions and cautions will come from the approved label.", "/products/" + p.id + "#ingredients", "Read the label facts"],
-      ["Named manufacturer", p.manufacturer ? "in" : "pending", p.manufacturer ? "Printed on the label" : "Not yet published", p.manufacturer ? esc(p.manufacturer) : "Not yet published.", "", ""],
+      ["Named manufacturer", p.manufacturer ? "in" : "pending", p.manufacturer ? "Published" : "Not yet published", p.manufacturer ? esc(p.manufacturer) : "Not yet published.", "", ""],
       ["Ingredient origin", p.ingredient_sourcing ? "in" : "none", p.ingredient_sourcing ? "Published" : "Not published", p.ingredient_sourcing ? esc(p.ingredient_sourcing) : "Where an ingredient was grown or made isn’t published. A manufacturer’s address doesn’t show it.", "", ""],
       ["Testing documents", p.testing_performed || p.supporting_documents ? "in" : "none", p.testing_performed || p.supporting_documents ? "Published" : "None published", esc(p.testing_performed || p.supporting_documents || "No test results or documents are published for this product yet."), "", ""],
-      ["Certifications", p.certifications ? "in" : "none", p.certifications ? "Listed" : "None claimed", esc(p.certifications || "No certification is claimed."), "", ""],
-      ["Lot record", demo ? "demo" : "in", demo ? "Demonstration records" : "Look up by lot number", "A report describes a sample from one lot. Enter the lot number printed on your pack.", "/reports?product=" + encodeURIComponent(p.id), "Look up a lot"],
+      ["Certifications", p.certifications ? "in" : "none", p.certifications ? "Stated" : "None claimed", esc(p.certifications || "No certification is claimed."), "", ""],
+      ["Lot record", "in", "Look up by lot number", "A report describes a sample from one lot. Enter the lot number printed on your pack.", "/reports?product=" + encodeURIComponent(p.id), "Look up a lot"],
     ];
     return '<div class="ezr-sheet-head" style="' + ctx.capStyle(p) + '"><span class="ezr-band" aria-hidden="true"></span><p class="ez-k">' + L.no(ctx, p) + " · " + esc(ctx.format[p.id] || "") + '</p><h2 class="e-name" id="ezr-t-' + esc(p.id) + '">' + esc(p.name) + '</h2><p class="ezr-src">' + (p.label_source ? "Source: " + esc(p.label_source) : "No label source recorded") + "</p></div>" +
       '<dl class="ezr-rows">' + rows.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd><p class="ez-status" data-state="' + r[1] + '">' + r[2] + "</p><p>" + r[3] + "</p>" + (r[4] ? '<a class="x-link" href="' + r[4] + '">' + r[5] + "</a>" : "") + "</dd></div>"; }).join("") + "</dl>";

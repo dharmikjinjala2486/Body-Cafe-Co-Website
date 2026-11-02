@@ -25,7 +25,7 @@ const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-
  else if(u.pathname==='/auth/v1/user')result=opts.headers.Authorization==='Bearer good-admin'?{id:uid,user_metadata:{}}:{id:'customer-user',user_metadata:{role:'admin'}};
  else if(name==='bcc_admin')result=u.searchParams.get('auth_user_id')==='eq.customer-user'?[]:[admin];
  else if(name==='bcc_lot_reports')result=fixtureReports;
- else if(name==='bcc_products')result=[{id:'test-product',data:product,draft:null,version:1}];
+ else if(name==='bcc_products')result=u.searchParams.has('id')&&u.searchParams.get('id')!=='eq.test-product'?[]:[{id:'test-product',data:product,draft:null,version:1}];
  else if(name==='bcc_batches')result=[{id:'LOT',product:'test-product',available:3,expiry:Math.floor(Date.now()/1000)+86400,state:'released',proof:true,meta:{damaged:1}}];
  else if(name==='bcc_reservations')result=[];
  else if(name==='bcc_settings')result=[{id:'flags',data:{checkout_enabled:false}}];
@@ -47,6 +47,10 @@ response=await request('/admin/product_archive',{method:'POST',headers:{Cookie:c
 response=await request('/admin/approve',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:'{}'});assert.equal(response.status,404);checks++;
 response=await request('/orders',{method:'POST',headers:{Cookie:cookies,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:'{}'});assert.equal(response.status,503);checks++;
 response=await request('/admin/product_save',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:JSON.stringify({product:{...product,price:-1}})});assert.equal(response.status,400);checks++;
+response=await request('/admin/product_save',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:JSON.stringify({product:{...product,id:'not-existing'}})});assert.equal(response.status,403);checks++;
+const labelFields={headline:'Editable headline',home_highlight:'800 mg Omega-3',label_front:{category:'Nutraceutical'},label_timing:{morning:'Best'},label_badges:['GMP certified'],supplement_facts:{serving:'1 softgel',notes:['Edited note'],rows:[{name:'Omega-3',amount:'800 mg',rda:'#',active:true,level:0}]}};
+assert.equal(validateProduct({...structuredClone(product),...structuredClone(labelFields)}).supplement_facts.rows[0].amount,'800 mg');checks++;
+for(const patch of [{home_highlight:'This is more than four words'},{label_timing:[]},{label_badges:'invalid'},{supplement_facts:{rows:[{name:'Iron',amount:'',active:true}]}},{supplement_facts:{rows:[{name:'Iron',amount:'29 mg',active:'true'}]}}]){assert.throws(()=>validateProduct({...structuredClone(product),...patch}));checks++;}
 assert.throws(()=>sanitiseImage(new TextEncoder().encode('<svg onload="alert(1)"></svg>')));checks++;
 const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jvXcAAAAASUVORK5CYII=','base64');
 let image=sanitiseImage(png);assert.equal(image.mime,'image/png');assert.equal(image.width,1);assert.equal(image.height,1);checks++;

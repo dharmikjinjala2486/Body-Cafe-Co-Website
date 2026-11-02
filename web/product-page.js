@@ -25,7 +25,7 @@
      1. CONTENT
      ==================================================================================================== */
   var PENDING = "Awaiting approved label";
-  var DRAFT = "Front of the bottle · Studio product image.";
+  var DRAFT = "Front of the bottle.";
   var IMG_W = { "creatine-chews": 716, "iron-bisglycinate": 774, "l-theanine": 774, "myo-d-chiro-inositol": 716, "omega-3-fish-oil": 715, "psyllium-husk": 714, "vitamin-d3-k2": 667 };
 
   /* Product-specific facts that are confirmed. Fields left out are shown as awaiting the approved label.
@@ -49,7 +49,7 @@
     if (p.gallery && p.gallery.length) return p.gallery.map(function(g,i){return {kind:"front",src:attr(g.src),w:g.w||1000,h:g.h||1000,alt:attr(g.alt||p.name),label:attr(g.label||"Product image "+(i+1)),caption:attr(g.caption||g.alt||p.name)};});
     if (!Object.prototype.hasOwnProperty.call(IMG_W,p.id)) return [{kind:"front",src:"/web/media/product-placeholder.svg",w:800,h:1000,alt:attr(name),label:"Product image",caption:"Product image awaiting upload"}];
     var list = [
-      { kind: "front", src: window.BCCBottleAssets.url(p.id), ...window.BCCBottleAssets.dimensions(p.id, IMG_W[p.id] || 715, 1000), alt: name + ", front of the bottle (draft packaging)", label: "Front of the bottle", caption: DRAFT },
+      { kind: "front", src: window.BCCBottleAssets.url(p.id), ...window.BCCBottleAssets.dimensions(p.id, IMG_W[p.id] || 715, 1000), alt: name + ", front of the bottle", label: "Front of the bottle", caption: DRAFT },
       { kind: "cap", src: "/web/media/renders/" + p.id + "-cap.webp", w: 400, h: 400, alt: name + " cap, seen from above", label: "Cap colour, from above", caption: "Each product has its own cap colour. Studio render." },
     ];
     var extra = (FACTS[p.id] && FACTS[p.id].images) || [];
@@ -58,16 +58,16 @@
 
   var COPY = {
     purpose: "An approved purpose statement for this product hasn't been supplied yet, so this page doesn't describe benefits or results.",
-    tax: "MRP, inclusive of illustrative tax. Final GST rates await approval.",
+    tax: "MRP, inclusive of all taxes.",
     offer: "No offers are running.",
-    shipping: "Illustrative ₹75 delivery charge, waived on a sample order subtotal of ₹1,499 or more after any discount.",
+    shipping: "Delivery ₹75, free on orders of ₹1,499 or more after any discount.",
     returns: "Return eligibility, timing and remedies haven't been decided yet. If something's wrong with an order, open a support case.",
     delivery: "The check confirms the pincode format. Serviceability and delivery dates aren't set up yet, so no date is promised.",
     directions: "Directions will come from the approved label. This page doesn't suggest a dose.",
     storage: "Storage instructions will come from the approved label.",
     age: "Purchases are limited to adults: checkout asks you to confirm you're 18 or older.",
     reportScope: "A lot report describes the sample tested from one manufacturing lot. It doesn't authenticate an individual pack or promise a health outcome.",
-    reportDemo: "Preview records are demonstrations. No laboratory document is connected.",
+    reportDemo: "",
     reviewsRule: "Reviews come from signed-in customers whose order containing this product was delivered. Every review and photo is checked by our moderators before it appears, whatever its rating.",
     noReviews: "There are no published reviews for this product yet. Reviews appear after a verified delivery and moderation; we don't add sample or invented ones.",
     questionsRule: "Questions are answered by Body Café Co. support. An answer is published here only after review, and only from approved product information. We don't give personal medical advice.",
@@ -87,8 +87,8 @@
     var idx = Math.max(0, ctx.catalog.indexOf(p));
     var notes = (S.notes && S.notes[p.id]) || { lead: "", check: [], compound: "", sources: [] };
     notes = Object.assign({},notes);
-    if (p.ingredient_note) notes.compound=esc(ctx,p.ingredient_note);
-    if (p.ingredient_checks) notes.check=p.ingredient_checks.split("\n").filter(Boolean).map(function(line){var parts=line.split("|");return [esc(ctx,parts[0].trim()),esc(ctx,parts.slice(1).join("|").trim())];});
+    if (typeof p.ingredient_note === "string") notes.compound=esc(ctx,p.ingredient_note);
+    if (typeof p.ingredient_checks === "string") notes.check=p.ingredient_checks.split("\n").filter(Boolean).map(function(line){var parts=line.split("|");return [esc(ctx,parts[0].trim()),esc(ctx,parts.slice(1).join("|").trim())];});
     if (Array.isArray(p.sources)) notes.sources=p.sources.map(function(source){return [esc(ctx,source.title),esc(ctx,source.url)];});
     var f = FACTS[p.id] || {};
     var raw = String(p.ingredients || "");
@@ -96,7 +96,7 @@
     var published = ctx.catalog.filter(function (x) { return x.published && x.id !== p.id; });
     var after = published.filter(function (x) { return ctx.catalog.indexOf(x) > idx; });
     var confirm = ((window.BCCProductPage && window.BCCProductPage.toConfirm && window.BCCProductPage.toConfirm[p.id]) || []).concat(["Complete ingredient list, allergens, storage and manufacturer details"]);
-    if (p.label_checklist) confirm=p.label_checklist.split("\n").filter(Boolean).map(function(line){return esc(ctx,line);});
+    if (typeof p.label_checklist === "string") confirm=p.label_checklist.split("\n").filter(Boolean).map(function(line){return esc(ctx,line);});
     var rating = p.rating || { count: 0, average: null };
     return {
       p: p, ctx: ctx, id: p.id, n: idx + 1, no: pad(idx + 1), total: pad(ctx.catalog.length),
@@ -114,9 +114,9 @@
      ==================================================================================================== */
   function stockLine(m) {
     var t = m.off === "unpublished" ? "Not available. This product isn't published right now."
-      : m.off === "stock" ? "Out of stock in the preview"
-      : m.stock <= 5 ? "In stock in the preview: " + m.stock + " left"
-      : "In stock in the preview";
+      : m.off === "stock" ? "Out of stock"
+      : m.stock <= 5 ? "In stock: " + m.stock + " left"
+      : "In stock";
     return '<p class="pp-stock" data-state="' + (m.off || "in") + '"><span class="pp-dot" aria-hidden="true"></span>' + t + "</p>";
   }
   function ratingLink(m) {
@@ -153,7 +153,7 @@
       '<div class="pp-pricebox"><p class="pp-price"><span class="pp-price-num">' + m.price + '</span><span class="pp-price-note">MRP</span></p>' + ratingLink(m) + "</div>" +
       stockLine(m) + packFacts(m) +
       '<div class="pp-buyrow" data-pp-buy>' + qty(m) + addBtn(m, "pp-add-main") + "</div>" +
-      '<p class="pp-micro">One-time purchase. Preview order only: no payment or dispatch.</p>' +
+      '<p class="pp-micro">One-time purchase.</p>' +
       pincode() + terms() + quickLinks() + "</div>";
   }
   function titleBlock(m) {
@@ -212,7 +212,7 @@
     rows.push(["Allergens", m.p.allergens ? esc(m.ctx,m.p.allergens) : m.allergenNote || PENDING, !m.allergenNote]);
     rows.push(["Dietary suitability", m.p.dietary_suitability ? esc(m.ctx,m.p.dietary_suitability) : PENDING, !m.p.dietary_suitability]);
     rows.push(["Manufacturer and licence details", m.p.manufacturer_details ? esc(m.ctx,m.p.manufacturer_details) : PENDING, !m.p.manufacturer_details]);
-    return lead(m.p.label_source ? "Ingredient amounts and product facts transcribed from the supplied final label artwork. Values are per labelled serving." : "What is inside, in readable text. Missing facts are marked below.") +
+    return lead(m.p.label_source ? "Ingredient amounts and product facts, per serving." : "What is inside, in readable text. Missing facts are marked below.") +
       factRows(rows, "pp-facts pp-facts-label") +
       '<div class="pp-cols">' +
         '<div>' + sub(m.p.label_source ? "Check your own pack" : "What the approved label will state") + '<ul class="pp-list">' + m.confirm.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ul></div>" +
@@ -222,7 +222,7 @@
   }
   function use(m) {
     var checks = (m.notes.check || []).slice(0, 4);
-    return lead(m.p.label_source ? "Directions and cautions from the supplied final label. Read both together and follow the label on your own pack." : "Approved directions and cautions belong together. Here is what is confirmed, and what to look for.") +
+    return lead(m.p.label_source ? "Directions and cautions. Read both together and follow the directions on your pack." : "Approved directions and cautions belong together. Here is what is confirmed, and what to look for.") +
       factRows([
         ["Recommended use", m.p.directions ? esc(m.ctx,m.p.directions) : COPY.directions, !m.p.directions],
         ["Preparation", m.p.preparation ? esc(m.ctx,m.p.preparation) : PENDING, !m.p.preparation],
@@ -246,7 +246,7 @@
       ], "pp-facts pp-facts-quality") +
       '<div class="pp-lotbox"><h3 class="pp-sub-h">Find a lot report</h3><p class="pp-p">Enter the lot number printed on your pack of ' + m.name + '. It\'s different from the barcode and your order number.</p>' +
       '<form id="pdp-lot" class="pp-lotform"><input type="hidden" name="product" value="' + m.id + '"><label for="pdp-lot-number">Lot number on your pack</label><div class="pp-inline"><input id="pdp-lot-number" name="lot" maxlength="60" required autocomplete="off" placeholder="e.g. ' + m.sample + '"><button type="submit">Find a lot report</button></div>' +
-      '<p class="pp-micro"><span class="pp-demo">Demonstration record</span> Try <button type="button" class="pp-linkbtn" data-fill-pdp-lot="' + m.sample + '">the sample lot ' + m.sample + '</button>, or <a href="/reports?product=' + m.id + '">open the lot lookup for this product</a>.</p></form>' +
+      '<p class="pp-micro" hidden><span class="pp-demo">Demonstration record</span> Try <button type="button" class="pp-linkbtn" data-fill-pdp-lot="' + m.sample + '">the sample lot ' + m.sample + '</button>, or <a href="/reports?product=' + m.id + '">open the lot lookup for this product</a>.</p></form>' +
       '<p class="pp-micro">' + COPY.reportScope + " " + COPY.reportDemo + "</p></div>" +
       '<p class="pp-p"><a href="/standards#evidence">How we approach quality and evidence</a> · <a href="/learn/understanding-reports">What a lot report shows</a></p>';
   }
@@ -269,7 +269,7 @@
       ["How much is in each serving?", m.p.amount_per_serving ? esc(m.ctx, m.p.amount_per_serving) + " Serving size: " + esc(m.ctx, m.p.serving_size) + "." : "See the ingredient facts and directions on your pack."],
       ["How many " + (m.format ? m.format.toLowerCase() : "units") + " are in a pack?", m.p.pack_size ? esc(m.ctx,m.p.pack_size) : pack ? pack.description : "The pack quantity will come from the approved label. The count printed on the draft packaging image isn't confirmed."],
       ["Where's the lot number on my pack?", "Look for “Batch No” on the rear label of your pack. It is different from your order number or the barcode."],
-      ["Are these the final prices?", "No. Every price in the preview is a sample. Final prices, GST, shipping rules and offers are still being approved."],
+      ["Are these the final prices?", "Prices are shown as MRP, inclusive of all taxes. Delivery charges are shown in your bag before you pay."],
     ];
   }
   function questions(m) {
@@ -870,5 +870,5 @@
     load();
   }
 
-  window.BCCPDP = { enhance: enhance, model: model, facts: FACTS, copy: COPY };
+  window.BCCPDP = { defaultImages: images, defaultFaqs: function(p){return productFaqs({p:p,ctx:{escape:String},id:p.id,format:p.format||''}).map(function(x){return {question:x[0],answer:x[1]};});}, enhance: enhance, model: model, facts: FACTS, copy: COPY };
 })();

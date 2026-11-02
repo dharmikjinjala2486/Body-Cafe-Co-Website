@@ -102,7 +102,7 @@
     "creatine-chews": { nick: "The Chew", line: "The only chewable of the seven. Orange flavour, two tablets a serving.", ok: function (p) { return /chew/i.test(p.format || "") && int(p.serving_size) === 2 && /orange/i.test(JSON.stringify(p)); } },
     "psyllium-husk": { nick: "The Night One", line: "Five capsules at night, with food and a full glass of water, as the label directs.", ok: function (p) { return /night/i.test(dir(p)) && int(p.serving_size) === 5; } },
   };
-  function role(p) { var r = ROLE[p.id]; return r && r.ok(p) ? r : null; }
+  function role(p) { var r = ROLE[p.id]; if (typeof p.segment_name === 'string') return {nick:p.segment_name,line:p.segment_description || ''}; return r && r.ok(p) ? r : null; }
   function serving(p) {
     var n = int(p.serving_size) || 1, pack = int(p.pack_size), unit = String(p.serving_size || p.format || "").replace(/^[\d\s]+/, "").trim();
     var kind = /softgel/i.test(p.format || p.serving_size || "") ? "softgel" : /chew|tablet/i.test(p.format || p.serving_size || "") ? "chew" : "capsule";
@@ -269,7 +269,7 @@
   function capImg(ctx, p, cls) { return L.cap(ctx, p, cls || "ss-capimg"); }
   function spin(ctx, p, o) {
     o = o || {};
-    if (!SPIN[p.id]) return '<div class="ss-spin is-static">' + h.front(ctx, p, { alt: esc(p.name) + ", front of the bottle (draft packaging)" }) + "</div>";
+    if (!SPIN[p.id]) return '<div class="ss-spin is-static">' + h.front(ctx, p, { alt: esc(p.name) + ", front of the bottle" }) + "</div>";
     return '<div class="ss-spin' + (o.cls ? " " + o.cls : "") + '" data-ss-spin="' + esc(p.id) + '" tabindex="0" role="slider" aria-label="Turn the ' + esc(p.name) + ' bottle" aria-valuemin="0" aria-valuemax="345" aria-valuenow="0" aria-valuetext="Front of the bottle">' +
       img("/web/media/spin/" + esc(p.id) + "-00.webp", "", 520, 860, { eager: o.eager }) + (o.lens ? '<span class="ss-lens" data-ss-lens aria-hidden="true"></span>' : "") +
       (o.hint === false ? "" : '<span class="ss-spin-hint" aria-hidden="true"><i></i>Drag to turn</span>') + "</div>";
@@ -296,7 +296,7 @@
         '<h3 class="ss-card-name e-name">' + esc(p.name) + "</h3>" +
         (r ? '<p class="ss-card-line">' + esc(r.line) + "</p>" : "") +
         '<dl class="ss-card-facts">' + facts.map(function (f) { return "<div><dt>" + f[0] + "</dt><dd>" + esc(f[1]) + "</dd></div>"; }).join("") + "</dl>" +
-        '<p class="ss-card-src">From the supplied label. Read the full label before use.</p>' +
+        '<p class="ss-card-src">Read the full label on your pack before use.</p>' +
         '<p class="ss-card-foot"><span>Body Café Co.</span><span>' + (s.servings ? s.servings + " servings" : "") + "</span></p>" +
       "</div>" +
       '<span class="ss-card-corner" aria-hidden="true">' + ICON.flip + "</span></div>" +
@@ -320,7 +320,7 @@
       '<h1 id="ss-hero-t">Seven supplements. <span>One colour each.</span></h1>' +
       '<p class="ez-lede">A seven-segment seven has exactly seven parts. So do we. Each supplement owns one segment, in its own cap colour, with every label fact in readable text.</p>' +
       '<div class="ez-actions"><a class="x-btn" href="/shop"><span>Shop all ' + (n === 7 ? "seven" : n) + '</span></a><a class="x-link" href="/super-sevens">Meet the Super Sevens</a></div>' +
-      (RELEASE.production ? "" : '<p class="ez-small">Review preview · current project prices · ordering is not live.</p>') + "</div>" +
+      "</div>" +
       '<div class="ss-hero-stage" data-ss-hero>' +
         '<div class="ss-hero-markwrap"><div class="ss-hero-mark" data-ss-hero-mark>' + mark({ cls: "is-hero" }) + '</div>' +
         '<p class="ss-readout" data-ss-readout aria-hidden="true"><span data-ss-readout-k>Seven segments</span><strong data-ss-readout-v>Seven supplements</strong></p>' +
@@ -356,7 +356,7 @@
     var data = list.map(function (p) { var v = serving(p); return { id: p.id, name: p.name, color: p.color, n: v.n, pack: v.pack, unit: v.unit, kind: v.kind, servings: v.servings, serving: p.serving_size || "", packText: p.pack_size || "" }; });
     return '<section class="ss-pour' + (only ? " is-single pp-sec" : "") + '" data-ss-pour' + (only ? "" : ' data-home-section="pour"') + ' aria-labelledby="ss-pour-t" style="' + ctx.capStyle(first) + '">' +
       (only ? '<div class="pp-sec-in"><header class="pp-head"><p class="pp-k"><span class="pp-k-n">00</span><span class="pp-k-l">One serving</span><span class="pp-k-of">/ 00</span></p><h2 id="ss-pour-t">Pour one serving.</h2></header><div class="pp-body">'
-        : '<header class="ez-sec-head"><p class="ez-k">Pour one serving</p><h2 id="ss-pour-t">How much is one serving?</h2><p>Pick a cap, then pour. One pour drops exactly one serving as printed on that label. Or pour the whole pack and watch it count.</p></header>') +
+        : '<header class="ez-sec-head"><p class="ez-k">Pour one serving</p><h2 id="ss-pour-t">How much is one serving?</h2><p>Pick a cap, then pour. One pour drops exactly one serving of that product. Or pour the whole pack and watch it count.</p></header>') +
       '<div class="ss-pour-ui">' +
       (only ? "" : '<div class="ss-pour-picks" role="group" aria-label="Choose a product">' + list.map(function (p, i) { return '<button type="button" data-ss-pour-pick="' + i + '" aria-pressed="' + (i === 0) + '" style="' + ctx.capStyle(p) + '">' + capImg(ctx, p, "ss-pour-cap") + '<span>' + esc(p.name) + "</span></button>"; }).join("") + "</div>") +
       '<div class="ss-pour-tray"><canvas data-ss-pour-canvas aria-hidden="true"></canvas>' +
@@ -493,7 +493,7 @@
     var eyebrow = pp.querySelector(".pp-eyebrow");
     if (eyebrow && r) eyebrow.insertAdjacentHTML("beforeend", '<span class="ss-eyebrow-nick">' + esc(r.nick) + "</span>");
     var turnSec = '<section class="pp-sec ss-turnsec" id="turn" aria-labelledby="turn-t"><div class="pp-sec-in"><header class="pp-head"><p class="pp-k"><span class="pp-k-n">00</span><span class="pp-k-l">Turn the bottle</span><span class="pp-k-of">/ 00</span></p><h2 id="turn-t">' + (r ? esc(r.nick) + "." : "Every side of the label.") + "</h2></header>" +
-      '<div class="pp-body ss-turn-grid"><figure class="ss-turn-fig">' + spin(ctx, p, { lens: true, cls: "is-big" }) + "<figcaption>Rendered from the 3D bottle model, 24 views. " + h.MOCKUP + ' Drag, or use the arrow keys, to turn it. ' + (fine() ? "Hover to magnify." : "") + "</figcaption></figure>" +
+      '<div class="pp-body ss-turn-grid"><figure class="ss-turn-fig">' + spin(ctx, p, { lens: true, cls: "is-big" }) + "<figcaption>Drag, or use the arrow keys, to turn the bottle. " + (fine() ? "Hover to magnify." : "") + "</figcaption></figure>" +
       '<div class="ss-turn-side">' + (i >= 0 ? '<div class="ss-whoami"><span class="ss-whoami-g">' + glyph("8", { only: i, ghost: true }) + '</span><p><strong>' + segName(i) + " of the Super Sevens.</strong> " + esc(p.name) + " is member " + no + ". Its cap colour draws this segment in every number on the site.</p></div>" : "") +
       (r ? '<p class="pp-lead">' + esc(r.line) + "</p>" : "") + card(ctx, p, { cls: "is-pdp" }) + "</div></div></div></section>";
     var buy = pp.querySelector("#buy");
@@ -563,20 +563,7 @@
     var heroA = root.querySelector(".eza-hero");
     if (heroA) heroA.after(frag('<section class="ss-numbers" aria-label="Body Café Co. in numbers"><ol>' + stats.map(function (x) { return '<li><span class="ss-numbers-n">' + num(pad(x[0]), { ghost: true, label: String(x[0]) }) + "</span><strong>" + x[1] + "</strong><p>" + esc(x[2]) + "</p></li>"; }).join("") + "</ol></section>"));
   });
-  L.wrap("story", function (root, ctx) {
-    cast(ctx);
-    var objs = root.querySelectorAll(".ezst-obj");
-    objs.forEach(function (li, k) {
-      li.setAttribute("data-ss-reveal", ""); li.style.setProperty("--wipe", CAST.colors[k % 7] || "#2d2926");
-      var n = li.querySelector(".ezst-n");
-      if (n) n.innerHTML = '<span class="ss-story-n">' + num(pad(k + 1), { color: CAST.colors[k % 7], ghost: true, label: "Chapter " + (k + 1) }) + "</span><span>of " + pad(objs.length) + "</span>";
-    });
-    var page = root.querySelector(".x-page") || root.firstElementChild;
-    if (!page || CAST.list.length !== 7) return;
-    var first = page.querySelector("header");
-    var block = '<section class="ss-eight" aria-labelledby="ss-eight-t"><div class="ss-eight-g" data-ss-eight>' + mark({ cls: "is-eight" }) + '</div><div><p class="ez-k">Why seven</p><h2 id="ss-eight-t">Light every segment and you get an eight. Step four back and the seven remains.</h2><p>That is the whole system: seven products, each with one place in one figure. Everything else, from the cards to the lot numbers, is written with it.</p><a class="x-link" href="/super-sevens">Meet the Super Sevens</a></div></section>';
-    if (first) first.after(frag(block)); else page.insertAdjacentHTML("afterbegin", block);
-  });
+  /* Story is rendered by story-e.js (owner-selected copy, 2 November 2026). */
 
   /* Learn: the seven product guides as a drawer of index cards. */
   L.wrap("learn", function (root, ctx, args) {
@@ -951,6 +938,10 @@
 
   /* Contact: a switchboard over the existing support form. Topic tiles set the form's own select. */
   var TOPIC_TILES = [["product", "A product question"], ["delivery", "Delivery or tracking"], ["issue", "Damaged, wrong or missing"], ["return", "Return or refund"], ["report", "Lot reports"], ["safety", "Safety concern"], ["general", "Something else"]];
+  function contactExtra() {
+    var C = window.BCCContactE; if (!C) return "";
+    return '<dl class="ss-switch-kv"><div><dt>' + esc(C.addressLabel) + "</dt><dd>" + esc(C.address) + '</dd></div></dl><p class="ss-switch-note">' + esc(C.note) + "</p>";
+  }
   function contactBehaviour(main, signal) {
     var page = main.querySelector(".su-e"), head = page && page.querySelector(".su-head"), sel = page && page.querySelector("#su-topic");
     if (!head || !sel || page.querySelector(".ss-switch")) return;
@@ -960,7 +951,7 @@
     var digits = phone.replace(/^\+91/, "");
     var html = '<section class="ss-switch" aria-label="Ways to reach us">' +
       (phone ? '<div class="ss-switch-line"><p class="ez-k">Call or WhatsApp</p><a class="ss-switch-phone" href="' + esc(links.tel) + '" aria-label="Call ' + esc(phone) + '"><span class="ss-switch-cc">+91</span>' + num(digits.slice(0, 5) + " " + digits.slice(5), { label: false }) + "</a>" +
-        '<p class="ss-switch-alt">' + (links.wa ? '<a class="ss-pill" href="' + esc(links.wa) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") + (links.mail ? '<a class="ss-pill" href="' + esc(links.mail) + '">' + esc(links.mail.replace(/^mailto:/, "")) + "</a>" : "") + "</p></div>" : "") +
+        '<p class="ss-switch-alt">' + (links.wa ? '<a class="ss-pill" href="' + esc(links.wa) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") + (links.mail ? '<a class="ss-pill" href="' + esc(links.mail) + '">' + esc(links.mail.replace(/^mailto:/, "")) + "</a>" : "") + "</p>" + contactExtra() + "</div>" : "") +
       '<div class="ss-switch-topics"><p class="ez-k">Or open a case: what is it about?</p><ol>' + tiles.map(function (t, i) { return '<li><button type="button" data-ss-topic="' + t[0] + '" style="--cap:' + (CAST.colors[i % 7] || "#2d2926") + '"><span class="ss-topic-n">' + num(pad(i + 1), { color: "var(--cap)", label: false }) + "</span><span>" + t[1] + "</span></button></li>"; }).join("") + "</ol>" +
       (CAST.list.length ? '<p class="ez-k ss-switch-k2">Asking about a product? Pick its cap</p><div class="ss-switch-caps">' + CAST.list.map(function (p) { return '<button type="button" data-ss-about="' + esc(p.id) + '" style="--cap:' + p.color + '" title="' + esc(p.name) + '"><img src="/web/media/renders/' + esc(p.id) + '-cap.webp" alt="" width="400" height="400"><span>' + esc(p.name) + "</span></button>"; }).join("") + "</div>" : "") + "</div></section>";
     head.appendChild(frag(html));
@@ -1095,7 +1086,7 @@
   }
 
   function favicon() {
-    var path = location.pathname, m = path.match(/^\/products\/([^/]+)/), info = m && CAST.byId[m[1]];
+    var path = window.BCCProductRoutes.internalPath(location.pathname), m = path.match(/^\/products\/([^/]+)/), info = m && CAST.byId[m[1]];
     var svg = markSVGString(info ? info.i : null);
     var link = document.querySelector("link[data-ss-icon]");
     if (!link) { link = document.createElement("link"); link.rel = "icon"; link.type = "image/svg+xml"; link.setAttribute("data-ss-icon", ""); document.head.appendChild(link); document.querySelectorAll('link[rel="icon"]:not([data-ss-icon])').forEach(function (l) { l.setAttribute("data-ss-was-icon", l.getAttribute("href")); l.removeAttribute("rel"); }); }
@@ -1127,10 +1118,10 @@
   var flood = null, floodAt = 0;
   window.addEventListener("click", function (e) {
     if (document.body.dataset.theme !== "e" || reduced() || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest && e.target.closest("a[href^='/products/']");
+    var a = e.target.closest && e.target.closest("a[href]");
     if (!a || a.target || a.hasAttribute("download") || a.__ssGo) return;
-    var id = (a.getAttribute("href") || "").split(/[?#]/)[0].split("/")[2], info = CAST.byId[id];
-    if (!info || location.pathname === "/products/" + id) return;
+    var id = window.BCCProductRoutes.productId(a.getAttribute("href") || ""), info = CAST.byId[id];
+    if (!info || window.BCCProductRoutes.productId(location.pathname) === id) return;
     e.preventDefault(); e.stopImmediatePropagation();
     var x = e.clientX || window.innerWidth / 2, y = e.clientY || window.innerHeight / 2;
     if (!flood) { flood = document.createElement("div"); flood.className = "ss-flood"; flood.setAttribute("aria-hidden", "true"); document.body.appendChild(flood); }
@@ -1158,5 +1149,5 @@
     if (location.pathname === "/super-sevens") document.title = "The Super Sevens — Body Café Co.";
   });
 
-  window.BCCSuperSevens = { glyph: glyph, num: num, mark: mark, role: role, serving: serving, sound: Sound, CAST: CAST };
+  window.BCCSuperSevens = { cast: cast, glyph: glyph, num: num, mark: mark, role: role, serving: serving, sound: Sound, CAST: CAST };
 })();
