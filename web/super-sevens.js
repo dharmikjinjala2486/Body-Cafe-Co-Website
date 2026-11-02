@@ -645,8 +645,60 @@
     var list = []; for (var i = 0; i < FRAMES; i++) { var im = new Image(); im.decoding = "async"; im.src = "/web/media/spin/" + id + "-" + pad(i) + ".webp"; list.push(im); }
     return (frameCache[id] = list);
   }
+  // One decoded sheet replaces 24 network requests and image-source swaps in the scroll sequence.
+  var atlasCache = {};
+  function atlas(id) {
+    if (atlasCache[id]) return atlasCache[id];
+    var image = new Image(), entry = { image: image, ready: false, failed: false };
+    atlasCache[id] = entry;
+    image.decoding = "async";
+    entry.promise = new Promise(function (resolve) {
+      image.onload = function () {
+        var decoded = image.decode ? image.decode() : Promise.resolve();
+        decoded.catch(function () {}).then(function () { entry.ready = !!image.naturalWidth; resolve(entry); });
+      };
+      image.onerror = function () { entry.failed = true; resolve(entry); };
+    });
+    image.src = "/web/media/spin/" + id + "-atlas.webp";
+    return entry;
+  }
+  function warmSpin(el) {
+    var id = el.getAttribute("data-ss-spin");
+    return el.closest("[data-ss-roll]") ? atlas(id) : frames(id);
+  }
+  function atlasFrame(el, f) {
+    var entry = atlas(el.getAttribute("data-ss-spin"));
+    if (entry.failed) return false; // Preserve the individual-frame fallback.
+    el._requestedFrame = f;
+    if (!entry.ready) {
+      if (!el._atlasWaiting) {
+        el._atlasWaiting = true;
+        entry.promise.then(function () {
+          el._atlasWaiting = false;
+          if (el.isConnected) setFrame(el, el._requestedFrame);
+        });
+      }
+      return true;
+    }
+    if (el._f === f && el._atlasCanvas) return true;
+    var canvas = el._atlasCanvas;
+    if (!canvas) {
+      canvas = document.createElement("canvas"); canvas.width = 520; canvas.height = 860;
+      canvas.className = "ss-spin-canvas"; canvas.setAttribute("aria-hidden", "true");
+      el.appendChild(canvas); el._atlasCanvas = canvas;
+    }
+    var context = canvas.getContext("2d");
+    if (!context) return false;
+    context.clearRect(0, 0, 520, 860);
+    context.drawImage(entry.image, (f % 6) * 520, Math.floor(f / 6) * 860, 520, 860, 0, 0, 520, 860);
+    el.classList.add("has-atlas"); el._f = f;
+    el.setAttribute("aria-valuenow", String(f * 15));
+    el.setAttribute("aria-valuetext", f ? "Turned " + f * 15 + " degrees from the front" : "Front of the bottle");
+    return true;
+  }
   function setFrame(el, f) {
     f = ((Math.round(f) % FRAMES) + FRAMES) % FRAMES;
+    if (el.closest && el.closest("[data-ss-roll]") && atlasFrame(el, f)) return;
     el._requestedFrame = f;
     if (el._waitFrame) { el._waitFrame.image.removeEventListener("load", el._waitFrame.apply); el._waitFrame = null; }
     if (el._f === f) return;
@@ -676,7 +728,7 @@
         if (io) io.observe(el); else frames(el.getAttribute("data-ss-spin"));
       }
       var down = null;
-      el.addEventListener("pointerdown", function (e) { if (e.button) return; down = { x: e.clientX, f: el._f || 0, id: e.pointerId, moved: false }; frames(el.getAttribute("data-ss-spin")); }, { signal: signal });
+      el.addEventListener("pointerdown", function (e) { if (e.button) return; down = { x: e.clientX, f: el._f || 0, id: e.pointerId, moved: false }; warmSpin(el); }, { signal: signal });
       el.addEventListener("pointermove", function (e) {
         if (down && e.pointerId === down.id) {
           var dx = e.clientX - down.x;
@@ -699,7 +751,7 @@
         var k = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[e.key];
         if (e.key === "Home") { e.preventDefault(); setFrame(el, 0); return; }
         if (k === undefined) return;
-        e.preventDefault(); frames(el.getAttribute("data-ss-spin")); setFrame(el, (el._f || 0) + k); el.classList.add("is-touched");
+        e.preventDefault(); warmSpin(el); setFrame(el, (el._f || 0) + k); el.classList.add("is-touched");
       }, { signal: signal });
       // Auto-play one slow turn once on the product page, so the hint is obvious. Stops on any touch.
       if (el.classList.contains("is-big") && !reduced()) {
@@ -758,14 +810,17 @@
     var track = sec.querySelector("[data-ss-roll-track]"), members = [].slice.call(sec.querySelectorAll("[data-ss-member]")), dots = [].slice.call(sec.querySelectorAll("[data-ss-roll-go]"));
     var n = members.length, cur = -1, stage = sec.querySelector(".ss-roll-stage"), raf = 0;
     var scrub = !reduced();
+    members.slice(0, 2).forEach(function (member) {
+      var spin = member.querySelector("[data-ss-spin]"); if (spin) warmSpin(spin);
+    });
     sec.classList.toggle("is-scrub", scrub);
     function show(i) {
       if (i === cur) return; cur = i;
       members.forEach(function (m, k) { if (k === i) m.setAttribute("data-on", ""); else m.removeAttribute("data-on"); m.classList.toggle("is-past", k < i); });
       dots.forEach(function (d, k) { d.setAttribute("aria-current", String(k === i)); });
       sec.style.setProperty("--cap", members[i].style.getPropertyValue("--cap"));
-      var sp = members[i].querySelector("[data-ss-spin]"); if (sp) frames(sp.getAttribute("data-ss-spin"));
-      var nx = members[i + 1] && members[i + 1].querySelector("[data-ss-spin]"); if (nx) frames(nx.getAttribute("data-ss-spin"));
+      var sp = members[i].querySelector("[data-ss-spin]"); if (sp) warmSpin(sp);
+      var nx = members[i + 1] && members[i + 1].querySelector("[data-ss-spin]"); if (nx) warmSpin(nx);
       Sound.click(0.9 + i * 0.05);
     }
     function onScroll() {

@@ -32,3 +32,25 @@ context.setFrame(el,9);el.isConnected=false;
 context.frameCache['iron-bisglycinate'][9].load();
 assert.match(image.src,/-08.webp$/,'detached page does not repaint');
 console.log('Scroll frames passed: cold loading, stopped scrolling, stale loads, cached frames and detached pages.');
+
+// The launch range must use one decoded sheet and repaint the latest requested
+// angle when it arrives, without starting the 24 individual image requests.
+const draws=[];
+const canvas={width:0,height:0,setAttribute(){},getContext:()=>({clearRect(){},drawImage(...args){draws.push(args);}})};
+context.document={createElement:()=>canvas};
+const roll={...el,isConnected:true,_f:0,closest:()=>true,classList:{add(){}},appendChild(){}};
+context.setFrame(roll,3);
+context.setFrame(roll,17);
+assert.equal(roll._f,0);
+const sheet=context.atlasCache['iron-bisglycinate'];
+sheet.image.naturalWidth=3120;
+sheet.image.onload();
+await sheet.promise;
+await Promise.resolve();
+assert.equal(roll._f,17,'sheet arrival paints the latest requested angle');
+assert.deepEqual(draws.at(-1).slice(1),[2600,1720,520,860,0,0,520,860]);
+context.setFrame(roll,18);
+assert.equal(draws.length,2,'ready sheets redraw synchronously with no image request');
+assert.equal(roll._f,18);
+assert.match(sheet.image.src,/-atlas.webp$/);
+console.log('Scroll atlas passed: one sheet, latest angle after loading and immediate decoded redraws.');

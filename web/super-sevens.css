@@ -120,6 +120,8 @@
 /* ---------- Spin viewer ---------- */
 .eh-e .ss-spin { position: relative; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; outline: none; }
 .eh-e .ss-spin img { display: block; -webkit-user-drag: none; pointer-events: none; }
+.eh-e .ss-spin-canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.eh-e .ss-spin.has-atlas > img { opacity: 0; }
 .eh-e .ss-spin.is-dragging { cursor: grabbing; }
 .eh-e .ss-spin:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; border-radius: 8px; }
 .eh-e .ss-spin-hint { position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 99px; background: rgb(255 255 255 / .9); box-shadow: 0 4px 14px rgb(45 41 38 / .12); font-size: 12px; white-space: nowrap; transition: opacity .3s; pointer-events: none; }
