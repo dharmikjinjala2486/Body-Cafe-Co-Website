@@ -18,8 +18,7 @@ html:has(body.eh-e) { scroll-behavior: auto; }
 .eh-e .ht-copy .ez-actions { margin-top: 6px; }
 .eh-e .ht-dots { margin: 8px 0 0; display: flex; gap: 6px; }
 .eh-e .ht-dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--cap); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08); }
-.eh-e .ht-stage { width: 100%; max-width: 620px; justify-self: center; padding: clamp(24px, 3vw, 42px); border-radius: 40px;
-  background: radial-gradient(110% 80% at 30% 10%, #fbf9f5 0%, #f3efe7 60%, #ebe5da 100%); box-shadow: inset 0 0 0 1px rgb(45 41 38 / .06); }
+.eh-e .ht-stage { width: 100%; max-width: 620px; justify-self: center; padding: clamp(24px, 3vw, 42px); background: transparent; box-shadow: none; }
 .eh-e .ht-caps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(20px, 2.5vw, 36px) clamp(8px, 1.2vw, 18px); }
 .eh-e .ht-caps li { grid-column: span 2; position: relative; min-width: 0; }
 .eh-e .ht-caps li:nth-child(1), .eh-e .ht-caps li:nth-child(6) { grid-column: 2 / span 2; }
@@ -38,12 +37,12 @@ html:has(body.eh-e) { scroll-behavior: auto; }
   .eh-e .ht-stage { max-width: 520px; }
 }
 @media (max-width: 560px) {
-  .eh-e .ht-stage { border-radius: 28px; padding: 24px 18px 30px; }
+  .eh-e .ht-stage { padding: 24px 18px 30px; }
   .eh-e .ht-caps { row-gap: 30px; }
 }
 
 /* The closing invitation shares the hero caps and its product interactions. */
-.eh-e .hx-invite .ht-stage { --ink: #2d2926; --surface: #fff; max-width: 520px; }
+.eh-e .hx-invite .ht-stage { --ink: #fff; --surface: #2d2926; max-width: 520px; }
 
 /* ---------- 3. Launch range: the shop card ---------- */
 .eh-e .hr-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
