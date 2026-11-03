@@ -1,0 +1,191 @@
+/* Body Café Co. — Variant E · product page in the MyProtein layout (see pdp-mp-e.js). Our colours and type. */
+.eh-e [data-mp] { --mp-gap: clamp(20px, 2.4vw, 36px); --mp-soft: var(--surface, #f2f0eb); --mp-top: calc(var(--ss-top, 82px) + 16px); }
+.eh-e [data-mp] .mp-top { padding: 0; margin: 0; background: none; }
+.eh-e [data-mp] .mp-shell { max-width: 1320px; margin: 0 auto; padding: 18px 0 64px; }
+
+/* Breadcrumb: plain, above the grid */
+.eh-e [data-mp] .pp-crumbs { margin: 0 0 18px; color: var(--muted); }
+.eh-e [data-mp] .pp-crumbs ol { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
+.eh-e [data-mp] .pp-crumbs li + li::before { content: "|"; margin-right: 6px; color: var(--line); }
+.eh-e [data-mp] .pp-crumbs a { color: var(--ink); }
+
+/* Two columns: content left, buy box right and sticky */
+.eh-e [data-mp] .mp-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr); gap: var(--mp-gap); align-items: start; }
+.eh-e [data-mp] .mp-left { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--mp-gap); min-width: 0; }
+.eh-e [data-mp] .mp-right { position: sticky; top: var(--mp-top); border-left: 1px solid var(--line); padding-left: var(--mp-gap); }
+
+/* Gallery: vertical thumbnails on the left of the main image */
+.eh-e [data-mp] .pp-hero-media { position: static; width: 100% !important; min-width: 0; max-width: 100%; margin: 0 !important; transform: none !important; }
+.eh-e [data-mp] .pp-gallery, .eh-e [data-mp] .pp-stage, .eh-e [data-mp] .pp-slides { position: relative; width: 100% !important; min-width: 0; max-width: 100%; margin: 0 !important; }
+.eh-e [data-mp] .pp-stage { background: #fff; border-radius: 0; box-shadow: none; }
+.eh-e [data-mp] .pp-slide { min-width: 100%; width: 100%; }
+.eh-e [data-mp] .pp-open { width: 100%; height: clamp(360px, 44vw, 640px); background: #fff; }
+.eh-e [data-mp] .pp-open img { position: static !important; inset: auto; transform: none !important; object-fit: contain; width: 100% !important; height: 100% !important; }
+.eh-e [data-mp] .pp-caption { display: none; }
+@media (min-width: 1001px) {
+  .eh-e [data-mp] .pp-gallery:has(.pp-thumbs) { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 16px; }
+  .eh-e [data-mp] .pp-gallery:has(.pp-thumbs) .pp-thumbs { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; gap: 10px; margin: 0; }
+  .eh-e [data-mp] .pp-gallery:has(.pp-thumbs) .pp-stage { grid-column: 2; grid-row: 1; }
+}
+.eh-e [data-mp] .pp-thumb { border-radius: 8px; border: 1px solid var(--line); background: #fff; padding: 4px; }
+.eh-e [data-mp] .pp-thumb[aria-pressed="true"] { border: 2px solid var(--cap); }
+.eh-e [data-mp] .pp-enlarge { border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px var(--line); }
+
+/* Accordion: Description · Key Benefits · Suggested Use · Nutritional Information · Ingredients */
+.eh-e [data-mp] .mp-acc { border-top: 1px solid var(--line); }
+.eh-e [data-mp] .mp-acc-i { border-bottom: 1px solid var(--line); }
+.eh-e [data-mp] .mp-acc-i > summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 14px; cursor: pointer; list-style: none; font-size: 17px; font-weight: 600; }
+.eh-e [data-mp] .mp-acc-i > summary::-webkit-details-marker { display: none; }
+.eh-e [data-mp] .mp-acc-i > summary:hover { background: var(--mp-soft); }
+.eh-e [data-mp] .mp-chev { width: 10px; height: 10px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-3px); transition: transform .2s; }
+.eh-e [data-mp] .mp-acc-i[open] > summary .mp-chev { transform: rotate(-135deg) translateY(-3px); }
+.eh-e [data-mp] .mp-acc-b { padding: 4px 14px 28px; font-size: 16px; line-height: 1.65; }
+.eh-e [data-mp] .mp-acc-b > :first-child { margin-top: 0; }
+.eh-e [data-mp] .mp-acc-b p { margin: 0 0 14px; max-width: 72ch; }
+.eh-e [data-mp] .mp-acc-b h3 { margin: 24px 0 8px; font-size: 18px; font-weight: 700; letter-spacing: 0; text-transform: none; font-family: inherit; }
+.eh-e [data-mp] .mp-desc-h { margin: 0 0 14px; font-family: "Lemon Milk", sans-serif; font-weight: 700; text-transform: uppercase; font-size: clamp(22px, 2.2vw, 30px); line-height: 1.1; color: var(--cap); }
+.eh-e [data-mp] .mp-list { margin: 0 0 18px; padding-left: 20px; }
+.eh-e [data-mp] .mp-list li { margin: 0 0 6px; }
+.eh-e [data-mp] .mp-acc-b .ez-sig { margin: 18px 0; }
+.eh-e [data-mp] .mp-acc-b .pv-rows { margin-top: 0; }
+.eh-e [data-mp] .mp-acc-b .spe-when, .eh-e [data-mp] .mp-acc-b .spe-inside { margin-top: 0; }
+.eh-e [data-mp] .mp-acc-b .hm-bullets { margin: 0 0 18px; padding-left: 20px; }
+.eh-e [data-mp] .mp-acc-b .pp-safety { margin-top: 18px; font-size: 14px; color: var(--muted); }
+
+/* Grey cards: Lot report, Frequently bought with */
+.eh-e [data-mp] .mp-card { padding: clamp(20px, 2.2vw, 30px); background: var(--mp-soft); border-radius: 8px; }
+.eh-e [data-mp] .mp-card-h { margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; text-transform: none; font-family: inherit; }
+.eh-e [data-mp] .mp-card-sub { margin: 0 0 20px; font-size: 14px; color: var(--muted); }
+.eh-e [data-mp] .mp-lot { border-left: 5px solid var(--cap); }
+.eh-e [data-mp] .mp-lot .pv-steps { margin: 0 0 18px; }
+.eh-e [data-mp] .mp-lot .pp-lotbox { margin: 0; background: #fff; border: 0; border-radius: 8px; }
+.eh-e [data-mp] .mp-lot .pv-fold { margin-top: 16px; }
+
+.eh-e [data-mp] .mp-fbt-grid { display: grid; grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1.2fr); gap: 12px; align-items: center; }
+.eh-e [data-mp] .mp-fbt-k { margin: 0 0 8px; font-size: 13px; font-weight: 700; }
+.eh-e [data-mp] .mp-plus { display: grid; place-items: center; font-size: 22px; color: var(--muted); }
+.eh-e [data-mp] .mp-fbt-list { display: grid; gap: 12px; }
+.eh-e [data-mp] .mp-fbt-i { display: grid; grid-template-columns: auto 64px minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px; background: #fff; border-radius: 8px; border: 2px solid var(--cap); }
+.eh-e [data-mp] .mp-fbt-i.is-current { grid-template-columns: 64px minmax(0, 1fr); border: 0; background: none; padding: 0; }
+.eh-e [data-mp] .mp-fbt-img { display: block; width: 64px; height: 76px; }
+.eh-e [data-mp] .mp-fbt-img img { width: 100%; height: 100%; object-fit: contain; }
+.eh-e [data-mp] .mp-fbt-t { display: grid; gap: 2px; font-size: 14px; }
+.eh-e [data-mp] .mp-fbt-t a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.eh-e [data-mp] .mp-fbt-t b { font-size: 18px; }
+.eh-e [data-mp] .mp-fbt-t small, .eh-e [data-mp] .mp-rec-i small, .eh-e [data-mp] .mp-price small { font-size: 12px; color: var(--muted); }
+.eh-e [data-mp] .mp-check input { width: 20px; height: 20px; accent-color: var(--cap); }
+.eh-e [data-mp] .mp-fbt-foot { display: flex; justify-content: flex-end; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 20px; }
+.eh-e [data-mp] .mp-fbt-foot p { margin: 0; font-size: 16px; }
+.eh-e [data-mp] .mp-fbt-foot b { font-size: 20px; }
+
+/* Buttons */
+.eh-e [data-mp] .mp-btn, .eh-e [data-mp] .mp-buy .pp-add { display: inline-flex; justify-content: center; align-items: center; min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.eh-e [data-mp] .mp-btn:hover, .eh-e [data-mp] .mp-buy .pp-add:hover { background: var(--cap); }
+.eh-e [data-mp] .mp-btn:disabled, .eh-e [data-mp] .mp-buy .pp-add:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Recommended for you: a row of cards */
+.eh-e [data-mp] .mp-rec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.eh-e [data-mp] .mp-rec-nav { display: flex; gap: 8px; }
+.eh-e [data-mp] .mp-rec-nav button { width: 36px; height: 36px; border: 0; border-radius: 6px; background: var(--mp-soft); font-size: 20px; cursor: pointer; color: var(--ink); }
+.eh-e [data-mp] .mp-rec-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(170px, calc((100% - 36px) / 4)); gap: 12px; margin: 0; padding: 0 0 6px; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.eh-e [data-mp] .mp-rec-row::-webkit-scrollbar { display: none; }
+.eh-e [data-mp] .mp-rec-i { display: grid; grid-template-rows: auto 1fr auto auto auto; gap: 6px; padding: 0 0 14px; border-radius: 8px; background: var(--mp-soft); text-align: center; scroll-snap-align: start; overflow: hidden; }
+.eh-e [data-mp] .mp-rec-i > a { display: grid; gap: 10px; color: var(--ink); text-decoration: none; }
+.eh-e [data-mp] .mp-rec-img { display: block; aspect-ratio: 1; background: #fff; border-bottom: 4px solid var(--cap); }
+.eh-e [data-mp] .mp-rec-img img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+.eh-e [data-mp] .mp-rec-n { padding: 0 10px; font-weight: 600; font-size: 15px; line-height: 1.3; min-height: 2.6em; }
+.eh-e [data-mp] .mp-rec-p { font-size: 20px; margin-top: 8px; }
+.eh-e [data-mp] .mp-quick { margin: 6px 12px 0; min-height: 42px; text-transform: uppercase; font-size: 13px; letter-spacing: .04em; }
+
+/* Customer reviews */
+.eh-e [data-mp] .mp-reviews { padding: 0; margin: 0; background: none; border: 0; }
+.eh-e [data-mp] .mp-reviews .pp-sec-in { padding: 0 !important; max-width: none; display: block; }
+.eh-e [data-mp] .mp-reviews .pp-head { position: static; margin: 0 0 16px; }
+.eh-e [data-mp] .mp-reviews .pp-head h2 { font-family: inherit; text-transform: none; font-size: 24px; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+.eh-e [data-mp] .mp-reviews .pp-rv-top { background: var(--mp-soft); border-radius: 8px; padding: 20px; }
+.eh-e [data-mp] .mp-reviews .pp-rv-controls button, .eh-e [data-mp] .mp-reviews .pp-rv-controls a { border-radius: 6px; }
+
+/* Sample reviews (preview only): rating chips, overall card, a row of review cards */
+.eh-e [data-mp] [data-mp-sample] .pp-rv-summary { display: none; }
+.eh-e [data-mp] [data-mp-sample] .pp-rv-top { margin-top: 18px; }
+.eh-e [data-mp] .mp-rv-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.eh-e [data-mp] .mp-rv-chips button { min-height: 36px; padding: 0 12px; border: 1px solid transparent; border-radius: 6px; background: var(--mp-soft); font: inherit; font-size: 14px; color: var(--ink); cursor: pointer; }
+.eh-e [data-mp] .mp-rv-chips button span { color: var(--muted); margin-left: 4px; }
+.eh-e [data-mp] .mp-rv-chips button[aria-pressed="true"] { border-color: var(--cap); background: #fff; }
+.eh-e [data-mp] .mp-rv-chips button:disabled { opacity: .45; cursor: default; }
+.eh-e [data-mp] .mp-rv-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 12px; }
+.eh-e [data-mp] .mp-rv-all, .eh-e [data-mp] .mp-rv-card { padding: 18px; border-radius: 8px; background: var(--mp-soft); }
+.eh-e [data-mp] .mp-rv-k { margin: 0 0 8px; font-family: "Lemon Milk", sans-serif; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.eh-e [data-mp] .mp-rv-avg { display: flex; align-items: center; gap: 10px; margin: 0; }
+.eh-e [data-mp] .mp-rv-avg b { font-size: 18px; }
+.eh-e [data-mp] .mp-rv-n { margin: 4px 0 12px; font-size: 13px; color: var(--muted); }
+.eh-e [data-mp] .mp-rv-bars { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 13px; }
+.eh-e [data-mp] .mp-rv-bars li { display: grid; grid-template-columns: 30px 1fr 18px; gap: 8px; align-items: center; }
+.eh-e [data-mp] .mp-rv-bars i { display: block; height: 8px; border-radius: 99px; background: #fff; overflow: hidden; }
+.eh-e [data-mp] .mp-rv-bars i b { display: block; height: 100%; background: var(--cap); border-radius: inherit; }
+.eh-e [data-mp] .mp-rv-bars li span:last-child { text-align: right; }
+.eh-e [data-mp] .mp-rv-cards { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, calc((100% - 24px) / 3)); gap: 12px; margin: 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.eh-e [data-mp] .mp-rv-cards::-webkit-scrollbar { display: none; }
+.eh-e [data-mp] .mp-rv-card { scroll-snap-align: start; font-size: 14px; line-height: 1.5; }
+.eh-e [data-mp] .mp-rv-card[hidden] { display: none; }
+.eh-e [data-mp] .mp-rv-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 10px; }
+.eh-e [data-mp] .mp-rv-star { font-weight: 700; }
+.eh-e [data-mp] .mp-rv-tag { padding: 2px 8px; border-radius: 99px; background: #fff; font-size: 11px; color: var(--muted); }
+.eh-e [data-mp] .mp-rv-card h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; font-family: inherit; text-transform: none; letter-spacing: 0; }
+.eh-e [data-mp] .mp-rv-by { margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+.eh-e [data-mp] .mp-rv-card p:last-child { margin: 0; }
+.eh-e [data-mp] .mp-rv-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 12px; }
+.eh-e [data-mp] .mp-rv-note { margin: 0; font-size: 12.5px; color: var(--muted); }
+@media (max-width: 640px) {
+  .eh-e [data-mp] .mp-rv-row { grid-template-columns: minmax(0, 1fr); }
+  .eh-e [data-mp] .mp-rv-cards { grid-auto-columns: 82%; }
+}
+
+/* Buy box */
+.eh-e [data-mp] .mp-box { display: grid; gap: 16px; }
+.eh-e [data-mp] .mp-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.eh-e [data-mp] .mp-tags li { padding: 4px 12px; border-radius: 999px; background: var(--mp-soft); font-size: 13px; }
+.eh-e [data-mp] .mp-rate { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 14px; }
+.eh-e [data-mp] .mp-rate span:last-child { text-decoration: underline; }
+.eh-e [data-mp] .mp-stars { display: inline-flex; gap: 2px; font-size: 20px; line-height: 1; color: rgb(45 41 38 / .22); }
+.eh-e [data-mp] .mp-stars .is-on { color: var(--ink); }
+.eh-e [data-mp] .mp-stars .is-half { background: linear-gradient(90deg, var(--ink) 50%, rgb(45 41 38 / .22) 50%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.eh-e [data-mp] .mp-box .pp-h1 { margin: 0; font-family: "Lemon Milk", sans-serif; font-weight: 700; text-transform: uppercase; font-size: clamp(24px, 2.3vw, 34px); line-height: 1.05; color: var(--ink); }
+.eh-e [data-mp] .mp-box .pp-sub { margin: -8px 0 0; font-size: 15px; color: var(--muted); }
+.eh-e [data-mp] .mp-opt { padding-top: 16px; border-top: 1px solid var(--line); }
+.eh-e [data-mp] .mp-opt-k { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+.eh-e [data-mp] .mp-opt-v { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.eh-e [data-mp] .mp-opt-v span { display: grid; place-items: center; min-height: 44px; border-radius: 6px; border: 2px solid var(--cap); font-weight: 600; font-size: 14px; text-transform: uppercase; }
+.eh-e [data-mp] .mp-per { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.eh-e [data-mp] .mp-qty { display: inline-grid; grid-template-columns: 40px 44px 40px; align-items: center; height: 46px; border: 1px solid var(--ink); border-radius: 6px; }
+.eh-e [data-mp] .mp-qty button { height: 100%; border: 0; background: none; font-size: 20px; cursor: pointer; color: var(--ink); }
+.eh-e [data-mp] .mp-qty output { text-align: center; font-weight: 600; }
+.eh-e [data-mp] .mp-buy { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; padding: 16px; margin: 0; background: var(--mp-soft); border-radius: 8px; }
+.eh-e [data-mp] .mp-price { display: grid; gap: 2px; }
+.eh-e [data-mp] .mp-price .pp-price-num { font-size: 26px; font-weight: 700; }
+.eh-e [data-mp] .mp-buy .pp-add { width: 100%; }
+.eh-e [data-mp] .mp-ship { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
+.eh-e [data-mp] .mp-ship li { display: flex; align-items: center; gap: 8px; }
+.eh-e [data-mp] .mp-ship li:not(:first-child)::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--cap); }
+.eh-e [data-mp] .mp-ship .pp-stock { margin: 0; }
+
+/* Phones and tablets: one column, gallery → buy box → the rest (as on MyProtein) */
+@media (max-width: 1000px) {
+  .eh-e [data-mp] .mp-shell { padding-inline: 16px; }
+  .eh-e [data-mp] .mp-grid { grid-template-columns: minmax(0, 1fr); }
+  .eh-e [data-mp] .mp-left { display: contents; }
+  .eh-e [data-mp] .mp-left > .pp-hero-media { order: 1; }
+  .eh-e [data-mp] .mp-right { order: 2; position: static; border: 0; padding: 0; }
+  .eh-e [data-mp] .mp-left > :not(.pp-hero-media) { order: 3; }
+  .eh-e [data-mp] .pp-open { height: min(78vw, 520px); }
+  .eh-e [data-mp] .mp-buy { margin: 0; }
+  .eh-e [data-mp] .mp-rec-row { grid-auto-columns: minmax(160px, 46%); }
+}
+@media (max-width: 640px) {
+  .eh-e [data-mp] .mp-shell { padding-top: 12px; }
+  .eh-e [data-mp] .mp-fbt-grid { grid-template-columns: 1fr; }
+  .eh-e [data-mp] .mp-plus { display: none; }
+  .eh-e [data-mp] .mp-fbt-foot { justify-content: space-between; }
+  .eh-e [data-mp] .mp-acc-i > summary { padding: 18px 4px; }
+  .eh-e [data-mp] .mp-acc-b { padding: 0 4px 22px; }
+}
