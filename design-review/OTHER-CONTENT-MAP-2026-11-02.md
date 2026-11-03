@@ -600,3 +600,74 @@ The site's policy drafts already follow this.
   - Each layer links to its product, with a dotted leader to a label (number chip, name, key fact).
   - Static apart from a small nudge on hover. Phones show the number and name only.
 - **Verified:** desktop, tablet and phone with no overflow or overlaps; tests pass.
+
+## 22. "Pick a cap" hero (2 November 2026)
+
+**Owner's choice:** option A, built on the committed top-view cap hero (commit 7b21c81 and later). The team's file is unchanged; this is a separate layer.
+
+**Changes** (`web/home-pick-e.js`, `web/home-pick-e.css`, loaded after `home-hero-e`)
+- In the hero only, each cap becomes a button. The closing section keeps its cap links.
+- Picking a cap:
+  - tints the hero with a soft wash of that cap's colour
+  - rings the cap in its colour and keeps its name tag visible, while the other six fade
+  - shows a product ticket under the cluster: number, name, PANTONE® reference (from the brand colour sheet), form, amount per serving, when to take it (label timing plus directions tag), pack, MRP, View product and Add to bag
+- Picking the same cap again clears it. "Tap a cap to meet it." shows when nothing is picked.
+- On desktop the cluster narrows to 400 px so the caps and the ticket share the first screen.
+- Instant state changes only, with no animation.
+- **PANTONE references:** Iron 7599 C · L-Theanine 5763 C · D3 + K2 2372 C · Omega-3 7543 C · Inositol 2572 C · Creatine 7708 C · Psyllium 2325 C.
+- **Verified:** picking, clearing, keyboard, Add to bag (bag count and toast), and desktop, tablet and phone with no overflow; tests pass.
+
+## 23. Hero "wow" layer (2 November 2026)
+
+**Owner feedback:** show cap names by default, put something creative between the text and the caps, and make the first impression "wow".
+
+**Changes** (`web/home-pick-e.js`, `web/home-pick-e.css`, on top of the committed cap hero)
+- **Colour sunrise:** seven concentric arcs in the cap colours, drawn behind the cap cluster so the top caps rise above it and the rest sit inside. Static, at 60% opacity, dimmed while a cap is picked.
+- **Bridge badge:** a round sticker in the gap between text and caps, tilted -8°.
+  - Ring text: "SEVEN CAPS · SEVEN COLOURS · ONE CLEAR LABEL"
+  - Centre: a cap split into seven colour slices
+  - A dotted curved pointer to the caps with an italic "tap a cap" note
+  - On tablet and phone it sits centred between text and caps, without the pointer.
+- **Caps:** each sits on a soft glow of its own colour, with an always-visible name pill (number chip plus name) underneath.
+- "Pick a cap" still works: colour wash, ring, ticket, Add to bag.
+- **Verified:** desktop, tablet and phone with no overflow or cap overlaps; tests pass.
+
+## 24. Hero, cleaned up: caps on a café saucer (2 November 2026)
+
+**Owner feedback:** smoother, better, not cluttered; clean but very creative.
+
+**Removed:** the rainbow arcs, the dotted pointer and "tap a cap" note, the hint line, the per-cap glows, the name pills and the colour-dot row under the buttons.
+
+**Now** (`web/home-pick-e.js`, `web/home-pick-e.css`)
+- The seven caps are served on one soft cream **café saucer**: a white centre, a fine rim and a soft shadow.
+- The small Super Sevens badge rests on the saucer's edge, tilted like a sticker.
+- Names are plain text under each cap: a small coloured number above the name.
+- All caps are exactly the same size; names can no longer widen their cells.
+- **Smooth picking:** the colour wash fades in over 0.45 s, the other caps fade back over 0.3 s, and caps lift 3 px on hover. These transitions only run on interaction, and are switched off for reduced-motion users.
+- **Verified:** desktop, tablet and phone with equal cap sizes, no overlaps and no overflow; tests pass.
+
+## 25. Homepage hero — badge removed, caps open products, left-side touches (2 November 2026)
+
+Layer: `web/home-pick-e.js` + `web/home-pick-e.css`, loaded after the team's `home-hero-e.*` (their files are unchanged).
+
+- Removed the round "Seven caps" badge and the pick-a-cap ticket. Each cap is a plain link to its product page (`/iron-bisglycinate`, `/l-theanine`, `/vitamin-d3k2`, `/omega3-fishoil`, `/myo-and-dchiro-inositol`, `/creatine-chews`, `/psyllium-husk`).
+- Right: the seven caps sit on a cream café saucer, numbered 01–07 with the name under each cap. All caps are the same size.
+- Left: the headline's full stop is the real Iron cap (screen readers still read "."). "Seven colours." is underlined with seven equal bands, one per cap colour. A facts line sits under the buttons: lowest MRP from the catalogue, "FSSAI licensed" and "Every lot traceable".
+- Nothing moves by itself. Caps lift slightly on hover only.
+- Checked at 1440, 820 and 375 px: no sideways scroll; clicking a cap opens its product page. All JS and Python tests pass.
+
+## 26. Minimal homepage (3 November 2026)
+
+**Team feedback:** too cluttered and too much text, not a minimal feel ("khichdi"). Owner chose the strong cut.
+
+Layer: `web/home-minimal-e.js` + `web/home-minimal-e.css`, loaded after every other home layer. The earlier files are unchanged, so removing these two lines from `web/index.html` restores the long page.
+
+- **Before:** 13 sections, about 1,640 words, 13,382 px tall at 800 px wide. Six sections made the same trust point, and "You should always know what you're being served" was a headline twice.
+- **Now:** 4 sections plus the footer, 113 words, 3,147 px tall.
+  1. **Hero:** headline, one line and **Shop all seven**. The paragraph, the "Meet the Super Sevens" link and the facts line are removed. The caps on the saucer stay.
+  2. **The seven:** "The seven." with a Shop all link. Each card shows its number, bottle, name and MRP, and the whole card opens the product. Form, pack size, stock and the View/Add to bag buttons are removed. One row of seven on wide desktops, four columns on tablets, swipeable on phones.
+  3. **Proof strip:** FSSAI licensed · Every lot traceable · Plain labels, with **Check a lot** (/reports) and **Our standards**.
+  4. **Story line:** "You should always know what you're being served." and Read our story.
+- **Removed from the homepage** (still on their own pages): trust bar, proof records, lot lookup, everyday use, voices, belief menu, four rules, sourcing, Learn, FAQ, closing invitation.
+- **Footer unchanged:** the legal line is required text and is checked by `test-footer-e.mjs`.
+- **Verified:** 1440 px, 800 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.

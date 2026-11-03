@@ -1,0 +1,59 @@
+/* Body Café Co. — Variant E · homepage hero finishing layer (see home-pick-e.js): seven caps on a café saucer with plain
+   names, linking to their product pages; on the left a cap for a full stop, a seven-colour underline and three facts. */
+
+/* ---------- Layout ---------- */
+.eh-e .ht-hero[data-hk] { position: relative; transition: background-color .45s ease; }
+.eh-e .ht-hero[data-hk] .ht-dots { display: none; }
+.eh-e .ht-hero[data-hk] .ht-stage { padding-block: 8px 0; }
+
+/* ---------- The saucer ---------- */
+.eh-e .hk-cluster { position: relative; isolation: isolate; width: 100%; max-width: 540px; margin-inline: auto; padding: 17% 17% 19%; }
+.eh-e .hk-saucer { position: absolute; z-index: 0; left: 50%; top: 50%; width: 104%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #fff 0 56%, #f6f2ea 57% 66%, #efe9de 67% 100%);
+  box-shadow: inset 0 0 0 1px rgb(45 41 38 / .06), inset 0 -18px 40px rgb(45 41 38 / .05), 0 30px 60px -30px rgb(45 41 38 / .28); }
+.eh-e .hk-cluster > .ht-caps { position: relative; z-index: 1; row-gap: 18px; }
+
+/* ---------- Caps: plain names underneath ---------- */
+.eh-e .ht-caps .hk-cap { display: block; position: relative; width: 100%; aspect-ratio: 1; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--ink); cursor: pointer; font: inherit;
+  transition: transform .25s ease, box-shadow .25s ease; }
+.eh-e .ht-caps .hk-cap:hover { transform: translateY(-3px); }
+.eh-e .ht-caps .hk-cap:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
+.eh-e .ht-hero[data-hk] .ht-caps li { display: grid; justify-items: center; gap: 8px; }
+.eh-e .ht-hero[data-hk] .ht-cap-name { display: none; }
+.eh-e .ht-hero[data-hk] .ht-cap { transition: opacity .3s ease, filter .3s ease; }
+.eh-e .hk-name { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 12px; font-weight: 500; line-height: 1.2; color: var(--ink); transition: opacity .3s ease; }
+.eh-e .hk-name b { color: var(--cap); font: 600 9px/1 "Lemon Milk", sans-serif; letter-spacing: .06em; }
+
+/* ---------- Smaller screens ---------- */
+@media (min-width: 961px) { .eh-e .ht-hero[data-hk] { align-items: center; } }
+@media (max-width: 960px) {
+  .eh-e .ht-hero[data-hk] .ht-stage { max-width: 520px; padding-inline: 8px; }
+  .eh-e .hk-cluster { max-width: 460px; }
+}
+@media (max-width: 560px) {
+  .eh-e .hk-cluster { padding: 14% 9% 16%; }
+  .eh-e .hk-cluster > .ht-caps { column-gap: 6px; row-gap: 14px; }
+  .eh-e .hk-name { white-space: normal; flex-direction: column; gap: 2px; text-align: center; font-size: 10.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eh-e .ht-hero[data-hk], .eh-e .ht-caps .hk-cap, .eh-e .ht-hero[data-hk] .ht-cap, .eh-e .hk-name { transition: none; }
+}
+
+/* Even spacing and tidy names: number above, name below, centred under each cap. */
+.eh-e .hk-cluster > .ht-caps { column-gap: clamp(14px, 2vw, 22px); }
+.eh-e .hk-name { flex-direction: column; gap: 3px; white-space: normal; text-align: center; max-width: 100%; }
+/* Every cap the same size: names never widen their cell. */
+.eh-e .ht-hero[data-hk] .ht-caps li { grid-template-columns: minmax(0, 1fr); }
+.eh-e .ht-hero[data-hk] .ht-caps .hk-cap { width: 100%; }
+.eh-e .hk-name { overflow-wrap: anywhere; }
+
+/* ---------- Left: a cap for a full stop ---------- */
+.eh-e .ht-hero .ht-copy h1 .hk-stop { display: inline-block; width: .2em; height: .2em; margin-left: .04em; vertical-align: baseline; position: relative; top: .02em; color: inherit; }
+.eh-e .ht-hero .ht-copy h1 .hk-stop .sr-only { display: block; }
+.eh-e .ht-hero .ht-copy h1 .hk-stop img { display: block; width: 100%; height: 100%; border-radius: 50%; filter: drop-shadow(0 .03em .03em rgb(45 41 38 / .25)); }
+/* "Seven colours." underlined with one band per cap colour. */
+.eh-e .hk-spectrum { background-image: var(--stripe); background-repeat: no-repeat; background-size: 100% .14em; background-position: 0 100%; padding-bottom: .1em; }
+/* Three facts under the buttons. */
+.eh-e .hk-facts-line { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 0; font-size: 13.5px; color: var(--muted); }
+.eh-e .hk-facts-line li { display: inline-flex; align-items: center; }
+.eh-e .hk-facts-line li:not(:last-child)::after { content: ""; width: 4px; height: 4px; margin: 0 12px; border-radius: 50%; background: currentColor; opacity: .55; }
