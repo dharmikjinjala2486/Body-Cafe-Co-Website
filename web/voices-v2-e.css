@@ -1,0 +1,153 @@
+/* Body Café Co. — Variant E · Voices redesign and the Proof tiles on phones (see voices-v2-e.js). */
+
+/* ---------- Voices: layout ---------- */
+.eh-e [data-hv] .ss-voices.vv { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); grid-template-areas: "head list" "sum list" ". list" "rules rules" "foot foot"; gap: 28px 56px; align-items: start; }
+.eh-e [data-hv] .vv > .ez-sec-head { grid-area: head; }
+.eh-e [data-hv] .vv > .vv-summary, .eh-e [data-hv] .vv > .ss-voices-stats { grid-area: sum; }
+.eh-e [data-hv] .vv > .vv-filter, .eh-e [data-hv] .vv > .vv-list, .eh-e [data-hv] .vv > .vv-more { grid-column: 2; }
+.eh-e [data-hv] .vv > .vv-filter { grid-row: 1; }
+.eh-e [data-hv] .vv > .vv-list { grid-row: 2 / span 2; }
+.eh-e [data-hv] .vv > .vv-rules { grid-area: rules; grid-row: auto; grid-column: 1 / -1; }
+.eh-e [data-hv] .vv > .ez-sec-foot { grid-area: foot; grid-column: 1 / -1; }
+/* While samples show, the live counters (0 published) step aside; with real reviews, the samples' summary does. */
+.eh-e .vv:has([data-sample]) > .ss-voices-stats { display: none; }
+.eh-e .vv:not(:has([data-sample])) > .vv-summary, .eh-e .vv:not(:has([data-sample])) > .vv-filter, .eh-e .vv:not(:has([data-sample])) > .vv-more { display: none; }
+.eh-e [data-hv] .vv .ss-voices-list.vv-list { display: grid !important; }
+
+/* ---------- Summary ---------- */
+.eh-e .vv-summary { display: grid; gap: 18px; padding: 24px; border-radius: 18px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.eh-e .vv-avg { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 2px 16px; }
+.eh-e .vv-avg b { grid-row: span 2; font-size: 64px; font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
+.eh-e .vv-avg small { color: var(--muted); font-size: 13.5px; }
+.eh-e .vv-dist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.eh-e .vv-dist li { display: grid; grid-template-columns: 28px 1fr 18px; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.eh-e .vv-dist i { position: relative; height: 8px; border-radius: 99px; background: rgb(45 41 38 / .07); overflow: hidden; }
+.eh-e .vv-dist i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--w); border-radius: inherit; background: #d6a531; }
+.eh-e .vv-note { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+
+/* Stars */
+.eh-e .vv-stars { display: inline-flex; gap: 3px; }
+.eh-e .vv-stars i { width: 14px; height: 14px; background: rgb(45 41 38 / .15); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+.eh-e .vv-stars i.is-on { background: #d6a531; }
+.eh-e .vv-stars.is-big i { width: 20px; height: 20px; }
+
+/* ---------- Filter chips: the seven caps ---------- */
+.eh-e .vv-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.eh-e .vv-filter button { display: inline-grid; place-items: center; height: 40px; min-width: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); font: inherit; font-size: 14px; font-weight: 600; color: var(--ink); cursor: pointer; }
+.eh-e .vv-filter button:has(img) { padding: 4px; width: 40px; }
+.eh-e .vv-filter img { width: 30px; height: 30px; object-fit: contain; }
+.eh-e .vv-filter button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--ink); }
+
+/* ---------- Review cards ---------- */
+.eh-e .vv-list { list-style: none; margin: 0; padding: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.eh-e .vv-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 18px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); border-top: 0; min-height: 0; }
+.eh-e .vv-card::before { content: ""; position: absolute; left: 22px; top: 0; width: 40px; height: 3px; border-radius: 0 0 3px 3px; background: var(--cap); }
+.eh-e .vv-card.is-featured { grid-column: 1 / -1; padding: 30px; background: linear-gradient(135deg, color-mix(in srgb, var(--cap) 10%, #fff), #fff 60%); }
+.eh-e .vv-card.is-featured .vv-title { font-size: 26px; }
+.eh-e .vv-card.is-featured .vv-text { font-size: 18px; }
+.eh-e .vv-top { display: flex; justify-content: space-between; align-items: center; }
+.eh-e .vv-sample { padding: 3px 8px; border-radius: 999px; background: rgb(45 41 38 / .06); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.eh-e .vv-title { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+.eh-e .vv-text { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink); }
+.eh-e .vv-text p { margin: 0; }
+.eh-e .vv-foot { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); }
+.eh-e .vv-avatar { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--cap); color: #fff; font-weight: 600; font-size: 14px; }
+.eh-e .vv-who { display: grid; min-width: 0; line-height: 1.2; }
+.eh-e .vv-who b { font-size: 14px; }
+.eh-e .vv-who small { font-size: 12px; color: var(--muted); }
+.eh-e .vv-prod { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 999px; background: rgb(45 41 38 / .05); color: var(--ink); text-decoration: none; font-size: 12.5px; font-weight: 500; white-space: nowrap; }
+.eh-e .vv-prod img { width: 24px; height: 24px; object-fit: contain; }
+.eh-e .vv-more { display: none; }
+
+/* ---------- The three rules: a slim trust row ---------- */
+.eh-e [data-hv] .vv > .vv-rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
+.eh-e [data-hv] .vv-rules > li { padding: 16px 18px; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1000px) {
+  .eh-e [data-hv] .ss-voices.vv { grid-template-columns: 1fr; grid-template-areas: none; gap: 20px; }
+  .eh-e [data-hv] .vv > * { grid-column: 1 !important; grid-row: auto !important; grid-area: auto !important; }
+  .eh-e .vv-summary { grid-template-columns: auto 1fr; align-items: center; gap: 12px 28px; }
+  .eh-e .vv-summary .vv-note { grid-column: 1 / -1; }
+}
+/* ---------- Phone ---------- */
+@media (max-width: 640px) {
+  .eh-e .vv-summary { grid-template-columns: 1fr; padding: 18px; }
+  .eh-e .vv-avg b { font-size: 52px; }
+  .eh-e .vv-list { grid-template-columns: 1fr; }
+  .eh-e .vv-card, .eh-e .vv-card.is-featured { padding: 18px; }
+  .eh-e .vv-card.is-featured .vv-title { font-size: 20px; }
+  .eh-e .vv-card.is-featured .vv-text { font-size: 15.5px; }
+  .eh-e .vv-filter button { height: 36px; min-width: 36px; }
+  .eh-e .vv-filter button:has(img) { width: 36px; }
+  /* First three reviews, then "Show all" (a filter shows every match). */
+  .eh-e .vv:not(.is-all):not(.is-filtered) .vv-card:nth-child(n + 4) { display: none; }
+  .eh-e .vv:has([data-sample]):not(.is-all):not(.is-filtered) .vv-more { display: block; width: 100%; height: 48px; border: 0; border-radius: 12px; background: var(--ink); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+  .eh-e [data-hv] .vv > .vv-rules { grid-template-columns: 1fr; }
+  .eh-e .vv-foot { flex-wrap: wrap; }
+  .eh-e .vv-prod { margin-left: 44px; }
+}
+
+/* ---------- Proof, not promises on phones: four tiles in a 2 × 2 grid ---------- */
+.eh-e .hp-tile { display: none; }
+@media (max-width: 760px) {
+  .eh-e [data-hv] .hp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .eh-e [data-hv] .hp-grid > article { margin: 0; padding: 0; min-height: 0; overflow: hidden; }
+  .eh-e [data-hv] .hp-grid > article:not(.is-open) > :not(.hp-tile) { display: none; }
+  .eh-e [data-hv] .hp-grid > article.is-open { grid-column: 1 / -1; padding: 0 18px 18px; }
+  .eh-e [data-hv] .hp-grid > article.is-open > .hp-tile { margin: 0 -18px 12px; }
+  .eh-e .hp-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; width: 100%; min-height: 118px; padding: 16px; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; position: relative; }
+  .eh-e .hp-tile .vx-ic { width: 40px; height: 40px; margin: 0; background: rgb(127 127 127 / .14); color: inherit; }
+  .eh-e .hp-tile span { font-size: 16px; font-weight: 600; line-height: 1.2; }
+  .eh-e .hp-tile i { position: absolute; right: 14px; top: 16px; width: 22px; height: 22px; }
+  .eh-e .hp-tile i::before { content: "+"; font-style: normal; font-size: 22px; line-height: 1; opacity: .6; }
+  .eh-e .hp-tile[aria-expanded="true"] i::before { content: "–"; }
+  .eh-e .hp-tile[aria-expanded="true"] { min-height: 0; flex-direction: row; align-items: center; }
+}
+
+/* ---------- The seven on phones: a 2 × 2 grid instead of a sideways row ---------- */
+@media (max-width: 760px) {
+  .eh-e [data-hv] .hr-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; overflow: visible; margin-inline: 0; padding: 0; }
+  .eh-e [data-hv] .hr-card { flex: none; }
+  .eh-e [data-hv] .hr-media { padding: 14px 10px 4px; }
+  .eh-e [data-hv] .hr-media img { height: 120px; }
+  .eh-e [data-hv] .hr-body { padding: 8px 10px 12px; gap: 8px; }
+  .eh-e [data-hv] .hr-name { font-size: 12.5px; }
+  .eh-e [data-hv] .hr-card .gl-chip { font-size: 10.5px; padding: 3px 6px 3px 4px; gap: 4px; }
+  .eh-e [data-hv] .hr-card .gl-chip .gl-ic { width: 14px; height: 14px; }
+  .eh-e [data-hv] .hr-card .gl-buyrow { gap: 6px; }
+  .eh-e [data-hv] .hr-card .hr-price strong { font-size: 15px; }
+  .eh-e [data-hv] .hr-card .hr-price span { font-size: 10px; }
+  .eh-e [data-hv] .hr-card .hr-add { min-height: 34px; padding: 0 10px; font-size: 13px; }
+  .eh-e [data-hv] .hr-card .hr-add > span:first-child { display: none; }
+  .eh-e [data-hv] .hr-card .hr-add::before { content: "Add"; }
+}
+/* With the featured card on top, a last card left alone in its row spans the row. */
+@media (min-width: 641px) { .eh-e .vv-list > .is-featured ~ .vv-card:last-child:nth-child(even) { grid-column: 1 / -1; } }
+@media (max-width: 760px) {
+  .eh-e [data-hv] .hp-grid > article:not(.is-open) { grid-column: auto; }
+}
+@media (max-width: 640px) {
+  .eh-e .vv-filter { gap: 6px; }
+  .eh-e .vv-filter button { height: 34px; min-width: 34px; padding: 0 10px; font-size: 13px; }
+  .eh-e .vv-filter button:has(img) { width: 34px; padding: 3px; }
+  .eh-e .vv-filter img { width: 26px; height: 26px; }
+}
+
+/* ---------- Sticky summary (desktop): the left column runs the height of the reviews, its content sticks under the
+   site header, and it stops where the reviews end, so it never covers the review rules below. ---------- */
+.eh-e [data-hv] .vv:has(> .vv-side) { grid-template-areas: none; grid-template-rows: auto auto auto; }
+.eh-e [data-hv] .vv > .vv-side { grid-column: 1; grid-row: 1 / 4; align-self: stretch; }
+.eh-e [data-hv] .vv-side-in { position: sticky; top: 100px; display: grid; gap: 24px; }
+.eh-e [data-hv] .vv-side-in > .ez-sec-head { margin: 0; display: block; }
+.eh-e [data-hv] .vv:has(> .vv-side) > .vv-filter { grid-column: 2; grid-row: 1; }
+.eh-e [data-hv] .vv:has(> .vv-side) > .vv-list { grid-column: 2; grid-row: 2; }
+.eh-e [data-hv] .vv:has(> .vv-side) > .vv-more { grid-column: 2; grid-row: 3; }
+.eh-e [data-hv] .vv:has(> .vv-side) > .vv-rules { grid-column: 1 / -1; grid-row: 4; }
+.eh-e [data-hv] .vv:has(> .vv-side) > .ez-sec-foot { grid-column: 1 / -1; grid-row: 5; }
+.eh-e .vv:has([data-sample]) .vv-side-in > .ss-voices-stats { display: none; }
+.eh-e .vv:not(:has([data-sample])) .vv-side-in > .vv-summary { display: none; }
+@media (max-width: 1000px) {
+  .eh-e [data-hv] .vv > .vv-side { grid-row: auto !important; }
+  .eh-e [data-hv] .vv-side-in { position: static; }
+}

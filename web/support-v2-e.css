@@ -1,0 +1,17 @@
+/* Body Café Co. — Variant E · Lot reports, Learn, Help, Contact to the Page Flow Plan (see support-v2-e.js). */
+
+/* Lot reports: the result area appears once there is something in it. */
+.eh-e [data-sp2="reports"] .lt-record:has(.lt-result > .lt-idle:only-child) { display: none; }
+
+/* Learn: guide cards with their question; questions as tap-to-open rows. */
+.eh-e [data-sp2="learn"] .sp2-h { margin: 0 0 18px; font-weight: 300; letter-spacing: -0.02em; font-size: clamp(28px, 3vw, 40px); }
+.eh-e [data-sp2="learn"] .sp2-q { display: block; margin-top: 8px; font-style: normal; font-size: 13px; line-height: 1.35; color: var(--ink); opacity: .8; }
+.eh-e [data-sp2="learn"] .lr-qlist > li { padding: 0; border: 0; }
+.eh-e [data-sp2="learn"] .lr-qlist > li > .pv-row h3 { margin: 0; font-size: 16px; font-weight: 600; }
+
+/* Help: an icon on each quick action and topic. */
+.eh-e .sp2-icons a { position: relative; }
+.eh-e .sp2-icons a > .vx-ic { display: grid; width: 40px; height: 40px; margin: 0 0 12px; background: rgb(45 41 38 / .06); color: var(--ink); }
+
+/* Contact: "Ways to reach us" repeats the phone switchboard, so it hides once the switchboard is built. */
+.eh-e .su-e:has(.ss-switch) .su-contact-info section:has(> #su-ch-h) { display: none; }

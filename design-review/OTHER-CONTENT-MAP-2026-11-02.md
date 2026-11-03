@@ -656,18 +656,335 @@ Layer: `web/home-pick-e.js` + `web/home-pick-e.css`, loaded after the team's `ho
 - Nothing moves by itself. Caps lift slightly on hover only.
 - Checked at 1440, 820 and 375 px: no sideways scroll; clicking a cap opens its product page. All JS and Python tests pass.
 
-## 26. Minimal homepage (3 November 2026)
+## 26. Lighter homepage text (3 November 2026)
 
-**Team feedback:** too cluttered and too much text, not a minimal feel ("khichdi"). Owner chose the strong cut.
+**Team feedback:** too much text, not a minimal feel ("khichdi"). A first attempt removed whole sections; the owner rejected that. Every section stays, and only the extra text goes.
 
-Layer: `web/home-minimal-e.js` + `web/home-minimal-e.css`, loaded after every other home layer. The earlier files are unchanged, so removing these two lines from `web/index.html` restores the long page.
+Layer: `web/home-minimal-e.js` + `web/home-minimal-e.css`, loaded after every other home layer. The earlier files are unchanged; removing the two lines from `web/index.html` brings the text back.
 
-- **Before:** 13 sections, about 1,640 words, 13,382 px tall at 800 px wide. Six sections made the same trust point, and "You should always know what you're being served" was a headline twice.
-- **Now:** 4 sections plus the footer, 113 words, 3,147 px tall.
-  1. **Hero:** headline, one line and **Shop all seven**. The paragraph, the "Meet the Super Sevens" link and the facts line are removed. The caps on the saucer stay.
-  2. **The seven:** "The seven." with a Shop all link. Each card shows its number, bottle, name and MRP, and the whole card opens the product. Form, pack size, stock and the View/Add to bag buttons are removed. One row of seven on wide desktops, four columns on tablets, swipeable on phones.
-  3. **Proof strip:** FSSAI licensed · Every lot traceable · Plain labels, with **Check a lot** (/reports) and **Our standards**.
-  4. **Story line:** "You should always know what you're being served." and Read our story.
-- **Removed from the homepage** (still on their own pages): trust bar, proof records, lot lookup, everyday use, voices, belief menu, four rules, sourcing, Learn, FAQ, closing invitation.
-- **Footer unchanged:** the legal line is required text and is checked by `test-footer-e.mjs`.
-- **Verified:** 1440 px, 800 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+- **Kept everywhere:** all 13 sections in the same order, every heading and eyebrow, every button and link, product cards, label facts, licence records, maker names, directions, FAQ and the footer legal line.
+- **Removed** (the explanation paragraph under a heading):
+  - Hero: the paragraph under "Seven caps. Seven colours."
+  - Range: "Each product earns its place…" (Open the shop stays)
+  - Proof: the intro, and the one-line description under GMP certified, Third-party tested and Every lot traceable
+  - Lot: the paragraph explaining a lot report (the link to the guide stays)
+  - Everyday: the 47-word intro
+  - Voices: the intro, and the sentence under each of the three review rules
+  - Belief: both paragraphs (Read our story stays)
+  - Four rules: the sentence under each rule (the four rules stay)
+  - Sourcing: both intro paragraphs (the maker cards say the same)
+  - Learn: the intro and each guide's subtitle
+  - Invitation: "Start with one product…"
+- **Result:** about 1,640 → 1,170 words on the page.
+- **Verified:** 1440 px and 375 px with all 13 sections and no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 27. Lighter text on every page (3 November 2026)
+
+**Owner:** apply the homepage text cut to all pages. Same rule: sections stay, only extra text goes.
+
+Layer: `web/pages-minimal-e.js`, loaded last (after `pdp-flow-e.js`). Earlier files are unchanged.
+
+- **Kept everywhere:** sections, headings, buttons, forms and form hints, product facts, label amounts, directions, cautions, manufacturer and licence records, the Super Sevens rules, review and privacy notices, medical-advice and grievance lines, Learn articles, policies and the Story chapters. A paragraph with a link or control in it is never removed.
+- **Removed:** page intros (`.ez-lede`) and section-head descriptions on every page, plus:
+  - Shop: intro, price note, the format descriptions and their notes (which products use each format stays)
+  - Product pages: the long "story" paragraph, section lead lines, the Super Sevens "segment" sentence, the pour-symbol note
+  - Lot reports: intro and the seven-segment typing note
+  - Standards: section leads and "meaning" notes
+  - Story › About: the "why we exist" paragraphs, which repeated Story chapters 1–2, and the "no café to visit" note
+  - Learn: hero intro and the label-tool intro
+  - Help and Contact: page intros
+- **Words:** Shop 495 → 335 · Super Sevens 984 → 915 · Standards 2,116 → 1,813 · Story 1,710 → 1,586 · Iron product page 1,709 → 1,474 · Learn 734 → 660 · Lot reports 638 → 589 · Help 206 → 191 · Contact 468 → 432.
+- **Verified:** all pages at 375 px with no sideways scroll; product page and Standards checked at 1440 px; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 28. Bullets instead of paragraphs, and no card stripe (3 November 2026)
+
+**Owner:** people don't read big paragraphs. The site should be understood visually, with short, meaningful text: Amazon-style bullets. Example of clutter to remove: the "CAPSULES" stripe on product cards.
+
+Layer: `web/pages-minimal-e.js` + `web/pages-minimal-e.css` (extends section 27).
+
+- **Long paragraphs → bullets** on Home, Shop, product pages, Standards, Lot reports, Help, Contact, Super Sevens and Bundles:
+  - Any plain paragraph or fact value of 20+ words with two or more sentences becomes a list, one sentence per bullet, in the same words. Nothing is reworded or added.
+  - Splits never happen after abbreviations (Pvt., Ltd., Lic. No., M.R.P.). A short answer like "Not necessarily." stays joined to its explanation.
+  - Paragraphs with links, forms, status notes ("not published yet") and text inside Story chapters, Learn articles and policies keep their prose.
+- **Product pages, "About this item"** under Add to bag, built only from the label record: amount per serving · serving, pack and days · each directions sentence · dietary note and format · maker and city. Then **Cautions**: each warning sentence from the label as a bullet. The older "60 servings · one a day" line is removed, since this list covers it.
+- **Card stripe removed:** the coloured "01 CAPSULES" band on Home range cards and Shop cards. The format still shows under the name.
+- **Verified:** all seven product pages build their list from their own record; no bad splits found across 14 pages; 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 29. Visual "at a glance" icons (3 November 2026)
+
+**Owner:** still no visual understanding, only text everywhere.
+
+New `web/glance-e.js` (loaded before `pages-minimal-e.js`) draws one icon set from each product's label record, so every page shows the same facts the same way:
+- **When:** sunrise (morning), sun (noon), moon (night); all three for Creatine ("any one time").
+- **Dose:** that many capsule, softgel or tablet shapes in the cap colour (Psyllium shows five capsules).
+- **Food:** full plate (with food), dashed empty plate (empty stomach), half plate (with or without).
+- **Special instruction:** crossed-out milk glass (Iron), glass of water (Psyllium), "chew it" (Creatine).
+- **Pack:** calendar with days per pack.
+- **Diet:** the FSSAI green veg mark or brown non-veg mark.
+
+**Where it shows**
+- **Product pages:** "At a glance" tiles under Add to bag replace the "About this item" bullets: the key fact in the cap colour, then dose, when, food, special instruction, days and diet. Cautions sit in a collapsed "Cautions (n)" row and stay in full in How to use.
+- **Homepage cards and Shop line-up cards:** an icon row under the pack size.
+- **Homepage "A small part of a good day":** each product's directions sentence is replaced by its icon row.
+- Shop's Cards view keeps the Super Sevens playing cards.
+
+**Verified:** all seven products read correctly; 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 30. Concept icons on Standards, Lot reports, Story and the homepage rules (3 November 2026)
+
+New `web/visuals-e.js` (styles in `pages-minimal-e.css`): one line-icon set for the ideas the site repeats, placed on list headings in a tinted circle. Each list is matched by selector and item count, so a changed list is left as it was. No copy changes.
+
+- **Standards:**
+  - 4 "how we…" boxes: form, factory, check, scale
+  - the ingredient → product → lot → document chain: leaf, factory, tag, document
+  - four principles: form, pin, check, document
+  - three places: pin, gear, factory
+  - four quality questions: box, gear, check, hourglass
+  - lot path: bottle, tag, document
+  - editorial practices: link, flag, no-sign
+  - evidence kinds: book, flask, person
+- **Lot reports:** Match / Understand / Inspect (search, book, document); lot, order, barcode and SKU numbers (tag, receipt, barcode, box).
+- **Story:**
+  - chapter 4's form / amount / moment / proof cards each get a large icon
+  - the manifesto line "We name the form. We state the amount. We tell you when. We show our work." becomes a 2×2 grid of icon badges, same words
+  - About's four values: eye, question, check, heart
+- **Homepage:** "Four rules on every bottle" uses the same form / amount / when / document icons as Story, so the idea reads the same everywhere.
+- **Verified:** 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 31. Home rebuilt to the Page Flow Plan (3 November 2026)
+
+**Plan:** [Body Café Co. — Page Flow Plan](https://claude.ai/artifact/Lv12jWUM1rYCptJDV2E9tr): research-backed flow for every page, with one visual and one headline per section. The owner approved starting with Home.
+
+Layer: `web/home-v2-e.js` + `web/home-v2-e.css`, loaded last. They replace `home-minimal-e.*`, which is removed. `visuals-e.js` now shares its icon set (`BCCVisualsE.icon`). `pages-minimal-e.js` still removes the card stripe and adds icon chips on Home, but no longer turns Home paragraphs into bullets.
+
+| # | Section | Headline | Visual |
+| --- | --- | --- | --- |
+| 1 | Hero | The Super Sevens. | Caps on the saucer; one button, Shop all seven |
+| 2 | Trust strip | (none) | Four icons: FSSAI licensed · GMP certified · Third-party tested · Every lot traceable |
+| 3 | The seven | Seven everyday essentials. | Bottle cards with icon chips, price and Add to bag; Shop all link |
+| 4 | Your day | When to take each one. | Morning / noon / night columns with icon chips |
+| 5 | Check any bottle | Your bottle has a record. | Three icon steps (pack → type it in → record) beside the lot disc and lookup |
+| 6 | Close | You should always know what you're being served. | Caps; Shop the range · Read our story |
+
+- **Leaves Home:** trust bar, proof records, belief menu, four rules, sourcing, Learn, FAQ. They now live on Story, Standards, Learn and Help.
+- **Reviews:** the section shows by itself once a real review is published, and is hidden while all cards are empty.
+- **Removed:** the small all-caps labels above Home headings (the hero keeps its line), plus "View product" and "In stock" on cards (the card and Add to bag remain; "Out of stock" still shows).
+- **New lines for owner review:** "Seven everyday essentials." (also the page title), "When to take each one.", "Your bottle has a record.", and the three step labels.
+- **Result:** 13 sections become 6, about 1,100 words become 345, and the page is 5,300 px tall instead of 13,000.
+- **Verified:** 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass; product page tiles and Story icons are unaffected.
+
+## 32. Product page rebuilt to the Page Flow Plan (3 November 2026)
+
+Layer: `web/pdp-v2-e.js` + `web/pdp-v2-e.css`, loaded last. It reuses the step style from `home-v2-e.css` and the icons from `visuals-e.js`.
+
+| # | Section | Headline | Visual |
+| --- | --- | --- | --- |
+| 1 | Buy box | Product name + label subtitle | Gallery; price; Add to bag; four trust icons; At a glance tiles; Cautions (n) on tap |
+| 2 | Highlights | The product's own hook (e.g. "Iron first. Chai later.") | Its label diagram beside three short lines; "Why this form?" opens on tap |
+| 3 | How to take it | How to take it. | Morning / noon / night slots, the "keep in mind" line, the pour tray |
+| 4 | Label facts | Everything on the label. | Supplement facts table open; every other label row (ingredients, amount, allergens, use, cautions, storage, maker) opens on tap; "What to check on your pack" and "Reading this ingredient" fold |
+| 5 | Check your bottle | This bottle has a record. | Three icon steps, label PDF, lot lookup; quality and sourcing details fold |
+| 6 | Reviews & questions | Reviews & questions | Reviews summary, Write a review, common questions, ask form |
+| + | More of the seven | More of the seven. | Other six products |
+
+- **Removed:** section counters ("04 · … / 11"), the hero's "01 / 07 · Capsules · nickname" line and giant number, the pack table (the tiles show format, pack and serving), the key-fact tile (the subtitle states it), the separate "defining detail" section (its diagram moved into Highlights), the Super Sevens card section (lives on /super-sevens), and the "shown for browsing" note.
+- **Kept, now on tap:** every label row, caution, storage line, licence and quality status. A row both lists carried (Allergens) shows once.
+- **Section bar:** Overview · How to take · Label · Lot record · Reviews.
+- **New lines for owner review:** "How to take it.", "Everything on the label.", "This bottle has a record.", "Reviews & questions", "More of the seven.", "Type it in below".
+- **Result (Iron):** 11 sections become 6 plus related products, about 1,500 words open become 654, and 13,000 px becomes 8,000 px on desktop.
+- **Verified:** all seven products build the new layout with their own diagram and tiles; 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 33. Shop rebuilt to the Page Flow Plan (3 November 2026)
+
+Layer: `web/shop-v2-e.js` + `web/shop-v2-e.css`, loaded last. Filter, sort, compare, Cards view and Add to bag behaviour are unchanged.
+
+- **1 · Header:** "07 Shop all seven" and the line-up of seven bottles. The "Shop · 7 products" kicker is removed.
+- **2 · Filters and cards:**
+  - Each format button shows its shape (capsule, softgel, tablet) and each time button its sun or moon.
+  - The "· choose any" hint is removed.
+  - The "Showing all 7 products" line is visible only while a filter is on (screen readers always hear it).
+  - Plain product cards stay the default; the Super Sevens playing cards remain under "Cards".
+  - Cards show bottle, name, pack, icon chips, price, Add to bag and Compare. The "01 · Capsules" line, "View product" and "In stock" are removed ("Out of stock" still shows).
+- **3 · Help:** "Not sure which one?" with one **Ask us** button. The help-centre button and policy links are removed; both are in the footer.
+- **Removed:** "Capsules, softgels and chews". The filter row now shows the three formats.
+- **New lines for owner review:** "Not sure which one?", "Ask us".
+- **Result:** 4 sections become 3, 779 words become 234, and 4,077 px becomes 2,692 px on desktop.
+- **Verified:** the Softgels filter shows D3 + K2 and Omega-3; Softgels + Night shows none; Clear restores 7. Add to bag updates the bag (local preview bag went 3 → 4 during the test). 1440 px and 375 px with no sideways scroll. All 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 34. Super Sevens page rebuilt to the Page Flow Plan (3 November 2026)
+
+Layer: `web/sevens-v2-e.js` + `web/sevens-v2-e.css`, loaded last. It applies to `/super-sevens` only; the Shop's Cards view is unchanged.
+
+- **1 · Hero:** "The Super Sevens" plus one line, "Seven caps. One number.", beside the caps. The "Body Café Co. presents" label and the intro are removed.
+- **2 · Meet the seven:** the seven playing cards. Each card's back now keeps three facts (Pack, Serving, Per serving) plus its "when" line and "Read the full label" note. Format and Servings are removed from the back; the front already shows them.
+- **3 · The digit:** the ten numerals stand alone. The "6 of 7 · names…" text under each moves to a hover title and screen-reader text.
+- **4 · The rules:** every word kept (required guardrails). Each rule is marked with a no-sign icon instead of a numeral.
+- **Removed site-wide on this page:** the small all-caps labels above headings.
+- **New lines for owner review:** "Seven caps. One number.", "Meet the seven."
+- **Result:** about 170 visible words on the card fronts and page (plan target: under 250). The page is about 4,000 px tall on desktop, down from 4,600.
+- **Verified:** card flip shows the 3-fact back; 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 35. Owner review of the rebuilt pages (3 November 2026)
+
+**Home** (`home-v2-e.js`). Three sections come back at the owner's request. Each keeps its small label, and the earlier trims (the proof intro, the check descriptions, and the review intro and rule sentences) stay.
+- **Proof, not promises** ("Licensed. Labelled. Traceable."): licence record, published labels, checks, makers.
+- **Voices** ("Real words, only."): always shown, including while no reviews are published.
+- **Before you order** ("Good questions welcome here."): the five questions.
+- **New order:** Hero · Trust strip · Seven everyday essentials · When to take each one · Proof, not promises · Your bottle has a record · Voices · Before you order · Close. The page is 8,500 px tall on desktop.
+
+**Product page** (`pdp-v2-e.css`)
+- On desktop (wider than 1,000 px), each section's left-hand heading sticks just below the site header and section bar (162 px from the top). It scrolls away when its section ends.
+- Tablet and phone stack as before, with no sticky headings.
+
+**Shop** (`shop-v2-e.js`, `shop-v2-e.css`)
+- **Title:** "07 Shop all seven" is removed from view (screen readers still get the heading). The page now opens on the seven bottles.
+- **View switch:** "View as: Line-up / Cards" is removed. Shop has one view, the product cards; the Super Sevens playing cards remain on /super-sevens.
+- **Time filter:** "When to take it" is removed. Format filters remain, and the card chips show the time.
+- **Ask us:** right-aligned beside "Not sure which one?", and still on the right when it wraps on phones.
+- **Verified:** sticky headings stop at their section's end; Shop shows the cards grid with no title, switch or time filter; 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 36. Standards rebuilt to the Page Flow Plan (3 November 2026)
+
+Layer: `web/standards-v2-e.js` + `web/standards-v2-e.css`, loaded last. Nothing is deleted. Each merged section's content sits behind a tap-to-open row, titled with its own heading, under the section it joined. The old anchors `#source`, `#checks`, `#evidence` and `#questions` now point at those rows.
+
+| # | Section | Headline | Visual | Folded in (tap to open) |
+| --- | --- | --- | --- | --- |
+| 1 | Hero + record | Behind every colour, a record. | Four icon tabs (Formula · Source · Checks · Record), each with its publication status dot; the seven-cap product record picker | "Our standards, at a glance" became the tabs |
+| 2 | The chain | Each stage proves something different. | Ingredient → finished product → lot → document, with icons | What we can show you, and what we won't claim · Where ingredients come from · How quality is checked · Published today, and still to come |
+| 3 | Makers | Every ingredient, and who makes the product. | The ingredient explorer | Every label, side by side |
+| 4 | Your lot | Follow your lot | The lot picture and three steps | (sub-labels removed) |
+| 5 | How we communicate | How we communicate responsibly | Three practices with icons; then Explore the collection · Find your lot report | The evidence behind the standard · Good questions about our standards |
+
+- **Removed:** the small labels and section counters ("07 / Your lot / 10"), plus the "How we work, and what is still to come." divider, whose sections are now folded.
+- **Folds:** every box starts closed. The two `data-sx-wide-open` boxes no longer auto-open on wide screens.
+- **Status dots:** Partly published (amber), Not yet published (grey), Lookup available (green). The words come from the page's own status list.
+- **Result:** 13 sections become 5, about 1,800 words become about 700 shown at first, and the page is about 6,800 px tall on desktop instead of 13,000.
+- **Verified:** picking a product shows its record; the Record tab jumps to Follow your lot; 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 37. Story rebuilt to the Page Flow Plan (3 November 2026)
+
+Layer: `web/story-v2-e.js` + `web/story-v2-e.css`, loaded last. Every chapter and About section is kept word for word behind a **Read** row in the part it belongs to. `/about` still lands on `#about`, which is now part 1.
+
+| # | Part | Headline | Visual | Behind "Read" |
+| --- | --- | --- | --- | --- |
+| — | Hero | You should always know what you're being served. | Seven-segment caps; "A good café shows you the menu. So do we." | — |
+| 1 | The problem | The front of the label shouts. The back whispers. | A dark "Front" card ("More energy, more strength, more glow.") beside a quiet "Back" card in tiny type ("what form the ingredient is in, how much of it you actually get, and when you should take it."). Both lines are taken from chapter II. | Careful people · An opaque shelf · The front of the label shouts… |
+| 2 | The idea | A good café never hides the recipe. | Chapter III's café menu board | Why Body Café Co. exists · Why "café" |
+| 3 | How | Form. Amount. Moment. Proof. | The four cards with icons | The thinking behind our products · What we believe · What we can demonstrate · Most supplement shopping… · Name, colour, format, label |
+| 4 | The promise | (manifesto band) + Four values, each with something to check. | Manifesto icon badges; the four values with icons | Our place in everyday life |
+| 5 | Invitation | Start with one. Read the whole label. | Shop all seven | — |
+
+- **Removed:** the chapter rail (its seven ticks no longer match), the small labels (the manifesto tagline stays), and the "Who we are, and how we work." About header. The duplicate milk-packet opening is now behind one tap.
+- **Read rows** open with the text already visible (no scroll-in animation inside them).
+- **New line for owner review:** "A good café never hides the recipe." is the Home belief line, reused here as a headline.
+- **Result:** 14 parts become 5 plus hero and close; about 1,590 words become about 530 visible; about 11,800 px becomes 6,500 px on desktop.
+- **Verified:** opening a Read row shows the chapters; /about → /story#about; 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 38. Lot reports, Learn, Help and Contact to the Page Flow Plan (3 November 2026)
+
+Layer: `web/support-v2-e.js` + `web/support-v2-e.css`, loaded last. `visuals-e.js` gains three icons (truck, back arrow, card). Forms, lookups, filters and the contact switchboard work as before.
+
+- **Lot reports** (3,060 px desktop)
+  - The lookup stays first. The kicker, section counters and the "02" in "Find your lot report" are removed.
+  - The result area is hidden until a lookup returns a record (tested: Iron · DEMO-01-01 shows its record).
+  - The nine report terms open on tap ("The 9 terms on a report"). What a report can't show stays visible.
+- **Learn** (5,000 → 3,340 px desktop)
+  - The seven cap-coloured guide cards now carry each guide's question, under a new heading, "Seven product guides."
+  - The second list of the same seven guides ("One ingredient. A better question.") is removed.
+  - The ten questions open on tap, and the filter still finds them (tested: "iron").
+  - Kickers and counters are removed.
+- **Help:** every quick action and topic gets an icon:
+  - Track an order (truck) · Report an issue (flag) · Request cancellation (no-sign) · Contact support (question)
+  - Orders (receipt) · Delivery (truck) · Returns (back arrow) · Payments (card) · Account (person) · Products (bottle) · Lot reports (tag)
+  - The kicker is removed.
+- **Contact**
+  - The phone switchboard and topic picker stay first.
+  - "Ways to reach us" repeated them, so CSS hides it once the switchboard is built. It stays in the page because the switchboard reads its links.
+  - Business details open on tap. Hours, and the complaints and grievance details, stay open (required information).
+- **New line for owner review:** "Seven product guides."
+- **Verified:** all four pages at 1440 px and 375 px with no sideways scroll; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 39. Product cards and the Shop header (3 November 2026, owner review)
+
+**Product cards on Home and Shop** (`pages-minimal-e.js` card code, `pages-minimal-e.css`)
+- The FSSAI veg / non-veg mark now sits at the right end of the product-name line. It is no longer in the chip row.
+- Price and **Add to bag** share one row, price on the left and the button on the right, on desktop and phone.
+  - The separate "View product / Add to bag" row is gone. The card name still opens the product.
+  - The "Out of stock" line is removed; the button already says it.
+- The empty gap between the name and the pack size ("30 capsules") is closed. Names had a two-line minimum height (`min-height: 2.4em`); it is now 0.
+- On phones, the Shop's mobile CSS stretched the button to full width (`width: 100%`), pushing it out of the card. Inside the buy row the button now sizes to its label.
+
+**Shop header** (`shop-v2-e.js`, `shop-v2-e.css`)
+- The line-up of seven bottles with numbers, names and prices is removed.
+- A visible heading opens the page instead: **"Shop the seven."** with one line, **"Seven everyday supplements. One cap colour each, every label fact in plain view."** The browser tab title follows it.
+- **New lines for owner review:** both of the above.
+
+**Verified:** Add to bag from a Shop card updates the bag (local preview bag 4 → 5 during the test). All seven Shop and Home cards keep the button inside the card at 1440 px and 375 px, with price and button on one row; no sideways scroll. All 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 40. Consistent product cards (3 November 2026, owner review)
+
+`pages-minimal-e.js` card code and `pages-minimal-e.css`; applies to the Home and Shop cards.
+- **Pack size removed:** the "60 capsules" line under the name is gone. The dose chip already shows the serving, and the product page shows the pack.
+- **Same layout in every card:** bottle, name row (with the veg / non-veg mark), chips straight under the name, then price and Add to bag on the bottom edge.
+- **Same height:** on desktop and tablet every card is the same height (`grid-auto-rows: 1fr`), so names and price rows line up across rows. Measured on Home: names at 290 px and price rows at 419 px in all seven cards, every card 505 px tall. On Shop: 236 / 354 / 466 px.
+- **One exception:** Myo & D-Chiro Inositol's name wraps to two lines, so its chips start one line lower. Its price row still lines up.
+- **Verified:** 1440 px and 375 px with no sideways scroll; every Add to bag button fits inside its card; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 41. Home: better "When to take each one" and Voices, and a full mobile pass (3 November 2026)
+
+`home-v2-e.js` and `home-v2-e.css`.
+
+**When to take each one**
+- **Three time-of-day cards:**
+  - Morning: warm cream, sunrise icon, 5 products.
+  - Noon: light, sun icon, Creatine with an "Any one time" tag.
+  - Night: dark navy, moon icon, Psyllium.
+- **Product rows:** each product shows its cap photo, its name and its label icons (dose shapes, food, veg / non-veg). A row opens the product. The time chip is removed inside a slot, since the slot shows it.
+- **Removed:** the sun band and the text columns.
+- **Layout by width:** desktop is 1.5 : 1 : 1; tablet puts Morning full width with Noon and Night below; phone stacks the three cards.
+- **Slots come from the label directions** (`BCCGlanceE.facts`), the same source as the product page tiles.
+
+**Voices**
+- **Empty state:** "0 published reviews" and the status line on the left; the three review rules on the right as icon cards: Delivered first (box), Checked, not chosen (check), Disclosed (flag).
+- **Hidden until the first real review:** the seven "first verified review … will appear here" cards and the empty "average out of 5". Both show again by themselves once a real review is published.
+- **Height:** 1,135 px becomes 532 px on desktop.
+
+**Mobile pass (375 px phone, 768 px tablet)**
+- **Proof, not promises:** on phone the four record cards become one swipeable row, like the product cards. The section is 2,735 px → 1,155 px tall.
+- **Voices:** one column on phone and tablet (before, a later desktop rule squeezed it into half the width).
+- **Close:** the caps drop their name labels on phone, where the labels overlapped; each cap is still a named link.
+- **Headings and hero:** section headings sized for phone; the hero saucer is capped at 360 px.
+- **Result:** the phone page is 10,360 px → 8,080 px. An automatic check finds nothing past the screen edge at 375 px or 768 px.
+
+**Verified:** 1440 px, 768 px and 375 px; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 42. Voices redesign with sample reviews; 2 × 2 grids on phones (3 November 2026)
+
+Layer: `web/voices-v2-e.js` + `web/voices-v2-e.css`, loaded after `home-v2-e.*`. The old Proof swipe row in `home-v2-e.css` is removed.
+
+**Voices** ("Real words, only.")
+- **Desktop layout:** heading and rating summary on the left; product filter and review cards on the right; the three review rules as a slim trust row underneath.
+- **Summary:** the average (4.4), stars, 5★→1★ bars with counts, and the note "Sample reviews for the design preview. Real, verified reviews replace them before launch."
+- **Filter:** All plus the seven product caps; tapping a cap shows only that product's reviews (tested: Iron shows 2).
+- **Cards:** stars, a "Sample" tag, a bold title, the words, then the reviewer's initial in the cap colour, first name · city · month, and a product chip with its cap that opens the product. The first card is featured, larger and full width.
+- **Phone:** one column, the first three reviews, then **Show all 8 reviews**.
+- **Sample reviews:** eight, preview releases only (the same `BCCRelease.preview` rule as `demo-content.js`). Production never shows them.
+  - Each is tagged "Sample"; none says "Verified delivery".
+  - None claims a health effect or result. They cover label clarity, format, taste, the veg / non-veg mark, delivery and the lot lookup.
+  - Ratings: 5, 5, 4, 4, 5, 5, 3, 4. The 3★ one is kept on purpose: "low ratings are published too".
+  - They disappear by themselves when the reviews API returns real reviews (super-sevens.js replaces the list). The live counter then shows, and the sample summary hides.
+  - **Before launch:** delete the `SAMPLES` array in `voices-v2-e.js`, or ship as a production release.
+
+**Phones (760 px and below)**
+- **Seven everyday essentials:** a 2 × 2 grid instead of the sideways row. Smaller bottle, name, chips, then price (with "MRP") and a short **Add** button on one row.
+- **Proof, not promises:** four tiles in a 2 × 2 grid (Licence record · Full labels · Checks · Makers), each with an icon. Tapping a tile opens that record full width; tapping again closes it. The section is 624 px tall on phone.
+
+**Verified:** filter and Show all work; tiles open and close; 1440 px, 768 px and 375 px with no sideways scroll. All 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 43. Voices: sticky summary (3 November 2026, owner review)
+
+`voices-v2-e.js` and `voices-v2-e.css`.
+- **On desktop (wider than 1,000 px):** the heading ("Voices · Real words, only.") and the rating summary share one left column (`.vv-side`). The column runs the full height of the reviews, and its content sticks 100 px from the top while the reviews scroll.
+- **Where it stops:** the column ends where the reviews end, so the summary scrolls away with the last review and never covers the "Delivered first" rule cards. Measured at five scroll positions: it sat at 100 px through the reviews, then its bottom stayed above the rules' top (225 px vs 261 px, and 25 px vs 61 px).
+- **Tablet and phone:** the summary stays in normal flow (not sticky), above the reviews.
+- **Verified:** no sideways scroll at 375 px; all 10 design-tools tests and 32 server/HTTP tests pass.

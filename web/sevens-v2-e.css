@@ -1,0 +1,4 @@
+/* Body Café Co. — Variant E · /super-sevens to the Page Flow Plan (see sevens-v2-e.js). */
+.eh-e [data-s7] .s7-sub { margin: 14px 0 0; font-size: clamp(20px, 2vw, 28px); font-weight: 300; letter-spacing: -0.01em; }
+.eh-e [data-s7] .ss-digits > li { cursor: default; }
+.eh-e [data-s7] .s7-no .vx-ic { width: 44px; height: 44px; margin: 0; background: rgb(170 71 46 / .1); color: #aa472e; }

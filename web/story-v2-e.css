@@ -1,0 +1,24 @@
+/* Body Café Co. — Variant E · Story to the Page Flow Plan (see story-v2-e.js). */
+
+.eh-e [data-sy2] .sy2-sec { max-width: 1200px; margin: 0 auto; padding: clamp(64px, 9vw, 120px) var(--pad); border-top: 1px solid var(--line); display: grid; gap: 36px; }
+.eh-e [data-sy2] .sy2-sec > h2 { margin: 0; max-width: 18ch; font-weight: 300; letter-spacing: -0.03em; line-height: 1.04; font-size: clamp(36px, 5vw, 72px); text-wrap: balance; }
+.eh-e [data-sy2] .sy2-visual > * { margin: 0; }
+.eh-e [data-sy2] .sy2-fold { margin-top: 0; }
+/* Folded chapters are shown as soon as they are opened (no scroll-in animation inside a fold). */
+.eh-e .ssy.is-js .sy2-fold .ssy-rv { opacity: 1; transform: none; }
+.eh-e [data-sy2] .sy2-fold .ssy-ch { padding-block: 24px; border: 0; }
+.eh-e [data-sy2] .sy2-fold > section { max-width: none; padding-inline: 0; }
+
+/* 1 · The label, front and back. */
+.eh-e [data-sy2] .sy2-label { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; max-width: 860px; }
+.eh-e [data-sy2] .sy2-label > div { display: grid; align-content: space-between; gap: 28px; min-height: 260px; padding: 26px; border-radius: 14px; }
+.eh-e [data-sy2] .sy2-label small { font: 600 11px/1 "Lemon Milk", sans-serif; letter-spacing: .14em; text-transform: uppercase; opacity: .7; }
+.eh-e [data-sy2] .sy2-front { background: var(--ink); color: #fff; }
+.eh-e [data-sy2] .sy2-front b { font: 700 clamp(26px, 3.2vw, 44px)/1.02 "Lemon Milk", sans-serif; text-transform: uppercase; letter-spacing: -0.01em; }
+.eh-e [data-sy2] .sy2-back { background: #fff; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
+.eh-e [data-sy2] .sy2-back p { margin: 0; font-size: 11px; line-height: 1.45; max-width: 26ch; }
+@media (max-width: 640px) { .eh-e [data-sy2] .sy2-label { grid-template-columns: 1fr; } .eh-e [data-sy2] .sy2-label > div { min-height: 180px; } }
+
+/* 4 · The four values, as a row. */
+.eh-e [data-sy2] #values .sy2-visual ol { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.eh-e [data-sy2] .sy2-fold summary > span { margin: 0 auto 0 -8px; color: var(--muted); font-weight: 400; }

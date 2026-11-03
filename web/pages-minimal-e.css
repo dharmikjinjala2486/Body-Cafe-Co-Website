@@ -1,0 +1,87 @@
+/* Body Café Co. — Variant E · lighter, more visual pages (see pages-minimal-e.js). */
+
+/* ---------- Bullets in place of long paragraphs ---------- */
+.eh-e ul.hm-bullets { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+/* Bullets often sit inside a page's own list items, so they shed any inherited card styling (tripled class for weight). */
+.eh-e ul.hm-bullets.hm-bullets.hm-bullets > li { position: relative; display: block; margin: 0; padding: 0 0 0 18px; border: 0; border-radius: 0; background: none; box-shadow: none; min-height: 0; line-height: 1.45; }
+.eh-e ul.hm-bullets.hm-bullets.hm-bullets > li::before { content: ""; position: absolute; inset: .6em auto auto 2px; width: 6px; height: 6px; margin: 0; border: 0; border-radius: 50%; background: var(--cap, currentColor); transform: none; }
+.eh-e dd > ul.hm-bullets { gap: 6px; }
+
+/* ---------- Product page: About this item ---------- */
+.eh-e .hm-item { display: grid; gap: 12px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 15px; }
+.eh-e .hm-item .hm-item-t { margin: 0; font: 600 12px/1.3 "Lemon Milk", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.eh-e .hm-item h3.hm-item-t { margin-top: 8px; }
+.eh-e .hm-item .hm-warn { color: var(--muted); font-size: 14px; gap: 5px; }
+.eh-e .hm-item .hm-warn > li::before { background: var(--muted); }
+
+/* ---------- Product cards without the format stripe ---------- */
+.eh-e .hr-card { grid-template-rows: auto 1fr; }
+
+/* ---------- At a glance (glance-e.js) ---------- */
+.eh-e .gl-ic { width: 26px; height: 26px; flex: none; color: var(--cap, var(--ink)); }
+.eh-e .gl-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+.eh-e .gl-tile { display: grid; align-content: start; gap: 4px; min-height: 104px; padding: 14px 12px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.eh-e .gl-tile .gl-ic, .eh-e .gl-tile .gl-icons, .eh-e .gl-tile .gl-dose { margin-bottom: 6px; }
+.eh-e .gl-tile b { font-size: 15px; font-weight: 600; line-height: 1.2; }
+.eh-e .gl-tile small { font-size: 12.5px; color: var(--muted); line-height: 1.3; }
+.eh-e .gl-tile.gl-key { grid-column: 1 / -1; min-height: 0; background: var(--cap, var(--ink)); color: var(--on-cap, #fff); box-shadow: none; }
+.eh-e .gl-tile.gl-key b { font-size: 20px; }
+.eh-e .gl-tile.gl-key small { color: inherit; opacity: .8; }
+.eh-e .gl-icons { display: flex; gap: 2px; }
+.eh-e .gl-icons .gl-ic { width: 22px; height: 22px; }
+/* The dose, drawn as that many capsules, softgels or tablets in the cap colour. */
+.eh-e .gl-dose { display: inline-flex; align-items: center; gap: 3px; height: 26px; }
+.eh-e .gl-u { display: block; background: var(--cap, var(--ink)); }
+.eh-e .gl-u-cap { width: 10px; height: 24px; border-radius: 6px; background: linear-gradient(var(--cap, var(--ink)) 50%, color-mix(in srgb, var(--cap, var(--ink)) 35%, #fff) 50%); }
+.eh-e .gl-u-gel { width: 13px; height: 20px; border-radius: 50%; }
+.eh-e .gl-u-chew { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--cap, var(--ink)) 60%, #fff); }
+.eh-e .hm-cautions { border-top: 1px solid var(--line); padding-top: 12px; }
+.eh-e .hm-cautions summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.eh-e .hm-cautions summary span { color: var(--muted); font-weight: 400; }
+.eh-e .hm-cautions[open] summary { margin-bottom: 10px; }
+
+/* Compact row on cards and the day plan. */
+.eh-e .gl-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; }
+.eh-e .gl-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px 4px 7px; border-radius: 999px; background: rgb(45 41 38 / .05); font-size: 12.5px; line-height: 1; white-space: nowrap; }
+.eh-e .gl-chip .gl-ic { width: 18px; height: 18px; }
+.eh-e .gl-chip .gl-dose { height: 18px; gap: 2px; }
+.eh-e .gl-chip .gl-u-cap { width: 7px; height: 16px; }
+.eh-e .gl-chip .gl-u-gel { width: 9px; height: 14px; }
+.eh-e .gl-chip .gl-u-chew { width: 13px; height: 13px; box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--cap, var(--ink)) 60%, #fff); }
+.eh-e .gl-chip-diet { padding: 3px; background: none; }
+.eh-e .hx-day-parts li li > a .gl-chips { margin-top: 8px; }
+
+/* ---------- Concept icons on list headings (visuals-e.js) ---------- */
+.eh-e .vx-ic { display: inline-grid; place-items: center; flex: none; width: 2.2em; height: 2.2em; margin-right: .55em; vertical-align: middle; border-radius: 50%; background: color-mix(in srgb, var(--cap, var(--ink)) 12%, transparent); color: var(--cap, var(--ink)); }
+.eh-e .vx-ic svg { width: 62%; height: 62%; }
+.eh-e .vx-list :is(h3, h4, dt, strong, b):has(> .vx-ic) { display: flex; align-items: center; }
+/* Story chapter 4 and the manifesto badges. */
+.eh-e .ssy-step > .vx-ic { width: 52px; height: 52px; margin: 0 0 12px; }
+.eh-e .vx-badges { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; max-width: 560px; }
+.eh-e .vx-badges li { display: grid; justify-items: center; gap: 10px; text-align: center; font-size: clamp(17px, 1.6vw, 22px); line-height: 1.25; }
+.eh-e .vx-badges .vx-ic { width: 64px; height: 64px; margin: 0; background: rgb(255 255 255 / .1); color: inherit; }
+
+/* ---------- Product cards (Home + Shop): name row with the diet mark; price and Add to bag in one row ---------- */
+.eh-e .gl-namerow { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.eh-e .gl-namerow .hr-name, .eh-e .gl-namerow .sp-name { min-height: 0; margin: 0; }
+.eh-e .gl-namerow .gl-chip-diet { flex: none; padding: 0; margin-top: 1px; }
+.eh-e .gl-namerow .gl-chip-diet .gl-ic { width: 20px; height: 20px; }
+.eh-e .hr-card .hr-pack, .eh-e .sp-card .sp-pack { margin-top: -4px; }
+.eh-e .gl-buyrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: nowrap; }
+.eh-e .gl-buyrow .hr-price, .eh-e .gl-buyrow .sp-price { margin: 0; white-space: nowrap; }
+.eh-e .gl-buyrow .hr-add, .eh-e .gl-buyrow .sp-add { flex: none; min-height: 44px; padding: 0 16px; }
+@media (max-width: 760px) {
+  .eh-e .gl-buyrow { gap: 8px; }
+  .eh-e .gl-buyrow .sp-add, .eh-e .gl-buyrow .hr-add { padding: 0 12px; min-height: 40px; font-size: 14px; }
+  .eh-e .gl-buyrow .sp-price strong { font-size: 18px; }
+  .eh-e .gl-buyrow .sp-price span { font-size: 11px; }
+}
+/* Shop CSS stretches the button to full width on phones; in the buy row it sizes to its label. */
+.eh-e .ezs .gl-buyrow .sp-add { width: auto; margin: 0; }
+
+/* Every card reads the same way: bottle, name at the same height, chips right under it, price row on the bottom edge. */
+.eh-e .hr-card .hr-body, .eh-e .ezs .sp-card .sp-body { display: flex; flex-direction: column; justify-content: flex-start; align-content: normal; gap: 12px; }
+.eh-e .hr-card .gl-buyrow, .eh-e .ezs .sp-card .gl-buyrow { margin-top: auto; padding-top: 6px; }
+.eh-e .hr-card .gl-chips, .eh-e .sp-card .gl-chips { align-content: flex-start; }
+/* All cards the same height, so every price row sits on the same line across rows too. */
+@media (min-width: 761px) { .eh-e .hr-grid, .eh-e .ezs .sp-grid { grid-auto-rows: 1fr; } }

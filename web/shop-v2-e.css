@@ -1,0 +1,29 @@
+/* Body Café Co. — Variant E · Shop to the Page Flow Plan (see shop-v2-e.js). */
+
+/* Filter buttons carry their shape or time icon, in the ink colour. */
+.eh-e [data-sv] .sp-opt { display: inline-flex; align-items: center; gap: 7px; }
+.eh-e [data-sv] .sp-opt .gl-u { --cap: currentColor; flex: none; }
+.eh-e [data-sv] .sp-opt .gl-u-cap { width: 7px; height: 16px; border-radius: 4px; background: currentColor; }
+.eh-e [data-sv] .sp-opt .gl-u-gel { width: 9px; height: 14px; border-radius: 50%; background: currentColor; }
+.eh-e [data-sv] .sp-opt .gl-u-chew { width: 13px; height: 13px; border-radius: 50%; background: none; box-shadow: inset 0 0 0 2px currentColor; }
+.eh-e [data-sv] .sp-opt .gl-ic { width: 18px; height: 18px; color: currentColor; }
+
+/* The result count speaks to screen readers always, and shows only while a filter is on. */
+.eh-e [data-sv] .sp-state:not(:has(.sp-chips li)) .sp-count { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.eh-e [data-sv] .sp-state:not(:has(.sp-chips li)) { min-height: 0; padding-block: 0; }
+
+/* Cards breathe a little more with fewer lines. */
+.eh-e [data-sv] .sp-body { gap: 10px; }
+.eh-e [data-sv] .sp-actions { justify-content: flex-end; }
+
+
+/* Help: the question on the left, Ask us on the right. */
+.eh-e [data-sv] #shop-help .sp-sec-in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 32px; }
+.eh-e [data-sv] #shop-help .sp-head, .eh-e [data-sv] #shop-help .sp-sec-body { margin: 0; padding: 0; }
+.eh-e [data-sv] #shop-help .sp-help-actions { justify-content: flex-end; }
+.eh-e [data-sv] #shop-help .sp-sec-body { margin-left: auto; }
+
+/* Heading in place of the bottle line-up. */
+.eh-e [data-sv] .sp-intro { padding-bottom: 8px; }
+.eh-e [data-sv] .sp-intro h1 { margin: 0; font-weight: 300; letter-spacing: -0.03em; line-height: 1.02; font-size: clamp(40px, 5.4vw, 80px); }
+.eh-e [data-sv] .sv-sub { margin: 14px 0 0; max-width: 46ch; font-size: clamp(16px, 1.4vw, 19px); color: var(--muted); }

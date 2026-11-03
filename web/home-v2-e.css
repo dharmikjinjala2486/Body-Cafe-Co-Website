@@ -1,0 +1,112 @@
+/* Body Café Co. — Variant E · Home to the Page Flow Plan (see home-v2-e.js). */
+
+/* ---------- 2 · Trust strip ---------- */
+.eh-e .hv-trust { padding: 28px var(--pad); border-block: 1px solid var(--line); }
+.eh-e .hv-trust ul { list-style: none; margin: 0 auto; padding: 0; max-width: 1100px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.eh-e .hv-trust li { display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 600; font-size: 15px; }
+.eh-e .hv-trust .vx-ic { width: 44px; height: 44px; margin: 0; background: rgb(45 41 38 / .05); color: var(--ink); }
+@media (max-width: 760px) {
+  .eh-e .hv-trust ul { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 18px; }
+  .eh-e .hv-trust li { justify-content: flex-start; font-size: 14px; gap: 10px; }
+  .eh-e .hv-trust .vx-ic { width: 38px; height: 38px; }
+}
+
+/* ---------- 3 · The seven ---------- */
+.eh-e [data-hv] .hr-range { border-top: 0; }
+.eh-e .hv-head { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; margin-bottom: 32px; }
+.eh-e .hx .hv-head h2 { font-size: clamp(34px, 4vw, 60px); }
+.eh-e [data-hv] .hr-actions { justify-content: flex-end; }
+.eh-e [data-hv] .hr-body { gap: 10px; }
+
+/* ---------- 4 · Your day ---------- */
+.eh-e [data-hv] .hx-day h2 { font-size: clamp(34px, 4vw, 60px); }
+
+/* ---------- 5 · Check any bottle ---------- */
+.eh-e .hv-steps { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 14px; counter-reset: hv; }
+.eh-e .hv-steps li { display: flex; align-items: center; gap: 14px; font-size: 16px; font-weight: 500; }
+.eh-e .hv-steps .vx-ic { width: 46px; height: 46px; margin: 0; background: rgb(45 41 38 / .06); color: var(--ink); position: relative; }
+.eh-e .hv-steps li:not(:last-child) .vx-ic::after { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: 14px; background: currentColor; opacity: .35; }
+
+
+/* Proof checks keep their bold titles only. */
+.eh-e [data-hv] .hp-checks li > b { display: block; }
+
+/* ---------- 4 · When to take each one: three time-of-day cards ---------- */
+.eh-e .hd-day { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-top: 36px; align-items: stretch; }
+.eh-e .hd-slot { display: flex; flex-direction: column; gap: 18px; padding: 24px; border-radius: 16px; }
+.eh-e .hd-morning { background: linear-gradient(160deg, #fbf3e4, #f6ead2); }
+.eh-e .hd-noon { background: linear-gradient(160deg, #fffaf0, #f4efe6); box-shadow: inset 0 0 0 1px var(--line); }
+.eh-e .hd-night { background: linear-gradient(160deg, #2b2f45, #1c1f30); color: #f4f1ea; }
+.eh-e .hd-slot header { display: flex; align-items: center; gap: 12px; }
+.eh-e .hd-slot h3 { margin: 0; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
+.eh-e .hd-ic { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: rgb(255 255 255 / .7); }
+.eh-e .hd-ic .gl-ic { width: 26px; height: 26px; color: #c0761b; }
+.eh-e .hd-night .hd-ic { background: rgb(255 255 255 / .1); }
+.eh-e .hd-night .hd-ic .gl-ic { color: #e9d9a6; }
+.eh-e .hd-n { margin-left: auto; min-width: 28px; height: 28px; padding: 0 8px; border-radius: 999px; display: grid; place-items: center; font-size: 13px; font-weight: 600; background: rgb(45 41 38 / .08); }
+.eh-e .hd-night .hd-n { background: rgb(255 255 255 / .14); }
+.eh-e .hd-slot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.eh-e .hd-morning ul { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.eh-e .hd-slot li a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: rgb(255 255 255 / .75); color: var(--ink); text-decoration: none; transition: transform .2s ease, background .2s ease; }
+.eh-e .hd-slot li a:hover { transform: translateY(-2px); background: #fff; }
+.eh-e .hd-night li a { background: rgb(255 255 255 / .08); color: #f4f1ea; }
+.eh-e .hd-night li a:hover { background: rgb(255 255 255 / .14); }
+.eh-e .hd-cap { flex: none; width: 44px; height: 44px; object-fit: contain; filter: drop-shadow(0 4px 6px rgb(0 0 0 / .15)); }
+.eh-e .hd-txt { display: grid; gap: 6px; min-width: 0; }
+.eh-e .hd-name { font-weight: 600; font-size: 15px; line-height: 1.2; }
+.eh-e .hd-tag { margin-left: 4px; padding: 2px 8px; border-radius: 999px; font-style: normal; font-size: 11.5px; font-weight: 600; background: var(--cap); color: #fff; white-space: nowrap; }
+.eh-e .hd-slot .gl-chips { gap: 4px; }
+.eh-e .hd-slot .gl-chip { padding: 3px 7px 3px 5px; font-size: 12px; background: rgb(45 41 38 / .06); }
+.eh-e .hd-night .gl-chip { background: rgb(255 255 255 / .1); color: #f4f1ea; }
+.eh-e .hd-night .gl-chip .gl-ic { color: #e9d9a6; }
+@media (max-width: 1100px) { .eh-e .hd-day { grid-template-columns: 1fr 1fr; } .eh-e .hd-morning { grid-column: 1 / -1; } }
+@media (max-width: 640px) {
+  .eh-e .hd-day { grid-template-columns: 1fr; gap: 12px; margin-top: 24px; }
+  .eh-e .hd-slot { padding: 18px; gap: 14px; }
+  .eh-e .hd-morning ul { grid-template-columns: 1fr; }
+}
+
+/* ---------- Voices: honest empty state ---------- */
+.eh-e [data-hv] .ss-voices { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 64px; align-items: start; }
+.eh-e [data-hv] .ss-voices > .ez-sec-head { grid-column: 1; margin: 0; }
+.eh-e [data-hv] .ss-voices > .ss-voices-stats { grid-column: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin: 0; padding: 0; border: 0; }
+.eh-e [data-hv] .ss-voices > .ss-voices-how { grid-column: 2; grid-row: 1 / span 3; margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.eh-e [data-hv] .ss-voices > .ez-sec-foot { grid-column: 1; margin: 0; }
+.eh-e [data-hv] .ss-voices > .ss-voices-list { grid-column: 1 / -1; }
+/* No reviews yet: the empty placeholder cards and the empty average hide; they return with the first real review. */
+.eh-e [data-hv] .ss-voices-list:not(:has(.ss-quote:not(.is-empty))) { display: none; }
+.eh-e [data-hv] .ss-voices-stats > div:has([aria-label="No average yet"]) { display: none; }
+.eh-e [data-hv] .ss-voices-status { flex: 1 1 220px; margin: 0; font-size: 15px; color: var(--muted); }
+.eh-e [data-hv] .ss-voices-how > li { display: flex; align-items: flex-start; gap: 16px; padding: 18px 20px; border-radius: 14px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.eh-e [data-hv] .ss-voices-step { flex: none; }
+.eh-e [data-hv] .ss-voices-step .vx-ic { width: 46px; height: 46px; margin: 0; background: rgb(45 41 38 / .06); color: var(--ink); }
+.eh-e [data-hv] .ss-voices-how strong { display: block; font-size: 17px; margin-bottom: 4px; }
+.eh-e [data-hv] .ss-voices-how p { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.45; }
+@media (max-width: 900px) {
+  .eh-e [data-hv] .ss-voices { grid-template-columns: 1fr; }
+  .eh-e [data-hv] .ss-voices > * { grid-column: 1 !important; grid-row: auto !important; }
+}
+.eh-e [data-hv] .ss-voices { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.eh-e [data-hv] .ss-voices > .ss-voices-how { grid-template-columns: 1fr; }
+.eh-e [data-hv] .ss-voices > .ez-sec-head h2 { max-width: none; }
+.eh-e [data-hv] .ss-voices > .ez-sec-head { display: block; }
+.eh-e [data-hv] .ss-voices > .ez-sec-head .ez-k { margin-bottom: 14px; }
+
+/* ---------- Phone and tablet pass (owner, 3 November 2026: "home page fully mobile responsive") ---------- */
+@media (max-width: 900px) {
+  /* Voices: one column (this rule comes after the desktop two-column one on purpose). */
+  .eh-e [data-hv] .ss-voices { grid-template-columns: 1fr; }
+  .eh-e [data-hv] .ss-voices-how > li { padding: 14px 16px; gap: 12px; }
+  .eh-e [data-hv] .ss-voices-step .vx-ic { width: 40px; height: 40px; }
+  .eh-e [data-hv] .ss-voices-how strong { font-size: 16px; }
+}
+@media (max-width: 760px) {
+  /* Close: the seven caps without name labels (each cap is still a named link). */
+  .eh-e [data-hv] .hx-invite .ht-cap-name { display: none; }
+  .eh-e [data-hv] .hx-invite .ht-stage { max-width: 320px; margin-inline: auto; }
+  /* Hero: a slightly smaller saucer so the caps and the button share the first screens. */
+  .eh-e [data-hv] .hk-cluster { max-width: 360px; }
+  /* Section headings on phone. */
+  .eh-e [data-hv] .hx h2, .eh-e [data-hv] .ez-sec-head h2, .eh-e [data-hv] .ss-voices h2 { font-size: clamp(34px, 9vw, 44px); }
+}
+.eh-e .hv-head .x-link { white-space: nowrap; }

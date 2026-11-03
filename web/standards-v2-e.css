@@ -1,0 +1,19 @@
+/* Body Café Co. — Variant E · Standards to the Page Flow Plan (see standards-v2-e.js). */
+
+/* ---------- Hero: four icon tabs with their status ---------- */
+.eh-e [data-std] .std-tabs { margin-top: 32px; }
+.eh-e [data-std] .std-tabs ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.eh-e [data-std] .std-tabs a { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink); text-decoration: none; transition: box-shadow .2s ease; }
+.eh-e [data-std] .std-tabs a:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
+.eh-e [data-std] .std-tabs .vx-ic { width: 42px; height: 42px; margin: 0; background: rgb(45 41 38 / .06); color: var(--ink); }
+.eh-e [data-std] .std-tabs b { display: block; font-size: 16px; font-weight: 600; }
+.eh-e [data-std] .std-st { display: inline-flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 12.5px; color: var(--muted); }
+.eh-e [data-std] .std-st::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #b9b2a6; }
+.eh-e [data-std] .std-st.is-part::before { background: #d6a531; }
+.eh-e [data-std] .std-st.is-on::before { background: #2f8a4a; }
+@media (max-width: 860px) { .eh-e [data-std] .std-tabs ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---------- Folds under each section ---------- */
+.eh-e [data-std] .sv2-fold { margin-top: 0; border-top: 0; }
+.eh-e [data-std] .sv2-fold:first-of-type { margin-top: 28px; border-top: 1px solid var(--line); }
+.eh-e [data-std] .sv2-fold[open] > :not(summary) { margin-bottom: 18px; }
