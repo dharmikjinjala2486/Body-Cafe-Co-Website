@@ -304,12 +304,7 @@
 @keyframes ss-wobble { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(14deg) translateX(4px); } }
 .eh-e .ss-404-found { min-height: 1.5em; font-weight: 600; }
 
-/* ====================================================================== Cursor and cap-flood */
-.ss-cursor { position: fixed; left: 0; top: 0; z-index: 10000; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--c, #2d2926); pointer-events: none; transition: width .25s var(--ss-ease, ease), height .25s, margin .25s, background .25s, box-shadow .25s, opacity .2s; box-shadow: 0 0 0 2px rgb(255 255 255 / .9); }
-.ss-cursor.is-hot { width: 38px; height: 38px; margin: -19px 0 0 -19px; background: color-mix(in srgb, var(--c, #2d2926) 16%, transparent); box-shadow: inset 0 0 0 2px var(--c, #2d2926); }
-.ss-cursor.is-grab { width: 54px; height: 54px; margin: -27px 0 0 -27px; }
-.ss-cursor.is-down { width: 26px; height: 26px; margin: -13px 0 0 -13px; }
-.ss-cursor[hidden] { display: none; }
+/* ====================================================================== Cap-flood */
 .ss-flood { position: fixed; inset: 0; z-index: 9999; background: var(--c); pointer-events: none; clip-path: circle(0 at var(--x) var(--y)); visibility: hidden; }
 .ss-flood.is-in { visibility: visible; animation: ss-flood-in .42s cubic-bezier(.6, 0, .3, 1) forwards; }
 .ss-flood.is-out { visibility: visible; clip-path: circle(150% at var(--x) var(--y)); animation: ss-flood-out .55s cubic-bezier(.4, 0, .2, 1) forwards; }
@@ -392,7 +387,7 @@
 @media (prefers-reduced-motion: reduce) {
   .eh-e .ss-ms, .eh-e .ss-s, .eh-e .ss-card-in, .eh-e .ss-fan-slot, .eh-e .ss-chipbook li { transition: none !important; animation: none !important; }
   .eh-e .ss-spin-hint i, .eh-e .ss-404-lost, .eh-e .ss-tray-cap { animation: none !important; }
-  .ss-cursor, .ss-flood { display: none !important; }
+  .ss-flood { display: none !important; }
 }
 
 /* Reports (lots.js layout): a small bottle base under the introduction. */

@@ -44,7 +44,7 @@
     return { n: n, form: form, serving: serving, when: when, food: food, extra: extra, days: days, veg: /^vegetarian/i.test(diet) ? true : /^non-vegetarian/i.test(diet) ? false : null };
   }
   var WHEN = { morning: 'Morning', noon: 'Noon', night: 'Night' };
-  var FOOD = { food: ['With food', ''], empty: ['Empty stomach', ''], either: ['With or without', 'food'] };
+  var FOOD = { food: ['With food', ''], empty: ['Empty stomach', ''], either: ['With or empty stomach', ''] };
   function dose(f) { var s = ''; for (var i = 0; i < Math.min(f.n, 5); i++) s += unit(f.form); return '<span class="gl-dose" aria-hidden="true">' + s + '</span>'; }
 
   /* Large tiles for the product page. */
@@ -66,7 +66,7 @@
     var f = facts(p), c = [];
     c.push('<span class="gl-chip">' + dose(f) + '<span>' + esc(f.serving) + '</span></span>');
     if (f.when.length) c.push('<span class="gl-chip">' + (f.when.length > 1 ? IC.noon : IC[f.when[0]]) + '<span>' + (f.when.length > 1 ? 'Any time' : WHEN[f.when[0]]) + '</span></span>');
-    if (f.food) c.push('<span class="gl-chip">' + IC[f.food] + '<span>' + FOOD[f.food][0] + '</span></span>');
+    if (f.food) c.push('<span class="gl-chip gl-chip-food">' + IC[f.food] + '<span>' + FOOD[f.food][0] + '</span></span>');
     if (f.veg !== null) c.push('<span class="gl-chip gl-chip-diet" title="' + (f.veg ? 'Vegetarian' : 'Non-vegetarian') + '">' + diet(f.veg) + '<span class="sr-only">' + (f.veg ? 'Vegetarian' : 'Non-vegetarian') + '</span></span>');
     return '<p class="gl-chips">' + c.join('') + '</p>';
   }

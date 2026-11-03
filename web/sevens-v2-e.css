@@ -1,4 +1,11 @@
-/* Body Café Co. — Variant E · /super-sevens to the Page Flow Plan (see sevens-v2-e.js). */
-.eh-e [data-s7] .s7-sub { margin: 14px 0 0; font-size: clamp(20px, 2vw, 28px); font-weight: 300; letter-spacing: -0.01em; }
-.eh-e [data-s7] .ss-digits > li { cursor: default; }
+/* Super Sevens: Home-sized hero, simplified cards, and the collection rules. */
+.eh-e .ss-page[data-s7] { width: 100%; max-width: none; padding: 0 0 64px; }
+.eh-e [data-s7] > :is(.ss-page-cards, .ss-page-rules, .x-next) { padding-inline: var(--pad); }
+.eh-e [data-s7] .s7-hero { margin: 0; }
+.eh-e [data-s7] .ss-page-cards .ss-card-art { margin-top: 18px; }
+.eh-e [data-s7] .ss-card-front .ss-card-foot { margin: 10px 0 0; padding: 12px 14px; border: 0; background: var(--cap); color: var(--on-cap); font: 600 13px/1.25 "Aileron", sans-serif; letter-spacing: .01em; text-transform: none; }
+.eh-e [data-s7] .ss-card-in:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; border-radius: 12px; }
 .eh-e [data-s7] .s7-no .vx-ic { width: 44px; height: 44px; margin: 0; background: rgb(170 71 46 / .1); color: #aa472e; }
+@media (min-width: 1100px) {
+  .eh-e [data-s7] .ss-card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

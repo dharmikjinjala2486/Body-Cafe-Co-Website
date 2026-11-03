@@ -151,3 +151,13 @@
   .eh-e [data-hv] .vv > .vv-side { grid-row: auto !important; }
   .eh-e [data-hv] .vv-side-in { position: static; }
 }
+
+/* Published reviews use the same product-specific summary and filters as the preview. */
+.eh-e [data-hv] .vv[data-vv-live] .vv-side-in > .vv-summary { display: grid; }
+.eh-e [data-hv] .vv[data-vv-live] .vv-side-in > .ss-voices-stats { display: none; }
+.eh-e [data-hv] .vv[data-vv-live] > .vv-filter { display: flex; }
+.eh-e .vv[data-vv-live]:not(.is-all):not(.is-filtered) .vv-card:nth-child(n + 7) { display: none; }
+.eh-e .vv[data-vv-live][data-vv-more-needed]:not(.is-all):not(.is-filtered) > .vv-more { display: block; }
+@media (max-width: 640px) {
+  .eh-e .vv[data-vv-live]:not(.is-all):not(.is-filtered) .vv-card:nth-child(n + 4) { display: none; }
+}

@@ -1,9 +1,6 @@
-/* Body Café Co. — Variant E · Home, rebuilt to the Page Flow Plan (owner approved, 3 November 2026).
-   Six sections, each one visual + one headline, each message said once:
-   1 Hero · 2 Trust strip · 3 The seven · 4 Your day · 5 Proof, not promises · 6 Check any bottle · 7 Reviews ·
-   8 Before you order (FAQ) · 9 Close. Proof, Reviews and FAQ came back at the owner's request (3 November 2026) and keep
-   their own small labels. Loaded last of the home layers; the team's renderers are unchanged. Removed sections live on
-   their own pages: belief → Story, four rules and sourcing → Standards, Learn → Learn. */
+/* Body Café Co. — Variant E homepage. Owner revision, 3 November 2026:
+   Hero · trust strip · collection · lot lookup · Voices · FAQ.
+   Timing, Proof and the closing invitation are removed at the owner’s request. */
 (function () {
   "use strict";
   var S = window.BCCSite, L = window.BCCLivingE;
@@ -11,8 +8,8 @@
   var V = window.BCCVisualsE, G = window.BCCGlanceE, esc = L.esc;
   function icon(k) { return V ? V.icon(k) : ''; }
 
-  var DROP = ['trustbar', 'belief', 'trust', 'sourcing', 'learn', 'pour', 'cards', 'curiosity'];
-  var ORDER = ['hero', 'trust-strip', 'collection', 'everyday', 'proof', 'lot', 'voices', 'faq', 'invitation'];
+  var DROP = ['trustbar', 'belief', 'trust', 'sourcing', 'learn', 'pour', 'cards', 'curiosity', 'everyday', 'proof', 'invitation'];
+  var ORDER = ['hero', 'trust-strip', 'collection', 'lot', 'voices', 'faq'];
   var KEEP_LABEL = ['hero', 'proof', 'voices', 'faq'];
   var TRUST = [['check', 'FSSAI licensed'], ['factory', 'GMP certified'], ['flask', 'Third-party tested'], ['tag', 'Every lot traceable']];
   var STEPS = [['bottle', 'Find the lot number on your pack'], ['tag', 'Type it in'], ['record', "See that batch's record"]];
@@ -98,6 +95,13 @@
       if (ask) { ask.setAttribute('href', '/story'); ask.textContent = 'Read our story'; }
     }
 
+    var faq = page.querySelector('[data-home-section="faq"]');
+    if (faq) {
+      var label = faq.querySelector('.ez-k'), help = faq.querySelector('.ez-sec-head a');
+      if (label) label.textContent = 'Good to know';
+      setHead(faq, 'Your questions, answered.');
+      if (help) help.textContent = 'Find more answers';
+    }
     ORDER.forEach(function (k) { var s = page.querySelector(':scope > [data-home-section="' + k + '"]'); if (s) page.appendChild(s); });
   });
 })();

@@ -40,24 +40,40 @@
       '<a class="vv-prod" href="/products/' + esc(p.id) + '"><img src="/web/media/renders/' + esc(p.id) + '-cap.webp" alt="" width="400" height="400" loading="lazy" decoding="async"><span>' + esc(p.name) + '</span></a></div></li>';
   }
 
+  function ratingSummary(id, results) {
+    var n = 0, sum = 0, dist = [0, 0, 0, 0, 0], live = !!results;
+    if (live) results.forEach(function (r) {
+      if (!r || (id && r.product !== id)) return;
+      var sm = r.summary || {}, count = Number(sm.count) || 0, bins = sm.breakdown || {}, subtotal = 0, covered = 0;
+      [1, 2, 3, 4, 5].forEach(function (rating) { var v = Number(bins[rating]) || 0; dist[rating - 1] += v; covered += v; subtotal += rating * v; });
+      n += count; sum += covered === count ? subtotal : (Number(sm.average) || 0) * count;
+    });
+    else SAMPLES.forEach(function (x) { if (!id || x[0] === id) { n++; sum += x[1]; dist[x[1] - 1]++; } });
+    return '<div class="vv-avg"><b>' + (n ? (sum / n).toFixed(1) : '—') + '</b>' +
+      (n ? stars(Math.round(sum / n), 'is-big') : '<span>No ratings yet</span>') +
+      '<small>' + n + (live ? ' published review' : ' sample review') + (n === 1 ? '' : 's') + '</small></div>' +
+      '<ol class="vv-dist" aria-label="Ratings">' + [5, 4, 3, 2, 1].map(function (r) {
+        return '<li><span>' + r + '★</span><i style="--w:' + (n ? Math.round(dist[r - 1] / n * 100) : 0) + '%"></i><span>' + dist[r - 1] + '</span></li>';
+      }).join('') + '</ol>' + (!live ? '<p class="vv-note">Sample reviews for the design preview. Real, verified reviews replace them before launch.</p>' : '');
+  }
+
   L.wrap('home', function (root, ctx) {
     var sec = root.querySelector('[data-home-section="voices"]'); if (!sec || !ctx || !ctx.product) return;
     sec.classList.add('vv');
     var head = sec.querySelector('.ez-sec-head'), list = sec.querySelector('.ss-voices-list'), how = sec.querySelector('.ss-voices-how');
 
     // The three review rules: a slim trust row under the reviews.
-    if (how) { how.classList.add('vv-rules'); sec.appendChild(how); }
+    if (how) {
+      how.classList.add('vv-rules');
+      var labels = ['Verified purchases', 'Fair moderation', 'Incentives disclosed'];
+      how.querySelectorAll('li strong').forEach(function (h, i) { if (labels[i]) h.textContent = labels[i]; });
+      sec.appendChild(how);
+    }
     var foot = sec.querySelector('.ez-sec-foot'); if (foot) sec.appendChild(foot);
 
-    if (!PREVIEW || !list) return;
-    // Summary from the samples, marked as such.
-    var n = SAMPLES.length, sum = 0, dist = [0, 0, 0, 0, 0];
-    SAMPLES.forEach(function (x) { sum += x[1]; dist[x[1] - 1]++; });
-    var avg = (sum / n).toFixed(1);
-    var summary = '<div class="vv-summary" data-vv-summary><div class="vv-avg"><b>' + avg + '</b>' + stars(Math.round(sum / n), 'is-big') +
-      '<small>' + n + ' sample reviews</small></div><ol class="vv-dist" aria-label="Ratings">' + [5, 4, 3, 2, 1].map(function (r) {
-        return '<li><span>' + r + '★</span><i style="--w:' + Math.round(dist[r - 1] / n * 100) + '%"></i><span>' + dist[r - 1] + '</span></li>';
-      }).join('') + '</ol><p class="vv-note">Sample reviews for the design preview. Real, verified reviews replace them before launch.</p></div>';
+    if (!list) return;
+    var n = SAMPLES.length;
+    var summary = '<div class="vv-summary" data-vv-summary aria-live="polite" aria-atomic="true">' + ratingSummary('', PREVIEW ? null : []) + '</div>';
     if (head) head.after(L.frag(summary));
     // Heading + summary share one left column that stays in view while the reviews scroll (owner, 3 November 2026),
     // and stops where the reviews end, above the review rules.
@@ -72,8 +88,10 @@
     var chips = '<div class="vv-filter" role="group" aria-label="Show reviews for"><button type="button" data-vv-pick="" aria-pressed="true">All</button>' +
       ctx.published.map(function (p) { return '<button type="button" data-vv-pick="' + esc(p.id) + '" aria-pressed="false" title="' + esc(p.name) + '"><img src="/web/media/renders/' + esc(p.id) + '-cap.webp" alt="" width="400" height="400" loading="lazy" decoding="async"><span class="sr-only">' + esc(p.name) + '</span></button>'; }).join('') + '</div>';
     list.before(L.frag(chips));
-    list.innerHTML = SAMPLES.map(function (x, i) { return card(ctx, x, i === 0); }).join('');
-    list.classList.add('vv-list');
+    if (PREVIEW) {
+      list.innerHTML = SAMPLES.map(function (x, i) { return card(ctx, x, i === 0); }).join('');
+      list.classList.add('vv-list');
+    }
     list.after(L.frag('<button type="button" class="vv-more" data-vv-more>Show all ' + n + ' reviews</button>'));
   });
 
@@ -82,14 +100,28 @@
     var sec = main.querySelector('.vv');
     if (sec) {
       var picks = [].slice.call(sec.querySelectorAll('[data-vv-pick]'));
+      function update() {
+        var active = sec.querySelector('[data-vv-pick][aria-pressed="true"]'), id = active ? active.getAttribute('data-vv-pick') : '';
+        sec.querySelectorAll('[data-vv-product]').forEach(function (c) { c.hidden = !!id && c.getAttribute('data-vv-product') !== id; });
+        sec.classList.toggle('is-filtered', !!id);
+        var live = sec.bccVoiceResults, summary = sec.querySelector('[data-vv-summary]');
+        if (live) { sec.setAttribute('data-vv-live', ''); var list = sec.querySelector('[data-ss-voices-list]'); if (list && list.querySelector('[data-vv-product]')) list.classList.add('vv-list'); }
+        if (summary) {
+          summary.innerHTML = ratingSummary(id, live || (PREVIEW ? null : []));
+          summary.setAttribute('aria-label', (id && active ? active.getAttribute('title') : 'All products') + ' review summary');
+        }
+        var more = sec.querySelector('[data-vv-more]'), count = sec.querySelectorAll('[data-vv-product]').length;
+        if (more) more.textContent = 'Show all ' + count + ' reviews';
+        sec.toggleAttribute('data-vv-more-needed', count > (matchMedia('(max-width: 640px)').matches ? 3 : 6));
+      }
       picks.forEach(function (b) {
         b.addEventListener('click', function () {
-          var id = b.getAttribute('data-vv-pick');
           picks.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-          sec.querySelectorAll('[data-vv-product]').forEach(function (c) { c.hidden = !!id && c.getAttribute('data-vv-product') !== id; });
-          sec.classList.toggle('is-filtered', !!id);
+          update();
         }, { signal: signal });
       });
+      sec.addEventListener('bcc:voices-loaded', update, { signal: signal });
+      update();
       var more = sec.querySelector('[data-vv-more]');
       if (more) more.addEventListener('click', function () { sec.classList.add('is-all'); more.hidden = true; }, { signal: signal });
     }

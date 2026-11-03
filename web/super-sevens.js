@@ -1013,18 +1013,24 @@
       });
       sec.querySelector("[data-ss-v-count]").innerHTML = num(String(total), { ghost: true, label: String(total) });
       if (total) sec.querySelector("[data-ss-v-avg]").innerHTML = num((sum / total).toFixed(1), { ghost: true, label: (sum / total).toFixed(1) + " out of 5" });
-      if (!items.length) { status.textContent = "No reviews are published yet. The first ones arrive after verified deliveries."; return; }
+      if (!items.length) {
+        status.textContent = "No reviews are published yet. The first ones arrive after verified deliveries.";
+        if (!sec.querySelector('[data-sample]')) { sec.bccVoiceResults = ok; sec.dispatchEvent(new CustomEvent('bcc:voices-loaded')); }
+        return;
+      }
       items.sort(function (a, b) { return (b.v.published || b.v.created || 0) - (a.v.published || a.v.created || 0); });
       status.textContent = total + " published review" + (total === 1 ? "" : "s") + ". Showing the newest.";
-      listEl.innerHTML = items.slice(0, 6).map(function (x) {
+      listEl.innerHTML = items.map(function (x) {
         var v = x.v, c = x.p || { color: "#2d2926", ink: "#fff", name: "" }, stars = "";
         for (var k = 1; k <= 5; k++) stars += '<i class="' + (k <= v.rating ? "is-on" : "") + '"></i>';
-        return '<li class="ss-quote" style="--cap:' + c.color + ";--on-cap:" + c.ink + '"><span class="ss-quote-mark" aria-hidden="true">“</span>' +
+        return '<li class="ss-quote vv-card" data-vv-product="' + esc(x.id) + '" style="--cap:' + c.color + ";--on-cap:" + c.ink + '"><span class="ss-quote-mark" aria-hidden="true">“</span>' +
           '<p class="ss-quote-stars" role="img" aria-label="' + v.rating + ' out of 5">' + stars + "</p>" + (v.title ? '<p class="ss-quote-title">' + esc(v.title) + "</p>" : "") +
           '<blockquote class="ss-quote-text"><p>' + esc(v.text) + "</p></blockquote>" +
           '<p class="ss-quote-who"><span class="ez-chip-dot" aria-hidden="true"></span>' + esc(v.display_name || "Verified customer") + (v.verified ? ' · <span class="ss-quote-v">Verified delivery</span>' : "") + '<br><a href="/products/' + esc(x.id) + '#reviews">' + esc(c.name) + "</a></p>" +
           (v.incentive && v.incentive !== "none" ? '<p class="ss-quote-inc">This reviewer received something in return. See the product page for details.</p>' : "") + "</li>";
       }).join("");
+      sec.bccVoiceResults = ok;
+      sec.dispatchEvent(new CustomEvent("bcc:voices-loaded"));
     });
   }
 
@@ -1177,33 +1183,14 @@
     on();
   }
 
+  // Keep the actual brand logo as the tab icon on every storefront route.
   function favicon() {
-    var path = window.BCCProductRoutes.internalPath(location.pathname), m = path.match(/^\/products\/([^/]+)/), info = m && CAST.byId[m[1]];
-    var svg = markSVGString(info ? info.i : null);
-    var link = document.querySelector("link[data-ss-icon]");
-    if (!link) { link = document.createElement("link"); link.rel = "icon"; link.type = "image/svg+xml"; link.setAttribute("data-ss-icon", ""); document.head.appendChild(link); document.querySelectorAll('link[rel="icon"]:not([data-ss-icon])').forEach(function (l) { l.setAttribute("data-ss-was-icon", l.getAttribute("href")); l.removeAttribute("rel"); }); }
-    link.href = "data:image/svg+xml," + encodeURIComponent(svg);
-  }
-
-  /* Cursor: a small cap that follows the pointer and takes the colour of whatever product it is over. */
-  var cursor = null;
-  function cursorSetup() {
-    if (cursor || !fine() || reduced()) return;
-    cursor = document.createElement("div"); cursor.className = "ss-cursor"; cursor.setAttribute("aria-hidden", "true"); document.body.appendChild(cursor);
-    var x = -100, y = -100, tx = -100, ty = -100, raf = 0;
-    function loop() { x += (tx - x) * 0.28; y += (ty - y) * 0.28; cursor.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)"; raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.3 ? requestAnimationFrame(loop) : 0; }
-    document.addEventListener("pointermove", function (e) { if (e.pointerType !== "mouse") return; tx = e.clientX; ty = e.clientY; if (!raf) raf = requestAnimationFrame(loop); }, { passive: true });
-    document.addEventListener("pointerover", function (e) {
-      if (document.body.dataset.theme !== "e") { cursor.hidden = true; return; } cursor.hidden = false;
-      var t = e.target, el = t.closest && t.closest("[style*='--cap']");
-      var c = el ? getComputedStyle(el).getPropertyValue("--cap").trim() : "";
-      cursor.style.setProperty("--c", c || "var(--ss-ink)");
-      cursor.classList.toggle("is-hot", !!(t.closest && t.closest("a, button, [data-ss-spin], [role=slider], label, select, summary, canvas[data-ss-play]")));
-      cursor.classList.toggle("is-grab", !!(t.closest && t.closest("[data-ss-spin], canvas[data-ss-play]")));
-    });
-    document.addEventListener("pointerdown", function () { cursor.classList.add("is-down"); });
-    document.addEventListener("pointerup", function () { cursor.classList.remove("is-down"); });
-    document.documentElement.addEventListener("pointerleave", function () { tx = ty = -100; if (!raf) raf = requestAnimationFrame(loop); });
+    document.querySelectorAll('link[data-ss-icon]').forEach(function (link) { link.remove(); });
+    var link = document.querySelector('link[rel="icon"], link[data-ss-was-icon]');
+    if (!link) { link = document.createElement('link'); document.head.appendChild(link); }
+    link.rel = 'icon'; link.type = 'image/svg+xml';
+    link.href = '/assets/brand/logos/Body%20Cafe%20Co%20logo.svg';
+    link.removeAttribute('data-ss-was-icon');
   }
 
   /* Cap-flood: opening a product fills the screen with its cap colour, which settles into the product page band. */
@@ -1237,7 +1224,7 @@
     document.querySelectorAll("[data-ss-sound]").forEach(Sound.sync);
     if (flood && Date.now() - floodAt < 2600) setTimeout(drain, 60);
     [heroBehaviour, spinBehaviour, rollBehaviour, pourBehaviour, cardBehaviour, deckBehaviour, voicesBehaviour, contactBehaviour, revealBehaviour, baseBehaviour, shopBehaviour, lostBehaviour, trayBehaviour].forEach(function (fn) { try { fn(main, signal); } catch (e) { if (window.console) console.warn("Super Sevens:", e); } });
-    try { stripeBehaviour(signal); playBehaviour(signal); favicon(); cursorSetup(); } catch (e) { if (window.console) console.warn("Super Sevens:", e); }
+    try { stripeBehaviour(signal); playBehaviour(signal); favicon(); } catch (e) { if (window.console) console.warn("Super Sevens:", e); }
     if (location.pathname === "/super-sevens") document.title = "The Super Sevens — Body Café Co.";
   });
 

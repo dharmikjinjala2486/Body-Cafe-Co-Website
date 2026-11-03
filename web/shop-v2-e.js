@@ -31,7 +31,7 @@
     page.querySelectorAll('[data-ss-shop-line]').forEach(function (n) { n.hidden = false; });
 
     // 2 · Filters: format only, each button showing its shape. "When to take it" goes (the card chips show it).
-    page.querySelectorAll('.sp-times').forEach(function (n) { n.remove(); });
+    page.querySelectorAll('.sp-times, .sp-stock').forEach(function (n) { n.remove(); });
     page.querySelectorAll('.sp-legend > span').forEach(function (n) { n.remove(); });
     page.querySelectorAll('[data-sp-format]').forEach(function (b) {
       var k = SHAPE[b.getAttribute('data-sp-format')];

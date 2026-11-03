@@ -27,3 +27,10 @@
 .eh-e [data-sv] .sp-intro { padding-bottom: 8px; }
 .eh-e [data-sv] .sp-intro h1 { margin: 0; font-weight: 300; letter-spacing: -0.03em; line-height: 1.02; font-size: clamp(40px, 5.4vw, 80px); }
 .eh-e [data-sv] .sv-sub { margin: 14px 0 0; max-width: 46ch; font-size: clamp(16px, 1.4vw, 19px); color: var(--muted); }
+
+.eh-e [data-sv] .sp-bar { row-gap: 18px; }
+@media (max-width: 760px) {
+  /* Format choices wrap compactly on phones. */
+  .eh-e [data-sv] .sp-bar .sp-opts { flex-wrap: wrap; overflow: visible; gap: 6px; }
+  .eh-e [data-sv] .sp-bar .sp-opt { min-height: 36px; padding: 6px 10px; font-size: 13.5px; gap: 6px; }
+}

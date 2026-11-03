@@ -988,3 +988,83 @@ Layer: `web/voices-v2-e.js` + `web/voices-v2-e.css`, loaded after `home-v2-e.*`.
 - **Where it stops:** the column ends where the reviews end, so the summary scrolls away with the last review and never covers the "Delivered first" rule cards. Measured at five scroll positions: it sat at 100 px through the reviews, then its bottom stayed above the rules' top (225 px vs 261 px, and 25 px vs 61 px).
 - **Tablet and phone:** the summary stays in normal flow (not sticky), above the reviews.
 - **Verified:** no sideways scroll at 375 px; all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 44. Shopping journey: reducing uncertainty (Hick's Law ideas), applied to the seven (3 November 2026)
+
+The owner shared five practical ideas: a clear next action, labels that predict their destination, options organised by the shopper's goal, detail shown when it becomes relevant, and routes for people who already know what they want. Owner decisions: use each pack's printed front-label line for goals, and use clearer menu names.
+
+| Idea | What changed | Where |
+| --- | --- | --- |
+| 1 · Make the next action clear | On product pages, **Add to bag** is the only filled button in the buy box. The pincode **Check** is now an outline button. | `pdp-v2-e.css` |
+| 2 · Labels that predict the destination | Menu: Standards → **Quality** · Story → **About us** · Lot report → **Check your lot**, in the header, mobile menu and footer (also Lot reports / Find a lot report → Check your lot). Page addresses are unchanged. | `pages-minimal-e.js` (chrome) |
+| 3 · Organise around the shopper's goal | Shop gets **What it supports**: All · Energy metabolism · Calm & focus · Bone, muscle & heart · Heart, brain & joint · Hormonal & metabolic · Strength & performance · Digestive health. Each chip is a short form of one pack's printed front-label line; the full line is the chip's tooltip and is shown on the card. It combines with Format; when both together match nothing, a line says so with "Show all seven". | `shop-v2-e.js`, `shop-v2-e.css` |
+| 4 · Detail when relevant | Every product card (Home and Shop) shows the pack's printed front-label line, word for word (for example "Supports Calm Mind & Clear Focus"), under the name. Directions, cautions and ingredients stay on the product page. Pack size stays off the card (owner, section 40). | `pages-minimal-e.js`, `pages-minimal-e.css` |
+| 5 · Support people who know what they want | Header search, the two Shop filters, direct product links on every card and cap, and Check your lot in the header. | existing + above |
+
+- **Claim lines used, from `label-records.json` `label_front.claim`:**
+  - Iron: Supports Hemoglobin Formation & Energy Metabolism
+  - L-Theanine: Supports Calm Mind & Clear Focus
+  - D3 + K2: Supports Bone, Muscle & Heart Health
+  - Omega-3: Supports Heart, Brain & Joint Health
+  - Inositol: Supports Hormonal & Metabolic Balance
+  - Creatine: Supports Strength & Performance
+  - Psyllium: Supports Digestive Health & Regularity
+
+  No new benefit wording is written. The short chip names abbreviate these lines and are for owner review.
+- **Phone:** both Shop filter rows wrap (no sideways scrolling) with compact chips. Home's 2 × 2 cards show the line in smaller type.
+- **Verified:**
+  - Filters: Calm & focus shows L-Theanine; + Softgels shows the nothing-matches line; Show all seven restores 7.
+  - Menu reads Shop · Super Sevens · Quality · Learn · About us · Check your lot.
+  - Layout: 1440 px and 375 px with no sideways scroll.
+  - Tests: all 10 design-tools tests and 32 server/HTTP tests pass.
+
+## 45. Owner homepage simplification and product review summaries (3 November 2026)
+
+- Hero eyebrow: **Seven everyday supplements**. Hero line: **Seven caps. Seven colours. Seven clear label.** (exact requested wording).
+- Removed Home's **When to take each one**, **Proof, not promises / Licensed. Labelled. Traceable.**, and closing **You should always know what you're being served** sections. Home now keeps hero, trust strip, collection, lot lookup, Voices and FAQ.
+- L-Theanine's compact food instruction and At a glance tile now say **With or empty stomach**. Full supplied label directions are unchanged. The food chip wraps on narrow cards.
+- Removed MRP beside Home/Shop/PDP prices, and from the E comparison table's Price heading. Amounts and label/policy copy are unchanged.
+- Voices' selected product now controls average, review count and rating-distribution bars, as well as the cards. All restores the weighted whole-range summary. API summaries cover every published rating, not just the few newest displayed reviews. Preview samples remain clearly identified and production never substitutes samples.
+- Review-rule headings: **Verified purchases · Fair moderation · Incentives disclosed**.
+- FAQ left copy, following the owner's screenshot: **Good to know · Your questions, answered. · Find more answers**. The five right-hand questions and their answers remain.
+- Verified 36 responsive route/width combinations (Home, Shop and all seven products at 320/390/768/1440); 5 preview-review and 5 mocked published-review filter states. The 10 existing frontend check modules pass. Screenshots and QA results: `design-review/home-revision-2026-11-03/`. Local changes only; no commit or deployment.
+
+## 46. Shop support filter removed (3 November 2026)
+
+At the owner's request, removed the entire **What it supports** filter, its secondary card-hiding behavior and its empty-state UI. Removed its unused CSS. Format, stock and sort controls and the product cards retain their existing behavior. Checked desktop and phone: seven products show initially; Softgels shows two; All restores seven; no horizontal overflow.
+
+## 47. Shop stock-only control removed (3 November 2026)
+
+Removed **In stock only** from Variant E Shop at the owner's request. E ignores the retired `stock=in` parameter so an older link cannot leave an invisible stock filter active. Other variants keep their stock controls. Format and sort remain. JavaScript syntax, the Shop content check and phone/desktop browser checks pass.
+
+## 48. Shop cards match Home; four columns on desktop (3 November 2026)
+
+Matched Shop's product cards to Home's **Seven everyday essentials** card dimensions, bottle scale, name typography, label chips, rounded backgrounds and price/Add row. Desktop uses four columns (four products, then the remaining three); tablet adapts and phone uses the same two-column cards as Home. The comparison picker remains available at the top of each card, outside its height calculations. At 1440 px, Home and Shop cards both measure approximately 315.5 × 534.8 px; phone dimensions also match. Checked 320/390/768/1100/1440 px with no page overflow, aligned card sizing and functioning format filters. QA and screenshots: `design-review/home-revision-2026-11-03/shop-card-grid-checks.json` and `shop-grid-desktop.png`.
+
+## 49. Super Sevens compact hero and simplified cards (3 November 2026)
+
+At the owner's request, shortened the `/super-sevens` hero while retaining all seven cap links. Measured hero height: ~177 px at 320, 200 px at 390, and 342 px at 768/1440. In **Meet the seven**, removed the top coloured band, number and segment mark; moved each nickname (e.g. The Morning One) into the coloured bottom strip in place of The Super Sevens; removed the inside flip icon and separate Flip/Save buttons. The View link and both factual faces remain. Cards turn by tap/click and Enter/Space, with accessible pressed state and a visible keyboard focus outline. Verified all seven cards at four widths, no page overflow, correct nickname strips and working turn/product-link controls. Evidence: `design-review/super-sevens-revision-2026-11-03/`.
+
+## 50. Super Sevens hero matches Home height (3 November 2026)
+
+Supersedes section 49's compact-height choice at the owner's request. The Super Sevens hero now matches the rendered homepage hero's height, retaining the updated cards and hero copy. A hidden, inert Home-hero sizing reference uses the same styles and responds to viewport/font changes; it is cleaned up on navigation. Verified exact measured height agreement at widths 320, 390, 768, 960, 1100 and 1440, at two viewport heights and after live resizing; no page overflow. At 1440 × 900 both heroes are 820 px tall. Evidence: `design-review/super-sevens-revision-2026-11-03/hero-height-match.json`.
+
+## 51. Super Sevens hero redesign, number section removed, logo favicon, native cursor (3 November 2026)
+
+At the owner's request, removed the entire **Every number, written in caps** section. Rebuilt the Super Sevens hero with Home's full-size responsive composition: readable heading and short line, seven named caps on the saucer, and a **Meet the seven** action that jumps to the card collection. This replaces the undersized hero artwork and removes the hidden height-measurement reference introduced in section 50; the two heroes now match naturally through shared markup and styles. The simplified nickname-strip cards and rules remain.
+
+The favicon now consistently uses the supplied original `assets/brand/logos/Body Cafe Co logo.svg`, replacing the dynamic segment icon. Removed the custom dot/ring cursor implementation, animation listeners and cursor CSS; native cursors remain throughout E. Verified normal-motion desktop pointer interactions on Home, Shop, Super Sevens and a product page; no custom cursor element is created and the logo favicon persists.
+
+All six width checks (320/390/768/960/1100/1440) show exact Home/Super Sevens hero-height agreement, no horizontal overflow, one H1, seven working cap links/cards, and no removed card controls or sizing probes. Card keyboard turning and Meet the seven navigation pass; favicon SVG responds 200. All 10 existing frontend test modules pass. Screenshots and results: `design-review/super-sevens-revision-2026-11-03/hero-redesign-*`. No commit or deployment.
+
+## 52. Remove only the Super Sevens hero saucer (3 November 2026)
+
+Removed the round saucer behind the seven caps in the Super Sevens hero. Cap artwork, names, links, spacing, copy and other hero content remain. The homepage saucer is unchanged. Phone/desktop checks confirm seven cap links and no overflow. Screenshot: `design-review/super-sevens-revision-2026-11-03/hero-no-saucer.png`.
+
+## 53. Meet the seven: four-column desktop grid (3 November 2026)
+
+The Super Sevens card collection now uses four equal columns from 1100 px upward: four cards in row one and three in row two. Smaller layouts retain their responsive sizing. Verified 390/1100/1440 px, all seven cards present and no page overflow. Screenshot: `design-review/super-sevens-revision-2026-11-03/cards-four-columns.png`.
+
+## 54. Product gallery sticks; Reviews heading scrolls normally (3 November 2026)
+
+On desktop product pages, the left gallery now stays below the header while the right purchase card scrolls and stops at the shared hero grid's end. The purchase panel itself uses normal positioning. Gallery artwork height is capped against viewport height so controls/caption remain reachable on shorter displays. **Reviews & questions** has a non-sticky heading; other section headings retain their existing behavior. Phone/tablet stay stacked with no sticky gallery. Verified all seven products at desktop viewport heights 700 and 900, pin/stop geometry, actual Reviews heading scroll movement, and 390/768 px layouts without overflow or page exceptions. Evidence: `design-review/product-sticky-2026-11-03/`.

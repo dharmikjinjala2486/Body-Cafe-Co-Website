@@ -31,4 +31,13 @@
    Each heading sticks below the site header (76 px) and the section bar (62 px), and stops at the end of its section. */
 @media (min-width: 1001px) {
   .eh-e [data-pv] .pp-sec .pp-head { position: sticky; top: 162px; }
+  .eh-e [data-pv] #reviews .pp-head { position: static; top: auto; }
+  /* Keep the gallery beside the full purchase card and stop at their shared grid's end. */
+  .eh-e [data-pv] .pp-hero-media { position: sticky; top: calc(var(--ss-top, 82px) + 16px); align-self: start; }
+  .eh-e [data-pv] .pp-hero-panel { position: static; }
+  .eh-e [data-pv] .pp-open { height: min(clamp(360px, 46vw, 640px), calc(100dvh - 240px)); }
 }
+
+/* One primary action in the buy box: Add to bag. The pincode Check becomes a quiet outline button. */
+.eh-e [data-pv] .pp-pincode button { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.eh-e [data-pv] .pp-pincode button:hover { background: rgb(45 41 38 / .05); }

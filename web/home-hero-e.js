@@ -21,9 +21,9 @@
   }
   function hero(ctx) {
     var list = ctx.published.slice(0, 7);
-    return '<div class="ht-copy"><p class="ez-k">Body Café Co. · Seven everyday supplements</p>' +
+    return '<div class="ht-copy"><p class="ez-k">Seven everyday supplements</p>' +
       '<h1 id="ss-hero-t">The Super Sevens<span>.</span></h1>' +
-      '<p class="ht-sub">Seven caps. Seven colours. One clear label each.</p>' +
+      '<p class="ht-sub">Seven caps. Seven colours. Seven clear label.</p>' +
       '<p class="ez-lede">Every supplement wears its own cap colour, so the range reads at a glance, and every label fact is in plain, readable text: the form, the amount and when to take it.</p>' +
       '<div class="ez-actions"><a class="x-btn" href="/shop"><span>Shop all seven</span></a><a class="x-link" href="/super-sevens">Meet the Super Sevens</a></div>' +
       '<p class="ht-dots" aria-hidden="true">' + list.map(function (p) { return '<i style="' + ctx.capStyle(p) + '"></i>'; }).join('') + '</p></div>' +

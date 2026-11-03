@@ -85,7 +85,7 @@
     if (!SORTS.some(function (s) { return s[0] === sort; })) sort = "recommended";
     var t = times(), time = query.get("time") || "";
     if (!t || !t.groups.some(function (g) { return g.id === time; })) time = "";
-    return { formats: formats, unknown: unknown, stock: query.get("stock") === "in", sort: sort, time: time };
+    return { formats: formats, unknown: unknown, stock: DESIGN !== "e" && query.get("stock") === "in", sort: sort, time: time };
   }
   function isDefault(st) { return !st.formats.length && !st.unknown.length && !st.stock && !st.time && st.sort === "recommended"; }
   function hasFilters(st) { return !!(st.formats.length || st.unknown.length || st.stock || st.time); }

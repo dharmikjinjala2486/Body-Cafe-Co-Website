@@ -79,6 +79,9 @@
         var row = document.createElement('div'); row.className = 'gl-namerow';
         name.before(row); row.appendChild(name); row.appendChild(diet);
       }
+      // The pack's own printed front-label line as the card's main line (owner, 3 November 2026), word for word.
+      var claim = p && p.label_front && p.label_front.claim, nr = card.querySelector('.gl-namerow');
+      if (claim && nr && !card.querySelector('.gl-claim')) nr.after(L.frag('<p class="gl-claim">' + esc(claim) + '</p>'));
       var buy = card.querySelector('.hr-buy, .sp-buy'), add = card.querySelector('.hr-add, .sp-add');
       if (buy && add) {
         buy.classList.add('gl-buyrow'); buy.appendChild(add);
@@ -105,7 +108,26 @@
         if (trust) trust.after(L.frag(aboutItem(args[0])));
       }
       if (name === 'home' || name === 'shop') cardChips(root, ctx);
+      // Price amounts stand alone; the supplied labels and policy wording remain unchanged.
+      root.querySelectorAll('.hr-price span, .sp-price span, .pp-price-note, .ss-deck-buy small').forEach(function (n) {
+        if (n.textContent.trim() === 'MRP') n.remove();
+      });
       if (BULLETS.indexOf(name) !== -1) bulletise(root);
+    });
+  });
+})();
+
+/* Menu labels that say where they lead (owner, 3 November 2026). Page addresses are unchanged; only the words move:
+   Standards → Quality · Story → About us · Lot report(s) / Find a lot report → Check your lot. Header, mobile menu, footer. */
+(function () {
+  "use strict";
+  var S = window.BCCSite, L = window.BCCLivingE;
+  if (!S || !S.themes || !S.themes.e || !L) return;
+  var NAMES = { 'Standards': 'Quality', 'Story': 'About us', 'Lot report': 'Check your lot', 'Lot reports': 'Check your lot', 'Find a lot report': 'Check your lot' };
+  L.wrap('chrome', function (root) {
+    root.querySelectorAll('header a, nav a, footer a, .e-mnav a').forEach(function (a) {
+      var t = [].slice.call(a.childNodes).filter(function (n) { return n.nodeType === 3 && n.textContent.trim(); }).pop();
+      if (t && NAMES[t.textContent.trim()]) t.textContent = NAMES[t.textContent.trim()];
     });
   });
 })();

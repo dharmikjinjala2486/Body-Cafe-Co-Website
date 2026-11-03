@@ -61,7 +61,7 @@
       page.querySelector("[data-ez-cmp-open]").disabled = picked.length < 2;
     }
     function render() {
-      var rows = [["Format", "format"], ["Pack", "pack"], ["Serving size", "serving"], ["Servings per pack", "servings"], ["Allergens", "allergens"], ["Dietary marks", "diet"], ["Price (MRP)", "price"], ["Availability", "stock"]];
+      var rows = [["Format", "format"], ["Pack", "pack"], ["Serving size", "serving"], ["Servings per pack", "servings"], ["Allergens", "allergens"], ["Dietary marks", "diet"], ["Price", "price"], ["Availability", "stock"]];
       var cols = picked.map(function (id) { return byId[id]; });
       table.innerHTML = '<table><caption class="sr-only">Pack facts for ' + cols.map(function (c) { return esc(c.name); }).join(", ") + '</caption><thead><tr><td></td>' + cols.map(function (c) { return '<th scope="col" style="--cap:' + c.color + '"><span class="ez-cmp-band"></span><a class="e-name" href="/products/' + esc(c.id) + '">' + esc(c.name) + "</a></th>"; }).join("") + "</tr></thead><tbody>" +
         rows.map(function (r) { return '<tr><th scope="row">' + r[0] + "</th>" + cols.map(function (c) { return "<td>" + (c[r[1]] ? esc(c[r[1]]) : '<span class="ez-pending">Not stated</span>') + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table>";
