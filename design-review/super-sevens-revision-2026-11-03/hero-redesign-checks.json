@@ -1,0 +1,90 @@
+{
+  "checks": [
+    {
+      "width": 320,
+      "homeHero": 829.171875,
+      "hero": 829.171875,
+      "overflow": 0,
+      "numberSections": 0,
+      "probes": 0,
+      "cursor": 0,
+      "favicon": "/assets/brand/logos/Body%20Cafe%20Co%20logo.svg",
+      "h1": 1,
+      "capLinks": 7,
+      "cards": 7,
+      "removedControls": 0
+    },
+    {
+      "width": 390,
+      "homeHero": 882.390625,
+      "hero": 882.390625,
+      "overflow": 0,
+      "numberSections": 0,
+      "probes": 0,
+      "cursor": 0,
+      "favicon": "/assets/brand/logos/Body%20Cafe%20Co%20logo.svg",
+      "h1": 1,
+      "capLinks": 7,
+      "cards": 7,
+      "removedControls": 0
+    },
+    {
+      "width": 768,
+      "homeHero": 935.84375,
+      "hero": 935.84375,
+      "overflow": 0,
+      "numberSections": 0,
+      "probes": 0,
+      "cursor": 0,
+      "favicon": "/assets/brand/logos/Body%20Cafe%20Co%20logo.svg",
+      "h1": 1,
+      "capLinks": 7,
+      "cards": 7,
+      "removedControls": 0
+    },
+    {
+      "width": 960,
+      "homeHero": 984.578125,
+      "hero": 984.578125,
+      "overflow": 0,
+      "numberSections": 0,
+      "probes": 0,
+      "cursor": 0,
+      "favicon": "/assets/brand/logos/Body%20Cafe%20Co%20logo.svg",
+      "h1": 1,
+      "capLinks": 7,
+      "cards": 7,
+      "removedControls": 0
+    },
+    {
+      "width": 1100,
+      "homeHero": 820,
+      "hero": 820,
+      "overflow": 0,
+      "numberSections": 0,
+      "probes": 0,
+      "cursor": 0,
+      "favicon": "/assets/brand/logos/Body%20Cafe%20Co%20logo.svg",
+      "h1": 1,
+      "capLinks": 7,
+      "cards": 7,
+      "removedControls": 0
+    },
+    {
+      "width": 1440,
+      "homeHero": 820,
+      "hero": 820,
+      "overflow": 0,
+      "numberSections": 0,
+      "probes": 0,
+      "cursor": 0,
+      "favicon": "/assets/brand/logos/Body%20Cafe%20Co%20logo.svg",
+      "h1": 1,
+      "capLinks": 7,
+      "cards": 7,
+      "removedControls": 0
+    }
+  ],
+  "errors": [],
+  "faviconStatus": 200
+}

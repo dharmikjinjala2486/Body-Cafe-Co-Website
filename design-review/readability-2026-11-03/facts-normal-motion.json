@@ -1,0 +1,135 @@
+{
+  "products": [
+    {
+      "id": "iron-bisglycinate",
+      "normalMotionPour": {
+        "before": "0",
+        "after": "0"
+      },
+      "facts": {
+        "pack_size": true,
+        "serving_size": true,
+        "directions": true,
+        "warnings": true,
+        "allergens": true,
+        "storage": true,
+        "manufacturer": true
+      },
+      "expandedOverflow": 0,
+      "rows": 15
+    },
+    {
+      "id": "l-theanine",
+      "normalMotionPour": {
+        "before": "0",
+        "after": "0"
+      },
+      "facts": {
+        "pack_size": true,
+        "serving_size": true,
+        "directions": true,
+        "warnings": true,
+        "allergens": true,
+        "storage": true,
+        "manufacturer": true
+      },
+      "expandedOverflow": 0,
+      "rows": 15
+    },
+    {
+      "id": "vitamin-d3-k2",
+      "normalMotionPour": {
+        "before": "0",
+        "after": "0"
+      },
+      "facts": {
+        "pack_size": true,
+        "serving_size": true,
+        "directions": true,
+        "warnings": true,
+        "allergens": true,
+        "storage": true,
+        "manufacturer": true
+      },
+      "expandedOverflow": 0,
+      "rows": 15
+    },
+    {
+      "id": "omega-3-fish-oil",
+      "normalMotionPour": {
+        "before": "0",
+        "after": "0"
+      },
+      "facts": {
+        "pack_size": true,
+        "serving_size": true,
+        "directions": true,
+        "warnings": true,
+        "allergens": true,
+        "storage": true,
+        "manufacturer": true
+      },
+      "expandedOverflow": 0,
+      "rows": 15
+    },
+    {
+      "id": "myo-d-chiro-inositol",
+      "normalMotionPour": {
+        "before": "0",
+        "after": "0"
+      },
+      "facts": {
+        "pack_size": true,
+        "serving_size": true,
+        "directions": true,
+        "warnings": true,
+        "allergens": true,
+        "storage": true,
+        "manufacturer": true
+      },
+      "expandedOverflow": 0,
+      "rows": 15
+    },
+    {
+      "id": "creatine-chews",
+      "normalMotionPour": {
+        "before": "0",
+        "after": "0"
+      },
+      "facts": {
+        "pack_size": true,
+        "serving_size": true,
+        "directions": true,
+        "warnings": true,
+        "allergens": true,
+        "storage": true,
+        "manufacturer": true
+      },
+      "expandedOverflow": 0,
+      "rows": 16
+    },
+    {
+      "id": "psyllium-husk",
+      "normalMotionPour": {
+        "before": "0",
+        "after": "0"
+      },
+      "facts": {
+        "pack_size": true,
+        "serving_size": true,
+        "directions": true,
+        "warnings": true,
+        "allergens": true,
+        "storage": true,
+        "manufacturer": true
+      },
+      "expandedOverflow": 0,
+      "rows": 15
+    }
+  ],
+  "chapterLink": {
+    "exists": true,
+    "closedParent": true,
+    "scrollY": 0
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "commit": "d784792efa3e583844af48b3d41ef322a89a95a6",
+  "url": "https://body-cafe-co-website.vercel.app",
+  "vercelStatus": "success",
+  "assetsMatched": 16,
+  "checks": [
+    {
+      "path": "/",
+      "title": "Seven everyday essentials — Body Café Co.",
+      "overflow": 0,
+      "cursor": 0
+    },
+    {
+      "path": "/shop",
+      "title": "Shop the seven. — Body Café Co.",
+      "overflow": 0,
+      "cursor": 0
+    },
+    {
+      "path": "/super-sevens",
+      "title": "The Super Sevens. — Body Café Co.",
+      "overflow": 0,
+      "cursor": 0
+    },
+    {
+      "path": "/iron-bisglycinate",
+      "title": "Iron Bisglycinate — Body Café Co.",
+      "overflow": 0,
+      "cursor": 0
+    }
+  ],
+  "mobileOverflow": 0,
+  "backendOriginCheck": {
+    "status": 403,
+    "error": "Cross-origin requests are not allowed."
+  }
+}

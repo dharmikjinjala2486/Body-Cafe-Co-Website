@@ -1,0 +1,503 @@
+{
+  "checks": [
+    {
+      "id": "iron-bisglycinate",
+      "height": 700,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 969.328125,
+        "height": 587.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 685.5,
+        "height": 587.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 645.890625,
+        "height": 587.5,
+        "gridBottom": 645.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "l-theanine",
+      "height": 700,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 969.328125,
+        "height": 587.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 685.5,
+        "height": 587.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 645.890625,
+        "height": 587.5,
+        "gridBottom": 645.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "vitamin-d3-k2",
+      "height": 700,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 969.328125,
+        "height": 587.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 685.5,
+        "height": 587.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 645.890625,
+        "height": 587.5,
+        "gridBottom": 645.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "omega-3-fish-oil",
+      "height": 700,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 969.328125,
+        "height": 587.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 685.5,
+        "height": 587.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 645.890625,
+        "height": 587.5,
+        "gridBottom": 645.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "myo-d-chiro-inositol",
+      "height": 700,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 969.328125,
+        "height": 587.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 685.5,
+        "height": 587.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 645.890625,
+        "height": 587.5,
+        "gridBottom": 645.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "creatine-chews",
+      "height": 700,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 969.328125,
+        "height": 587.5,
+        "gridBottom": 1444.140625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 685.5,
+        "height": 587.5,
+        "gridBottom": 1150.140625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 57.640625,
+        "bottom": 645.140625,
+        "height": 587.5,
+        "gridBottom": 645.140625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "psyllium-husk",
+      "height": 700,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 969.328125,
+        "height": 587.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 685.5,
+        "height": 587.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 645.890625,
+        "height": 587.5,
+        "gridBottom": 645.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "iron-bisglycinate",
+      "height": 900,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 1149.328125,
+        "height": 767.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 865.5,
+        "height": 767.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 825.890625,
+        "height": 767.5,
+        "gridBottom": 825.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "l-theanine",
+      "height": 900,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 1149.328125,
+        "height": 767.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 865.5,
+        "height": 767.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 825.890625,
+        "height": 767.5,
+        "gridBottom": 825.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "vitamin-d3-k2",
+      "height": 900,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 1149.328125,
+        "height": 767.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 865.5,
+        "height": 767.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 825.890625,
+        "height": 767.5,
+        "gridBottom": 825.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "omega-3-fish-oil",
+      "height": 900,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 1149.328125,
+        "height": 767.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 865.5,
+        "height": 767.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 825.890625,
+        "height": 767.5,
+        "gridBottom": 825.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "myo-d-chiro-inositol",
+      "height": 900,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 1149.328125,
+        "height": 767.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 865.5,
+        "height": 767.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 825.890625,
+        "height": 767.5,
+        "gridBottom": 825.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "creatine-chews",
+      "height": 900,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 1149.328125,
+        "height": 767.5,
+        "gridBottom": 1444.140625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 865.5,
+        "height": 767.5,
+        "gridBottom": 1150.140625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 57.640625,
+        "bottom": 825.140625,
+        "height": 767.5,
+        "gridBottom": 825.140625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "id": "psyllium-husk",
+      "height": 900,
+      "initial": {
+        "top": 381.828125,
+        "bottom": 1149.328125,
+        "height": 767.5,
+        "gridBottom": 1427.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "pinned": {
+        "top": 98,
+        "bottom": 865.5,
+        "height": 767.5,
+        "gridBottom": 1133.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      },
+      "stopped": {
+        "top": 58.390625,
+        "bottom": 825.890625,
+        "height": 767.5,
+        "gridBottom": 825.890625,
+        "offset": 98,
+        "position": "sticky",
+        "reviewPosition": "static",
+        "overflow": 0
+      }
+    },
+    {
+      "width": 390,
+      "top": 463.671875,
+      "bottom": 745.171875,
+      "height": 281.5,
+      "gridBottom": 1694.828125,
+      "offset": null,
+      "position": "static",
+      "reviewPosition": "static",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "top": 313.125,
+      "bottom": 800.625,
+      "height": 487.5,
+      "gridBottom": 1802.75,
+      "offset": null,
+      "position": "static",
+      "reviewPosition": "static",
+      "overflow": 0
+    }
+  ],
+  "errors": []
+}

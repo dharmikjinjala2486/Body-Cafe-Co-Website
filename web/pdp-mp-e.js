@@ -1,7 +1,7 @@
 /* Body Café Co. — Variant E · product page in the MyProtein layout (owner request, 3 November 2026).
    Reference: myprotein.co.in creatine monohydrate product page. Same sections, same order, our colours and copy:
    left column  — gallery · Description / Key Benefits / Suggested Use / Nutritional Information / Ingredients
-                  (accordion, Description open) · Lot report (kept at the owner's request) · Frequently bought with ·
+                  (accordion, all closed by default) · Lot report (kept at the owner's request) · Frequently bought with ·
                   Recommended for you · Customer reviews
    right column — sticky buy box: tags, rating, name, subtitle, pack, quantity, price, Add to bag, delivery lines.
    Our extra sections (section bar, At a glance, pour tray, questions, pincode) are dropped. Every label fact stays.
@@ -86,7 +86,7 @@
     var pdf = qual && qual.querySelector(".ppf-label");
     var ingredients = html(label) + folds + html(pdf);
 
-    var acc = '<div class="mp-acc">' + item("description", "Description", desc, true) + item("key-benefits", "Key Benefits", keyB) +
+    var acc = '<div class="mp-acc">' + item("description", "Description", desc) + item("key-benefits", "Key Benefits", keyB) +
       item("suggested-use", "Suggested Use", suggested) + item("nutritional-information", "Nutritional Information", facts) + item("ingredients-list", "Ingredients", ingredients) + "</div>";
 
     // ---------- Left: Lot report (kept from our page) ----------

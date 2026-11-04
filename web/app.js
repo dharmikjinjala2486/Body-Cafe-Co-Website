@@ -1,13 +1,12 @@
 /* Body Café Co. — storefront preview.
    View layer: templates + interaction. Data, cart, checkout, account and ops logic live further down. */
-/* Variant E is the default storefront; previews retain all eight design directions. */
+/* Variant E is the default storefront; other designs live in the preview Archive. */
 const DESIGNS = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const DESIGN_LABELS = [
   ["a", "A", "State of Play"],
   ["b", "B", "Expressive everyday"],
   ["c", "C", "Everyday Elsewhere"],
   ["d", "D", "The Other Side"],
-  ["e", "E", "Fan Deck"],
   ["f", "F", "Edition"],
   ["g", "G", "Darkroom"],
   ["h", "H", "Folio"],
@@ -15,14 +14,20 @@ const DESIGN_LABELS = [
 // Production uses E; local and connected previews keep the comparison controls.
 const availableDesigns = () => window.BCCRelease?.production ? ["e"] : DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
 let activeDesign = "e";
+let activePart = "1";
+// Variant E working parts, previewed with ?part=2 or ?part=3. Part 1 is the approved production design.
+const WORKING_PARTS = ["2", "3", "4"];
 function syncDesign() {
-  const requested = new URL(location.href).searchParams.get("design");
+  const params = new URL(location.href).searchParams;
+  const requested = params.get("design");
   let stored = null;
   try { stored = sessionStorage.getItem("bcc-design"); } catch {}
   const available = availableDesigns();
-  activeDesign = location.pathname.startsWith("/ops") ? "e" : available.includes(requested) ? requested : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "e";
+  activeDesign = location.pathname.startsWith("/ops") ? "e" : available.includes(requested) ? requested : WORKING_PARTS.includes(params.get("part")) ? "e" : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "e";
   try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
+  activePart = !window.BCCRelease?.production && !location.pathname.startsWith("/ops") && activeDesign === "e" && WORKING_PARTS.includes(params.get("part")) ? params.get("part") : "1";
   document.body.dataset.design = activeDesign;
+  document.body.dataset.variantEPart = activeDesign === "e" ? activePart : "";
 }
 syncDesign();
 /* Where "home" is for the active direction: A/B return to their concept homepage. */
@@ -262,23 +267,25 @@ function card(p) {
 function grid(products = state.catalog) {
   return `<div class="tile-grid">${products.map(card).join("")}</div>`;
 }
-/* The eight-option selector keeps the visitor on the same route, entity, query and anchor; only ?design= changes. */
-function designHref(d) {
+/* Switch previews on the same page, preserving its filters and anchor. */
+function designHref(value) {
   const u = new URL(location.href);
-  u.searchParams.set("design", d);
+  const part = /^e([234])$/.exec(value);
+  u.searchParams.set("design", part ? "e" : value);
+  if (part) u.searchParams.set("part", part[1]);
+  else u.searchParams.delete("part");
   return u.pathname + u.search + u.hash;
-}
-function designLinks() {
-  return DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d))
-    .map(([d, number, label]) => {
-      return `<a data-design-switch href="${designHref(d)}"${activeDesign === d ? ' aria-current="page"' : ""}>${number} <span>${label}</span></a>`;
-    })
-    .join("");
 }
 function previewBar() {
   if (window.BCCRelease?.production) return "";
-  const options = DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d)).map(([d, number, label]) => `<option value="${d}"${activeDesign === d ? " selected" : ""}>${number} · ${label}</option>`).join("");
-  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Design preview · Ordering and sign-in unavailable." : window.BCCConnectedHosted ? "Store preview · Ordering opens soon." : "Local preview · No live payment or dispatch."}</p><nav class="design-switch" aria-label="Choose design direction">${designLinks()}</nav><label class="preview-design-mobile">Design<select data-design-select aria-label="Choose design direction">${options}</select></label><a href="/ops">Admin portal ↗</a></div>`;
+  const option = (value, label, selected) => `<option value="${value}"${selected ? " selected" : ""}>${label}</option>`;
+  const variant = option("e", "Part 1 · Finalized", activeDesign === "e" && activePart === "1") +
+    option("e2", "Part 2 · Creative", activeDesign === "e" && activePart === "2") +
+    option("e3", "Part 3 · Minimal", activeDesign === "e" && activePart === "3") +
+    option("e4", "Part 4 · Index", activeDesign === "e" && activePart === "4");
+  const archive = DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d))
+    .map(([d, number, label]) => option(d, `${number} · ${label}`, activeDesign === d)).join("");
+  return `<div class="preview-bar"><p>${window.BCCStaticPreview ? "Design preview · Ordering and sign-in unavailable." : window.BCCConnectedHosted ? "Store preview · Ordering opens soon." : "Local preview · No live payment or dispatch."}</p><label class="preview-versions">Design<select data-design-select><optgroup label="Variant E">${variant}</optgroup><optgroup label="Archive">${archive}</optgroup></select></label><a href="/ops">Admin portal ↗</a></div>`;
 }
 function shell(content) {
   if (location.pathname.startsWith("/ops")) return content;
@@ -697,6 +704,7 @@ function keepDesignOnLinks() {
     const h = a.getAttribute("href");
     if (/^\/(ops|web|concepts|assets)(\/|$)/.test(h) || a.hasAttribute("data-design-switch")) return;
     const u = new URL(h, location.origin);
+    if (activePart !== "1") u.searchParams.set("part", activePart);
     const pid = window.BCCProductRoutes.productId(u.pathname);
     if (pid && activeDesign === "e") u.searchParams.delete("design");
     else u.searchParams.set("design", activeDesign);
@@ -1216,12 +1224,18 @@ async function render(scroll = true) {
     );
   }
 }
-function navigate(href, color) {
+function navigate(href, color, switchingPreview = false) {
   transitionColor = color || "#2d2926";
   closeMenu();
   clearTimeout(shopScrollTimer);
   rememberShopScroll();
-  history.pushState({}, "", window.BCCProductRoutes.href(href, activeDesign));
+  const u = new URL(href, location.origin);
+  if (!switchingPreview && activePart !== "1" && !u.pathname.startsWith("/ops") &&
+      (!u.searchParams.has("design") || u.searchParams.get("design") === "e")) {
+    u.searchParams.set("part", activePart);
+    href = u.pathname + u.search + u.hash;
+  }
+  history.pushState({}, "", switchingPreview ? href : window.BCCProductRoutes.href(href, activeDesign));
   render();
 }
 async function refreshCatalog() {
@@ -1521,8 +1535,8 @@ document.addEventListener("submit", async (e) => {
   }
 });
 document.addEventListener("change", (e) => {
-  if (e.target.matches("[data-design-select]") && availableDesigns().includes(e.target.value)) {
-    navigate(designHref(e.target.value));
+  if (e.target.matches("[data-design-select]") && (WORKING_PARTS.some((n) => e.target.value === "e" + n) || availableDesigns().includes(e.target.value))) {
+    navigate(designHref(e.target.value), undefined, true);
     return;
   }
   if (e.target.id === "report-product") {
@@ -1548,7 +1562,10 @@ document.addEventListener("keydown", (e) => {
 window.addEventListener("popstate", () => {
   if (location.pathname + location.search === renderedRoute) return;
   // Shop to Shop (filters, sort): update in place, keeping the shopper's place.
-  if (renderedRoute.split("?")[0] === "/shop" && window.BCCShop?.popstate?.()) {
+  const before = new URL(renderedRoute, location.origin).searchParams;
+  const now = new URL(location.href).searchParams;
+  if (renderedRoute.split("?")[0] === "/shop" &&
+      ["design", "part"].every(key => before.get(key) === now.get(key)) && window.BCCShop?.popstate?.()) {
     renderedRoute = location.pathname + location.search;
     return;
   }

@@ -29,6 +29,8 @@
     ['psyllium-husk', 3, 'Clear label, but five capsules', 'Everything is explained, but five capsules at night is more than I expected. I would prefer a powder option.', 'Suresh', 'Jaipur', 'Aug 2026'],
     ['iron-bisglycinate', 4, 'Looked up my lot number', 'Typed the lot number from my bottle into the site and found its record. Delivery took four days.', 'Arjun', 'Kochi', 'Aug 2026']
   ];
+  // Shared with the Variant E Part 2 / Part 3 layers (web/part2-e.js). Preview builds only, like the list itself.
+  window.BCCVoicesE = { samples: PREVIEW ? SAMPLES.slice() : [] };
 
   function stars(n, cls) { var s = ''; for (var i = 1; i <= 5; i++) s += '<i class="' + (i <= n ? 'is-on' : '') + '"></i>'; return '<span class="vv-stars ' + (cls || '') + '" role="img" aria-label="' + n + ' out of 5">' + s + '</span>'; }
   function card(ctx, x, featured) {

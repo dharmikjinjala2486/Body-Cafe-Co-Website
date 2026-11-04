@@ -5,7 +5,7 @@
 - `BCC_HOSTED_MODE=connected`
 - `BCC_API_ORIGIN=https://dzsglgcagghinjevdbnw.supabase.co/functions/v1/operations`
 
-The connected storefront defaults to Variant E. Local, static and connected previews retain the A–H tabs and mobile design selector, including explicit design queries and saved preferences. Admin storefront and product links open E. An explicit production release ships only E.
+The connected storefront defaults to Variant E. Local, static and connected previews group the two Variant E versions separately from the seven archived designs. Existing design links and saved variant preferences still work. Admin storefront and product links open E. An explicit production release uses Variant E Part 1.
 
 The first rewrite proxies `/api/*` to the operations Edge Function, before the SPA fallback. The static-preview API adapter is omitted. The public export excludes the local database, backend/SQL source, private uploads, credentials, customer records, Git metadata, Blender originals and QA captures. No Supabase service credential belongs in Netlify or browser assets.
 

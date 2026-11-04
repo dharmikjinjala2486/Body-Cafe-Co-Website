@@ -1,0 +1,161 @@
+{
+  "checks": [
+    {
+      "width": 320,
+      "overflow": 0,
+      "heroHeight": 176.5625,
+      "caps": 7,
+      "cards": 7,
+      "removed": 0,
+      "footers": [
+        {
+          "text": "The Morning One",
+          "bg": "rgb(170, 71, 46)"
+        },
+        {
+          "text": "The Thirty",
+          "bg": "rgb(119, 125, 81)"
+        },
+        {
+          "text": "The Trio",
+          "bg": "rgb(53, 48, 111)"
+        },
+        {
+          "text": "The Big Number",
+          "bg": "rgb(132, 145, 155)"
+        },
+        {
+          "text": "The Ratio",
+          "bg": "rgb(177, 132, 185)"
+        },
+        {
+          "text": "The Chew",
+          "bg": "rgb(7, 86, 106)"
+        },
+        {
+          "text": "The Night One",
+          "bg": "rgb(156, 146, 116)"
+        }
+      ],
+      "links": 7
+    },
+    {
+      "width": 390,
+      "overflow": 0,
+      "heroHeight": 200.046875,
+      "caps": 7,
+      "cards": 7,
+      "removed": 0,
+      "footers": [
+        {
+          "text": "The Morning One",
+          "bg": "rgb(170, 71, 46)"
+        },
+        {
+          "text": "The Thirty",
+          "bg": "rgb(119, 125, 81)"
+        },
+        {
+          "text": "The Trio",
+          "bg": "rgb(53, 48, 111)"
+        },
+        {
+          "text": "The Big Number",
+          "bg": "rgb(132, 145, 155)"
+        },
+        {
+          "text": "The Ratio",
+          "bg": "rgb(177, 132, 185)"
+        },
+        {
+          "text": "The Chew",
+          "bg": "rgb(7, 86, 106)"
+        },
+        {
+          "text": "The Night One",
+          "bg": "rgb(156, 146, 116)"
+        }
+      ],
+      "links": 7
+    },
+    {
+      "width": 768,
+      "overflow": 0,
+      "heroHeight": 342,
+      "caps": 7,
+      "cards": 7,
+      "removed": 0,
+      "footers": [
+        {
+          "text": "The Morning One",
+          "bg": "rgb(170, 71, 46)"
+        },
+        {
+          "text": "The Thirty",
+          "bg": "rgb(119, 125, 81)"
+        },
+        {
+          "text": "The Trio",
+          "bg": "rgb(53, 48, 111)"
+        },
+        {
+          "text": "The Big Number",
+          "bg": "rgb(132, 145, 155)"
+        },
+        {
+          "text": "The Ratio",
+          "bg": "rgb(177, 132, 185)"
+        },
+        {
+          "text": "The Chew",
+          "bg": "rgb(7, 86, 106)"
+        },
+        {
+          "text": "The Night One",
+          "bg": "rgb(156, 146, 116)"
+        }
+      ],
+      "links": 7
+    },
+    {
+      "width": 1440,
+      "overflow": 0,
+      "heroHeight": 342,
+      "caps": 7,
+      "cards": 7,
+      "removed": 0,
+      "footers": [
+        {
+          "text": "The Morning One",
+          "bg": "rgb(170, 71, 46)"
+        },
+        {
+          "text": "The Thirty",
+          "bg": "rgb(119, 125, 81)"
+        },
+        {
+          "text": "The Trio",
+          "bg": "rgb(53, 48, 111)"
+        },
+        {
+          "text": "The Big Number",
+          "bg": "rgb(132, 145, 155)"
+        },
+        {
+          "text": "The Ratio",
+          "bg": "rgb(177, 132, 185)"
+        },
+        {
+          "text": "The Chew",
+          "bg": "rgb(7, 86, 106)"
+        },
+        {
+          "text": "The Night One",
+          "bg": "rgb(156, 146, 116)"
+        }
+      ],
+      "links": 7
+    }
+  ],
+  "errors": []
+}

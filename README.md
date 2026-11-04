@@ -1,3 +1,13 @@
+# Website design versions
+
+Use the **Design** selector in local and hosted previews:
+
+- **Variant E → Part 1 · Finalized** is the approved storefront and production design. Preview URL: `/?design=e`.
+- **Variant E → Part 2 · Working version** starts with the same design and is the place for all new design changes. Preview URL: `/?design=e&part=2`.
+- **Archive** holds A, B, C, D, F, G and H. Their existing `?design=` links still work.
+
+The approved baseline before the selector update is commit `c9959073185829821dc9184a33791285ae150ca3`. The notes below describe earlier builds.
+
 # The Super Sevens on Variant E — 1 November 2026
 
 Variant E now carries the Super Sevens system. Each of the seven products owns one segment of a seven-segment digit (catalogue order a–g), and the segments also write numbers across the site. It adds a light-up hero, a scroll-scrubbed roll call with Blender turntables, a serving pour, flip-and-save cards, a new `/super-sevens` page, and touches across product pages, Shop, Bag, Reports, About, Story, Learn, Standards and 404. Presentation only; backend, records and commerce hooks are unchanged. See [implementation and checks](design-review/SUPER-SEVENS-IMPLEMENTATION-2026-11-01.md). Not committed or published.

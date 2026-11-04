@@ -1,0 +1,91 @@
+{
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 3368,
+      "overflow": false,
+      "selectors": 7,
+      "visibleRecords": 1
+    },
+    {
+      "width": 768,
+      "height": 4436,
+      "overflow": false,
+      "selectors": 7,
+      "visibleRecords": 1
+    },
+    {
+      "width": 390,
+      "height": 4885,
+      "overflow": false,
+      "selectors": 7,
+      "visibleRecords": 1
+    },
+    {
+      "width": 320,
+      "height": 5215,
+      "overflow": false,
+      "selectors": 7,
+      "visibleRecords": 1
+    }
+  ],
+  "products": [
+    {
+      "id": "iron-bisglycinate",
+      "record": "iron-bisglycinate",
+      "heading": "Iron Bisglycinate",
+      "lot": "/reports?product=iron-bisglycinate",
+      "query": "iron-bisglycinate",
+      "facts": "Ingredient form\nFerrochel® ferrous bisglycinate chelate\nPer serving\n29 mg elemental iron as Ferrochel® ferrous bisglycinate chelate\nServing / pack\n1 capsule · 60 capsules\nMade by\nVebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India, Lic. No. 10725997000051.\nIngredient origin\nNot published\nTest reports\nNot published. The label states third-party tested; results are not available here.\nCertification\nLabel states GMP certified. Certificate not published."
+    },
+    {
+      "id": "l-theanine",
+      "record": "l-theanine",
+      "heading": "L-Theanine",
+      "lot": "/reports?product=l-theanine",
+      "query": "l-theanine",
+      "facts": "Ingredient form\nL-Theanine (naturally found in green tea)\nPer serving\n200 mg L-Theanine\nServing / pack\n1 capsule · 30 capsules\nMade by\nU-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540.\nIngredient origin\nNot published\nTest reports\nNot published. The label states third-party tested; results are not available here.\nCertification\nLabel states GMP certified. Certificate not published."
+    },
+    {
+      "id": "vitamin-d3-k2",
+      "record": "vitamin-d3-k2",
+      "heading": "Vitamin D3 + K2",
+      "lot": "/reports?product=vitamin-d3-k2",
+      "query": "vitamin-d3-k2",
+      "facts": "Ingredient form\nVitamin D3 (cholecalciferol); vitamin K2 as MK-7; in anchovy fish oil, omega-3 as triglycerides\nPer serving\nVitamin D3 (cholecalciferol) 600 IU; Vitamin K2 (MK-7) 55 mcg; fish oil concentrate (Anchovy — Engraulis ringens) 250 mg, providing total Omega-3 as triglycerides 200 mg, including EPA 100 mg and DHA 75 mg. EPA and DHA are included in total Omega-3.\nServing / pack\n1 softgel · 60 softgels\nMade by\nASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India, Lic. No. 10721024000068.\nIngredient origin\nNot published\nTest reports\nNot published. The label states third-party tested; results are not available here.\nCertification\nLabel states GMP certified. Certificate not published."
+    },
+    {
+      "id": "omega-3-fish-oil",
+      "record": "omega-3-fish-oil",
+      "heading": "Omega-3 Fish Oil",
+      "lot": "/reports?product=omega-3-fish-oil",
+      "query": "omega-3-fish-oil",
+      "facts": "Ingredient form\nAnchovy (Engraulis ringens) fish oil concentrate; omega-3 as triglycerides\nPer serving\nFish oil concentrate (Anchovy — Engraulis ringens) 1,000 mg; total Omega-3 as triglycerides 800 mg, including EPA 400 mg and DHA 300 mg. EPA and DHA are included in total Omega-3, not added to it.\nServing / pack\n1 softgel · 60 softgels\nMade by\nASOJ Soft Caps Pvt. Ltd., Baroda, Gujarat, 391510, India, Lic. No. 10721024000068.\nIngredient origin\nNot published\nTest reports\nNot published. The label states third-party tested; results are not available here.\nCertification\nLabel states GMP certified. Certificate not published."
+    },
+    {
+      "id": "myo-d-chiro-inositol",
+      "record": "myo-d-chiro-inositol",
+      "heading": "Myo & D-Chiro Inositol",
+      "lot": "/reports?product=myo-d-chiro-inositol",
+      "query": "myo-d-chiro-inositol",
+      "facts": "Ingredient form\nMyo-inositol + D-chiro-inositol, 40:1 ratio\nPer serving\nMyo-Inositol 2,000 mg and D-Chiro Inositol 50 mg per 3 capsules; Myo-to-D-Chiro ratio 40:1.\nServing / pack\n3 capsules · 90 capsules\nMade by\nU-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540.\nIngredient origin\nNot published\nTest reports\nNot published. The label states third-party tested; results are not available here.\nCertification\nLabel states GMP certified. Certificate not published."
+    },
+    {
+      "id": "creatine-chews",
+      "record": "creatine-chews",
+      "heading": "Creatine Chews",
+      "lot": "/reports?product=creatine-chews",
+      "query": "creatine-chews",
+      "facts": "Ingredient form\nCreatine monohydrate\nPer serving\n3,000 mg creatine monohydrate per 2 tablets\nServing / pack\n2 chewable tablets · 60 chewable tablets\nMade by\nVebe Lifecare Pvt. Ltd., Baroda, Gujarat, 391243, India, Lic. No. 10725997000051.\nIngredient origin\nNot published\nTest reports\nNot published. The label states third-party tested; results are not available here.\nCertification\nLabel states GMP certified. Certificate not published."
+    },
+    {
+      "id": "psyllium-husk",
+      "record": "psyllium-husk",
+      "heading": "Psyllium Husk",
+      "lot": "/reports?product=psyllium-husk",
+      "query": "psyllium-husk",
+      "facts": "Ingredient form\nPsyllium husk (isabgol)\nPer serving\nPsyllium Husk (Isabgol) 2,000 mg; dietary fibre 1,578 mg, including soluble fibre 1,362 mg, per 5 capsules. Husk weight and dietary fibre are different values.\nServing / pack\n5 capsules · 150 capsules\nMade by\nU-Liva Nutrition LLP, Rajkot, Gujarat, 360023, India, Lic. No. 10017021002540.\nIngredient origin\nNot published\nTest reports\nNot published. The label states third-party tested; results are not available here.\nCertification\nLabel states GMP certified. Certificate not published."
+    }
+  ],
+  "errors": []
+}

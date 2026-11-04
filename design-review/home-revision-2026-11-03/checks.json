@@ -1,0 +1,522 @@
+{
+  "layouts": [
+    {
+      "route": "/",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": [
+        "hero",
+        "trust-strip",
+        "collection",
+        "lot",
+        "voices",
+        "faq"
+      ],
+      "hero": "SEVEN EVERYDAY SUPPLEMENTS\n\nThe Super Sevens\n.\n\nSeven caps. Seven colours. Seven clear label.\n\nShop all seven",
+      "faq": "GOOD TO KNOW\n\nYour questions, answered.\nFind more answers"
+    },
+    {
+      "route": "/shop",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": []
+    },
+    {
+      "route": "/l-theanine",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": []
+    },
+    {
+      "route": "/iron-bisglycinate",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/vitamin-d3k2",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/omega3-fishoil",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/myo-and-dchiro-inositol",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/creatine-chews",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/psyllium-husk",
+      "width": 320,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": [
+        "hero",
+        "trust-strip",
+        "collection",
+        "lot",
+        "voices",
+        "faq"
+      ],
+      "hero": "SEVEN EVERYDAY SUPPLEMENTS\n\nThe Super Sevens\n.\n\nSeven caps. Seven colours. Seven clear label.\n\nShop all seven",
+      "faq": "GOOD TO KNOW\n\nYour questions, answered.\nFind more answers"
+    },
+    {
+      "route": "/shop",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": []
+    },
+    {
+      "route": "/l-theanine",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": []
+    },
+    {
+      "route": "/iron-bisglycinate",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/vitamin-d3k2",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/omega3-fishoil",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/myo-and-dchiro-inositol",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/creatine-chews",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/psyllium-husk",
+      "width": 390,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": [
+        "hero",
+        "trust-strip",
+        "collection",
+        "lot",
+        "voices",
+        "faq"
+      ],
+      "hero": "SEVEN EVERYDAY SUPPLEMENTS\n\nThe Super Sevens\n.\n\nSeven caps. Seven colours. Seven clear label.\n\nShop all seven",
+      "faq": "GOOD TO KNOW\n\nYour questions, answered.\nFind more answers"
+    },
+    {
+      "route": "/shop",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": []
+    },
+    {
+      "route": "/l-theanine",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": []
+    },
+    {
+      "route": "/iron-bisglycinate",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/vitamin-d3k2",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/omega3-fishoil",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/myo-and-dchiro-inositol",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/creatine-chews",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/psyllium-husk",
+      "width": 768,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": [
+        "hero",
+        "trust-strip",
+        "collection",
+        "lot",
+        "voices",
+        "faq"
+      ],
+      "hero": "SEVEN EVERYDAY SUPPLEMENTS\n\nThe Super Sevens\n.\n\nSeven caps. Seven colours. Seven clear label.\n\nShop all seven",
+      "faq": "GOOD TO KNOW\n\nYour questions, answered.\nFind more answers"
+    },
+    {
+      "route": "/shop",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": []
+    },
+    {
+      "route": "/l-theanine",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [
+        "With or empty stomach"
+      ],
+      "sections": []
+    },
+    {
+      "route": "/iron-bisglycinate",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/vitamin-d3k2",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/omega3-fishoil",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/myo-and-dchiro-inositol",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/creatine-chews",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    },
+    {
+      "route": "/psyllium-husk",
+      "width": 1440,
+      "overflow": 0,
+      "mrp": false,
+      "food": [],
+      "sections": []
+    }
+  ],
+  "samples": [
+    {
+      "id": "",
+      "average": "4.4",
+      "count": "8 sample reviews",
+      "bins": [
+        4,
+        3,
+        1,
+        0,
+        0
+      ],
+      "visible": [
+        "iron-bisglycinate",
+        "l-theanine",
+        "vitamin-d3-k2",
+        "creatine-chews",
+        "omega-3-fish-oil",
+        "myo-d-chiro-inositol",
+        "psyllium-husk",
+        "iron-bisglycinate"
+      ]
+    },
+    {
+      "id": "iron-bisglycinate",
+      "average": "4.5",
+      "count": "2 sample reviews",
+      "bins": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "visible": [
+        "iron-bisglycinate",
+        "iron-bisglycinate"
+      ]
+    },
+    {
+      "id": "l-theanine",
+      "average": "5.0",
+      "count": "1 sample review",
+      "bins": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "visible": [
+        "l-theanine"
+      ]
+    },
+    {
+      "id": "psyllium-husk",
+      "average": "3.0",
+      "count": "1 sample review",
+      "bins": [
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "visible": [
+        "psyllium-husk"
+      ]
+    },
+    {
+      "id": "",
+      "average": "4.4",
+      "count": "8 sample reviews",
+      "bins": [
+        4,
+        3,
+        1,
+        0,
+        0
+      ],
+      "visible": [
+        "iron-bisglycinate",
+        "l-theanine",
+        "vitamin-d3-k2",
+        "creatine-chews",
+        "omega-3-fish-oil",
+        "myo-d-chiro-inositol",
+        "psyllium-husk",
+        "iron-bisglycinate"
+      ]
+    }
+  ],
+  "live": [
+    {
+      "id": "",
+      "average": "3.8",
+      "count": "12 published reviews",
+      "bins": [
+        8,
+        0,
+        0,
+        2,
+        2
+      ],
+      "visible": [
+        "iron-bisglycinate",
+        "l-theanine"
+      ]
+    },
+    {
+      "id": "iron-bisglycinate",
+      "average": "4.2",
+      "count": "10 published reviews",
+      "bins": [
+        8,
+        0,
+        0,
+        0,
+        2
+      ],
+      "visible": [
+        "iron-bisglycinate"
+      ]
+    },
+    {
+      "id": "l-theanine",
+      "average": "2.0",
+      "count": "2 published reviews",
+      "bins": [
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      "visible": [
+        "l-theanine"
+      ]
+    },
+    {
+      "id": "psyllium-husk",
+      "average": "—",
+      "count": "0 published reviews",
+      "bins": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "visible": []
+    },
+    {
+      "id": "",
+      "average": "3.8",
+      "count": "12 published reviews",
+      "bins": [
+        8,
+        0,
+        0,
+        2,
+        2
+      ],
+      "visible": [
+        "iron-bisglycinate",
+        "l-theanine"
+      ]
+    }
+  ],
+  "errors": []
+}

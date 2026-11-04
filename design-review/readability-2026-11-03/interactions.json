@@ -1,0 +1,793 @@
+{
+  "shopInitial": {
+    "url": "/shop?design=e",
+    "shown": [
+      "iron-bisglycinate",
+      "l-theanine",
+      "vitamin-d3-k2",
+      "omega-3-fish-oil",
+      "myo-d-chiro-inositol",
+      "creatine-chews",
+      "psyllium-husk"
+    ],
+    "count": "Showing all 7 products",
+    "clearVisible": false,
+    "need": "",
+    "empty": true,
+    "originalEmpty": true
+  },
+  "needOnly": {
+    "url": "/shop?design=e",
+    "shown": [
+      "l-theanine"
+    ],
+    "count": "Showing all 7 products",
+    "clearVisible": false,
+    "need": "l-theanine",
+    "empty": true,
+    "originalEmpty": true
+  },
+  "zero": {
+    "url": "/shop?format=softgels&design=e",
+    "shown": [],
+    "count": "Showing 2 of 7 products",
+    "clearVisible": true,
+    "need": "l-theanine",
+    "empty": false,
+    "originalEmpty": true
+  },
+  "clearAll": {
+    "url": "/shop?design=e",
+    "shown": [
+      "l-theanine"
+    ],
+    "count": "Showing all 7 products",
+    "clearVisible": false,
+    "need": "l-theanine",
+    "empty": false,
+    "originalEmpty": true
+  },
+  "removedTimeQuery": {
+    "url": "/shop?time=night&design=e",
+    "shown": [
+      "psyllium-husk"
+    ],
+    "count": "Showing 1 of 7 products",
+    "clearVisible": true,
+    "need": "",
+    "empty": true,
+    "originalEmpty": true
+  },
+  "products": [
+    {
+      "id": "iron-bisglycinate",
+      "pourBefore": "0",
+      "pourAfter": "0",
+      "pourAncestor": false,
+      "anchors": [],
+      "tiles": [
+        "1 capsule\nonce a day",
+        "Morning",
+        "Empty stomach",
+        "No milk\n2 h before/after",
+        "60 days\nper pack",
+        "Vegetarian"
+      ],
+      "addY": -2929
+    },
+    {
+      "id": "l-theanine",
+      "pourBefore": "0",
+      "pourAfter": "0",
+      "pourAncestor": false,
+      "anchors": [],
+      "tiles": [
+        "1 capsule\nonce a day",
+        "Morning",
+        "With or without\nfood",
+        "30 days\nper pack",
+        "Vegetarian"
+      ],
+      "addY": -2490
+    },
+    {
+      "id": "vitamin-d3-k2",
+      "pourBefore": "0",
+      "pourAfter": "0",
+      "pourAncestor": false,
+      "anchors": [],
+      "tiles": [
+        "1 softgel\nonce a day",
+        "Morning",
+        "With food",
+        "60 days\nper pack",
+        "Non-veg\ngelatin, fish oil"
+      ],
+      "addY": -2771
+    },
+    {
+      "id": "omega-3-fish-oil",
+      "pourBefore": "0",
+      "pourAfter": "0",
+      "pourAncestor": false,
+      "anchors": [],
+      "tiles": [
+        "1 softgel\nonce a day",
+        "Morning",
+        "With food",
+        "60 days\nper pack",
+        "Non-veg\ngelatin, fish oil"
+      ],
+      "addY": -2631
+    },
+    {
+      "id": "myo-d-chiro-inositol",
+      "pourBefore": "0",
+      "pourAfter": "0",
+      "pourAncestor": false,
+      "anchors": [],
+      "tiles": [
+        "3 capsules\nonce a day",
+        "Morning",
+        "With food",
+        "30 days\nper pack",
+        "Vegetarian"
+      ],
+      "addY": -2593
+    },
+    {
+      "id": "creatine-chews",
+      "pourBefore": "0",
+      "pourAfter": "0",
+      "pourAncestor": false,
+      "anchors": [],
+      "tiles": [
+        "2 chewable tablets\nonce a day",
+        "Any one time\nand stay consistent",
+        "Chew it\ndon't swallow whole",
+        "30 days\nper pack",
+        "Vegetarian"
+      ],
+      "addY": -2876
+    },
+    {
+      "id": "psyllium-husk",
+      "pourBefore": "0",
+      "pourAfter": "0",
+      "pourAncestor": false,
+      "anchors": [],
+      "tiles": [
+        "5 capsules\nonce a day",
+        "Night",
+        "With food",
+        "Full glass\nof water",
+        "30 days\nper pack",
+        "Vegetarian"
+      ],
+      "addY": -2613
+    }
+  ],
+  "opened": [
+    {
+      "route": "/",
+      "overflow": 0,
+      "height": 9717,
+      "broken": [],
+      "closed": {
+        "height": 9381,
+        "sections": [
+          {
+            "height": 882
+          },
+          {
+            "height": 152
+          },
+          {
+            "heading": "Seven everyday essentials.",
+            "height": 1696
+          },
+          {
+            "heading": "When to take each one.",
+            "height": 1032
+          },
+          {
+            "heading": "Licensed. Labelled. Traceable.",
+            "height": 497
+          },
+          {
+            "heading": "Your bottle has a record.",
+            "height": 884
+          },
+          {
+            "heading": "Real words, only.",
+            "height": 1798
+          },
+          {
+            "heading": "Good questions welcome here.",
+            "height": 585
+          },
+          {
+            "heading": "You should always know what you're being served.",
+            "height": 717
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/shop",
+      "overflow": 0,
+      "height": 3834,
+      "broken": [],
+      "closed": {
+        "height": 3834,
+        "sections": [
+          {
+            "heading": "The collection",
+            "height": 1942
+          },
+          {
+            "heading": "Not sure which one?",
+            "height": 167
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/super-sevens",
+      "overflow": 0,
+      "height": 6604,
+      "broken": [],
+      "closed": {
+        "height": 6604,
+        "sections": [
+          {
+            "heading": "Meet the seven.",
+            "height": 3291
+          },
+          {
+            "heading": "Every number, written in caps.",
+            "height": 746
+          },
+          {
+            "heading": "What “Super Sevens” never means.",
+            "height": 575
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/standards",
+      "overflow": 0,
+      "height": 19499,
+      "broken": [],
+      "closed": {
+        "height": 9354,
+        "sections": [
+          {
+            "heading": "Iron Bisglycinate",
+            "height": 1438
+          },
+          {
+            "heading": "Iron Bisglycinate",
+            "height": 1143
+          },
+          {
+            "heading": "Each stage proves something different.",
+            "height": 1283
+          },
+          {
+            "heading": "Every ingredient, and who makes the product.",
+            "height": 2187
+          },
+          {
+            "heading": "Follow your lot",
+            "height": 1314
+          },
+          {
+            "heading": "How we communicate responsibly",
+            "height": 1488
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/story",
+      "overflow": 2,
+      "height": 16138,
+      "broken": [],
+      "closed": {
+        "height": 7370,
+        "sections": [
+          {
+            "heading": "The front of the label shouts. The back whispers.",
+            "height": 743
+          },
+          {
+            "heading": "Careful people.",
+            "height": 508
+          },
+          {
+            "heading": "An opaque shelf.",
+            "height": 799
+          },
+          {
+            "heading": "The front of the label shouts. The back whispers.",
+            "height": 267
+          },
+          {
+            "heading": "A good café never hides the recipe.",
+            "height": 1119
+          },
+          {
+            "heading": "Why Body Café Co. exists.",
+            "height": 587
+          },
+          {
+            "height": 385
+          },
+          {
+            "heading": "Form. Amount. Moment. Proof.",
+            "height": 1557
+          },
+          {
+            "heading": "The thinking behind our products.",
+            "height": 1570
+          },
+          {
+            "heading": "What we believe.",
+            "height": 632
+          },
+          {
+            "heading": "What we can demonstrate.",
+            "height": 1054
+          },
+          {
+            "heading": "Most supplement shopping asks for trust first and offers detail later, if at all. We think it should work the other way round.",
+            "height": 548
+          },
+          {
+            "heading": "Name, colour, format, label.",
+            "height": 944
+          },
+          {
+            "height": 587
+          },
+          {
+            "heading": "Four values, each with something to check.",
+            "height": 1494
+          },
+          {
+            "heading": "Our place in everyday life.",
+            "height": 1410
+          },
+          {
+            "heading": "Start with one. Read the whole label.",
+            "height": 278
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/learn",
+      "overflow": 0,
+      "height": 6022,
+      "broken": [],
+      "closed": {
+        "height": 4762,
+        "sections": [
+          {
+            "heading": "Seven product guides.",
+            "height": 252
+          },
+          {
+            "heading": "How do you read a supplement label?",
+            "height": 690
+          },
+          {
+            "heading": "Skills for any label.",
+            "height": 1183
+          },
+          {
+            "heading": "Good questions, clearly answered",
+            "height": 1126
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/reports",
+      "overflow": 0,
+      "height": 6804,
+      "broken": [],
+      "closed": {
+        "height": 4251,
+        "sections": [
+          {
+            "heading": "Understand this report",
+            "height": 616
+          },
+          {
+            "heading": "Browse published lots",
+            "height": 583
+          },
+          {
+            "heading": "Questions or a missing report?",
+            "height": 864
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/help",
+      "overflow": 0,
+      "height": 6537,
+      "broken": [],
+      "closed": {
+        "height": 4403,
+        "sections": [
+          {
+            "heading": "Quick actions",
+            "height": 678
+          },
+          {
+            "heading": "Browse by topic",
+            "height": 1447
+          },
+          {
+            "heading": "Common questions",
+            "height": 399
+          },
+          {
+            "heading": "Policies",
+            "height": 100
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/contact",
+      "overflow": 0,
+      "height": 4578,
+      "broken": [],
+      "closed": {
+        "height": 4175,
+        "sections": [
+          {
+            "height": 1061
+          },
+          {
+            "heading": "Hours and replies",
+            "height": 378
+          },
+          {
+            "height": 72
+          },
+          {
+            "heading": "Complaints and grievances",
+            "height": 234
+          }
+        ],
+        "add": []
+      }
+    },
+    {
+      "route": "/iron-bisglycinate",
+      "overflow": 0,
+      "height": 14582,
+      "broken": [],
+      "closed": {
+        "height": 9508,
+        "sections": [
+          {
+            "heading": "At a glance",
+            "height": 1583
+          },
+          {
+            "heading": "Iron first. Chai later.",
+            "height": 1132
+          },
+          {
+            "heading": "How to take it.",
+            "height": 1030
+          },
+          {
+            "heading": "Everything on the label.",
+            "height": 1776
+          },
+          {
+            "heading": "This bottle has a record.",
+            "height": 784
+          },
+          {
+            "heading": "Reviews & questions",
+            "height": 1375
+          },
+          {
+            "heading": "More of the seven.",
+            "height": 629
+          }
+        ],
+        "add": [
+          {
+            "text": "Add to bag",
+            "y": 409.671875
+          }
+        ]
+      }
+    },
+    {
+      "route": "/learn/iron-bisglycinate",
+      "overflow": 0,
+      "height": 11943,
+      "broken": [],
+      "closed": {
+        "height": 11191,
+        "sections": [
+          {
+            "heading": "In a minute",
+            "height": 786
+          },
+          {
+            "heading": "What it is",
+            "height": 364
+          },
+          {
+            "heading": "Names, forms and terms",
+            "height": 508
+          },
+          {
+            "heading": "What the research says",
+            "height": 571
+          },
+          {
+            "heading": "Inside our product",
+            "height": 2297
+          },
+          {
+            "heading": "How to read this label",
+            "height": 622
+          },
+          {
+            "heading": "Usage, cautions and storage",
+            "height": 715
+          },
+          {
+            "heading": "Quality, sourcing and lot records",
+            "height": 624
+          },
+          {
+            "heading": "Common questions",
+            "height": 434
+          },
+          {
+            "heading": "Sources and versions",
+            "height": 440
+          },
+          {
+            "heading": "Keep going",
+            "height": 331
+          },
+          {
+            "heading": "Was this explanation clear?",
+            "height": 343
+          },
+          {
+            "heading": "Related guides",
+            "height": 423
+          }
+        ],
+        "add": []
+      }
+    }
+  ],
+  "desktopProduct": {
+    "buy": {
+      "x": 0,
+      "y": 150.4375,
+      "width": 1440,
+      "height": 1357.453125,
+      "top": 150.4375,
+      "right": 1440,
+      "bottom": 1507.890625,
+      "left": 0
+    },
+    "buttons": [
+      {
+        "text": "",
+        "rect": {
+          "x": 56,
+          "y": 381.828125,
+          "width": 741.0625,
+          "height": 640,
+          "top": 381.828125,
+          "right": 797.0625,
+          "bottom": 1021.828125,
+          "left": 56
+        }
+      },
+      {
+        "text": "",
+        "rect": {
+          "x": 797.0625,
+          "y": 381.828125,
+          "width": 741.0625,
+          "height": 640,
+          "top": 381.828125,
+          "right": 1538.125,
+          "bottom": 1021.828125,
+          "left": 797.0625
+        }
+      },
+      {
+        "text": "‹",
+        "rect": {
+          "x": 72,
+          "y": 965.828125,
+          "width": 40,
+          "height": 40,
+          "top": 965.828125,
+          "right": 112,
+          "bottom": 1005.828125,
+          "left": 72
+        }
+      },
+      {
+        "text": "›",
+        "rect": {
+          "x": 166,
+          "y": 965.828125,
+          "width": 40,
+          "height": 40,
+          "top": 965.828125,
+          "right": 206,
+          "bottom": 1005.828125,
+          "left": 166
+        }
+      },
+      {
+        "text": "Enlarge",
+        "rect": {
+          "x": 710.703125,
+          "y": 393.828125,
+          "width": 74.359375,
+          "height": 40,
+          "top": 393.828125,
+          "right": 785.0625,
+          "bottom": 433.828125,
+          "left": 710.703125
+        }
+      },
+      {
+        "text": "",
+        "rect": {
+          "x": 56,
+          "y": 1033.828125,
+          "width": 84,
+          "height": 84,
+          "top": 1033.828125,
+          "right": 140,
+          "bottom": 1117.828125,
+          "left": 56
+        }
+      },
+      {
+        "text": "",
+        "rect": {
+          "x": 150,
+          "y": 1033.828125,
+          "width": 84,
+          "height": 84,
+          "top": 1033.828125,
+          "right": 234,
+          "bottom": 1117.828125,
+          "left": 150
+        }
+      },
+      {
+        "text": "Add to bag",
+        "rect": {
+          "x": 1002.65625,
+          "y": 581.015625,
+          "width": 353.34375,
+          "height": 52,
+          "top": 581.015625,
+          "right": 1356,
+          "bottom": 633.015625,
+          "left": 1002.65625
+        }
+      },
+      {
+        "text": "Check",
+        "rect": {
+          "x": 1269.4375,
+          "y": 1224.890625,
+          "width": 86.5625,
+          "height": 48,
+          "top": 1224.890625,
+          "right": 1356,
+          "bottom": 1272.890625,
+          "left": 1269.4375
+        }
+      }
+    ],
+    "tabs": [
+      "Overview",
+      "How to take",
+      "Label",
+      "Lot record",
+      "Reviews"
+    ]
+  },
+  "quality": {
+    "tabs": [
+      {
+        "text": "Formula\nPartly published",
+        "href": "#ingredients"
+      },
+      {
+        "text": "Source\nNot yet published",
+        "href": "#chain"
+      },
+      {
+        "text": "Checks\nNot yet published",
+        "href": "#chain"
+      },
+      {
+        "text": "Record\nLookup available",
+        "href": "#lot"
+      }
+    ],
+    "folds": [
+      {
+        "id": "",
+        "title": "What we can show you, and what we won't claim."
+      },
+      {
+        "id": "source",
+        "title": "Where ingredients come from"
+      },
+      {
+        "id": "checks",
+        "title": "How quality is checked"
+      },
+      {
+        "id": "",
+        "title": "Published today, and still to come"
+      },
+      {
+        "id": "",
+        "title": "Every label, side by side."
+      },
+      {
+        "id": "evidence",
+        "title": "The evidence behind the standard"
+      },
+      {
+        "id": "questions",
+        "title": "Good questions about our standards"
+      }
+    ],
+    "headings": [
+      "IRON BISGLYCINATE",
+      "L-Theanine",
+      "Vitamin D3 + K2",
+      "Omega-3 Fish Oil",
+      "Myo & D-Chiro Inositol",
+      "Creatine Chews",
+      "Psyllium Husk",
+      "Each stage proves something different.",
+      "How we work, and what is still to come.",
+      "Every ingredient, and who makes the product.",
+      "Follow your lot",
+      "How we communicate responsibly"
+    ]
+  }
+}

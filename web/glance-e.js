@@ -20,10 +20,11 @@
     chew: svg('<circle cx="12" cy="12" r="7"/><path d="M12 5v14"/><path d="M3 3l3 3M21 3l-3 3"/>'),
     days: svg('<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/>')
   };
-  // FSSAI marks: green square with a dot (veg), brown square with a triangle (non-veg).
+  // FSSAI marks: green square with a dot (veg), brown square with a triangle (non-veg). The dot and triangle carry stroke="none":
+  // style.css outlines every svg in currentColor, which on product cards is the cap colour.
   function diet(veg) {
-    return veg ? '<svg class="gl-ic gl-diet" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="#1f8a3b" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="#1f8a3b"/></svg>'
-      : '<svg class="gl-ic gl-diet" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="#7a3b16" stroke-width="2"/><path d="M12 6.5 17.5 16.5h-11z" fill="#7a3b16"/></svg>';
+    return veg ? '<svg class="gl-ic gl-diet" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="#1f8a3b" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="#1f8a3b" stroke="none"/></svg>'
+      : '<svg class="gl-ic gl-diet" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="#7a3b16" stroke-width="2"/><path d="M12 6.5 17.5 16.5h-11z" fill="#7a3b16" stroke="none"/></svg>';
   }
   function unit(form) {
     if (/softgel/i.test(form)) return '<i class="gl-u gl-u-gel"></i>';

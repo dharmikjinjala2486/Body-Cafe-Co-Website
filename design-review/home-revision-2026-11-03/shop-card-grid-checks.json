@@ -1,0 +1,717 @@
+[
+  {
+    "width": 320,
+    "home": {
+      "width": 320,
+      "overflow": 0,
+      "columns": "139px 139px",
+      "cards": [
+        {
+          "w": 139,
+          "h": 402.546875,
+          "y": 1335.4375,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 334.546875,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 402.546875,
+          "y": 1335.4375,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 334.546875,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 387.03125,
+          "y": 1747.984375,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 319.03125,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 387.03125,
+          "y": 1747.984375,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 319.03125,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 402.03125,
+          "y": 2145.015625,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 334.03125,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 402.03125,
+          "y": 2145.015625,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 334.03125,
+          "addInside": false
+        },
+        {
+          "w": 139,
+          "h": 387.03125,
+          "y": 2557.046875,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 319.03125,
+          "addInside": true
+        }
+      ]
+    },
+    "shop": {
+      "width": 320,
+      "overflow": 0,
+      "columns": "139px 139px",
+      "cards": [
+        {
+          "w": 139,
+          "h": 402.546875,
+          "y": 508.078125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 330.546875,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 402.546875,
+          "y": 508.078125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 330.546875,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 387.03125,
+          "y": 920.625,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 315.03125,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 387.03125,
+          "y": 920.625,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 315.03125,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 402.03125,
+          "y": 1317.65625,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 330.03125,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 402.03125,
+          "y": 1317.65625,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 330.03125,
+          "addInside": true
+        },
+        {
+          "w": 139,
+          "h": 387.03125,
+          "y": 1729.6875,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 315.03125,
+          "addInside": true
+        }
+      ]
+    }
+  },
+  {
+    "width": 390,
+    "home": {
+      "width": 390,
+      "overflow": 0,
+      "columns": "174px 174px",
+      "cards": [
+        {
+          "w": 174,
+          "h": 376.546875,
+          "y": 1345.453125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 308.546875,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 376.546875,
+          "y": 1345.453125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 308.546875,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 361.03125,
+          "y": 1732,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 293.03125,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 361.03125,
+          "y": 1732,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 293.03125,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 361.03125,
+          "y": 2103.03125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 293.03125,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 361.03125,
+          "y": 2103.03125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 293.03125,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 352.03125,
+          "y": 2474.0625,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 284.03125,
+          "addInside": true
+        }
+      ]
+    },
+    "shop": {
+      "width": 390,
+      "overflow": 0,
+      "columns": "174px 174px",
+      "cards": [
+        {
+          "w": 174,
+          "h": 376.546875,
+          "y": 483.28125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 304.546875,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 376.546875,
+          "y": 483.28125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 304.546875,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 361.03125,
+          "y": 869.828125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 289.03125,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 361.03125,
+          "y": 869.828125,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 289.03125,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 361.03125,
+          "y": 1240.859375,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 289.03125,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 361.03125,
+          "y": 1240.859375,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 289.03125,
+          "addInside": true
+        },
+        {
+          "w": 174,
+          "h": 352.03125,
+          "y": 1611.890625,
+          "imageH": 120,
+          "nameSize": "12.5px",
+          "buyY": 280.03125,
+          "addInside": true
+        }
+      ]
+    }
+  },
+  {
+    "width": 768,
+    "home": {
+      "width": 768,
+      "overflow": 0,
+      "columns": "342.281px 342.281px",
+      "cards": [
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 1348.125,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 1348.125,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 1897.5625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 1897.5625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 2447,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 2447,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 2996.4375,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        }
+      ]
+    },
+    "shop": {
+      "width": 768,
+      "overflow": 0,
+      "columns": "342.281px 342.281px",
+      "cards": [
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 445.765625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 437.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 445.765625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 437.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 995.203125,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 437.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 995.203125,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 437.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 1544.640625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 437.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 1544.640625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 437.4375,
+          "addInside": true
+        },
+        {
+          "w": 342.28125,
+          "h": 527.4375,
+          "y": 2094.078125,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 437.4375,
+          "addInside": true
+        }
+      ]
+    }
+  },
+  {
+    "width": 1100,
+    "home": {
+      "width": 1100,
+      "overflow": 0,
+      "columns": "322.656px 322.672px 322.656px",
+      "cards": [
+        {
+          "w": 322.65625,
+          "h": 527.4375,
+          "y": 1271.1875,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 322.671875,
+          "h": 527.4375,
+          "y": 1271.1875,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 322.65625,
+          "h": 527.4375,
+          "y": 1271.1875,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 322.65625,
+          "h": 527.4375,
+          "y": 1820.625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 322.671875,
+          "h": 527.4375,
+          "y": 1820.625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 322.65625,
+          "h": 527.4375,
+          "y": 1820.625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        },
+        {
+          "w": 322.65625,
+          "h": 527.4375,
+          "y": 2370.0625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 441.4375,
+          "addInside": true
+        }
+      ]
+    },
+    "shop": {
+      "width": 1100,
+      "overflow": 0,
+      "columns": "236.5px 236.5px 236.5px 236.5px",
+      "cards": [
+        {
+          "w": 236.5,
+          "h": 547.21875,
+          "y": 412.625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 457.21875,
+          "addInside": true
+        },
+        {
+          "w": 236.5,
+          "h": 547.21875,
+          "y": 412.625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 457.21875,
+          "addInside": true
+        },
+        {
+          "w": 236.5,
+          "h": 547.21875,
+          "y": 412.625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 457.21875,
+          "addInside": true
+        },
+        {
+          "w": 236.5,
+          "h": 547.21875,
+          "y": 412.625,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 457.21875,
+          "addInside": true
+        },
+        {
+          "w": 236.5,
+          "h": 547.21875,
+          "y": 981.84375,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 457.21875,
+          "addInside": true
+        },
+        {
+          "w": 236.5,
+          "h": 547.21875,
+          "y": 981.84375,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 457.21875,
+          "addInside": true
+        },
+        {
+          "w": 236.5,
+          "h": 547.21875,
+          "y": 981.84375,
+          "imageH": 240,
+          "nameSize": "17px",
+          "buyY": 457.21875,
+          "addInside": true
+        }
+      ]
+    }
+  },
+  {
+    "width": 1440,
+    "home": {
+      "width": 1440,
+      "overflow": 0,
+      "columns": "315.5px 315.5px 315.5px 315.5px",
+      "cards": [
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1322.703125,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 448.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1322.703125,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 448.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1322.703125,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 448.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1322.703125,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 448.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1879.546875,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 448.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1879.546875,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 448.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1879.546875,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 448.84375,
+          "addInside": true
+        }
+      ]
+    },
+    "shop": {
+      "width": 1440,
+      "overflow": 0,
+      "columns": "315.5px 315.5px 315.5px 315.5px",
+      "cards": [
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 446.515625,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 444.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 446.515625,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 444.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 446.515625,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 444.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 446.515625,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 444.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1003.359375,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 444.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1003.359375,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 444.84375,
+          "addInside": true
+        },
+        {
+          "w": 315.5,
+          "h": 534.84375,
+          "y": 1003.359375,
+          "imageH": 240,
+          "nameSize": "19.44px",
+          "buyY": 444.84375,
+          "addInside": true
+        }
+      ]
+    }
+  }
+]
