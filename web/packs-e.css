@@ -1,0 +1,65 @@
+/* "Choose your pack" cards (web/packs-e.js). One component, themed per part through the --pk-* tokens below. */
+.pk { --pk-ink: var(--ink, #1c1b1a); --pk-line: rgb(0 0 0 / .14); --pk-on: var(--cap, #1c1b1a); --pk-bg: #fff; --pk-on-bg: color-mix(in srgb, var(--pk-on) 9%, #fff); --pk-radius: 14px; --pk-save: #1d6b3a;
+  margin: 18px 0 14px; color: var(--pk-ink); }
+.pk-k { margin: 0 0 10px; font-size: 15px; font-weight: 600; }
+.pk-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.pk-card { position: relative; display: grid; justify-items: center; align-content: start; gap: 2px; min-width: 0; padding: 18px 8px 12px; border: 1.5px solid var(--pk-line); border-radius: var(--pk-radius); background: var(--pk-bg); color: inherit; font: inherit; text-align: center; cursor: pointer; transition: border-color .2s, background .2s, box-shadow .2s; }
+.pk-card:hover:not(:disabled) { border-color: color-mix(in srgb, var(--pk-on) 55%, var(--pk-line)); }
+.pk-card[aria-checked="true"] { border-color: var(--pk-on); background: var(--pk-on-bg); box-shadow: 0 0 0 1px var(--pk-on) inset; }
+.pk-card:focus-visible { outline: 2px solid var(--pk-ink); outline-offset: 3px; }
+.pk-card:disabled { opacity: .4; cursor: not-allowed; }
+.pk-flag { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); padding: 3px 9px; border-radius: 999px; background: var(--pk-on); color: var(--on-cap, #fff); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.pk-n { font-size: 16px; font-weight: 700; }
+.pk-days { font-size: 12px; opacity: .7; }
+.pk-was { margin-top: 6px; min-height: 1.2em; font-size: 12px; text-decoration: line-through; opacity: .55; }
+.pk-price { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pk-save { margin-top: 4px; padding: 3px 8px; border-radius: 999px; background: var(--pk-save); color: #fff; font-size: 11px; font-weight: 700; }
+.pk-save.is-mrp { background: none; color: inherit; opacity: .6; font-weight: 600; }
+.pk-per { margin-top: 4px; font-size: 11px; opacity: .7; }
+.pk-note { margin: 10px 0 0; font-size: 12px; opacity: .7; }
+.mp-was, .p2-buy-was, .p4-was { margin-right: 8px; font-size: .6em; font-weight: 400; opacity: .55; }
+
+/* Part 1 · finalised */
+.pk-mp { --pk-radius: 12px; }
+
+/* Parts 2 and 3 · cream, rounded, cap colour when chosen */
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .pk-p2 { --pk-ink: var(--p2-ink); --pk-line: var(--p2-line); --pk-radius: 16px; margin-top: 20px; }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .pk-p2 .pk-k { font-family: "Aileron", sans-serif; }
+body[data-variant-e-part="3"] .pk-p2 { --pk-bg: var(--p2-paper); }
+
+/* Part 4 · on the product's colour block: outlined tickets, Anton figures, square corners */
+body[data-variant-e-part="4"] .pk-p4 { --pk-ink: var(--on-cap); --pk-line: color-mix(in srgb, var(--on-cap) 45%, transparent); --pk-on: var(--on-cap); --pk-bg: transparent; --pk-on-bg: color-mix(in srgb, var(--on-cap) 14%, transparent); --pk-radius: 0; --pk-save: var(--on-cap); margin: 0 0 18px; }
+body[data-variant-e-part="4"] .pk-p4 .pk-k { font: 400 10px/1.4 var(--label); letter-spacing: .2em; text-transform: uppercase; }
+body[data-variant-e-part="4"] .pk-p4 .pk-n, body[data-variant-e-part="4"] .pk-p4 .pk-price { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .01em; }
+body[data-variant-e-part="4"] .pk-p4 .pk-price { font-size: 26px; }
+body[data-variant-e-part="4"] .pk-p4 .pk-save { color: var(--cap); }
+body[data-variant-e-part="4"] .pk-p4 .pk-flag { color: var(--cap); border-radius: 0; font-family: var(--label); font-weight: 400; }
+
+@media (max-width: 420px) {
+  .pk-cards { gap: 6px; }
+  .pk-card { padding: 16px 4px 10px; }
+  .pk-n { font-size: 14px; }
+  .pk-price { font-size: 17px; }
+  body[data-variant-e-part="4"] .pk-p4 .pk-price { font-size: 21px; }
+  .pk-flag { font-size: 9px; padding: 3px 7px; }
+}
+
+.pk-was.is-empty { visibility: hidden; }
+body[data-variant-e-part="4"] .pk-p4 .pk-save.is-mrp { color: inherit; }
+
+/* Delivery check under Add to bag (BCCPacks.pincode). */
+.pc { --pc-ink: var(--ink, #1c1b1a); --pc-line: rgb(0 0 0 / .18); --pc-btn: var(--pc-ink); --pc-btn-ink: #fff; --pc-radius: 999px; margin: 14px 0 4px; color: var(--pc-ink); }
+.pc-k { display: block; margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+.pc-row { display: flex; gap: 8px; }
+.pc-row input { flex: 1; min-width: 0; height: 46px; padding: 0 16px; border: 1.5px solid var(--pc-line); border-radius: var(--pc-radius); background: #fff; color: #1c1b1a; font-size: 16px; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.pc-row input:focus-visible { outline: 2px solid var(--pc-ink); outline-offset: 2px; }
+.pc-row input[aria-invalid="true"] { border-color: #a3271a; }
+.pc-row button { flex: none; height: 46px; padding: 0 20px; border: 1.5px solid var(--pc-btn); border-radius: var(--pc-radius); background: transparent; color: var(--pc-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s, color .2s; }
+.pc-row button:hover { background: var(--pc-btn); color: var(--pc-btn-ink); }
+.pc-note { margin: 8px 0 0; font-size: 12px; line-height: 1.5; opacity: .75; }
+.pc-result:not(:empty) { margin: 6px 0 0; font-size: 13px; line-height: 1.45; }
+.pc-mp { --pc-radius: 10px; }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .pc-p2 { --pc-ink: var(--p2-ink); --pc-line: var(--p2-line); margin-top: 16px; }
+body[data-variant-e-part="4"] .pc-p4 { --pc-ink: var(--on-cap); --pc-line: var(--on-cap); --pc-btn: var(--on-cap); --pc-btn-ink: var(--cap); --pc-radius: 0; margin-top: 16px; }
+body[data-variant-e-part="4"] .pc-p4 .pc-k { font: 400 10px/1.4 var(--label); letter-spacing: .2em; text-transform: uppercase; }
+body[data-variant-e-part="4"] .pc-p4 .pc-row button { font: 400 10px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; }

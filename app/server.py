@@ -197,12 +197,14 @@ class Store(commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, 
                     if remaining==0:break
                 if remaining:raise Error(p['name']+' does not have enough released preview stock.',409)
                 lines.append({'id':pid,'name':p['name'],'quantity':qty,'unit_price':p['price'],'color':p['color']})
+            for x in lines:x['pack_saving']=account.pack_saving(x['unit_price'],x['quantity'])
             subtotal=sum(x['unit_price']*x['quantity'] for x in lines)
+            packs=sum(x['pack_saving'] for x in lines)
             code=str(data.get('discount','')).strip().upper()
             if code and code!='PREVIEW10':raise Error('Use PREVIEW10 to test discounts, or remove the code.')
-            discount=(subtotal+5)//10 if code else 0
-            shipping=0 if subtotal-discount>=1499 else 75
-            payload={'items':lines,'subtotal':subtotal,'discount':discount,'discount_code':code,'shipping':shipping,'total':subtotal-discount+shipping,'tax_note':'Prices are MRP, inclusive of all taxes.','contact':contact,'gstin':gst,'legal_name':data.get('legal_name',''),'method':'prepaid','expires':now+900,'preview':True,'policy_version':'preview-2026-10-16','consent':{'email':data.get('email_consent') is True,'whatsapp':data.get('whatsapp_consent') is True},'history':[{'state':'pending','at':now}],'provider':None,'refund':'none'}
+            discount=(subtotal-packs+5)//10 if code else 0
+            shipping=0 if subtotal-packs-discount>=1499 else 75
+            payload={'items':lines,'subtotal':subtotal,'pack_saving':packs,'discount':discount,'discount_code':code,'shipping':shipping,'total':subtotal-packs-discount+shipping,'tax_note':'Prices are MRP, inclusive of all taxes.','contact':contact,'gstin':gst,'legal_name':data.get('legal_name',''),'method':'prepaid','expires':now+900,'preview':True,'policy_version':'preview-2026-10-16','consent':{'email':data.get('email_consent') is True,'whatsapp':data.get('whatsapp_consent') is True},'history':[{'state':'pending','at':now}],'provider':None,'refund':'none'}
             c.execute('INSERT INTO orders VALUES(?,?,?,?,?)',(oid,s['user_id'],'pending',json.dumps(payload),now))
             for batch,qty in allocations:c.execute('INSERT INTO reservations VALUES(?,?,?,?,?,?)',(secrets.token_hex(12),oid,batch,qty,now+900,'held'))
             c.execute('INSERT INTO payments VALUES(?,?,?,?)',('PAY-'+secrets.token_hex(8),oid,'pending',payload['total']))

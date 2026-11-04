@@ -180,15 +180,20 @@
       k(esc(P.formatOf(ctx, p)) + (p.dietary_suitability ? " · " + esc(String(p.dietary_suitability).split(/[.(]/)[0].trim()) : "")) +
       "<h1>" + esc(p.name) + '</h1><p class="p4-item-fact">' + esc(p.subtitle || "") + "</p>" +
       '<p class="p4-item-served"><span class="p4-k">Served</span>' + esc(p.serving_size || "") + " · best " + WHEN[best] + "</p>" +
-      '<div class="p4-item-buy"><p class="p4-item-price"><strong>' + ctx.money(p.price) + "</strong><small>Inclusive of all taxes" + (p.pack_size ? " · " + esc(p.pack_size) : "") + (perServe ? " · " + perServe : "") + "</small></p>" +
-      '<div class="p4-buyrow" data-pd-buy>' + h.qtySelect(m, "p4-qty") + h.addMain(m, "p4-btn p4-item-add") + "</div>" +
-      '<ul class="p4-item-notes"><li>' + esc(m.stockLine || "In stock") + '</li><li>Free delivery on orders of ₹1,499 or more</li><li><a href="#p4-lot">Look up your lot</a></li>' + (rv.length ? '<li><a href="#p4-reviews">' + rv.length + " sample review" + (rv.length === 1 ? "" : "s") + "</a></li>" : "") + "</ul></div></div>" +
+      '<div class="p4-item-buy" data-pk-scope>' +
+      // Choose your pack (owner, 4 Nov 2026); mounted by the shared Part 2 enhance (web/packs-e.js).
+      (window.BCCPacks ? window.BCCPacks.picker(p, { max: m.max, off: !!m.off, cls: "pk-p4" }) : "") +
+      '<p class="p4-item-price"><s class="p4-was" data-pk-was hidden></s><strong data-pk-total>' + ctx.money(p.price) + "</strong><small>Inclusive of all taxes" + (p.pack_size ? " · " + esc(p.pack_size) + " per bottle" : "") + (perServe ? " · " + perServe : "") + "</small></p>" +
+      '<div class="p4-buyrow" data-pd-buy><div class="sr-only" aria-hidden="true" inert>' + h.qtySelect(m, "p4-qty") + "</div>" + h.addMain(m, "p4-btn p4-item-add") + "</div>" +
+      (window.BCCPacks ? window.BCCPacks.pincode("pc-p4") : "") +
+      '<ul class="p4-item-notes"><li>' + esc(m.stockLine || "In stock") + '</li><li>Ships in 3–4 days</li><li>Free delivery on orders of ₹1,499 or more</li><li><a href="#p4-lot">Look up your lot</a></li>' + (rv.length ? '<li><a href="#p4-reviews">' + rv.length + " sample review" + (rv.length === 1 ? "" : "s") + "</a></li>" : "") + "</ul></div></div>" +
       '<div class="p4-item-photo">' + P.spin(p, { eager: true, cls: "p4-item-spin" }) + '<p class="p4-hint" aria-hidden="true">Drag to turn</p></div></section>' +
 
       /* What's in it */
       '<section class="p4-paper" id="p4-facts"><div class="p4-wrap p4-two"><div>' + k("What’s in it") + "<h2>Supplement facts</h2><p class=\"p4-sub\">Per " + esc((p.supplement_facts && p.supplement_facts.serving) || p.serving_size || "serving") + (p.servings_per_pack ? " · " + esc(p.servings_per_pack) + " servings per pack" : "") + "</p></div><div>" +
       (rows.length ? '<table class="p4-table"><thead><tr><th scope="col">Nutrient</th><th scope="col">Amount</th><th scope="col">% RDA</th></tr></thead><tbody>' + rows.map(function (r) { return '<tr class="lvl-' + (r.level || 0) + (r.active ? " is-active" : "") + '"><th scope="row">' + esc(r.name) + "</th><td>" + esc(r.amount) + "</td><td>" + esc(r.rda) + "</td></tr>"; }).join("") + '</tbody></table><p class="p4-small">%RDA as per ICMR 2020. # %RDA not established.</p>' : P.para(p.nutrition_information)) +
-      dl([["Form", P.clean(sd.form || "")], ["Other ingredients", p.other_ingredients], ["Allergens", p.allergens], ["Suitability", p.dietary_suitability]]) + "</div></div></section>" +
+      // Ingredients: only the other-ingredients list, as in Parts 1–3 (owner, 4 Nov 2026).
+      (p.other_ingredients ? '<div class="p4-others"><p class="p4-k">Other ingredients</p>' + P.otherIngredients(p.other_ingredients) + "</div>" : "") + "</div></div></section>" +
 
       /* How it's served */
       '<section class="p4-paper p4-served"><div class="p4-wrap p4-two"><div>' + k("How it’s served") + "<h2>" + esc(p.serving_size || "One serving") + ", " + WHEN[best] + ".</h2></div><div>" +

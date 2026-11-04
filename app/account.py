@@ -33,7 +33,18 @@ OTP_ATTEMPTS = 5
 OTP_HOURLY_PER_MOBILE = 5
 OTP_HOURLY_PER_SESSION = 10
 MAX_QTY = 10
-DISCOUNTS = {'PREVIEW10': {'label': 'PREVIEW10 · sample 10% off', 'condition': 'Sample code for testing the preview. 10% off the subtotal, rounded to the nearest rupee.'}}
+
+
+def pack_pct(q):
+    """Pack saving (owner, 4 Nov 2026): on one product line, 2 bottles save 5% and 3 or more save 10%. Same rule as web/packs-e.js."""
+    return 10 if q >= 3 else 5 if q == 2 else 0
+
+
+def pack_saving(price, q):
+    return int(price * q * pack_pct(q) / 100 + 0.5)  # round half up, as Math.round does for these positive amounts
+
+
+DISCOUNTS = {'PREVIEW10': {'label': 'PREVIEW10 · sample 10% off', 'condition': 'Sample code for testing the preview. 10% off the subtotal after any pack saving, rounded to the nearest rupee.'}}
 SHIPPING_RULE = {'fee': 75, 'free_from': 1499, 'note': 'Delivery is ₹75, free when your subtotal after discount is ₹1,499 or more.'}
 TAX_NOTE = 'Prices are MRP, inclusive of all taxes.'
 KEY = re.compile(r'[A-Za-z0-9-]{8,64}')
@@ -132,7 +143,7 @@ class AccountMixin:
                     status = 'reduced'
                 payable = 0 if status == 'unavailable' else min(q, mx)
                 line = {'id': p['id'], 'name': p['name'], 'quantity': q, 'payable_quantity': payable, 'status': status, 'available': stock, 'max': mx,
-                        'limit': MAX_QTY, 'unit_price': p['price'], 'line_total': p['price'] * payable, 'color': p.get('color'),
+                        'limit': MAX_QTY, 'unit_price': p['price'], 'line_total': p['price'] * payable, 'pack_pct': pack_pct(payable), 'pack_saving': pack_saving(p['price'], payable), 'color': p.get('color'),
                         'price_changed': it['price'] is not None and it['price'] != p['price'], 'seen_price': it['price']}
                 if status != 'ok':
                     changes.append({'id': p['id'], 'kind': status, 'from': q, 'to': payable})
@@ -140,17 +151,18 @@ class AccountMixin:
                     changes.append({'id': p['id'], 'kind': 'price', 'from': it['price'], 'to': p['price']})
                 lines.append(line)
         subtotal = sum(x['line_total'] for x in lines)
+        packs = sum(x.get('pack_saving', 0) for x in lines)
         discount, discount_error, applied = 0, None, None
         if code:
             if code in DISCOUNTS:
-                discount = (subtotal + 5) // 10
+                discount = (subtotal - packs + 5) // 10
                 applied = {'code': code, **DISCOUNTS[code], 'amount': discount}
             else:
                 discount_error = 'That code isn’t valid. Check it, or remove it to continue.'
-        shipping = 0 if subtotal == 0 or subtotal - discount >= SHIPPING_RULE['free_from'] else SHIPPING_RULE['fee']
+        shipping = 0 if subtotal == 0 or subtotal - packs - discount >= SHIPPING_RULE['free_from'] else SHIPPING_RULE['fee']
         ready = bool(lines) and all(x['status'] == 'ok' for x in lines) and not discount_error and not any(x['price_changed'] for x in lines)
-        return {'lines': lines, 'changes': changes, 'subtotal': subtotal, 'discount': discount, 'discount_applied': applied, 'discount_error': discount_error,
-                'shipping': shipping, 'shipping_rule': SHIPPING_RULE, 'tax_note': TAX_NOTE, 'total': subtotal - discount + shipping,
+        return {'lines': lines, 'changes': changes, 'subtotal': subtotal, 'pack_saving': packs, 'discount': discount, 'discount_applied': applied, 'discount_error': discount_error,
+                'shipping': shipping, 'shipping_rule': SHIPPING_RULE, 'tax_note': TAX_NOTE, 'total': subtotal - packs - discount + shipping,
                 'count': sum(x['payable_quantity'] if 'payable_quantity' in x else 0 for x in lines), 'ready': ready, 'sample': True, 'checked': now}
 
     def bag_get(self, s):

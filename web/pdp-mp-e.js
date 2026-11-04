@@ -22,6 +22,16 @@
   }
   function html(n) { return n ? n.outerHTML : ""; }
   function inner(n) { return n ? n.innerHTML : ""; }
+  // "A, B (C, D), E." → ["A", "B (C, D)", "E"]: split on commas outside brackets.
+  function otherList(text) {
+    var out = [], cur = "", depth = 0;
+    String(text || "").replace(/\.\s*$/, "").split("").forEach(function (ch) {
+      if (ch === "(" || ch === "[") depth++; else if (ch === ")" || ch === "]") depth = Math.max(0, depth - 1);
+      if (ch === "," && !depth) { if (cur.trim()) out.push(cur.trim()); cur = ""; } else cur += ch;
+    });
+    if (cur.trim()) out.push(cur.trim());
+    return out;
+  }
   // Small cards use the normalised bottle set (one frame and bottle size for all seven) so the row reads evenly.
   var NORMALIZED = { "iron-bisglycinate": 1, "l-theanine": 1, "vitamin-d3-k2": 1, "omega-3-fish-oil": 1, "myo-d-chiro-inositol": 1, "creatine-chews": 1, "psyllium-husk": 1 };
   function img(id) { return NORMALIZED[id] || !window.BCCBottleAssets ? "/web/media/bottles-normalized/" + id + ".svg" : window.BCCBottleAssets.url(id); }
@@ -61,11 +71,10 @@
     // ---------- Left: Description, Key Benefits, Suggested Use, Nutritional Information, Ingredients ----------
     var headline = (about && about.querySelector(".pp-head h2") || {}).textContent || p.headline || seed.headline || "";
     var intro = p.product_intro ?? seed.intro ?? "";
-    var story = p.product_story ?? seed.story ?? "";
     var whyFold = about && about.querySelector(".spe-why .pv-fold");
     var whyText = whyFold ? [].slice.call(whyFold.children).filter(function (n) { return n.tagName !== "SUMMARY"; }).map(html).join("") : "";
     var desc = '<h2 class="mp-desc-h">' + esc(headline) + "</h2>" + (intro ? "<p>" + esc(intro) + "</p>" : "") +
-      (whyText ? '<h3>Why this form?</h3>' + whyText : "") + (story ? "<h3>The story</h3><p>" + esc(story) + "</p>" : "");
+      (whyText ? '<h3>Why this form?</h3>' + whyText : ""); // "The story" removed (owner, 4 Nov 2026)
 
     var front = p.label_front || {}, benefits = [];
     if (front.claim) benefits.push(front.claim);
@@ -81,10 +90,9 @@
       (cautions ? "<h3>Cautions</h3>" + html(cautions) : "") + html(ing && ing.querySelector(".pv-rows.pp-facts-use")) + html(use.querySelector(".pp-safety")) : "";
 
     var facts = html(ing && ing.querySelector(".spe-facts"));
-    var label = ing && ing.querySelector(".pv-rows.pp-facts-label");
-    var folds = ing ? [].slice.call(ing.querySelectorAll(".pp-body > .pv-fold")).filter(function (f) { return !f.closest(".spe-front"); }).map(html).join("") : "";
-    var pdf = qual && qual.querySelector(".ppf-label");
-    var ingredients = html(label) + folds + html(pdf);
+    // Ingredients: only the other-ingredients list, no sub-sections (owner, 4 Nov 2026).
+    var others = otherList(p.other_ingredients);
+    var ingredients = others.length ? '<ul class="mp-list">' + others.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "";
 
     var acc = '<div class="mp-acc">' + item("description", "Description", desc) + item("key-benefits", "Key Benefits", keyB) +
       item("suggested-use", "Suggested Use", suggested) + item("nutritional-information", "Nutritional Information", facts) + item("ingredients-list", "Ingredients", ingredients) + "</div>";
@@ -135,15 +143,17 @@
     var tags = [ctx.format && ctx.format[p.id], front.mark && front.mark.replace(/\s*mark$/i, "")].filter(Boolean);
     var servings = parseInt(p.servings_per_pack || "", 10), per = servings && +p.price ? money(Math.round(p.price / servings * 100) / 100) : "";
     var max = qty ? qty.options.length : 1;
-    var box = '<div class="mp-box">' +
+    var box = '<div class="mp-box" data-pk-scope>' +
       (tags.length ? '<ul class="mp-tags">' + tags.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "") +
       '<a class="mp-rate" href="#reviews">' + stars(rating.average) + "<span>" + (count ? count + (sample ? " sample" : "") + (count === 1 ? " review" : " reviews") : "No reviews yet") + "</span></a>" +
       html(buy.querySelector(".pp-h1")) + html(buy.querySelector(".pp-sub")) +
-      '<div class="mp-opt"><p class="mp-opt-k">Pack:</p><div class="mp-opt-v"><span class="is-on">' + esc(p.pack_size || (servings ? servings + " servings" : "1 pack")) + "</span></div>" +
-      (per ? '<p class="mp-per">' + per + " per serving</p>" : "") + "</div>" +
-      '<div class="mp-qty-row"><div class="mp-qty" data-mp-qty data-max="' + max + '"><button type="button" data-mp-step="-1" aria-label="Decrease quantity">−</button><output aria-live="polite" data-mp-qty-v>1</output><button type="button" data-mp-step="1" aria-label="Increase quantity">+</button></div>' + (qty ? '<div class="sr-only" aria-hidden="true" inert>' + html(qty.closest(".pp-qty")) + "</div>" : "") + "</div>" +
-      '<div class="mp-buy"><div class="mp-price">' + inner(price) + "<small>Inclusive of all taxes</small></div>" + html(add) + "</div>" +
-      '<ul class="mp-ship">' + (stock ? "<li>" + html(stock) + "</li>" : "") + "<li>Free delivery on orders of ₹1,499 or more</li><li>Look up your lot online</li></ul>" +
+      // Choose your pack (owner, 4 Nov 2026): 1, 2 or 3 bottles; the cards drive the hidden quantity select that add-product reads.
+      '<p class="mp-opt-k">' + esc(p.pack_size || (servings ? servings + " servings" : "1 pack")) + " per bottle" + (per ? " · " + per + " per serving" : "") + "</p>" +
+      (window.BCCPacks ? window.BCCPacks.picker(p, { max: max, off: !add || add.disabled, cls: "pk-mp" }) : "") +
+      (qty ? '<div class="sr-only" aria-hidden="true" inert>' + html(qty.closest(".pp-qty")) + "</div>" : "") +
+      '<div class="mp-buy"><div class="mp-price"><s class="mp-was" data-pk-was hidden></s><span data-pk-total>' + inner(price) + "</span><small>Inclusive of all taxes</small></div>" + html(add) + "</div>" +
+      (window.BCCPacks ? window.BCCPacks.pincode("pc-mp") : "") +
+      '<ul class="mp-ship">' + (stock ? "<li>" + html(stock) + "</li>" : "") + "<li>Ships in 3–4 days</li><li>Free delivery on orders of ₹1,499 or more</li><li>Look up your lot online</li></ul>" +
       "</div>";
 
     var media = buy.querySelector(".pp-hero-media"), crumbs = buy.querySelector(".pp-crumbs");
@@ -159,6 +169,9 @@
   L.onEnhance(function (main, signal) {
     var top = main.querySelector(".mp-top"); if (!top) return;
     var A = window.BCCApp || {}, sel = top.querySelector("#product-quantity"), qv = top.querySelector("[data-mp-qty-v]"), qbox = top.querySelector("[data-mp-qty]");
+    // The base sticky bar (product-page.js) shows the unit price; let it follow the chosen pack.
+    var stickyPrice = main.querySelector("[data-pp-sticky] .pp-sticky-text span"); if (stickyPrice) stickyPrice.setAttribute("data-pk-total-page", "");
+    if (window.BCCPacks) window.BCCPacks.mount(main, signal);
     function money(n) { return "₹" + Number(n).toLocaleString("en-IN"); }
     function total() {
       var box = top.querySelector("[data-mp-fbt-box]"); if (!box) return;

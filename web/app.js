@@ -199,6 +199,10 @@ function total() {
 function count() {
   return state.cart.reduce((n, i) => n + i.quantity, 0);
 }
+// Pack saving on the bag (2 bottles of one product save 5%, 3+ save 10%; web/packs-e.js). The server quote is the authority.
+function packs(items = state.cart) {
+  return items.reduce((n, i) => n + (window.BCCPacks ? window.BCCPacks.saving(product(i.id)?.price || 0, i.quantity) : 0), 0);
+}
 /* Returns { ok, message, count }. `quiet` lets a page show its own confirmation instead of the toast (Shop). */
 function add(id, quantity = 1, { quiet = false } = {}) {
   const p = product(id);
@@ -812,11 +816,12 @@ const forms = {
   summary(items = state.cart, dis = false) {
     const lines = items.map((i) => ({ p: product(i.id), q: i.quantity })).filter((x) => x.p);
     const sub = lines.reduce((n, x) => n + x.p.price * x.q, 0);
-    const ship = sub >= 1499 ? 0 : 75;
+    const pk = packs(items);
+    const ship = sub - pk >= 1499 ? 0 : 75;
     return {
       lines: lines.map((x) => `<div class="summary-product">${image(x.p)}<span>${escape(x.p.name)}<small>Qty ${x.q} · ${money(x.p.price)} each</small></span><strong>${money(x.p.price * x.q)}</strong></div>`).join(""),
       discount: `<label for="discount-code">Discount code</label><div class="discount-input"><input id="discount-code" form="checkout-form" name="discount" placeholder="Enter code"${dis ? " disabled" : ""}><button type="button" data-action="discount"${dis ? " disabled" : ""}>Apply</button></div>`,
-      totals: `<div class="sum-row"><span>Subtotal</span><strong>${money(sub)}</strong></div><div class="sum-row"><span>Discount</span><strong id="checkout-discount">—</strong></div><div class="sum-row"><span>Delivery</span><strong id="checkout-shipping">${ship ? money(ship) : "Free"}</strong></div><div class="sum-row summary-total"><span>Total</span><strong id="checkout-total">${money(sub + ship)}</strong></div>`,
+      totals: `<div class="sum-row"><span>Subtotal</span><strong>${money(sub)}</strong></div>${pk ? `<div class="sum-row"><span>Pack saving</span><strong>−${money(pk)}</strong></div>` : ""}<div class="sum-row"><span>Discount</span><strong id="checkout-discount">—</strong></div><div class="sum-row"><span>Delivery</span><strong id="checkout-shipping">${ship ? money(ship) : "Free"}</strong></div><div class="sum-row summary-total"><span>Total</span><strong id="checkout-total">${money(sub - pk + ship)}</strong></div>`,
       count: lines.reduce((n, x) => n + x.q, 0),
       subtotal: sub,
       shipping: ship,
@@ -1380,11 +1385,12 @@ document.addEventListener("click", async (e) => {
     else if (button.dataset.action === "discount") {
       const code = $("#discount-code").value.trim().toUpperCase();
       if (code && code !== "PREVIEW10") return toast("Use PREVIEW10 for a sample discount.");
-      const d = code ? Math.round(total() * 0.1) : 0,
-        shipping = total() - d >= 1499 ? 0 : 75;
+      const net = total() - packs(),
+        d = code ? Math.floor((net + 5) / 10) : 0,
+        shipping = net - d >= 1499 ? 0 : 75;
       $("#checkout-discount").textContent = "−" + money(d);
       $("#checkout-shipping").textContent = shipping ? money(shipping) : "Free";
-      $("#checkout-total").textContent = money(total() - d + shipping);
+      $("#checkout-total").textContent = money(net - d + shipping);
     }
   } catch (error) {
     toast(error.message);

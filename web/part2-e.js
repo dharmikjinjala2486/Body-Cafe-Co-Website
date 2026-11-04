@@ -237,6 +237,16 @@
   function sentences(t) { return String(t || "").split(/(?<=[.!?])\s+/).map(function (x) { return x.trim(); }).filter(Boolean); }
   function norm(t) { return String(t || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
   function uniq(list) { var seen = {}; return list.filter(function (x) { var k = norm(x); if (!k || seen[k]) return false; seen[k] = 1; return true; }); }
+  // "A, B (C, D), E." → a plain list, split on commas outside brackets.
+  function otherIngredients(text) {
+    var out = [], cur = "", depth = 0;
+    String(text || "").replace(/\.\s*$/, "").split("").forEach(function (ch) {
+      if (ch === "(" || ch === "[") depth++; else if (ch === ")" || ch === "]") depth = Math.max(0, depth - 1);
+      if (ch === "," && !depth) { if (cur.trim()) out.push(cur.trim()); cur = ""; } else cur += ch;
+    });
+    if (cur.trim()) out.push(cur.trim());
+    return out.length ? '<ul class="p2-dash">' + out.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "";
+  }
   function dlist(rows) { rows = rows.filter(function (x) { return x[1]; }); return rows.length ? '<dl class="p2-dl">' + rows.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : ""; }
   part2("product", function (ctx, p) {
     var m = window.BCCEH.h.pdp(ctx, p), h = window.BCCEH.h, c = copy(p.id), sd = std(p.id) || {}, front = p.label_front || {};
@@ -248,7 +258,6 @@
     ];
     var serves = parseInt(p.servings_per_pack, 10), perServe = serves ? "₹" + (p.price / serves).toFixed(2) + " per serving" : "";
     var why = uniq(sentences(clean(sd.why)));
-    var story = clean(c.story);
     var timing = p.label_timing || {}, slots = [["morning", "Morning"], ["noon", "Noon"], ["night", "Night"]];
     var rows = (p.supplement_facts && p.supplement_facts.rows) || [];
     var cautions = uniq(sentences(p.warnings));
@@ -268,8 +277,7 @@
 
     var sections = [
       ["Description", '<h3 class="p2-acc-h">' + esc(c.headline || p.name) + "</h3>" + para(clean(c.intro || p.description)) +
-        (why.length ? '<h4>Why this form?</h4><ul class="p2-ticks">' + why.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul>" : "") +
-        (story ? '<details class="p2-more"><summary>The story</summary>' + para(story) + "</details>" : "")],
+        (why.length ? '<h4>Why this form?</h4><ul class="p2-ticks">' + why.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul>" : "")], // "The story" removed (owner, 4 Nov 2026)
       ["Key Benefits", (front.claim ? '<p class="p2-claim">' + esc(front.claim) + "</p>" : "") +
         '<p class="p2-key"><b>' + esc(sd.key || p.subtitle || "") + "</b><span>" + esc(clean(sd.form || main)) + "</span></p>" +
         dlist([["Serving", p.serving_size], ["Pack", p.pack_size], ["Product type", front.category], ["On the front", front.descriptor]])],
@@ -278,7 +286,8 @@
         (cautions.length ? '<h4>Cautions</h4><ul class="p2-dash">' + cautions.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "")],
       ["Nutritional Information", rows.length ? '<table class="p2-table p2-table-sm"><caption>Per ' + esc((p.supplement_facts && p.supplement_facts.serving) || p.serving_size || "serving") + " (approximate values)</caption><thead><tr><th scope=\"col\">Nutrient</th><th scope=\"col\">Amount</th><th scope=\"col\">% RDA</th></tr></thead><tbody>" +
         rows.map(function (r) { return '<tr class="lvl-' + (r.level || 0) + (r.active ? " is-active" : "") + '"><th scope="row">' + esc(r.name) + "</th><td>" + esc(r.amount) + "</td><td>" + esc(r.rda) + "</td></tr>"; }).join("") + '</tbody></table><p class="p2-small">%RDA as per ICMR 2020. # %RDA not established.</p>' : para(p.nutrition_information)],
-      ["Ingredients", dlist([["Ingredients and forms", main], ["Amount per serving", p.amount_per_serving], ["Serving size", p.serving_size], ["Servings per pack", p.servings_per_pack], ["Other ingredients", p.other_ingredients], ["Allergens", p.allergens], ["Dietary suitability", p.dietary_suitability], ["Storage", p.storage]])],
+      // Ingredients: only the other-ingredients list (owner, 4 Nov 2026).
+      ["Ingredients", otherIngredients(p.other_ingredients)],
     ];
 
     return '<article class="p2-pdp p2-pdp3" style="--cap:' + esc(p.color) + '">' +
@@ -289,14 +298,17 @@
       '<div class="p2-thumbs" role="group" aria-label="Product images">' + shots.map(function (s, i) { return '<button type="button" data-p2-thumb="' + i + '" aria-pressed="' + (i === 0) + '" aria-label="' + s.label + '" class="p2-thumb-' + s.cls + '">' + s.thumb + "</button>"; }).join("") + "</div></div>" +
       '<div class="p2-accs p2-pdp-accs">' + sections.map(function (s) { return acc(s[0], s[1], s[2]); }).join("") + "</div></div>" +
 
-      '<aside class="p2-buy" aria-label="Buy ' + esc(p.name) + '"><div class="p2-buy-chips"><span class="p2-chip">' + esc(formatOf(ctx, p)) + "</span>" + dietMark(p) + "</div>" +
+      '<aside class="p2-buy" data-pk-scope aria-label="Buy ' + esc(p.name) + '"><div class="p2-buy-chips"><span class="p2-chip">' + esc(formatOf(ctx, p)) + "</span>" + dietMark(p) + "</div>" +
       (rv.length ? '<a class="p2-buy-rating" href="#p2-reviews">' + stars(Math.round(avg)) + "<span>" + rv.length + " sample review" + (rv.length === 1 ? "" : "s") + "</span></a>" : "") +
       "<h1>" + esc(p.name) + '</h1><p class="p2-buy-sub">' + esc(p.subtitle || "") + "</p>" +
-      (p.pack_size ? '<p class="p2-buy-pack"><span>Pack</span><b>' + esc(p.pack_size) + "</b>" + (perServe ? "<small>" + perServe + "</small>" : "") + "</p>" : "") +
-      '<div class="p2-buy-price"><strong>' + ctx.money(p.price) + "</strong><span>Inclusive of all taxes</span></div>" +
-      '<div class="p2-buy-row" data-pd-buy>' + h.qtySelect(m, "p2-qty") + h.addMain(m, "p2-btn p2-buy-add") + "</div>" +
-      '<ul class="p2-buy-notes"><li>' + esc(m.stockLine || "In stock") + '</li><li>Free delivery on orders of ₹1,499 or more</li><li><a href="#p2-lot">Look up your lot online</a></li></ul>' +
-      (m.off ? "" : '<button type="button" class="p2-btn p2-sticky-add" data-add="' + esc(p.id) + '">Add to bag · ' + ctx.money(p.price) + "</button>") +
+      (p.pack_size ? '<p class="p2-buy-pack"><span>Per bottle</span><b>' + esc(p.pack_size) + "</b>" + (perServe ? "<small>" + perServe + "</small>" : "") + "</p>" : "") +
+      // Choose your pack (owner, 4 Nov 2026): the cards drive the hidden quantity select that add-product reads (web/packs-e.js).
+      (window.BCCPacks ? window.BCCPacks.picker(p, { max: m.max, off: !!m.off, cls: "pk-p2" }) : "") +
+      '<div class="p2-buy-price"><s class="p2-buy-was" data-pk-was hidden></s><strong data-pk-total>' + ctx.money(p.price) + "</strong><span>Inclusive of all taxes</span></div>" +
+      '<div class="p2-buy-row" data-pd-buy><div class="sr-only" aria-hidden="true" inert>' + h.qtySelect(m, "p2-qty") + "</div>" + h.addMain(m, "p2-btn p2-buy-add") + "</div>" +
+      (window.BCCPacks ? window.BCCPacks.pincode("pc-p2") : "") +
+      '<ul class="p2-buy-notes"><li>' + esc(m.stockLine || "In stock") + '</li><li>Ships in 3–4 days</li><li>Free delivery on orders of ₹1,499 or more</li><li><a href="#p2-lot">Look up your lot online</a></li></ul>' +
+      (m.off ? "" : '<button type="button" class="p2-btn p2-sticky-add" data-action="add-product" data-id="' + esc(p.id) + '">Add to bag · <span data-pk-total-page>' + ctx.money(p.price) + "</span></button>") +
       "</aside></div></div></div>" +
 
       /* Lot report */
@@ -536,6 +548,7 @@
     if (!on()) return;
     scrub(main);
     main.querySelectorAll("[data-p2-spin]").forEach(function (el) { mountSpin(el, signal); });
+    if (window.BCCPacks) window.BCCPacks.mount(main, signal); // pack cards on the product page (Parts 2, 3 and 4)
     var hero = main.querySelector("[data-p2-hero]"); if (hero) mountHero(hero, signal);
     var thumbs = main.querySelectorAll("[data-p2-thumb]");
     thumbs.forEach(function (b) {
@@ -593,7 +606,7 @@
 
   window.BCCPart2E = {
     on: on, part2: part2, bottle: bottle, caps: caps, capImg: capImg, spin: spin, scene: scene, world: world, tile: tile, fact: fact, href: href,
-    head: head, sec: sec, acc: acc, FILM: FILM, para: para, clean: clean, std: std, copy: copy, dietMark: dietMark, formatOf: formatOf, formatGroup: formatGroup,
+    head: head, sec: sec, acc: acc, FILM: FILM, otherIngredients: otherIngredients, para: para, clean: clean, std: std, copy: copy, dietMark: dietMark, formatOf: formatOf, formatGroup: formatGroup,
     STANDARD: STANDARD, BOTTLE: BOTTLE, MAKER: MAKER,
     CLAIMS: CLAIMS, PROOF: PROOF, homeFaqs: homeFaqs, reviewsFor: reviewsFor, reviewCard: reviewCard, reviewSummary: reviewSummary, stars: stars, REVIEW_RULE: REVIEW_RULE, lotForm: lotForm,
     // The sprite engine, for layers that drive a bottle themselves (Part 4 turns it with the scroll).

@@ -42,6 +42,9 @@
   }
   /* The bag works in the shared preview with the same sample rules as the local API (prices and stock from the
      published catalogue snapshot). Checkout stays unavailable here. */
+  // Pack saving (owner, 4 Nov 2026): on one product line, 2 bottles save 5% and 3 or more save 10%. Same rule as web/packs-e.js.
+  const packPct = (q) => (q >= 3 ? 10 : q === 2 ? 5 : 0);
+  const packSaving = (price, q) => Math.round(price * q * packPct(q) / 100);
   async function quote(data) {
     const c = await loadCatalog();
     const items = Array.isArray(data.items) ? data.items.slice(0, 30) : [];
@@ -56,15 +59,15 @@
       const changed = Number.isInteger(it.price) && it.price !== p.price;
       if (status !== 'ok') changes.push({id: p.id, kind: status, from: it.quantity, to: payable});
       if (changed) changes.push({id: p.id, kind: 'price', from: it.price, to: p.price});
-      return {id: p.id, name: p.name, quantity: it.quantity, payable_quantity: payable, status, available: p.stock, max, limit: 10, unit_price: p.price, line_total: p.price * payable, color: p.color, price_changed: changed, seen_price: it.price ?? null};
+      return {id: p.id, name: p.name, quantity: it.quantity, payable_quantity: payable, status, available: p.stock, max, limit: 10, unit_price: p.price, line_total: p.price * payable, pack_pct: packPct(payable), pack_saving: packSaving(p.price, payable), color: p.color, price_changed: changed, seen_price: it.price ?? null};
     });
-    const subtotal = lines.reduce((n, x) => n + x.line_total, 0);
-    const ok = code === 'PREVIEW10', discount = code && ok ? Math.floor((subtotal + 5) / 10) : 0;
-    const shipping = subtotal === 0 || subtotal - discount >= 1499 ? 0 : 75;
-    return {lines, changes, subtotal, discount, discount_applied: ok ? {code, label: 'PREVIEW10 · sample 10% off', condition: 'Sample code for testing the preview. 10% off the subtotal, rounded to the nearest rupee.', amount: discount} : null,
+    const subtotal = lines.reduce((n, x) => n + x.line_total, 0), pack_saving = lines.reduce((n, x) => n + (x.pack_saving || 0), 0);
+    const ok = code === 'PREVIEW10', discount = code && ok ? Math.floor((subtotal - pack_saving + 5) / 10) : 0;
+    const shipping = subtotal === 0 || subtotal - pack_saving - discount >= 1499 ? 0 : 75;
+    return {lines, changes, subtotal, pack_saving, discount, discount_applied: ok ? {code, label: 'PREVIEW10 · sample 10% off', condition: 'Sample code for testing the preview. 10% off the subtotal after any pack saving, rounded to the nearest rupee.', amount: discount} : null,
       discount_error: code && !ok ? 'That code isn’t valid. Check it, or remove it to continue.' : null, shipping,
       shipping_rule: {fee: 75, free_from: 1499, note: 'Sample delivery rule: ₹75, free when the subtotal after discount is ₹1,499 or more. Not an approved shipping policy.'},
-      tax_note: 'Sample prices include illustrative tax. Actual GST awaits approved rates.', total: subtotal - discount + shipping,
+      tax_note: 'Sample prices include illustrative tax. Actual GST awaits approved rates.', total: subtotal - pack_saving - discount + shipping,
       count: lines.reduce((n, x) => n + (x.payable_quantity || 0), 0), ready: lines.length > 0 && lines.every((x) => x.status === 'ok' && !x.price_changed) && !(code && !ok), sample: true};
   }
   window.BCCStaticPreview = {

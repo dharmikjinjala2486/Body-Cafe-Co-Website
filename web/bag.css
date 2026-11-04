@@ -178,3 +178,6 @@
 .bg-h .bg-line-main h3::before { content: "§ " counter(line) "  "; font-style: italic; font-size: 14px; color: var(--muted); }
 .bg-h .bg-summary { border: 0; border-left: 1px solid var(--ink); border-radius: 0; }
 .bg-h .bg-thumb { border: 1px solid var(--line); background: #fff; }
+
+/* Pack saving under a bag line (2 bottles of one product save 5%, 3 or more 10%). */
+.bg-pack { display: block; margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--ok, #1d5c33); text-align: right; }

@@ -107,3 +107,24 @@ for (const product of Object.values(labels)) {
   for (const field of ['price','stock','published','rating']) assert.equal(product[field], undefined);
 }
 console.log('Label defaults preserve admin edits, commerce data and source records.');
+
+// Choose your pack (owner, 4 Nov 2026): 2 bottles of one product save 5%, 3 or more 10%. The product page (web/packs-e.js),
+// the hosted API (supabase/functions/operations/core.js) and the static preview (deploy/hosted-preview.js) must agree.
+const packWin = {};
+vm.runInNewContext(fs.readFileSync('web/packs-e.js', 'utf8'), {window: packWin});
+const pk = packWin.BCCPacks;
+assert.deepEqual([1, 2, 3, 4].map(pk.pct), [0, 5, 10, 10]);
+assert.equal(pk.packPrice(899, 2), 1708);
+assert.equal(pk.packPrice(899, 3), 2427);
+assert.equal(pk.packPrice(1699, 1), 1699);
+assert.equal(pk.days({servings_per_pack: '60'}), 60);
+const serverRule = (file, pctName, savingName) => {
+  const src = fs.readFileSync(file, 'utf8');
+  const pick = (name) => (src.match(new RegExp('function ' + name + '\\([^)]*\\)\\{[^}]*\\}')) || src.match(new RegExp('const ' + name + ' = [^;]*;')))[0];
+  return vm.runInNewContext(pick(pctName) + '\n' + pick(savingName) + '\n;(' + savingName + ')');
+};
+for (const [file, a, b] of [['supabase/functions/operations/core.js', 'packPct', 'packSaving'], ['deploy/hosted-preview.js', 'packPct', 'packSaving']]) {
+  const saving = serverRule(file, a, b);
+  for (const price of [749, 899, 949, 1049, 1499, 1699, 1949]) for (const q of [1, 2, 3, 5]) assert.equal(saving(price, q), pk.saving(price, q), file + ' ' + price + ' x ' + q);
+}
+console.log('Pack savings agree between the product page, the hosted API and the static preview.');

@@ -100,11 +100,14 @@
       '<div class="bg-line-main"><h3><a href="/products/' + h(p.id) + '">' + h(p.name) + '</a></h3><p class="bg-meta">' + h(FORMAT[p.id] || "") + ' · ' + h(pack ? pack.label : "Pack quantity awaiting approved label") + '</p><p class="bg-meta">MRP ' + money(ql && ql.unit_price != null ? ql.unit_price : p.price) + " each</p>" + avail +
       '<div class="bg-line-actions"><button type="button" class="bg-quiet" data-bg-save="' + h(p.id) + '">Save for later</button><button type="button" class="bg-quiet" data-bg-remove="' + h(p.id) + '">Remove<span class="bg-sr"> ' + h(p.name) + "</span></button></div></div>" +
       '<div class="bg-line-end"><div class="bg-qty" role="group" aria-label="Quantity for ' + h(p.name) + '"><button type="button" data-bg-qty="' + h(p.id) + '" data-d="-1" aria-label="' + (i.quantity === 1 ? "Remove " + h(p.name) : "Decrease " + h(p.name) + " quantity") + '">−</button><output aria-live="off">' + i.quantity + '</output><button type="button" data-bg-qty="' + h(p.id) + '" data-d="1" aria-label="Increase ' + h(p.name) + ' quantity"' + (i.quantity >= max ? " disabled" : "") + ">+</button></div>" +
-      '<strong class="bg-line-total">' + (ql ? money(ql.line_total) : "—") + "</strong></div></li>";
+      '<strong class="bg-line-total">' + (ql ? money(ql.line_total) : "—") + "</strong>" +
+      // Pack saving (2 bottles 5%, 3+ 10%) comes from the server quote; shown under the line it applies to.
+      (ql && ql.pack_saving ? '<span class="bg-pack">Pack saving ' + ql.pack_pct + "% −" + money(ql.pack_saving) + "</span>" : "") + "</div></li>";
   }
   function summary(v, q) {
     var code = discountCode();
     var rows = q ? '<div class="bg-row"><span>Subtotal</span><strong>' + money(q.subtotal) + "</strong></div>" +
+      (q.pack_saving ? '<div class="bg-row is-disc"><span>Pack saving<small>2 bottles of one product save 5%, 3 or more save 10%.</small></span><strong>−' + money(q.pack_saving) + "</strong></div>" : "") +
       (q.discount_applied ? '<div class="bg-row is-disc"><span>' + h(q.discount_applied.label) + '<small>' + h(q.discount_applied.condition) + "</small></span><strong>−" + money(q.discount) + "</strong></div>" : "") +
       '<div class="bg-row"><span>Delivery<small>' + h(q.shipping_rule.note) + "</small></span><strong>" + (q.subtotal ? (q.shipping ? money(q.shipping) : "Free") : "—") + "</strong></div>" +
       '<div class="bg-row is-total"><span>Total<small>' + h(q.tax_note) + "</small></span><strong>" + money(q.total) + "</strong></div>" : '<p class="bg-meta">Checking prices and stock…</p>';
