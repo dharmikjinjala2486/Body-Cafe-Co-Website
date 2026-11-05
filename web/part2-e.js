@@ -294,10 +294,10 @@
         (points.length ? '<ul class="p2-ticks">' + points.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "")],
       ["Direction for Use", '<ol class="p2-slots">' + slots.map(function (s) { var t = String(timing[s[0]] || ""), best = /^best/i.test(t); return '<li class="' + (best ? "is-best" : "") + '"><span>' + s[1] + "</span><b>" + (best ? "Best" : t ? "Also fine" : "—") + "</b></li>"; }).join("") + "</ol>" +
         (p.directions ? '<p class="p2-use">' + esc(p.directions) + "</p>" : "") +
-        (cautions.length ? '<p class="p2-small p2-cautions">' + esc(cautions.join(" ")) + "</p>" : "")],
+        (cautions.length || p.allergens ? '<p class="p2-small p2-cautions">' + esc(cautions.concat(p.allergens ? [String(p.allergens).trim()] : []).join(" ")) + "</p>" : "")],
       ["Supplement Facts", rows.length ? '<table class="p2-table p2-table-sm"><caption>Per ' + esc((p.supplement_facts && p.supplement_facts.serving) || p.serving_size || "serving") + " (approximate values)</caption><thead><tr><th scope=\"col\">Nutrient</th><th scope=\"col\">Amount</th><th scope=\"col\">% RDA</th></tr></thead><tbody>" +
         rows.map(function (r) { return '<tr class="lvl-' + (r.level || 0) + (r.active ? " is-active" : "") + '"><th scope="row">' + esc(r.name) + "</th><td>" + esc(r.amount) + "</td><td>" + esc(r.rda) + "</td></tr>"; }).join("") + '</tbody></table><p class="p2-small">%RDA as per ICMR 2020. # %RDA not established.</p>' : para(p.nutrition_information)],
-      ["Other Ingredients", (p.other_ingredients ? '<p class="p2-others-p">' + esc(String(p.other_ingredients).trim()) + "</p>" : "") + (p.allergens ? '<p class="p2-small p2-allergen">' + esc(p.allergens) + "</p>" : "")],
+      ["Other Ingredients", (p.other_ingredients ? '<p class="p2-others-p">' + esc(String(p.other_ingredients).trim()) + "</p>" : "")],
     ];
 
     return '<article class="p2-pdp p2-pdp3" style="--cap:' + esc(p.color) + '">' +

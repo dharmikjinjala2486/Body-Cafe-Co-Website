@@ -1057,10 +1057,9 @@ body[data-variant-e-part="2"] .p2-nobr { white-space: nowrap; }
   body[data-variant-e-part="2"] .p2-col .p2-add, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-add { grid-column: 2; grid-row: 1 / span 3; align-self: center; height: 34px; padding: 0 14px; }
 }
 @media (max-width: 760px) { body[data-variant-e-part="2"] .p2-seven3 .p2-sec-head .p2-link { display: none; } }
-/* Product page sections (6 Nov 2026): one direction line, cautions as one small paragraph, allergens under ingredients. */
+/* Product page sections (6 Nov 2026): one direction line, cautions and allergens as one small paragraph. */
 body[data-variant-e-part="2"] .p2-pdp .p2-use { margin: 18px 0 12px; font-size: 15px; line-height: 1.55; color: var(--p2-ink); }
 body[data-variant-e-part="2"] .p2-pdp .p2-cautions { margin: 0; line-height: 1.55; color: var(--p2-text); }
-body[data-variant-e-part="2"] .p2-pdp .p2-allergen { margin: 12px 0 0; font-weight: 600; color: var(--p2-ink); }
 /* Product page: other ingredients as one paragraph; price and Add to bag side by side. */
 body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-pdp .p2-others-p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--p2-ink); }
 body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-buy-line { display: flex; align-items: center; gap: 16px; margin: 18px 0 16px; }
