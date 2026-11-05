@@ -430,6 +430,89 @@
     });
   });
 
+  /* ---------- After Place order: /payment/:id and /orders/:id (6 Nov 2026) ----------
+     A placed order holds its stock for 15 minutes (bcc_checkout). Online payment connects with Razorpay later; until
+     then the payment step says so plainly and nothing is charged. The hold's end is the order time + 15 minutes; the
+     API only marks an order expired at the next checkout, so the page treats a pending order as ended once that passes.
+     Sample states (fx) and the static preview keep Variant E's pages. */
+  var basePayment = S.themes.e.payment, baseOrder = S.themes.e.order, HOLD = 900;
+  function holdEnds(o) { return Number(o.expires) || (Number(o.created) || 0) + HOLD; }
+  function orderView(o) { if (!o) return "missing"; if (o.state === "pending") return holdEnds(o) <= Date.now() / 1000 ? "ended" : "pending"; return o.state; }
+  function clock(t) { return new Date(t * 1000).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" }); }
+  function orderSummary(ctx, o) {
+    var c = o.contact || {}, items = o.items || [];
+    var rows = '<div class="p2-co-row"><span>Subtotal</span><span>' + ctx.money(o.subtotal) + "</span></div>" +
+      (o.pack_saving ? '<div class="p2-co-row is-save"><span>Pack saving</span><span>−' + ctx.money(o.pack_saving) + "</span></div>" : "") +
+      (o.discount ? '<div class="p2-co-row is-save"><span>Discount</span><span>−' + ctx.money(o.discount) + "</span></div>" : "") +
+      '<div class="p2-co-row"><span>Delivery</span><span>' + (o.shipping ? ctx.money(o.shipping) : "Free") + "</span></div>" +
+      '<div class="p2-co-row is-total"><span>Total</span><span>' + ctx.money(o.total) + '</span></div><p class="p2-co-note">Prices are MRP, inclusive of all taxes.</p>';
+    var lines = items.map(function (i) {
+      var p = ctx.product(i.id) || { id: i.id, color: i.color || "#ccc", name: i.name };
+      return '<li class="p2-co-line" style="--cap:' + esc(p.color) + '"><span class="p2-co-tile">' + (ctx.product(i.id) ? bottle(p, { alt: "" }) : "") + '<b class="p2-co-qty">' + i.quantity + '</b></span><span class="p2-co-name"><strong>' + esc(i.name || p.name) + "</strong><small>" + esc(p.pack_size || "") + "</small></span>" +
+        '<span class="p2-co-price">' + ctx.money(i.unit_price * i.quantity - (i.pack_saving || 0)) + "</span></li>";
+    }).join("");
+    var address = [c.address, c.city, c.state].filter(Boolean).map(esc).join(", ") + (c.pincode ? " " + esc(c.pincode) : "");
+    return '<div class="p2-co-sum-head"><h2>Your order</h2><span class="p2-od-id">' + esc(o.id) + '</span></div><ul class="p2-co-lines">' + lines + "</ul>" + rows +
+      (c.name ? '<div class="p2-od-ship"><h3>Delivering to</h3><p><strong>' + esc(c.name) + "</strong><br>" + address + (c.mobile ? "<br>+91 " + esc(c.mobile) : "") + "</p></div>" : "");
+  }
+  function orderSteps(o) {
+    var done = { pending: 1, paid: 2, packing: 3, shipped: 4, delivered: 5 }[o.state] || 1;
+    return '<ol class="p2-od-steps" aria-label="Order progress">' + [["Order placed", 1], ["Payment", 2], ["Packed", 3], ["Shipped", 4], ["Delivered", 5]].map(function (s) {
+      return '<li class="' + (s[1] <= done ? "is-done" : s[1] === done + 1 ? "is-next" : "") + '"><span aria-hidden="true">' + (s[1] <= done ? "✓" : s[1]) + "</span>" + s[0] + "</li>";
+    }).join("") + "</ol>";
+  }
+  function orderPage(ctx, o, head, body, actions) {
+    return '<div class="p2-co p2-od" data-p2-od="' + esc(o.id) + '" data-hold="' + (o.state === "pending" ? holdEnds(o) : "") + '"><header class="p2-wrap p2-co-head"><p class="p2-eyebrow">' + head[0] + '</p><h1>' + head[1] + '</h1><p class="p2-co-lede">' + head[2] + "</p></header>" +
+      '<div class="p2-wrap p2-co-grid"><div class="p2-co-form"><section class="p2-co-step">' + body + '<div class="p2-od-actions">' + actions + "</div></section>" +
+      '<section class="p2-co-step"><h2>What happens next</h2>' + orderSteps(o) + "</section></div>" +
+      '<aside class="p2-co-sum" aria-label="Your order">' + orderSummary(ctx, o) + "</aside></div></div>";
+  }
+  function missingOrder() {
+    return '<div class="p2-co"><div class="p2-wrap p2-co-empty"><p class="p2-eyebrow">Order</p><h1>We can’t find that order.</h1><p>Orders open in the browser they were placed from. If you placed it elsewhere, open it there, or contact us with the order number.</p><a class="p2-btn" href="/shop">Shop the seven</a></div></div>';
+  }
+  part2("payment", function (ctx, o, fx) {
+    if (fx || ctx.staticPreview) return basePayment.apply(this, arguments);
+    var v = orderView(o);
+    if (v === "missing") return missingOrder();
+    if (v === "pending") return orderPage(ctx, o, ["Order placed · " + esc(o.id), "Your order is placed.", "We’re holding your items until " + clock(holdEnds(o)) + ". Payment is the next step."],
+      '<h2><span aria-hidden="true">2</span>Payment</h2><div class="p2-od-amount"><span>To pay</span><strong>' + ctx.money(o.total) + "</strong></div>" +
+      '<p class="p2-od-note">Online payment by UPI, card, wallet or net banking is being connected. Nothing has been charged for this order. If it isn’t paid before the hold ends, the items go back on the shelf automatically.</p>' +
+      '<p class="p2-od-hold" data-p2-hold role="timer" aria-live="off"></p>',
+      '<button type="button" class="p2-btn" disabled>Pay ' + ctx.money(o.total) + ' · connects soon</button><a class="p2-link" href="/shop">Keep shopping</a>');
+    if (v === "ended") return orderPage(ctx, o, ["Order " + esc(o.id), "This hold has ended.", "Nothing was charged, and the items are back in stock."],
+      '<h2>Start again</h2><p class="p2-od-note">Your bag still has your items. Check out again to hold them for another 15 minutes.</p>',
+      '<a class="p2-btn" href="/cart">Back to your bag</a><a class="p2-link" href="/shop">Keep shopping</a>');
+    if (v === "paid" || v === "packing" || v === "shipped" || v === "delivered") return orderPage(ctx, o, ["Order " + esc(o.id), "Payment received.", "Thank you. We have your order."], '<h2>All set</h2><p class="p2-od-note">You don’t need to do anything else.</p>', '<a class="p2-btn" href="/orders/' + esc(o.id) + '">View your order</a>');
+    return orderPage(ctx, o, ["Order " + esc(o.id), "No payment is needed.", "This order no longer has a payment step."], "", '<a class="p2-btn" href="/shop">Shop the seven</a>');
+  });
+  part2("order", function (ctx, o, fx) {
+    if (fx || ctx.staticPreview) return baseOrder.apply(this, arguments);
+    var v = orderView(o);
+    if (v === "missing") return missingOrder();
+    var head = {
+      pending: ["Order " + esc(o.id), "Waiting for payment.", "Your items are held until " + (o.state === "pending" ? clock(holdEnds(o)) : "") + "."],
+      ended: ["Order " + esc(o.id), "This hold has ended.", "Nothing was charged, and the items are back in stock."],
+      paid: ["Order " + esc(o.id), "We have your order.", "We’ll pack it next."], packing: ["Order " + esc(o.id), "Being packed.", "It ships soon."],
+      shipped: ["Order " + esc(o.id), "On its way.", "Your parcel has left us."], delivered: ["Order " + esc(o.id), "Delivered.", "Enjoy."],
+      cancelled: ["Order " + esc(o.id), "Cancelled.", "This order was cancelled."], expired: ["Order " + esc(o.id), "This hold has ended.", "Nothing was charged, and the items are back in stock."],
+    }[v] || ["Order " + esc(o.id), "Your order.", ""];
+    var placed = o.created ? new Date(o.created * 1000).toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+    return orderPage(ctx, o, head, '<h2>Order details</h2><p class="p2-od-note">' + (placed ? "Placed " + esc(placed) + ". " : "") + "Keep the order number for any question about this order.</p>" + (v === "pending" ? '<p class="p2-od-hold" data-p2-hold role="timer" aria-live="off"></p>' : ""),
+      v === "pending" ? '<a class="p2-btn" href="/payment/' + esc(o.id) + '">Go to payment</a>' : v === "ended" || v === "expired" ? '<a class="p2-btn" href="/cart">Back to your bag</a>' : '<a class="p2-link" href="/help">Questions about this order?</a>');
+  });
+  // The hold countdown; when it reaches zero the page switches to the "hold has ended" view.
+  L.onEnhance(function (main, signal) {
+    var page = main.querySelector("[data-p2-od]"), out = page && page.querySelector("[data-p2-hold]"), end = page ? Number(page.dataset.hold) : 0;
+    if (!out || !end || document.body.dataset.variantEPart !== "2") return;
+    var tick = function () {
+      var left = end - Math.floor(Date.now() / 1000);
+      if (left <= 0) { clearInterval(timer); if (window.BCCApp && window.BCCApp.rerender) window.BCCApp.rerender(); return; }
+      out.textContent = "Held for " + Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0") + " more";
+    };
+    var timer = setInterval(tick, 1000); tick();
+    if (signal) signal.addEventListener("abort", function () { clearInterval(timer); });
+  });
+
   /* ---------- Our standard ---------- */
   part2("standards", function (ctx) {
     var list = ctx.published;
