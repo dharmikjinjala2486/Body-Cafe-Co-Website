@@ -94,10 +94,12 @@
     var max = ql ? ql.max : Math.min(10, p.stock || 0);
     var status = ql ? ql.status : "checking";
     var pack = p.pack_size ? {label: p.pack_size} : window.BCCDemo && window.BCCDemo.packInfo(p.id);
+    var p2 = v.key === "p2", days = window.BCCPacks ? window.BCCPacks.days(p) : 0;
+    var lasts = !days ? "" : days % 30 === 0 ? (days / 30) + " month" + (days > 30 ? "s" : "") + " per bottle" : days + " days per bottle";
     var avail = status === "unavailable" ? '<span class="bg-av is-out">Not available right now</span>' : status === "checking" ? '<span class="bg-av">Checking availability…</span>' : max < 10 ? '<span class="bg-av">Available · up to ' + max + " per order</span>" : '<span class="bg-av is-ok">Available · up to 10 per order</span>';
     return '<li class="bg-line' + (status === "unavailable" ? " is-out" : "") + '" data-bg-line="' + h(p.id) + '" style="--bg-cap:' + h(p.color) + '">' +
-      '<a class="bg-thumb" href="/products/' + h(p.id) + '" tabindex="-1" aria-hidden="true"><img src="' + window.BCCBottleAssets.url(h(p.id)) + '" alt="" width="720" height="1000" loading="lazy" decoding="async"></a>' +
-      '<div class="bg-line-main"><h3><a href="/products/' + h(p.id) + '">' + h(p.name) + '</a></h3><p class="bg-meta">' + h(FORMAT[p.id] || "") + ' · ' + h(pack ? pack.label : "Pack quantity awaiting approved label") + '</p><p class="bg-meta">MRP ' + money(ql && ql.unit_price != null ? ql.unit_price : p.price) + " each</p>" + avail +
+      '<a class="bg-thumb" href="/products/' + h(p.id) + '" tabindex="-1" aria-hidden="true"><img src="' + (p2 ? "/web/media/premium/front-" + h(p.id) + ".webp" : window.BCCBottleAssets.url(h(p.id))) + '" alt="" width="720" height="1000" loading="lazy" decoding="async"></a>' +
+      '<div class="bg-line-main"><h3><a href="/products/' + h(p.id) + '">' + h(p.name) + '</a></h3><p class="bg-meta">' + (p2 ? h(pack ? pack.label : "") + (lasts ? " · " + lasts : "") : h(FORMAT[p.id] || "") + ' · ' + h(pack ? pack.label : "Pack quantity awaiting approved label")) + '</p><p class="bg-meta">MRP ' + money(ql && ql.unit_price != null ? ql.unit_price : p.price) + " each</p>" + avail +
       '<div class="bg-line-actions"><button type="button" class="bg-quiet" data-bg-save="' + h(p.id) + '">Save for later</button><button type="button" class="bg-quiet" data-bg-remove="' + h(p.id) + '">Remove<span class="bg-sr"> ' + h(p.name) + "</span></button></div></div>" +
       '<div class="bg-line-end"><div class="bg-qty" role="group" aria-label="Quantity for ' + h(p.name) + '"><button type="button" data-bg-qty="' + h(p.id) + '" data-d="-1" aria-label="' + (i.quantity === 1 ? "Remove " + h(p.name) : "Decrease " + h(p.name) + " quantity") + '">−</button><output aria-live="off">' + i.quantity + '</output><button type="button" data-bg-qty="' + h(p.id) + '" data-d="1" aria-label="Increase ' + h(p.name) + ' quantity"' + (i.quantity >= max ? " disabled" : "") + ">+</button></div>" +
       '<strong class="bg-line-total">' + (ql ? money(ql.line_total) : "—") + "</strong>" +
@@ -113,10 +115,12 @@
       '<div class="bg-row is-total"><span>Total<small>' + h(q.tax_note || "") + "</small></span><strong>" + money(q.total) + "</strong></div>" : '<p class="bg-meta">Checking prices and stock…</p>';
     var blocked = !q || !q.ready;
     var why = !q ? "" : q.discount_error ? "Fix or remove the discount code to continue." : q.lines.some(function (x) { return x.status === "unavailable"; }) ? "Move unavailable items to Saved for later, or remove them, to continue." : "";
+    // Ordering paused in the store settings: Checkout is off, and the bag says so plainly.
+    var paused = !!q && !q.ready && !why && !window.BCCStaticPreview;
     return '<aside class="bg-summary" aria-labelledby="bg-sum-h"><h2 id="bg-sum-h" class="bg-sum-h">Order summary</h2>' + rows +
       '<details class="bg-disc"' + (code ? " open" : "") + '><summary>Have a discount code?</summary><form class="bg-disc-form" data-bg-disc novalidate><label for="bg-code">Discount code</label><div class="bg-inline"><input id="bg-code" name="code" value="' + h(code) + '" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30"' + (q && q.discount_error ? ' aria-invalid="true" aria-describedby="bg-code-err"' : "") + '><button type="submit">Apply</button></div>' +
       (q && q.discount_error ? '<p class="bg-err" id="bg-code-err">' + h(q.discount_error) + "</p>" : "") + (code ? '<button type="button" class="bg-quiet" data-bg-disc-remove>Remove code</button>' : "") + '<p class="bg-meta">Try PREVIEW10 to explore the discount flow.</p></form></details>' +
-      '<a class="bg-checkout' + (blocked ? " is-blocked" : "") + '" href="/checkout"' + (blocked ? ' aria-disabled="true" data-bg-blocked' : "") + '>Checkout<span aria-hidden="true">→</span></a>' + (why ? '<p class="bg-why" id="bg-why">' + why + "</p>" : "") +
+      '<a class="bg-checkout' + (blocked ? " is-blocked" : "") + '" href="/checkout"' + (blocked ? ' aria-disabled="true" data-bg-blocked' : "") + '>Checkout<span aria-hidden="true">→</span></a>' + (why ? '<p class="bg-why" id="bg-why">' + why + "</p>" : paused ? '<p class="bg-why is-info" id="bg-why">Ordering opens soon. Your bag is kept in this browser until then.</p>' : "") +
       '<p class="bg-meta">' + (window.BCCStaticPreview ? 'Checkout is switched off on this shared preview. Your bag is kept in this browser; checkout works in the local preview.' : 'No account needed. Prices are MRP, inclusive of all taxes.') + '</p><a class="bg-link" href="/shop">Continue shopping</a>' +
       '<details class="bg-pin"><summary>Check a pincode</summary><form id="pincode-form" class="bg-pin-form" novalidate><label for="pincode">Pincode</label><div class="bg-inline"><input id="pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" maxlength="6" pattern="[1-9][0-9]{5}"><button type="submit">Check</button></div><p id="pincode-result" role="status" class="bg-meta"></p></form></details>' +
       '<p class="bg-policy"><a href="/policies/shipping">Shipping &amp; Delivery</a> · <a href="/policies/returns">Returns &amp; Refunds</a> · <a href="/help">Help Centre</a></p></aside>';
@@ -135,6 +139,7 @@
     var err = lastError ? '<div class="bg-notice is-error" role="alert"><p><strong>We couldn’t update your bag.</strong> ' + h(lastError) + ' Your items are kept.</p><button type="button" class="bg-btn" data-bg-retry>Try again</button></div>' : "";
     var u = undo ? '<div class="bg-undo" role="status"><span>' + h(undo.text) + '</span><button type="button" class="bg-btn" data-bg-undo>Undo</button></div>' : "";
     if (!items.length) {
+      if (v.key === "p2") return u + notes + '<div class="bg-empty"><div class="bg-caps" aria-hidden="true">' + (A().catalog() || []).map(function (p) { return '<img src="/web/media/renders/' + h(p.id) + '-cap.webp" alt="" width="400" height="400" loading="lazy" decoding="async">'; }).join("") + '</div><h2 class="bg-sec-h">Your bag is empty.</h2><p>Seven supplements, each made to one standard.</p><a class="bg-btn" href="/shop">Shop the seven</a></div>' + savedList(v);
       return u + notes + '<div class="bg-empty"><div class="bg-caps" aria-hidden="true">' + (A().catalog() || []).map(function (p) { return '<span style="--bg-cap:' + h(p.color) + '"></span>'; }).join("") + '</div><h2 class="bg-sec-h">Your bag is empty</h2><p>Pick a cap and add something to it.</p><a class="bg-btn" href="/shop">Shop all seven</a></div>' + savedList(v);
     }
     var n = items.reduce(function (s, i) { return s + i.quantity; }, 0);
@@ -155,12 +160,14 @@
     f: { key: "f", kicker: "Edition 01 · Your bag" },
     g: { key: "g", kicker: "Bag / contact sheet" },
     h: { key: "h", kicker: "Bag · Reference" },
+    p2: { key: "p2", kicker: "Your bag", title: "Your bag." },
   };
+  function direction(d) { return d === "e" && document.body.dataset.variantEPart === "2" ? V.p2 : V[d]; }
   Object.keys(V).forEach(function (d) {
     if (!S.themes[d]) return;
     var base = S.themes[d], next = {};
     Object.keys(base).forEach(function (k) { next[k] = base[k]; });
-    next.cart = function () { return compose(V[d]); };
+    next.cart = function () { return compose(direction(d)); };
     S.themes[d] = next;
   });
 
