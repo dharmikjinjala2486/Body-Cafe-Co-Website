@@ -97,12 +97,14 @@
     var p2 = v.key === "p2", days = window.BCCPacks ? window.BCCPacks.days(p) : 0;
     var lasts = !days ? "" : days % 30 === 0 ? (days / 30) + " month" + (days > 30 ? "s" : "") + " per bottle" : days + " days per bottle";
     var avail = status === "unavailable" ? '<span class="bg-av is-out">Not available right now</span>' : status === "checking" ? '<span class="bg-av">Checking availability…</span>' : max < 10 ? '<span class="bg-av">Available · up to ' + max + " per order</span>" : '<span class="bg-av is-ok">Available · up to 10 per order</span>';
+    // When the check failed, the notice above the lines says so; Part 2 doesn't repeat "Checking…" on every line.
+    if (p2 && status === "checking" && lastError) avail = "";
     return '<li class="bg-line' + (status === "unavailable" ? " is-out" : "") + '" data-bg-line="' + h(p.id) + '" style="--bg-cap:' + h(p.color) + '">' +
       '<a class="bg-thumb" href="/products/' + h(p.id) + '" tabindex="-1" aria-hidden="true"><img src="' + (p2 ? "/web/media/premium/front-" + h(p.id) + ".webp" : window.BCCBottleAssets.url(h(p.id))) + '" alt="" width="720" height="1000" loading="lazy" decoding="async"></a>' +
       '<div class="bg-line-main"><h3><a href="/products/' + h(p.id) + '">' + h(p.name) + '</a></h3><p class="bg-meta">' + (p2 ? h(pack ? pack.label : "") + (lasts ? " · " + lasts : "") : h(FORMAT[p.id] || "") + ' · ' + h(pack ? pack.label : "Pack quantity awaiting approved label")) + '</p><p class="bg-meta">MRP ' + money(ql && ql.unit_price != null ? ql.unit_price : p.price) + " each</p>" + avail +
       '<div class="bg-line-actions"><button type="button" class="bg-quiet" data-bg-save="' + h(p.id) + '">Save for later</button><button type="button" class="bg-quiet" data-bg-remove="' + h(p.id) + '">Remove<span class="bg-sr"> ' + h(p.name) + "</span></button></div></div>" +
       '<div class="bg-line-end"><div class="bg-qty" role="group" aria-label="Quantity for ' + h(p.name) + '"><button type="button" data-bg-qty="' + h(p.id) + '" data-d="-1" aria-label="' + (i.quantity === 1 ? "Remove " + h(p.name) : "Decrease " + h(p.name) + " quantity") + '">−</button><output aria-live="off">' + i.quantity + '</output><button type="button" data-bg-qty="' + h(p.id) + '" data-d="1" aria-label="Increase ' + h(p.name) + ' quantity"' + (i.quantity >= max ? " disabled" : "") + ">+</button></div>" +
-      '<strong class="bg-line-total">' + (ql ? money(ql.line_total) : "—") + "</strong>" +
+      '<strong class="bg-line-total">' + (ql ? money(ql.line_total) : p2 ? money(p.price * i.quantity) : "—") + "</strong>" +
       // Pack saving (2 bottles 5%, 3+ 10%) comes from the server quote; shown under the line it applies to.
       (ql && ql.pack_saving ? '<span class="bg-pack">Pack saving ' + ql.pack_pct + "% −" + money(ql.pack_saving) + "</span>" : "") + "</div></li>";
   }
