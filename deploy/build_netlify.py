@@ -54,16 +54,17 @@ def build():
         shutil.copytree(ROOT / folder, out / folder, ignore=shutil.ignore_patterns('qa', '.DS_Store', '__pycache__'))
     shutil.copytree(ROOT / 'assets/brand', out / 'assets/brand', ignore=shutil.ignore_patterns('.DS_Store'))
     html = (ROOT / 'web/index.html').read_text(encoding='utf-8')
+    # Every build carries the static design preview (seed catalogue, never local customer records).
+    with tempfile.TemporaryDirectory() as tmp:
+        products = Store(Path(tmp) / 'seed.sqlite3').products()
+    catalog = {'products': products, 'bundles': BUNDLES, 'flags': {'ingredient_library': True, 'referrals': False, 'amazon_sync': False}, 'preview': True}
+    (out / 'web/catalog-preview.json').write_text(json.dumps(catalog), encoding='utf-8')
+    shutil.copy2(ROOT / 'deploy/hosted-preview.js', out / 'web/hosted-preview.js')
     if target:
+        # Connected: only Variant E Part 2 and /ops use the API; connected-runtime.js decides before the preview loads.
         shutil.copy2(ROOT / 'deploy/connected-runtime.js', out / 'web/connected-runtime.js')
-        html = html.replace('<script src="/web/homepage.js">', '<script src="/web/connected-runtime.js"></script>\n<script src="/web/homepage.js">')
+        html = html.replace('<script src="/web/homepage.js">', '<script src="/web/connected-runtime.js"></script>\n<script src="/web/hosted-preview.js"></script>\n<script src="/web/homepage.js">')
     else:
-        # The static preview never exports local customer records.
-        with tempfile.TemporaryDirectory() as tmp:
-            products = Store(Path(tmp) / 'seed.sqlite3').products()
-        catalog = {'products': products, 'bundles': BUNDLES, 'flags': {'ingredient_library': True, 'referrals': False, 'amazon_sync': False}, 'preview': True}
-        (out / 'web/catalog-preview.json').write_text(json.dumps(catalog), encoding='utf-8')
-        shutil.copy2(ROOT / 'deploy/hosted-preview.js', out / 'web/hosted-preview.js')
         html = html.replace('<script src="/web/homepage.js">', '<script src="/web/hosted-preview.js"></script>\n<script src="/web/homepage.js">')
     if site:
         # Variant E only, no fixtures or design switcher, indexable. Payments and providers are unaffected.

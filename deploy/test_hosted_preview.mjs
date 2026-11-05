@@ -34,7 +34,7 @@ assert.equal(bagQuote.lines[0].payable_quantity, 2);
 assert.equal(bagQuote.lines[0].price_changed, true);
 assert.equal(bagQuote.ready, false);
 assert.ok(bagQuote.discount_applied && bagQuote.discount > 0);
-assert.equal(bagQuote.total, bagQuote.subtotal - bagQuote.discount + bagQuote.shipping);
+assert.equal(bagQuote.total, bagQuote.subtotal - bagQuote.pack_saving - bagQuote.discount + bagQuote.shipping); // 2 bottles: 5% pack saving
 assert.equal((await api('/bag/quote', {items: [{id: 'nope', quantity: 1}]})).lines[0].status, 'unknown');
 assert.equal((await api('/bag/quote', {items: [], discount: 'BAD'})).discount_error.length > 0, true);
 assert.equal((await api('/bag')).account, false);

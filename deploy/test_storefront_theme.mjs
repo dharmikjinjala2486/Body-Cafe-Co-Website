@@ -21,9 +21,11 @@ for (const options of [
   assert.equal(result.design, 'e');
   assert.equal(result.stored, 'e');
   assert.equal(result.bar, '');
-  assert.equal(result.part, '1');
+  assert.equal(result.part, '2'); // production opens Part 2, the connected store
 }
 assert.equal(select().design, 'e');
+assert.equal(select().part, '2'); // Part 2 is the default part
+assert.equal(select({requested: '?design=e&part=1'}).part, '1');
 assert.equal(select({requested:'ops?design=b',stored:'h'}).design, 'e');
 assert.equal(select({requested: '?design=b'}).design, 'b');
 assert.equal(select({stored: 'h'}).design, 'h');
@@ -36,7 +38,7 @@ for (const connected of [false, true]) {
     const [, variant, archive] = result.bar.match(/<optgroup label="Variant E">(.*?)<\/optgroup><optgroup label="Archive">(.*?)<\/optgroup>/);
     assert.deepEqual([...variant.matchAll(/value="(.*?)"/g)].map(match => match[1]), ['e', 'e2', 'e3', 'e4']);
     assert.deepEqual([...archive.matchAll(/value="(.*?)"/g)].map(match => match[1]), [...'abcdfgh']);
-    assert.ok(result.bar.includes('value="' + design + '" selected'));
+    assert.ok(result.bar.includes('value="' + (design === 'e' ? 'e2' : design) + '" selected')); // design=e alone opens Part 2
     assert.ok(result.bar.includes('href="/ops"'));
   }
 }
@@ -60,8 +62,8 @@ assert.equal(working.design, 'e');
 assert.equal(working.part, '2');
 assert.ok(working.bar.includes('value="e2" selected'));
 assert.deepEqual(working.links, [
+  '/l-theanine?view=details&part=1&design=e#facts',
   '/l-theanine?view=details&design=e#facts',
-  '/l-theanine?view=details&part=2&design=e#facts',
   '/l-theanine?view=details&part=3&design=e#facts',
   '/l-theanine?view=details&part=4&design=e#facts',
   '/l-theanine?view=details&design=h#facts',
@@ -74,12 +76,28 @@ const fourth = select({requested: 'shop?part=4', stored: 'b'});
 assert.equal(fourth.design, 'e');
 assert.equal(fourth.part, '4');
 assert.ok(fourth.bar.includes('value="e4" selected'));
-assert.equal(select({requested: '?design=e&part=5'}).part, '1');
+assert.equal(select({requested: '?design=e&part=5'}).part, '2');
 // The Design dropdown must accept every working part (Part 2 → Part 3 used to be ignored).
 assert.ok(/matches\("\[data-design-select\]"\) && \(WORKING_PARTS\.some\(\(n\) => e\.target\.value === "e" \+ n\)/.test(source), 'design dropdown accepts every working part');
 assert.equal(select({requested: '?design=h&part=2'}).part, '');
 assert.equal(select({requested: 'ops?design=e&part=2'}).part, '1');
-console.log('Grouped Variant E and Archive previews, production selection, admin links and catalogue media checks passed.');
+// Connected builds: only Variant E Part 2 (the default) and /ops reach the store API; everything else is the static preview.
+function runtime(requested, stored = null, production = false) {
+  const window = {BCCRelease: {production}};
+  vm.runInNewContext(fs.readFileSync('deploy/connected-runtime.js', 'utf8'), {window, URL, location: {href: 'https://store.example/' + requested}, sessionStorage: {getItem: () => stored}});
+  return [window.BCCConnectedPage, !!window.BCCConnectedHosted];
+}
+for (const [url, stored] of [['', null], ['shop', null], ['?design=e', null], ['?design=e&part=2', 'b'], ['l-theanine?part=2', 'h'], ['ops', 'b'], ['ops/orders?design=b', null], ['cart', 'e']])
+  assert.deepEqual(runtime(url, stored), [true, true], 'connected: ' + url);
+for (const [url, stored] of [['?design=e&part=1', null], ['?part=3', null], ['shop?part=4', null], ['?design=b', null], ['cart?design=h', null], ['shop', 'b'], ['?design=h&part=2', null]])
+  assert.deepEqual(runtime(url, stored), [false, false], 'static: ' + url);
+assert.deepEqual(runtime('?design=b&part=1', null, true), [true, true]); // production is Part 2 only
+// Each part and design matches between connected-runtime.js and app.js.
+for (const [url, stored] of [['', null], ['?design=e&part=1', null], ['?part=3', 'b'], ['?design=b', null], ['shop', 'h'], ['?design=e&part=9', null]]) {
+  const r = select({requested: url, stored});
+  assert.equal(runtime(url, stored)[0], r.design === 'e' && r.part === '2', 'runtime and app.js agree: ' + url);
+}
+console.log('Grouped Variant E and Archive previews, production selection, admin links, catalogue media and connected-design checks passed.');
 
 const labels = JSON.parse(fs.readFileSync('web/label-records.json', 'utf8'));
 vm.runInContext(fs.readFileSync('web/label-content.js', 'utf8'), sandbox);

@@ -14,9 +14,11 @@ const DESIGN_LABELS = [
 // Production uses E; local and connected previews keep the comparison controls.
 const availableDesigns = () => window.BCCRelease?.production ? ["e"] : DESIGNS.filter(d => ["a", "b", "c", "d"].includes(d) || window.BCCSite?.themes[d]);
 let activeDesign = "e";
-let activePart = "1";
-// Variant E working parts, previewed with ?part=2 or ?part=3. Part 1 is the approved production design.
-const WORKING_PARTS = ["2", "3", "4"];
+// Variant E parts, chosen with ?part=1…4. Part 2 is the default and the only part connected to the store API
+// (deploy/connected-runtime.js mirrors this choice in connected builds); the others are static design previews.
+const DEFAULT_PART = "2";
+let activePart = DEFAULT_PART;
+const WORKING_PARTS = ["1", "2", "3", "4"];
 function syncDesign() {
   const params = new URL(location.href).searchParams;
   const requested = params.get("design");
@@ -25,7 +27,7 @@ function syncDesign() {
   const available = availableDesigns();
   activeDesign = location.pathname.startsWith("/ops") ? "e" : available.includes(requested) ? requested : WORKING_PARTS.includes(params.get("part")) ? "e" : available.includes(stored) ? stored : available.includes(activeDesign) ? activeDesign : "e";
   try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
-  activePart = !window.BCCRelease?.production && !location.pathname.startsWith("/ops") && activeDesign === "e" && WORKING_PARTS.includes(params.get("part")) ? params.get("part") : "1";
+  activePart = activeDesign !== "e" || location.pathname.startsWith("/ops") ? "1" : window.BCCRelease?.production ? DEFAULT_PART : WORKING_PARTS.includes(params.get("part")) ? params.get("part") : DEFAULT_PART;
   document.body.dataset.design = activeDesign;
   document.body.dataset.variantEPart = activeDesign === "e" ? activePart : "";
 }
@@ -274,9 +276,10 @@ function grid(products = state.catalog) {
 /* Switch previews on the same page, preserving its filters and anchor. */
 function designHref(value) {
   const u = new URL(location.href);
-  const part = /^e([234])$/.exec(value);
+  // "e" is Part 1; "e2"…"e4" the other parts. The default part (2) needs no ?part.
+  const part = value === "e" ? "1" : (/^e([234])$/.exec(value) || [])[1];
   u.searchParams.set("design", part ? "e" : value);
-  if (part) u.searchParams.set("part", part[1]);
+  if (part && part !== DEFAULT_PART) u.searchParams.set("part", part);
   else u.searchParams.delete("part");
   return u.pathname + u.search + u.hash;
 }
@@ -708,7 +711,8 @@ function keepDesignOnLinks() {
     const h = a.getAttribute("href");
     if (/^\/(ops|web|concepts|assets)(\/|$)/.test(h) || a.hasAttribute("data-design-switch")) return;
     const u = new URL(h, location.origin);
-    if (activePart !== "1") u.searchParams.set("part", activePart);
+    if (activeDesign === "e" && activePart !== DEFAULT_PART) u.searchParams.set("part", activePart);
+    else u.searchParams.delete("part");
     const pid = window.BCCProductRoutes.productId(u.pathname);
     if (pid && activeDesign === "e") u.searchParams.delete("design");
     else u.searchParams.set("design", activeDesign);
@@ -1235,7 +1239,7 @@ function navigate(href, color, switchingPreview = false) {
   clearTimeout(shopScrollTimer);
   rememberShopScroll();
   const u = new URL(href, location.origin);
-  if (!switchingPreview && activePart !== "1" && !u.pathname.startsWith("/ops") &&
+  if (!switchingPreview && activeDesign === "e" && activePart !== DEFAULT_PART && !u.pathname.startsWith("/ops") &&
       (!u.searchParams.has("design") || u.searchParams.get("design") === "e")) {
     u.searchParams.set("part", activePart);
     href = u.pathname + u.search + u.hash;
@@ -1552,7 +1556,8 @@ document.addEventListener("submit", async (e) => {
 });
 document.addEventListener("change", (e) => {
   if (e.target.matches("[data-design-select]") && (WORKING_PARTS.some((n) => e.target.value === "e" + n) || availableDesigns().includes(e.target.value))) {
-    navigate(designHref(e.target.value), undefined, true);
+    // A full load, so the chosen design starts connected (Part 2) or as a static preview (everything else).
+    location.assign(designHref(e.target.value));
     return;
   }
   if (e.target.id === "report-product") {

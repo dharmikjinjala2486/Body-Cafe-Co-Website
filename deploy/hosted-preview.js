@@ -1,4 +1,7 @@
-/* Loaded only by the Netlify export. Local Python previews keep their real local API. */
+/* The static design preview: catalogue, lot lookup and bag check answered in the browser; nothing is sent anywhere.
+   Static builds use it for every page. Connected builds load it too, for every page except Variant E Part 2 and the
+   admin portal (deploy/connected-runtime.js decides first and sets window.BCCConnectedPage).
+   Local Python previews keep their real local API. */
 (function () {
   "use strict";
   let catalog;
@@ -70,7 +73,7 @@
       tax_note: 'Sample prices include illustrative tax. Actual GST awaits approved rates.', total: subtotal - pack_saving - discount + shipping,
       count: lines.reduce((n, x) => n + (x.payable_quantity || 0), 0), ready: lines.length > 0 && lines.every((x) => x.status === 'ok' && !x.price_changed) && !(code && !ok), sample: true};
   }
-  window.BCCStaticPreview = {
+  const store = {
     async api(path, data) {
       if (path === '/bag/quote' && data) return quote(data);
       if (path === '/bag' && data) return {ok: true, account: false};
@@ -90,4 +93,6 @@
       throw new Error('This action needs the connected store, which is not enabled in this shared design preview.');
     }
   };
+  window.BCCOfflineStore = store;
+  if (window.BCCConnectedPage !== true) window.BCCStaticPreview = store;
 })();
