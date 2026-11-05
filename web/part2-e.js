@@ -336,6 +336,100 @@
       "</article>";
   });
 
+  /* ---------- Checkout (/checkout, 6 Nov 2026) ----------
+     The shared form pieces (ctx.forms: field names, validation, the Place order button) inside Part 2's cards. The
+     summary comes from a fresh server bag check (web/bag.js), and the form carries the total the customer saw, so the
+     API can refuse an order whose price changed. Sample states (fx) and the static preview keep Variant E's page. */
+  var baseCheckout = S.themes.e.checkout;
+  function coMonths(p) { var d = window.BCCPacks ? window.BCCPacks.days(p) : 0; return !d ? "" : d % 30 === 0 ? (d / 30) + " month" + (d > 30 ? "s" : "") : d + " days"; }
+  function coSummary(ctx, q) {
+    var items = ctx.state.cart, code = window.BCCBag ? window.BCCBag.discount() : "";
+    var line = function (i) {
+      var p = ctx.product(i.id); if (!p) return "";
+      var ql = q && q.lines.filter(function (x) { return x.id === i.id; })[0], m = coMonths(p);
+      return '<li class="p2-co-line" style="--cap:' + esc(p.color) + '"><span class="p2-co-tile">' + bottle(p, { alt: "" }) + '<b class="p2-co-qty">' + i.quantity + "</b></span>" +
+        '<span class="p2-co-name"><strong>' + esc(p.name) + "</strong><small>" + esc(p.pack_size || "") + (m ? " · " + (i.quantity > 1 ? i.quantity + " bottles, " : "") + "lasts " + (i.quantity > 1 ? coMonths({ servings_per_pack: (window.BCCPacks.days(p) * i.quantity) }) : m) : "") + "</small></span>" +
+        '<span class="p2-co-price">' + (ql ? ctx.money(ql.line_total - (ql.pack_saving || 0)) : ctx.money(p.price * i.quantity)) + "</span></li>";
+    };
+    var issue = q && q.lines.some(function (l) { return l.status !== "ok"; });
+    var rows = !q ? '<p class="p2-co-wait">Checking prices and stock…</p>' :
+      '<div class="p2-co-row"><span>Subtotal</span><span>' + ctx.money(q.subtotal) + "</span></div>" +
+      (q.pack_saving ? '<div class="p2-co-row is-save"><span>Pack saving</span><span>−' + ctx.money(q.pack_saving) + "</span></div>" : "") +
+      (q.discount ? '<div class="p2-co-row is-save"><span>Code ' + esc(code) + "</span><span>−" + ctx.money(q.discount) + "</span></div>" : "") +
+      '<div class="p2-co-row"><span>Delivery</span><span>' + (q.shipping ? ctx.money(q.shipping) : "Free") + "</span></div>" +
+      '<div class="p2-co-row is-total"><span>Total</span><span>' + ctx.money(q.total) + '</span></div><p class="p2-co-note">' + esc(q.tax_note || "Prices are MRP, inclusive of all taxes.") + "</p>" +
+      (issue ? '<p class="p2-co-issue" role="alert">Something in your bag changed. <a href="/cart">Review your bag</a> before placing the order.</p>' : "");
+    return '<div class="p2-co-sum-head"><h2>Order summary</h2><a class="p2-link" href="/cart">Edit bag</a></div><ul class="p2-co-lines">' + items.map(line).join("") + "</ul>" + rows;
+  }
+  part2("checkout", function (ctx, fx) {
+    if (fx || ctx.staticPreview) return baseCheckout.apply(this, arguments);
+    if (!ctx.state.cart.length) return '<div class="p2-co"><div class="p2-wrap p2-co-empty"><p class="p2-eyebrow">Checkout</p><h1>Your bag is empty.</h1><p>Add something before checking out.</p><a class="p2-btn" href="/shop">Shop the seven</a></div></div>';
+    var q = window.BCCBag && window.BCCBag.quote(), code = window.BCCBag ? window.BCCBag.discount() : "";
+    var step = function (n, title, body) { return '<section class="p2-co-step" aria-labelledby="p2-co-s' + n + '"><h2 id="p2-co-s' + n + '"><span aria-hidden="true">' + n + "</span>" + title + "</h2>" + body + "</section>"; };
+    return '<div class="p2-co"><header class="p2-wrap p2-co-head"><p class="p2-eyebrow">Checkout</p><h1>Checkout.</h1><p class="p2-co-lede">No account needed. Every order is prepaid.</p></header>' +
+      '<div class="p2-wrap p2-co-grid"><form id="checkout-form" class="p2-co-form checkout-form" novalidate data-p2-co>' +
+      (code ? '<input type="hidden" name="discount" value="' + esc(code) + '">' : "") +
+      step(1, "Delivery details", ctx.forms.delivery({ mobile: (ctx.user && ctx.user.mobile) || "" })) +
+      step(2, "Payment", ctx.forms.payment()) +
+      step(3, "Review and place order", ctx.forms.confirm()) +
+      '</form><aside class="p2-co-sum" data-p2-co-sum aria-label="Order summary">' + coSummary(ctx, q) + "</aside></div></div>";
+  });
+  // While ordering is paused (the store's checkout_enabled flag), Part 2 shows its own page; app.js asks for it.
+  S.themes.e.checkoutPaused = function () {
+    if (document.body.dataset.variantEPart !== "2") return undefined;
+    return '<div class="p2-co"><div class="p2-wrap p2-co-empty"><div class="p2-co-caps" aria-hidden="true">' + (window.BCCApp ? window.BCCApp.catalog() : []).map(function (p) { return capImg(p); }).join("") + '</div><p class="p2-eyebrow">Checkout</p><h1>Ordering opens soon.</h1><p>Your bag is kept in this browser until then. You can still browse the seven and look up a batch report.</p><a class="p2-btn" href="/cart">Back to your bag</a></div></div>';
+  };
+  L.onEnhance(function (main, signal) {
+    var form = main.querySelector("[data-p2-co]"), sum = main.querySelector("[data-p2-co-sum]");
+    if (!form || !sum || !window.BCCBag || document.body.dataset.variantEPart !== "2") return;
+    var ctx = { state: { cart: window.BCCApp.cart() }, product: function (id) { return window.BCCApp.catalog().filter(function (p) { return p.id === id; })[0]; }, money: function (n) { return "₹" + Number(n || 0).toLocaleString("en-IN"); } };
+    var submit = form.querySelector("button[type=submit]");
+    // Every field that needs attention is marked at once, before anything is sent (the API checks again).
+    var RULES = [
+      ["name", function (v) { return v.trim().length >= 2; }, "Enter the name for the delivery."],
+      ["mobile", function (v) { return /^[6-9][0-9]{9}$/.test(v.replace(/\D/g, "")); }, "Enter a 10-digit mobile number starting with 6, 7, 8 or 9."],
+      ["email", function (v) { return !v.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }, "Enter a valid email address, or leave it blank."],
+      ["pincode", function (v) { return /^[1-9][0-9]{5}$/.test(v.trim()); }, "Enter a 6-digit pincode that doesn’t start with 0."],
+      ["address", function (v) { return v.trim().length >= 5; }, "Enter your house or flat, street and area."],
+      ["city", function (v) { return v.trim().length >= 2; }, "Enter your city."],
+      ["state", function (v) { return v.trim().length >= 2; }, "Enter your state."],
+    ];
+    function mark(el, msg) {
+      var box = el.closest(".field, .check") || el.parentElement, id = "p2-err-" + el.name, old = form.querySelector("#" + id);
+      if (old) old.remove();
+      el.removeAttribute("aria-invalid");
+      if (box) box.classList.toggle("has-error", !!msg);
+      if (!msg) return;
+      var p = document.createElement("p"); p.className = "field-error"; p.id = id; p.textContent = msg;
+      (el.type === "checkbox" ? box : el).insertAdjacentElement("afterend", p);
+      el.setAttribute("aria-invalid", "true"); el.setAttribute("aria-describedby", id);
+    }
+    function validate() {
+      var first = null;
+      RULES.forEach(function (r) { var el = form.elements[r[0]]; if (!el) return; var bad = !r[1](el.value || ""); mark(el, bad ? r[2] : ""); if (bad && !first) first = el; });
+      var adult = form.elements.adult; if (adult) { mark(adult, adult.checked ? "" : "Confirm the purchaser is 18 or older."); if (!adult.checked && !first) first = adult; }
+      return first;
+    }
+    form.addEventListener("submit", function (e) {
+      var first = validate();
+      if (!first) return;
+      e.preventDefault(); e.stopImmediatePropagation();
+      var box = form.querySelector(".form-error"); if (box) box.textContent = "Some details need attention before the order can be placed.";
+      first.focus();
+    }, { capture: true, signal: signal });
+    form.addEventListener("input", function (e) { var el = e.target; if (el.getAttribute && el.getAttribute("aria-invalid") === "true") { var r = RULES.filter(function (x) { return x[0] === el.name; })[0]; if (r ? r[1](el.value || "") : el.checked) mark(el, ""); } }, { signal: signal });
+    window.BCCBag.check().then(function () {
+      if (signal && signal.aborted) return;
+      var q = window.BCCBag.quote(); ctx.state.cart = window.BCCApp.cart();
+      sum.innerHTML = coSummary(ctx, q);
+      if (!q) { var w = sum.querySelector(".p2-co-wait"); if (w) w.textContent = "We couldn’t check prices just now. Your order is checked again when you place it, and you’ll see any change before paying."; return; }
+      // The total the customer is looking at travels with the order; the API refuses it if prices changed since.
+      form.dataset.expectedTotal = String(q.total);
+      var issue = q.lines.some(function (l) { return l.status !== "ok"; });
+      if (submit) { submit.disabled = issue; var label = submit.querySelector("span"); if (label) label.textContent = "Place order · " + ctx.money(q.total); }
+    });
+  });
+
   /* ---------- Our standard ---------- */
   part2("standards", function (ctx) {
     var list = ctx.published;

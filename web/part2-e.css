@@ -1152,3 +1152,90 @@ body[data-variant-e-part="2"] .bg-p2 .bg-empty p { color: var(--p2-text); }
   body[data-variant-e-part="2"] .bg-p2 .bg-line-main h3 { font-size: 17px; }
   body[data-variant-e-part="2"] .bg-p2 .bg-line-end { grid-column: 2; }
 }
+
+/* ---------- Part 2 checkout (/checkout, 6 Nov 2026): shared form pieces in the home page's paper and cards. ---------- */
+body[data-variant-e-part="2"] .p2-co { padding-bottom: clamp(48px, 7vw, 112px); background: var(--p2-paper); color: var(--p2-ink); }
+body[data-variant-e-part="2"] .p2-co-head { padding-top: clamp(32px, 5vw, 72px); padding-bottom: clamp(20px, 3vw, 36px); }
+body[data-variant-e-part="2"] .p2-co-head .p2-eyebrow { margin-bottom: 14px; }
+body[data-variant-e-part="2"] .p2-co h1 { margin: 0; font: 300 clamp(40px, 5.4vw, 76px)/1 "Aileron", sans-serif; letter-spacing: -.03em; }
+body[data-variant-e-part="2"] .p2-co-lede { margin: 14px 0 0; color: var(--p2-text); font-size: 16px; }
+body[data-variant-e-part="2"] .p2-co-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 420px); gap: clamp(24px, 3vw, 48px); align-items: start; }
+body[data-variant-e-part="2"] .p2-co-form { display: grid; gap: 16px; min-width: 0; }
+body[data-variant-e-part="2"] .p2-co-step { padding: clamp(22px, 2.6vw, 34px); border-radius: 28px; background: #fff; }
+body[data-variant-e-part="2"] .p2-co-step h2 { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font: 400 22px/1.2 "Aileron", sans-serif; letter-spacing: -.01em; }
+body[data-variant-e-part="2"] .p2-co-step h2 span { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--p2-ink); color: #fff; font: 600 13px/1 "Aileron", sans-serif; }
+/* Fields (shared markup from app.js). */
+body[data-variant-e-part="2"] .p2-co .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; }
+body[data-variant-e-part="2"] .p2-co .field { display: grid; gap: 6px; align-content: start; }
+body[data-variant-e-part="2"] .p2-co .field.span-two { grid-column: 1 / -1; }
+body[data-variant-e-part="2"] .p2-co label, body[data-variant-e-part="2"] .p2-co .field > label { font: 600 14px/1.3 "Aileron", sans-serif; color: var(--p2-ink); }
+body[data-variant-e-part="2"] .p2-co .field-hint { order: 3; font-size: 12.5px; color: var(--p2-mute); }
+body[data-variant-e-part="2"] .p2-co input:not([type=checkbox]):not([type=radio]) { width: 100%; height: 50px; padding: 0 16px; border: 1.5px solid var(--p2-line); border-radius: 14px; background: #fff; color: var(--p2-ink); font: 400 16px/1 "Aileron", sans-serif; box-sizing: border-box; transition: border-color .2s; }
+body[data-variant-e-part="2"] .p2-co input:not([type=checkbox]):not([type=radio]):focus { outline: none; border-color: var(--p2-ink); }
+body[data-variant-e-part="2"] .p2-co input[aria-invalid="true"], body[data-variant-e-part="2"] .p2-co .has-error input { border-color: #b3261e; }
+body[data-variant-e-part="2"] .p2-co .field-error { margin: 0; font-size: 13px; font-weight: 600; color: #b3261e; }
+body[data-variant-e-part="2"] .p2-co details { margin-top: 18px; border-top: 1px solid var(--p2-line); }
+body[data-variant-e-part="2"] .p2-co details summary { display: flex; justify-content: space-between; align-items: center; min-height: 52px; cursor: pointer; font-weight: 500; list-style: none; }
+body[data-variant-e-part="2"] .p2-co details summary::-webkit-details-marker { display: none; }
+body[data-variant-e-part="2"] .p2-co details summary svg { width: 18px; height: 18px; }
+body[data-variant-e-part="2"] .p2-co details[open] { display: grid; gap: 8px; padding-bottom: 6px; }
+/* Payment. */
+body[data-variant-e-part="2"] .p2-co .payment-choice { display: flex; gap: 14px; align-items: flex-start; padding: 18px; border: 1.5px solid var(--p2-ink); border-radius: 18px; cursor: pointer; }
+body[data-variant-e-part="2"] .p2-co .payment-choice input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--p2-ink); }
+body[data-variant-e-part="2"] .p2-co .payment-choice span { display: grid; gap: 4px; }
+body[data-variant-e-part="2"] .p2-co .payment-choice small { font-size: 13.5px; color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2-co .disabled-option { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 12px; padding: 14px 18px; border-radius: 18px; background: var(--p2-paper); color: var(--p2-text); font-size: 14px; }
+body[data-variant-e-part="2"] .p2-co .disabled-option p { flex-basis: 100%; margin: 0; font-size: 13px; color: var(--p2-mute); }
+body[data-variant-e-part="2"] .p2-co .disabled-option .badge, body[data-variant-e-part="2"] .p2-co .disabled-option [class*="badge"] { padding: 3px 10px; border-radius: 999px; background: #fff; font-size: 12px; }
+/* Confirm and place order. */
+body[data-variant-e-part="2"] .p2-co .check { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; font-weight: 400; font-size: 15px; cursor: pointer; }
+body[data-variant-e-part="2"] .p2-co .check input { width: 20px; height: 20px; margin: 1px 0 0; flex: none; accent-color: var(--p2-ink); }
+body[data-variant-e-part="2"] .p2-co .micro { margin: 10px 0 0; font-size: 13px; color: var(--p2-mute); }
+body[data-variant-e-part="2"] .p2-co .micro a { color: inherit; }
+body[data-variant-e-part="2"] .p2-co .form-error:not(:empty) { margin: 16px 0 0; padding: 12px 16px; border-radius: 14px; background: #fbeceb; color: #8c1d18; font-size: 14px; font-weight: 600; }
+body[data-variant-e-part="2"] .p2-co .button.full { display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; height: 58px; margin-top: 18px; border: 0; border-radius: 999px; background: var(--p2-ink); color: #fff; font: 600 17px/1 "Aileron", sans-serif; cursor: pointer; transition: background .2s; }
+body[data-variant-e-part="2"] .p2-co .button.full:hover:not(:disabled) { background: color-mix(in srgb, var(--p2-ink) 85%, #fff); }
+body[data-variant-e-part="2"] .p2-co .button.full:disabled { opacity: .45; cursor: not-allowed; }
+body[data-variant-e-part="2"] .p2-co .button.full svg { width: 18px; height: 18px; }
+/* Order summary card. */
+body[data-variant-e-part="2"] .p2-co-sum { position: sticky; top: 96px; display: grid; gap: 4px; padding: clamp(22px, 2.4vw, 30px); border-radius: 28px; background: #fff; box-shadow: 0 24px 60px -36px rgb(28 27 26 / .25); }
+body[data-variant-e-part="2"] .p2-co-sum-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+body[data-variant-e-part="2"] .p2-co-sum-head h2 { margin: 0; font: 400 22px/1.2 "Aileron", sans-serif; letter-spacing: -.01em; }
+body[data-variant-e-part="2"] .p2-co-sum .p2-link { font-size: 14px; }
+body[data-variant-e-part="2"] .p2-co-lines { display: grid; gap: 14px; margin: 0 0 14px; padding: 0 0 18px; list-style: none; border-bottom: 1px solid var(--p2-line); }
+body[data-variant-e-part="2"] .p2-co-line { display: grid; grid-template-columns: 60px minmax(0, 1fr) auto; gap: 14px; align-items: center; }
+body[data-variant-e-part="2"] .p2-co-tile { position: relative; display: grid; place-items: center; width: 60px; height: 60px; border-radius: 16px; background: color-mix(in srgb, var(--cap) 20%, var(--p2-paper)); }
+body[data-variant-e-part="2"] .p2-co-tile img { width: auto; height: 46px; filter: drop-shadow(0 4px 5px rgb(0 0 0 / .14)); }
+body[data-variant-e-part="2"] .p2-co-qty { position: absolute; top: -6px; right: -6px; display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--p2-ink); color: #fff; font: 600 12px/1 "Aileron", sans-serif; }
+body[data-variant-e-part="2"] .p2-co-name { display: grid; gap: 2px; min-width: 0; }
+body[data-variant-e-part="2"] .p2-co-name strong { font-size: 15px; font-weight: 600; }
+body[data-variant-e-part="2"] .p2-co-name small { font-size: 12.5px; color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2-co-price { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+body[data-variant-e-part="2"] .p2-co-row { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; font-size: 15px; font-variant-numeric: tabular-nums; }
+body[data-variant-e-part="2"] .p2-co-row.is-save span:last-child { color: #2f6b45; font-weight: 600; }
+body[data-variant-e-part="2"] .p2-co-row.is-total { margin-top: 8px; padding-top: 14px; border-top: 1.5px solid var(--p2-ink); font-size: 20px; font-weight: 600; }
+body[data-variant-e-part="2"] .p2-co-note, body[data-variant-e-part="2"] .p2-co-wait { margin: 2px 0 0; font-size: 12.5px; color: var(--p2-mute); }
+body[data-variant-e-part="2"] .p2-co-issue { margin: 12px 0 0; padding: 12px 14px; border-radius: 14px; background: #fbeceb; color: #8c1d18; font-size: 14px; font-weight: 600; }
+body[data-variant-e-part="2"] .p2-co-issue a { color: inherit; }
+/* Empty bag and paused ordering. */
+body[data-variant-e-part="2"] .p2-co-empty { display: grid; justify-items: center; gap: 14px; padding-top: clamp(56px, 9vw, 128px); text-align: center; }
+body[data-variant-e-part="2"] .p2-co-empty .p2-eyebrow { margin: 0; }
+body[data-variant-e-part="2"] .p2-co-empty p:not(.p2-eyebrow) { max-width: 46ch; margin: 0; color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2-co-empty .p2-btn { margin-top: 10px; }
+body[data-variant-e-part="2"] .p2-co-caps { display: flex; gap: clamp(6px, 1.4vw, 14px); margin-bottom: 18px; }
+body[data-variant-e-part="2"] .p2-co-caps img { width: clamp(34px, 6vw, 64px); height: auto; filter: drop-shadow(0 6px 8px rgb(0 0 0 / .14)); }
+/* Tablet and phone: the summary comes first, then the steps. */
+@media (max-width: 900px) {
+  body[data-variant-e-part="2"] .p2-co-grid { grid-template-columns: 1fr; }
+  body[data-variant-e-part="2"] .p2-co-sum { position: static; order: -1; box-shadow: none; }
+}
+@media (max-width: 600px) {
+  body[data-variant-e-part="2"] .p2-co .field-grid { grid-template-columns: 1fr; }
+  body[data-variant-e-part="2"] .p2-co-step { border-radius: 22px; }
+  body[data-variant-e-part="2"] .p2-co-sum { border-radius: 22px; }
+}
+/* The account script (web/account.js) adds a guest/sign-in note and policy links to every checkout form. Part 2's heading
+   already says no account is needed, and customer sign-in isn't open on the hosted store, so the note stays hidden here. */
+body[data-variant-e-part="2"] .p2-co .ac-co-note { display: none; }
+body[data-variant-e-part="2"] .p2-co .ac-co-policies { margin: 16px 0 0; font-size: 13px; color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2-co .ac-co-policies a { color: inherit; }

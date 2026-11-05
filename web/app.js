@@ -1135,7 +1135,7 @@ async function render(scroll = true) {
     else if (window.BCCStaticPreview && !fx && /^\/(checkout|account|orders|payment|sign-in)(\/|$)/.test(path))
       content = call("unavailable", path) ?? `<section class="section article">${heading("Shared design preview", "Explore the design", "You can browse all eight designs, inspect product details and try the sample bag and lot lookup. Ordering, sign-in and support submissions are not enabled on this shared preview.")}${link("Continue shopping", "/shop")}</section>`;
     else if (window.BCCConnectedHosted && !state.flags.checkout_enabled && /^\/(checkout|payment)(\/|$)/.test(path))
-      content = `<section class="section article">${heading("Body Café Co.", "Ordering opens soon", "You can browse products and lot reports now. Online ordering is not open yet.")}${link("Continue shopping", "/shop")}</section>`;
+      content = (path === "/checkout" ? call("checkoutPaused") : undefined) ?? `<section class="section article">${heading("Body Café Co.", "Ordering opens soon", "You can browse products and lot reports now. Online ordering is not open yet.")}${link("Continue shopping", "/shop")}</section>`;
     else if (window.BCCConnectedHosted && /^\/(sign-in)(\/|$)/.test(path))
       content = `<section class="section article">${heading("Body Café Co.", "Customer accounts open soon", "Customer sign-in will be available when ordering launches. You can still contact us for help.")}${link("Contact us", "/contact")}</section>`;
     else if (path === "/") content = call("home") ?? home();
@@ -1447,6 +1447,8 @@ document.addEventListener("submit", async (e) => {
         email_consent: form.elements.email_consent.checked,
         whatsapp_consent: form.elements.whatsapp_consent.checked,
         idempotency_key: key,
+        // The total shown when the customer placed the order (Part 2 checkout); the API refuses the order if it changed.
+        ...(/^\d+$/.test(form.dataset.expectedTotal || "") ? { expected_total: Number(form.dataset.expectedTotal) } : {}),
       });
       let o = await submit(ck.key);
       if (o.idempotent && ["expired", "cancelled"].includes(o.state)) {

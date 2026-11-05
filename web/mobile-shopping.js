@@ -46,7 +46,8 @@
         mast.prepend(shop); undo.push(function () { shop.remove(); });
       }
       var form = document.querySelector("#checkout-form");
-      if (form) {
+      // Variant E Part 2's checkout lays itself out for phones (summary first), so it is left as it is.
+      if (form && !form.hasAttribute("data-p2-co")) {
         var root = form.closest(".r-checkout, .tb-checkout, .x-checkout") || form.parentElement.parentElement;
         var head = root.querySelector("header"), h1 = root.querySelector("h1");
         if (head) { head.classList.add("ms-checkout-head"); undo.push(function () { head.classList.remove("ms-checkout-head"); }); }
