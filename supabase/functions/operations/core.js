@@ -1,6 +1,6 @@
 import {sanitiseImage} from './media.js';
 /* Hosted API migration. Service credentials stay in the function environment. */
-export class ApiError extends Error { constructor(message,status=400){super(message);this.status=status;} }
+export class ApiError extends Error { constructor(message,status=400,extra){super(message);this.status=status;this.extra=extra||null;} }
 const now=()=>Math.floor(Date.now()/1000), hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 const random=()=>hex(crypto.getRandomValues(new Uint8Array(16)));
 const clean=(x,n=6000)=>{if(typeof x!=='string'||x.length>n)throw new ApiError('Check the text field.');return x.trim();};
@@ -80,9 +80,12 @@ export function createHandler(config){
  async function seal(value){const part=encode(value);return part+'.'+hex(await crypto.subtle.sign('HMAC',await signingKey,new TextEncoder().encode(part)));}
  async function unseal(token){try{let[part,sig]=String(token||'').split('.'),bytes=new Uint8Array((sig.match(/../g)||[]).map(x=>parseInt(x,16)));if(!await crypto.subtle.verify('HMAC',await signingKey,bytes,new TextEncoder().encode(part)))return null;let value=JSON.parse(atob(part.replaceAll('-','+').replaceAll('_','/')));return value.expires>now()?value:null;}catch{return null;}}
  async function guestToken(cookies){const token=cookies.bcc_guest||'';try{let[part,sig]=token.split('.'),decoded=JSON.parse(atob(part.replaceAll('-','+').replaceAll('_','/'))),bytes=new Uint8Array((sig.match(/../g)||[]).map(x=>parseInt(x,16)));if(decoded.expires>now()&&/^guest-[a-f0-9]{32}$/.test(decoded.id)&&await crypto.subtle.verify('HMAC',await signingKey,bytes,new TextEncoder().encode(part)))return {id:decoded.id,token};}catch{}const data={id:'guest-'+random(),expires:now()+86400*30},part=encode(data);return{id:data.id,token:part+'.'+hex(await crypto.subtle.sign('HMAC',await signingKey,new TextEncoder().encode(part)))};}
- async function current(cookies,adminRoute){let guest=await guestToken(cookies),user={id:guest.id,name:'Guest',role:'customer',mobile:''},token=adminRoute?cookies.bcc_admin:cookies.bcc_customer;
-  if(token){try{const signed=adminRoute?await unseal(token):null;if(adminRoute&&!signed)throw new Error('Invalid administrator session');if(adminRoute)token=signed.token;let auth=await remote('/auth/v1/user',{headers:{Authorization:'Bearer '+token}});let admin=(await db('admin','auth_user_id=eq.'+encodeURIComponent(auth.id)))[0];if(adminRoute&&admin&&(admin.session_version||0)===signed.version)user={id:auth.id,name:'Store admin',role:'admin',mobile:''};else if(!adminRoute)user={id:'customer-'+auth.id,name:auth.user_metadata?.name||'Customer',role:'customer',mobile:auth.phone||''};}catch{/* Expired or invalid token never grants access. */}}
-  return {user,guest,csrf:cookies.bcc_csrf||random(),token};
+ async function current(cookies,adminRoute){let guest=await guestToken(cookies),user={id:guest.id,name:'Guest',role:'customer',mobile:''},token=adminRoute?cookies.bcc_admin:cookies.bcc_customer,refreshed=null;
+  if(!adminRoute&&token){let c=await unseal(token);token=null;
+   if(c&&c.exp<now()+60){try{const r=await remote('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:c.refresh}});c={token:r.access_token,refresh:r.refresh_token,exp:now()+(r.expires_in||3600),expires:now()+2592000};refreshed=await seal(c);}catch{c=null;}}
+   if(c)token=c.token;}
+  if(token){try{const signed=adminRoute?await unseal(token):null;if(adminRoute&&!signed)throw new Error('Invalid administrator session');if(adminRoute)token=signed.token;let auth=await remote('/auth/v1/user',{headers:{Authorization:'Bearer '+token}});let admin=(await db('admin','auth_user_id=eq.'+encodeURIComponent(auth.id)))[0];if(adminRoute&&admin&&(admin.session_version||0)===signed.version)user={id:auth.id,name:'Store admin',role:'admin',mobile:''};else if(!adminRoute)user={id:'customer-'+auth.id,name:auth.user_metadata?.name||'Customer',role:'customer',mobile:auth.user_metadata?.mobile||auth.phone||'',email:auth.email||''};}catch{/* Expired or invalid token never grants access. */}}
+  return {user,guest,csrf:cookies.bcc_csrf||random(),token,refreshed};
  }
  async function catalog(privileged=false){const[products,batches,settings]=await Promise.all([db('products','order=id'),db('batches'),db('settings','id=eq.flags')]);return {products:products.filter(p=>privileged||p.data.published).map(row=>{let p={...row.data,id:row.id};p.stock=batches.filter(b=>b.product===p.id&&b.state==='released'&&b.proof&&b.expiry>now()).reduce((a,b)=>a+b.available,0);if(privileged){p.draft=row.draft;p.edit_version=row.version;}else p.gallery=(p.gallery||[]).filter(g=>g.visible!==false);return p;}),bundles:config.bundles||[],flags:settings[0]?.data||{},preview:true};}
  async function documents(rid){return (await db('media','kind=eq.report&report_id=eq.'+encodeURIComponent(rid))).map(m=>({id:m.id,...m.data,mime:m.mime,bytes:m.bytes,sha256:m.sha256,url:'/api/lots/documents/'+m.id}));}
@@ -148,7 +151,7 @@ export function createHandler(config){
   return kind==='catalog'?{src:'/api/catalog-media/'+id,alt:'Product image',w:file.width,h:file.height}:{id,mime:file.mime,bytes:file.bytes.length,width:file.width,height:file.height};
  }
  return async function handler(req){let headers=new Headers({'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});const cookie=(name,value,age=28800)=>headers.append('Set-Cookie',`${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`),json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers});
-  try{let u=new URL(req.url),start=u.pathname.indexOf('/api/'),path=start<0?u.pathname:u.pathname.slice(start+4),cookies=Object.fromEntries((req.headers.get('Cookie')||'').split(';').map(p=>p.trim().split('=')).filter(p=>p.length===2)),adminRoute=path.startsWith('/admin')||!!cookies.bcc_admin&&/^\/(catalog-media|lots\/documents|review-media)\//.test(path),s=await current(cookies,adminRoute),user=s.user;
+  try{let u=new URL(req.url),start=u.pathname.indexOf('/api/'),path=start<0?u.pathname:u.pathname.slice(start+4),cookies=Object.fromEntries((req.headers.get('Cookie')||'').split(';').map(p=>p.trim().split('=')).filter(p=>p.length===2)),adminRoute=path.startsWith('/admin')||!!cookies.bcc_admin&&/^\/(catalog-media|lots\/documents|review-media)\//.test(path),s=await current(cookies,adminRoute),user=s.user;if(s.refreshed)cookie('bcc_customer',s.refreshed,2592000);
    if(cookies.bcc_guest!==s.guest.token)cookie('bcc_guest',s.guest.token,86400*30);if(!cookies.bcc_csrf)cookie('bcc_csrf',s.csrf);
    const mustAdmin=()=>{if(user.role!=='admin')throw new ApiError('An administrator session is required.',403);};
    if(req.method==='GET'){
@@ -193,7 +196,88 @@ export function createHandler(config){
     cookie('bcc_admin','',0);cookie('bcc_csrf',random());return json({ok:true});
    }
    if(path==='/admin/logout'||path==='/logout'){if(adminRoute&&user.role==='admin')await rpc('revoke_admin_sessions',{p_actor:user.id});if(s.token)await remote('/auth/v1/logout',{method:'POST',headers:{Authorization:'Bearer '+s.token}}).catch(()=>{});cookie(adminRoute?'bcc_admin':'bcc_customer','',0);cookie('bcc_csrf',random());return json({ok:true});}
-   if(path.startsWith('/auth/'))throw new ApiError('Customer sign-in needs a connected OTP provider.',503);
+   /* Customer accounts (6 Nov 2026): email codes and passwords through Supabase Auth. Codes by text message wait for an
+      SMS provider. A successful sign-in seals the session into bcc_customer and moves this browser's guest orders into
+      the account. */
+   const emailOk=e=>typeof e==='string'&&e.length<=254&&/^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,24}$/.test(e);
+   const emailOf=x=>String(x||'').trim().toLowerCase();
+   const masked=e=>{const[a,b]=e.split('@');return a.slice(0,2)+'•••@'+b;};
+   const sent=e=>({destination:masked(e),channel:'email',mode:'live',expires_in:3600,resend_in:60});
+   const authFail=e=>{const m=String(e&&e.message||'');if(/rate|too many|security purposes|seconds/i.test(m))return new ApiError('Please wait a minute before asking for another code.',429,{reason:'resend_wait'});return e;};
+   const passwordOk=p=>typeof p==='string'&&p.length>=8&&p.length<=72&&/[A-Za-z]/.test(p)&&/[0-9]/.test(p);
+   const mustCustomer=()=>{if(!user.id.startsWith('customer-'))throw new ApiError('Sign in to your account first.',403);};
+   async function signedIn(r,created){
+    const cid='customer-'+r.user.id;
+    cookie('bcc_customer',await seal({token:r.access_token,refresh:r.refresh_token,exp:now()+(r.expires_in||3600),expires:now()+2592000}),2592000);cookie('bcc_csrf',random());
+    let claimed=0;
+    if(s.guest&&/^guest-/.test(s.guest.id)){const rows=await db('orders','user_id=eq.'+encodeURIComponent(s.guest.id)+'&select=id');if(rows.length){await db('orders','user_id=eq.'+encodeURIComponent(s.guest.id),'PATCH',{user_id:cid});claimed=rows.length;}}
+    return json({ok:true,created:!!created,claimed_orders:claimed,user:{id:cid,name:r.user.user_metadata?.name||'Customer',email:r.user.email||''}});
+   }
+   if(path==='/auth/otp'){
+    if(data.mobile&&!data.email)throw new ApiError('Sign in with your email address for now. Codes by text message come later.',400,{reason:'sms_unavailable'});
+    const email=emailOf(data.email||data.identifier);if(!emailOk(email))throw new ApiError('Enter a valid email address.');
+    try{await remote('/auth/v1/otp',{method:'POST',body:{email,create_user:false}});}
+    catch(e){if(/signup|not found|not allowed/i.test(String(e.message)))throw new ApiError('No account uses this email yet. Create one instead.',400,{reason:'unknown_email'});throw authFail(e);}
+    return json(sent(email));
+   }
+   if(path==='/auth/signup'){
+    const name=String(data.name||'').trim(),email=emailOf(data.email),mobile=String(data.mobile||'').replace(/\D/g,''),password=typeof data.password==='string'?data.password:'';
+    if(name.length<2||name.length>80)throw new ApiError('Enter your name.',400,{reason:'invalid',fields:{name:'Enter your name.'}});
+    if(!emailOk(email))throw new ApiError('Enter your email address. Your sign-in code is sent there.',400,{reason:'invalid',fields:{email:'Enter your email address. Your sign-in code is sent there.'}});
+    if(mobile&&!/^[6-9][0-9]{9}$/.test(mobile))throw new ApiError('Enter a 10-digit Indian mobile number, or leave it blank.',400,{reason:'invalid',fields:{mobile:'Enter a 10-digit Indian mobile number.'}});
+    if(password&&!passwordOk(password))throw new ApiError('Use at least 8 characters, with a letter and a number.',400,{reason:'invalid',fields:{password:'Use at least 8 characters, with a letter and a number.'}});
+    const meta={name,...(mobile?{mobile}:{})};
+    try{
+     if(password){const r=await remote('/auth/v1/signup',{method:'POST',body:{email,password,data:meta}});
+      // Supabase answers an email that already has an account with an empty identities list rather than an error.
+      if(r&&r.identities&&!r.identities.length||r&&r.user&&r.user.identities&&!r.user.identities.length)throw new ApiError('An account already uses this email.',409,{reason:'exists',fields:{email:'An account already uses this email.'}});}
+     else await remote('/auth/v1/otp',{method:'POST',body:{email,create_user:true,data:meta}});
+    }catch(e){if(e instanceof ApiError&&e.extra)throw e;if(/already|registered|exists/i.test(String(e.message)))throw new ApiError('An account already uses this email.',409,{reason:'exists',fields:{email:'An account already uses this email.'}});throw authFail(e);}
+    return json({...sent(email),created:true});
+   }
+   if(path==='/auth/verify'){
+    const email=emailOf(data.email||data.identifier),code=String(data.code||'').replace(/\D/g,'');
+    if(data.mobile&&!data.email)throw new ApiError('Sign in with your email address for now.',400,{reason:'sms_unavailable'});
+    if(!emailOk(email))throw new ApiError('Enter a valid email address.');if(!/^[0-9]{6}$/.test(code))throw new ApiError('Enter all 6 digits of the code.');
+    let r=null;
+    for(const type of['email','signup']){try{r=await remote('/auth/v1/verify',{method:'POST',body:{type,email,token:code}});break;}catch(e){if(/rate|too many/i.test(String(e.message)))throw authFail(e);}}
+    if(!r||!r.access_token)throw new ApiError('That code didn’t work. Check it, or ask for a new one.',400,{reason:'expired'});
+    return await signedIn(r,false);
+   }
+   if(path==='/auth/password'){
+    const email=emailOf(data.identifier||data.email);
+    if(!emailOk(email))throw new ApiError('Sign in with your email address and password.',400,{reason:'sms_unavailable'});
+    let r;try{r=await remote('/auth/v1/token?grant_type=password',{method:'POST',body:{email,password:String(data.password||'')}});}catch(e){const f=authFail(e);if(f instanceof ApiError&&f.status===429)throw f;throw new ApiError('Check your email and password.',403,{reason:'invalid'});}
+    return await signedIn(r,false);
+   }
+   if(path==='/profile/password'){
+    mustCustomer();if(!passwordOk(data.password))throw new ApiError('Use at least 8 characters, with a letter and a number.',400,{fields:{password:'Use at least 8 characters, with a letter and a number.'}});
+    if(data.current){try{await remote('/auth/v1/token?grant_type=password',{method:'POST',body:{email:user.email,password:String(data.current)}});}catch{throw new ApiError('Your current password is incorrect.',403,{fields:{current:'Your current password is incorrect.'}});}}
+    await remote('/auth/v1/user',{method:'PUT',headers:{Authorization:'Bearer '+s.token},body:{password:data.password}});
+    return json({ok:true});
+   }
+   if(path==='/profile/email-code'){
+    mustCustomer();const email=emailOf(data.email);if(!emailOk(email))throw new ApiError('Enter a valid email address.',400,{fields:{email:'Enter a valid email address.'}});
+    if(email===String(user.email||'').toLowerCase())throw new ApiError('That’s already your email address.',400,{fields:{email:'That’s already your email address.'}});
+    try{await remote('/auth/v1/user',{method:'PUT',headers:{Authorization:'Bearer '+s.token},body:{email}});}catch(e){throw authFail(e);}
+    return json(sent(email));
+   }
+   if(path==='/profile/email-verify'){
+    mustCustomer();const email=emailOf(data.email),code=String(data.code||'').replace(/\D/g,'');
+    if(!emailOk(email)||!/^[0-9]{6}$/.test(code))throw new ApiError('Enter all 6 digits of the code.');
+    try{await remote('/auth/v1/verify',{method:'POST',body:{type:'email_change',email,token:code}});}catch{throw new ApiError('That code didn’t work. Check it, or ask for a new one.',400,{reason:'expired'});}
+    return json({ok:true,email});
+   }
+   // A customer can cancel their own order while it is unpaid; the hold is released. Paid orders need a refund (contact us).
+   if(/^\/orders\/BCC-[A-F0-9]{8}\/cancel$/.test(path)){
+    const id=path.split('/')[2],o=(await db('orders','id=eq.'+id+'&user_id=eq.'+encodeURIComponent(user.id)))[0];
+    if(!o)throw new ApiError('Order not found.',404);
+    if(o.state==='cancelled'||o.state==='expired')return json({ok:true,state:o.state});
+    if(o.state!=='pending')throw new ApiError('This order is already paid. Contact us to cancel it and we’ll arrange the refund.',409);
+    await rpc('order_transition',{p_id:id,p_target:'cancelled',p_actor:user.id,p_note:'Cancelled by the customer before payment',p_public_note:'You cancelled this order. Nothing was charged.'});
+    return json({ok:true,state:'cancelled'});
+   }
+   if(path.startsWith('/auth/'))throw new ApiError('This sign-in option isn’t available.',404);
    if(path==='/bag/quote')return json(await quote(data));
    if(path==='/orders')return json(await placeOrder(data,user));
    if(/\/orders\/[^/]+\/(pay|reconcile)$/.test(path))throw new ApiError('Live payments are not connected.',503);
@@ -230,6 +314,6 @@ export function createHandler(config){
     return json(await rpc('admin_action',{p_actor:user.id,p_action:action,p_data:data}));
    }
    throw new ApiError('This hosted workflow is still being migrated.',503);
-  }catch(e){return json({error:e instanceof ApiError?e.message:e instanceof SyntaxError?'Invalid request data.':'The store could not complete that action. Please retry.'},e instanceof ApiError?e.status:e instanceof SyntaxError?400:500);}
+  }catch(e){return json({...(e instanceof ApiError&&e.extra?e.extra:{}),error:e instanceof ApiError?e.message:e instanceof SyntaxError?'Invalid request data.':'The store could not complete that action. Please retry.'},e instanceof ApiError?e.status:e instanceof SyntaxError?400:500);}
  };
 }

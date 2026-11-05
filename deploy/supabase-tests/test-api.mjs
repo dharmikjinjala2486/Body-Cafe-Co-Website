@@ -16,10 +16,20 @@ assert.throws(()=>salesReport([],[],new URLSearchParams('from=2026-02-30')));che
 const normalReport=validateReport({title:'Laboratory report',presentation:{show_documents:true,show_summary:false,show_results:false,show_lab:false,show_dates:false},results:[]});assert.equal(normalReport.presentation.show_summary,false);checks++;
 for(const r of [{lab:{accreditation:{verify_url:'javascript:alert(1)'}}},{dates:{issued:'2026-02-30'}},{results:[{parameter:'Lead',result:'ND',assessment:'meets'}]},{sample:{type:'made_up'}}]){assert.throws(()=>validateReport(r));checks++;}
 const uid='00000000-0000-4000-8000-000000000001',admin={auth_user_id:uid,username:'bodycafe.com'};
-let calls=[],fixtureReports=[],checkoutCalls=[];
+let calls=[],fixtureReports=[],checkoutCalls=[],authCalls=[],orderPatches=[],transitions=[];
 const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-secret',origin:'https://body-cafe-co-website.netlify.app,https://body-cafe-co-website.vercel.app',previewOrigin:/^https:\/\/body-cafe-co-website-[a-z0-9-]+-dharmik123\.vercel\.app$/,fetch:async(url,opts)=>{
  calls.push({url,opts});const u=new URL(url),name=u.pathname.split('/').pop();let result=[];
  if(u.pathname.startsWith('/auth/v1/admin/users/'))result={id:uid,email:'admin@example.test'};
+ else if(u.pathname==='/auth/v1/otp'){const b=JSON.parse(opts.body);authCalls.push(['otp',b]);if(b.email==='slow@example.com')return new Response(JSON.stringify({msg:'For security purposes, you can only request this after 42 seconds.'}),{status:429});if(b.email==='nobody@example.com'&&b.create_user===false)return new Response(JSON.stringify({msg:'Signups not allowed for otp'}),{status:422});result={};}
+ else if(u.pathname==='/auth/v1/signup'){const b=JSON.parse(opts.body);authCalls.push(['signup',b]);result=b.email==='taken@example.com'?{id:'x',identities:[]}:{id:'cust-1',identities:[{id:'i'}]};}
+ else if(u.pathname==='/auth/v1/verify'){const b=JSON.parse(opts.body);authCalls.push(['verify',b]);if(b.token!=='123456'||b.type!=='email')return new Response(JSON.stringify({msg:'Token has expired or is invalid'}),{status:403});result={access_token:'cust-token',refresh_token:'r1',expires_in:3600,user:{id:'cust-1',email:b.email,user_metadata:{name:'Test Buyer'}}};}
+ else if(u.pathname==='/auth/v1/token'&&u.searchParams.get('grant_type')==='refresh_token'){const b=JSON.parse(opts.body);authCalls.push(['refresh',b]);if(b.refresh_token!=='r1')return new Response('{}',{status:400});result={access_token:'cust-token',refresh_token:'r2',expires_in:3600};}
+ else if(u.pathname==='/auth/v1/token'&&JSON.parse(opts.body).email==='buyer@example.com'){const b=JSON.parse(opts.body);authCalls.push(['password',b.email]);if(b.password!=='right-pass1')return new Response(JSON.stringify({msg:'Invalid login credentials'}),{status:400});result={access_token:'cust-token',refresh_token:'r1',expires_in:3600,user:{id:'cust-1',email:'buyer@example.com',user_metadata:{name:'Test Buyer'}}};}
+ else if(u.pathname==='/auth/v1/user'&&opts.headers.Authorization==='Bearer cust-token'){if(opts.method==='PUT'){authCalls.push(['user-put',JSON.parse(opts.body)]);result={};}else result={id:'cust-1',email:'buyer@example.com',user_metadata:{name:'Test Buyer',mobile:'9876543210'}};}
+ else if(name==='bcc_orders'&&opts.method==='PATCH'){orderPatches.push([u.searchParams.get('user_id'),JSON.parse(opts.body)]);result=null;}
+ else if(name==='bcc_orders'&&(u.searchParams.get('user_id')||'').startsWith('eq.guest-'))result=[{id:'BCC-AAAA0001'}];
+ else if(name==='bcc_orders'&&u.searchParams.get('id')==='eq.BCC-AAAA0001'&&u.searchParams.get('user_id')==='eq.customer-cust-1')result=[{id:'BCC-AAAA0001',state:'pending',data:{}}];
+ else if(name==='bcc_order_transition'){transitions.push(JSON.parse(opts.body));result={ok:true};}
  else if(u.pathname==='/auth/v1/token'){let input=JSON.parse(opts.body);if(input.password!=='qa-current-password')return new Response(JSON.stringify({msg:'Invalid credentials'}),{status:403});result={access_token:'good-admin',expires_in:3600,user:{id:uid}};}
  else if(name==='bcc_revoke_admin_sessions'){admin.session_version=(admin.session_version||0)+1;result=null;}
  else if(u.pathname==='/auth/v1/user')result=opts.headers.Authorization==='Bearer good-admin'?{id:uid,user_metadata:{}}:{id:'customer-user',user_metadata:{role:'admin'}};
@@ -80,5 +90,34 @@ response=await request('/admin/login',{method:'POST',headers:{Cookie:cookies,'X-
 response=await request('/admin/session',{headers:{Cookie:loginCookies}});let loginSession=await response.json();assert.equal(loginSession.user.role,'admin');checks++;
 response=await request('/admin/password',{method:'POST',headers:{Cookie:loginCookies,'X-CSRF-Token':loginSession.csrf},body:JSON.stringify({current_password:'qa-current-password',new_password:'qa-replacement-password-123'})});assert.equal(response.status,200);checks++;
 response=await request('/admin',{headers:{Cookie:loginCookies}});assert.equal(response.status,403);checks++;
+// Customer accounts: email codes and passwords through Supabase Auth.
+const jar=r=>r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
+let guestRes=await request('/session'),guest=await guestRes.json(),guestCookies=jar(guestRes);
+const cpost=(path,body,ck=guestCookies,csrf=guest.csrf)=>request(path,{method:'POST',headers:{Cookie:ck,'Content-Type':'application/json','X-CSRF-Token':csrf},body:JSON.stringify(body)});
+response=await cpost('/auth/otp',{mobile:'9876543210'});assert.equal(response.status,400);assert.equal((await response.json()).reason,'sms_unavailable');checks++;
+response=await cpost('/auth/otp',{email:'nobody@example.com'});assert.equal((await response.json()).reason,'unknown_email');checks++;
+response=await cpost('/auth/otp',{email:' Buyer@Example.com '});assert.equal(response.status,200);let otp=await response.json();assert.equal(otp.destination,'bu•••@example.com');assert.equal(otp.channel,'email');assert.deepEqual(authCalls.at(-1),['otp',{email:'buyer@example.com',create_user:false}]);checks++;
+response=await cpost('/auth/otp',{email:'slow@example.com'});assert.equal(response.status,429);assert.equal((await response.json()).reason,'resend_wait');checks++;
+response=await cpost('/auth/signup',{name:'Test Buyer',mobile:'9876543210',email:''});assert.equal(response.status,400);assert.ok((await response.json()).fields.email);checks++;
+response=await cpost('/auth/signup',{name:'Test Buyer',email:'taken@example.com',password:'right-pass1'});assert.equal(response.status,409);assert.equal((await response.json()).reason,'exists');checks++;
+response=await cpost('/auth/signup',{name:'New Buyer',mobile:'98765 43210',email:'new@example.com'});assert.equal(response.status,200);assert.deepEqual(authCalls.at(-1),['otp',{email:'new@example.com',create_user:true,data:{name:'New Buyer',mobile:'9876543210'}}]);checks++;
+response=await cpost('/auth/verify',{email:'buyer@example.com',code:'000000'});assert.equal(response.status,400);assert.equal((await response.json()).reason,'expired');checks++;
+response=await cpost('/auth/verify',{email:'buyer@example.com',code:'123456'});assert.equal(response.status,200);let signed=await response.json();
+assert.equal(signed.claimed_orders,1);assert.equal(orderPatches.at(-1)[1].user_id,'customer-cust-1');assert.ok(orderPatches.at(-1)[0].startsWith('eq.guest-'));
+const sealed=response.headers.getSetCookie().find(c=>c.startsWith('bcc_customer='));assert.ok(sealed&&!sealed.includes('cust-token')&&sealed.includes('HttpOnly')&&sealed.includes('Max-Age=2592000'));checks++;
+let custCookies=guestCookies+'; '+jar(response);
+response=await request('/session',{headers:{Cookie:custCookies}});let custSession=await response.json();assert.equal(custSession.user.id,'customer-cust-1');assert.equal(custSession.user.email,'buyer@example.com');checks++;
+// An access token near its end is renewed with the refresh token, and the cookie is replaced.
+const stale=Buffer.from(JSON.stringify({token:'old',refresh:'r1',exp:Math.floor(Date.now()/1000)-5,expires:Math.floor(Date.now()/1000)+999})).toString('base64url');
+const staleCookie='bcc_customer='+stale+'.'+Buffer.from(await crypto.subtle.sign('HMAC',signing,new TextEncoder().encode(stale))).toString('hex');
+response=await request('/session',{headers:{Cookie:staleCookie}});assert.equal((await response.json()).user.id,'customer-cust-1');assert.ok(response.headers.getSetCookie().some(c=>c.startsWith('bcc_customer=')));assert.equal(authCalls.filter(c=>c[0]==='refresh').length,1);checks++;
+response=await request('/session',{headers:{Cookie:'bcc_customer=cust-token'}});assert.ok((await response.json()).user.id.startsWith('guest-'));checks++; // raw tokens are not accepted
+response=await cpost('/auth/password',{identifier:'buyer@example.com',password:'wrong'});assert.equal(response.status,403);checks++;
+response=await cpost('/auth/password',{identifier:'buyer@example.com',password:'right-pass1'});assert.equal(response.status,200);checks++;
+response=await cpost('/profile/password',{password:'new-pass12'});assert.equal(response.status,403);checks++; // a guest can't
+response=await cpost('/profile/password',{password:'short'},custCookies,custSession.csrf);assert.equal(response.status,400);
+response=await cpost('/profile/password',{password:'new-pass12'},custCookies,custSession.csrf);assert.equal(response.status,200);assert.deepEqual(authCalls.at(-1),['user-put',{password:'new-pass12'}]);checks++;
+response=await cpost('/orders/BCC-AAAA0001/cancel',{},custCookies,custSession.csrf);assert.equal(response.status,200);assert.equal(transitions.at(-1).p_target,'cancelled');assert.equal(transitions.at(-1).p_id,'BCC-AAAA0001');checks++;
+response=await cpost('/orders/BCC-BBBB0002/cancel',{},custCookies,custSession.csrf);assert.equal(response.status,404);checks++;
 assert.ok(calls.every(c=>!JSON.stringify(c.opts.body||'').includes('test-service-secret')));checks++;
 console.log(`${checks} hosted API, authorization, sales and image checks passed.`);
