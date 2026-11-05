@@ -25,10 +25,11 @@ const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-
  else if(u.pathname==='/auth/v1/verify'){const b=JSON.parse(opts.body);authCalls.push(['verify',b]);if(b.token!=='123456'||b.type!=='email')return new Response(JSON.stringify({msg:'Token has expired or is invalid'}),{status:403});result={access_token:'cust-token',refresh_token:'r1',expires_in:3600,user:{id:'cust-1',email:b.email,user_metadata:{name:'Test Buyer'}}};}
  else if(u.pathname==='/auth/v1/token'&&u.searchParams.get('grant_type')==='refresh_token'){const b=JSON.parse(opts.body);authCalls.push(['refresh',b]);if(b.refresh_token!=='r1')return new Response('{}',{status:400});result={access_token:'cust-token',refresh_token:'r2',expires_in:3600};}
  else if(u.pathname==='/auth/v1/token'&&JSON.parse(opts.body).email==='buyer@example.com'){const b=JSON.parse(opts.body);authCalls.push(['password',b.email]);if(b.password!=='right-pass1')return new Response(JSON.stringify({msg:'Invalid login credentials'}),{status:400});result={access_token:'cust-token',refresh_token:'r1',expires_in:3600,user:{id:'cust-1',email:'buyer@example.com',user_metadata:{name:'Test Buyer'}}};}
- else if(u.pathname==='/auth/v1/user'&&opts.headers.Authorization==='Bearer cust-token'){if(opts.method==='PUT'){authCalls.push(['user-put',JSON.parse(opts.body)]);result={};}else result={id:'cust-1',email:'buyer@example.com',user_metadata:{name:'Test Buyer',mobile:'9876543210'}};}
+ else if(u.pathname==='/auth/v1/user'&&opts.headers.Authorization==='Bearer cust-token'){if(opts.method==='PUT'){authCalls.push(['user-put',JSON.parse(opts.body)]);result={};}else result={id:'cust-1',email:'buyer@example.com',user_metadata:{name:'Test Buyer',mobile:'9876543210',has_password:true}};}
  else if(name==='bcc_orders'&&opts.method==='PATCH'){orderPatches.push([u.searchParams.get('user_id'),JSON.parse(opts.body)]);result=null;}
  else if(name==='bcc_orders'&&(u.searchParams.get('user_id')||'').startsWith('eq.guest-'))result=[{id:'BCC-AAAA0001'}];
  else if(name==='bcc_orders'&&u.searchParams.get('id')==='eq.BCC-AAAA0001'&&u.searchParams.get('user_id')==='eq.customer-cust-1')result=[{id:'BCC-AAAA0001',state:'pending',data:{}}];
+ else if(name==='bcc_profiles'&&u.searchParams.get('user_id')==='eq.customer-cust-1')result=[{user_id:'customer-cust-1',data:{name:'Saved Name',email:'contact@example.com'}}];
  else if(name==='bcc_order_transition'){transitions.push(JSON.parse(opts.body));result={ok:true};}
  else if(u.pathname==='/auth/v1/token'){let input=JSON.parse(opts.body);if(input.password!=='qa-current-password')return new Response(JSON.stringify({msg:'Invalid credentials'}),{status:403});result={access_token:'good-admin',expires_in:3600,user:{id:uid}};}
  else if(name==='bcc_revoke_admin_sessions'){admin.session_version=(admin.session_version||0)+1;result=null;}
@@ -116,7 +117,8 @@ response=await cpost('/auth/password',{identifier:'buyer@example.com',password:'
 response=await cpost('/auth/password',{identifier:'buyer@example.com',password:'right-pass1'});assert.equal(response.status,200);checks++;
 response=await cpost('/profile/password',{password:'new-pass12'});assert.equal(response.status,403);checks++; // a guest can't
 response=await cpost('/profile/password',{password:'short'},custCookies,custSession.csrf);assert.equal(response.status,400);
-response=await cpost('/profile/password',{password:'new-pass12'},custCookies,custSession.csrf);assert.equal(response.status,200);assert.deepEqual(authCalls.at(-1),['user-put',{password:'new-pass12'}]);checks++;
+response=await cpost('/profile/password',{password:'new-pass12'},custCookies,custSession.csrf);assert.equal(response.status,200);assert.deepEqual(authCalls.at(-1),['user-put',{password:'new-pass12',data:{has_password:true}}]);checks++;
+response=await request('/account',{headers:{Cookie:custCookies}});let acct=await response.json();assert.equal(acct.profile.name,'Saved Name');assert.equal(acct.profile.email,'buyer@example.com');assert.equal(acct.profile.has_password,true);checks++;
 response=await cpost('/orders/BCC-AAAA0001/cancel',{},custCookies,custSession.csrf);assert.equal(response.status,200);assert.equal(transitions.at(-1).p_target,'cancelled');assert.equal(transitions.at(-1).p_id,'BCC-AAAA0001');checks++;
 response=await cpost('/orders/BCC-BBBB0002/cancel',{},custCookies,custSession.csrf);assert.equal(response.status,404);checks++;
 assert.ok(calls.every(c=>!JSON.stringify(c.opts.body||'').includes('test-service-secret')));checks++;
