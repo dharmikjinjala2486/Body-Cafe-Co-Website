@@ -45,12 +45,12 @@
       ["Then the moment.", "A supplement only earns its place if it fits into a real day, so every bottle tells you when to take it, whether to take it with food, and what to keep apart."],
       ["And then the proof.", "Our products are made in GMP-certified facilities in Gujarat, by manufacturers we name on every pack. They are third-party tested. Their ingredients are traceable. Scan the code on any bottle and there is more to read."]],
       table: { head: ["Product", "The decision", "Why we show it"], rows: [
-        ["vitamin-d3-k2", "D3 and K2 (as MK-7) in a softgel of omega-3 oil, not a dry tablet", "Both vitamins are fat-soluble; the label asks you to take it with food"],
         ["omega-3-fish-oil", "Omega-3 as triglycerides; oil and omega-3 listed separately", "So 1000 mg of oil is never mistaken for 1000 mg of omega-3"],
+        ["vitamin-d3-k2", "D3 and K2 (as MK-7) in a softgel of omega-3 oil, not a dry tablet", "Both vitamins are fat-soluble; the label asks you to take it with food"],
+        ["creatine-chews", "Creatine monohydrate as an orange chew; added sugar printed", "Easier to take every day, and you should know about the sugar too"],
         ["iron-bisglycinate", "Ferrochel® ferrous bisglycinate chelate; elemental iron stated", "You see the iron you get (29 mg), plus when to take it and what to avoid"],
-        ["psyllium-husk", "Familiar isabgol, measured into capsules", "Every serving is the same: 2000 mg, with water, at night"],
         ["myo-d-chiro-inositol", "Both forms listed separately, 40:1 ratio on the front", "A single total would hide how much of each you get"],
-        ["creatine-chews", "Creatine monohydrate as an orange chew; added sugar printed", "Easier to take every day, and you should know about the sugar too"]] } },
+        ["psyllium-husk", "Familiar isabgol, measured into capsules", "Every serving is the same: 2000 mg, with water, at night"]] } },
     { n: "V", title: "What we believe.", beliefs: [
       "We believe the form of an ingredient deserves a name.",
       "We believe an amount should be a number, not a blend.",

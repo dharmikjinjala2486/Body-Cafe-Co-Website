@@ -15,7 +15,9 @@
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   /* Three cards. max: how many bottles can be added (stock, from h.pdp); cards above it are disabled.
-     o.cls adds a part-specific class for theming. */
+     o.cls adds a part-specific class for theming. o.months (Part 2) leads each card with the supply in months, worked out
+     from the label (a 60-day bottle is 2 months), and puts the bottle count under it; it falls back to bottles and days. */
+  function supply(n) { return n + " month" + (n > 1 ? "s" : ""); }
   function picker(p, o) {
     o = o || {};
     var max = Math.max(1, o.max || 3), d = days(p), price = +p.price || 0;
@@ -25,8 +27,9 @@
         var off = q > max || !!o.off, s = saving(price, q), total = packPrice(price, q), perDay = d ? total / (d * q) : 0;
         return '<button type="button" class="pk-card" role="radio" data-pk-q="' + q + '" aria-checked="' + (q === 1) + '" tabindex="' + (q === 1 ? 0 : -1) + '"' + (off ? " disabled" : "") + ">" +
           (q === 3 ? '<span class="pk-flag">Best value</span>' : "") +
-          '<span class="pk-n">' + q + " bottle" + (q > 1 ? "s" : "") + "</span>" +
-          (d ? '<span class="pk-days">' + d * q + " days</span>" : "") +
+          (o.months && d && d % 30 === 0
+            ? '<span class="pk-n">' + supply(d * q / 30) + '</span><span class="pk-days">' + q + " bottle" + (q > 1 ? "s" : "") + "</span>"
+            : '<span class="pk-n">' + q + " bottle" + (q > 1 ? "s" : "") + "</span>" + (d ? '<span class="pk-days">' + d * q + " days</span>" : "")) +
           '<span class="pk-was' + (s ? "" : " is-empty") + '"' + (s ? "" : ' aria-hidden="true"') + ">" + (s ? money(price * q) : "&nbsp;") + "</span>" +
           '<strong class="pk-price">' + money(total) + "</strong>" +
           (s ? '<span class="pk-save">Save ' + pct(q) + "%</span>" : '<span class="pk-save is-mrp">MRP</span>') +

@@ -400,7 +400,7 @@
         var pid = pick() || (catalog()[0] || {}).id;
         if (!pick()) { var first = form.querySelector('input[name=product][value="' + pid + '"]'); if (first) { first.checked = true; paintProduct(); } }
         var idx = catalog().findIndex(function (p) { return p.id === pid; }) + 1;
-        lotIn.value = t.getAttribute("data-lt-sample") || "DEMO-" + pad(idx) + "-01";
+        lotIn.value = t.getAttribute("data-lt-sample") || (catalog()[idx - 1] || {}).sample_lot || "DEMO-" + pad(idx) + "-01";
         lookup(true);
       } else if (t.hasAttribute("data-lt-switch")) {
         var r = form.querySelector('input[name=product][value="' + t.getAttribute("data-lt-switch") + '"]');

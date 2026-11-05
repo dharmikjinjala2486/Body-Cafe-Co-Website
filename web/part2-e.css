@@ -960,3 +960,126 @@ body[data-variant-e-part="3"] .p3-figure .p2-film { aspect-ratio: 16 / 7; border
 /* Part 2 product gallery: the turning bottle is never cropped. ".p2-shot img" (cover, for the photos) also matched the bottle's
    front render, whose proportions differ from the spin frame, and cut off its cap and base. */
 body[data-variant-e-part="2"] .p2-shot .p2-spin img.p2-spin-poster { object-fit: contain; object-position: center bottom; }
+
+/* ---------- Part 2 home hero (6 Nov 2026): words, then the seven caps. No bottle. ---------- */
+body[data-variant-e-part="2"] .p2-hero2c { --p2-hc-cap: clamp(44px, min(11vw, calc(var(--p2-hc-u, 1svh) * 19)), 176px); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; min-height: calc(var(--p2-hc-u, 1svh) * 100); padding: clamp(16px, calc(var(--p2-hc-u, 1svh) * 4), 64px) 0 clamp(12px, calc(var(--p2-hc-u, 1svh) * 3), 48px); text-align: center; background: color-mix(in srgb, var(--hc) 9%, var(--p2-paper)); transition: background-color .8s var(--p2-ease); }
+body[data-variant-e-part="2"] .p2-hc-copy { max-width: 1120px; }
+body[data-variant-e-part="2"] .p2-hero2c .p2-eyebrow { margin-bottom: clamp(10px, calc(var(--p2-hc-u, 1svh) * 2), 20px); }
+body[data-variant-e-part="2"] .p2-hero2c h1 { margin: 0 0 clamp(12px, calc(var(--p2-hc-u, 1svh) * 2.4), 22px); font-size: clamp(34px, min(6vw, calc(var(--p2-hc-u, 1svh) * 8.6)), 92px); line-height: .98; }
+body[data-variant-e-part="2"] .p2-hero2c h1 span { display: block; color: color-mix(in srgb, var(--hc) 62%, var(--p2-ink)); transition: color .8s var(--p2-ease); }
+body[data-variant-e-part="2"] .p2-hero2c .p2-lede { max-width: none; margin: 0 auto; }
+body[data-variant-e-part="2"] .p2-hero2c .p2-actions { justify-content: center; margin-top: clamp(16px, calc(var(--p2-hc-u, 1svh) * 3.4), 32px); }
+
+/* The row: seven caps resting on the paper, each with its own contact shadow. */
+body[data-variant-e-part="2"] .p2-hc-caps { display: flex; justify-content: center; width: 100%; box-sizing: border-box; gap: clamp(10px, 2.2vw, 36px); margin: clamp(20px, calc(var(--p2-hc-u, 1svh) * 5), 72px) auto 0; padding: 0 var(--p2-side); list-style: none; }
+body[data-variant-e-part="2"] .p2-hc-caps li { flex: 0 1 var(--p2-hc-cap); min-width: 0; animation: p2-hc-in .9s var(--p2-ease) both; animation-delay: calc(.25s + var(--i) * 80ms); }
+body[data-variant-e-part="2"] .p2-hc-caps a { position: relative; display: block; aspect-ratio: 1; border-radius: 50%; outline-offset: 8px; }
+body[data-variant-e-part="2"] .p2-hc-caps a::before { content: ""; position: absolute; left: 8%; right: 8%; bottom: -14%; height: 12%; border-radius: 50%; background: radial-gradient(closest-side, rgb(0 0 0 / .22), transparent); transition: transform .45s var(--p2-ease), opacity .45s var(--p2-ease); }
+body[data-variant-e-part="2"] .p2-hc-caps img { position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; transition: transform .45s var(--p2-ease); }
+body[data-variant-e-part="2"] .p2-hc-caps a.is-on img { transform: translateY(-14%); }
+body[data-variant-e-part="2"] .p2-hc-caps a.is-on::before { transform: scale(.72); opacity: .55; }
+body[data-variant-e-part="2"] .p2-hc-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Before any cap is pointed at: plain paper, ink heading, no caption. */
+body[data-variant-e-part="2"] .p2-hero2c:not(.has-pick) { background: var(--p2-paper); }
+body[data-variant-e-part="2"] .p2-hero2c:not(.has-pick) h1 span { color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2-hero2c:not(.has-pick) .p2-hc-now { opacity: 0; }
+
+/* What the raised cap is. */
+body[data-variant-e-part="2"] .p2-hc-now { display: grid; justify-items: center; gap: 4px; min-height: 40px; margin: clamp(14px, calc(var(--p2-hc-u, 1svh) * 3), 32px) 0 0; transition: opacity .4s var(--p2-ease); padding: 0 var(--p2-side); }
+body[data-variant-e-part="2"] .p2-hc-now strong { font-size: 15px; }
+body[data-variant-e-part="2"] .p2-hc-now small { font-size: 13px; color: var(--p2-text); }
+
+@keyframes p2-hc-in { from { opacity: 0; transform: translateY(-36px) scale(.9); } 60% { opacity: 1; } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  body[data-variant-e-part="2"] .p2-hc-caps li { animation: none; }
+  body[data-variant-e-part="2"] .p2-hc-caps img, body[data-variant-e-part="2"] .p2-hc-caps a::before { transition: none; }
+}
+@media (max-width: 600px) {
+  body[data-variant-e-part="2"] .p2-hero2c .p2-actions { flex-direction: row; align-items: center; justify-content: center; }
+  body[data-variant-e-part="2"] .p2-hc-caps { gap: 8px; }
+}
+
+/* Very small phones (320px): the footer's seven caps shrink to fit instead of widening the page. */
+@media (max-width: 380px) {
+  body:is([data-variant-e-part="2"], [data-variant-e-part="3"], [data-variant-e-part="4"]) .p2-foot-caps { gap: 6px; }
+  body:is([data-variant-e-part="2"], [data-variant-e-part="3"], [data-variant-e-part="4"]) .p2-foot-caps img { flex: 0 1 40px; min-width: 0; width: auto; height: auto; aspect-ratio: 1; }
+  body[data-variant-e-part="2"] .p2-hc-caps { gap: 6px; }
+}
+
+/* Colour columns, side by side (wide screens): a closed column shows its full name, set vertically and large,
+   reading upwards along the column; the bottles all sit at the same height above it. */
+@media (min-width: 1101px) {
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-art { place-items: start center; padding-top: clamp(40px, 8svh, 72px); }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-body { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 0 0 28px; }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) h3 { writing-mode: vertical-rl; transform: rotate(180deg); overflow: visible; text-overflow: clip; font: 400 clamp(20px, 1.7vw, 26px)/1 "Aileron", sans-serif; letter-spacing: -.01em; animation: p2-col-name .5s var(--p2-ease) both; }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) h3 a { color: color-mix(in srgb, var(--cap) 55%, var(--p2-ink)); }
+}
+@keyframes p2-col-name { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { body[data-variant-e-part="2"] .p2-col h3 { animation: none; } }
+
+/* Batch lookup: the chosen cap's name, under the caps (Part 2 only). */
+body:is([data-variant-e-part="3"], [data-variant-e-part="4"]) .p2-lot-now { display: none; }
+body[data-variant-e-part="2"] .p2-lot-now { display: flex; align-items: center; gap: 10px; margin: 2px 0 6px; font: 500 18px/1.2 "Aileron", sans-serif; }
+body[data-variant-e-part="2"] .p2-lot-now::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--cap, currentColor); box-shadow: 0 0 0 1.5px rgb(255 255 255 / .7); }
+
+/* ---------- Colour columns on phones (≤760px): a plain product list ----------
+   One row per product: bottle on its cap-tinted tile · name and fact · price and Add. Nothing opens or moves.
+   Tablet (761–1100px) and desktop keep their own layouts. */
+@media (max-width: 760px) {
+  body[data-variant-e-part="2"] .p2-seven3 .p2-sec-head { margin-bottom: 20px; }
+  body[data-variant-e-part="2"] .p2-cols { flex-direction: column; height: auto; gap: 0; border-top: 1px solid var(--p2-line); }
+  body[data-variant-e-part="2"] .p2-col, body[data-variant-e-part="2"] .p2-col[data-open="true"] { flex: none; flex-direction: row; align-items: center; gap: 14px; min-height: 0; padding: 14px 0; border-radius: 0; border-bottom: 1px solid var(--p2-line); background: none; color: var(--p2-ink); overflow: visible; transition: none; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-art, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-art { flex: 0 0 72px; height: 72px; padding: 0; place-items: center; border-radius: 16px; background: color-mix(in srgb, var(--cap) 20%, var(--p2-paper)); }
+  body[data-variant-e-part="2"] .p2-col .p2-col-art img, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-art img { width: auto; height: 56px; max-height: none; filter: drop-shadow(0 4px 5px rgb(0 0 0 / .16)); transform: none; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-body, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-body { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 2px 12px; padding: 0; }
+  body[data-variant-e-part="2"] .p2-col h3, body[data-variant-e-part="2"] .p2-col[data-open="true"] h3 { grid-column: 1; font: 600 16px/1.25 "Aileron", sans-serif; letter-spacing: 0; white-space: normal; overflow: visible; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-line, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-line { display: none; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-fact, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-fact { display: block; grid-column: 1; margin: 0; font-size: 13px; line-height: 1.35; color: var(--p2-text); opacity: 1; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-foot, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-foot { display: flex; grid-column: 2; grid-row: 1 / span 2; flex-direction: column; align-items: flex-end; gap: 6px; }
+  body[data-variant-e-part="2"] .p2-col .p2-price, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-price { font-size: 15px; font-weight: 600; }
+  body[data-variant-e-part="2"] .p2-col .p2-add, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-add { height: 32px; padding: 0 16px; border: 1.5px solid var(--p2-ink); border-radius: 999px; background: none; color: var(--p2-ink); font-size: 13px; }
+}
+@media (max-width: 380px) {
+  body[data-variant-e-part="2"] .p2-col, body[data-variant-e-part="2"] .p2-col[data-open="true"] { gap: 12px; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-art, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-art { flex-basis: 56px; height: 56px; border-radius: 14px; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-art img, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-art img { height: 44px; }
+  body[data-variant-e-part="2"] .p2-col h3, body[data-variant-e-part="2"] .p2-col[data-open="true"] h3 { font-size: 15px; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-body, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-body { column-gap: 10px; }
+}
+body[data-variant-e-part="2"] .p2-nobr { white-space: nowrap; }
+/* Phone list rows: name · fact (two lines at most) · price on the left; one compact Add on the right. */
+@media (max-width: 760px) {
+  body[data-variant-e-part="2"] .p2-col .p2-col-body, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-body { grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; row-gap: 2px; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-foot, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-foot { display: contents; }
+  body[data-variant-e-part="2"] .p2-col .p2-col-fact, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-fact { grid-column: 1; grid-row: 2; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+  body[data-variant-e-part="2"] .p2-col .p2-price, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-price { grid-column: 1; grid-row: 3; margin-top: 4px; font-size: 14px; }
+  body[data-variant-e-part="2"] .p2-col .p2-add, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-add { grid-column: 2; grid-row: 1 / span 3; align-self: center; height: 34px; padding: 0 14px; }
+}
+@media (max-width: 760px) { body[data-variant-e-part="2"] .p2-seven3 .p2-sec-head .p2-link { display: none; } }
+/* Product page sections (6 Nov 2026): one direction line, cautions as one small paragraph, allergens under ingredients. */
+body[data-variant-e-part="2"] .p2-pdp .p2-use { margin: 18px 0 12px; font-size: 15px; line-height: 1.55; color: var(--p2-ink); }
+body[data-variant-e-part="2"] .p2-pdp .p2-cautions { margin: 0; line-height: 1.55; color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2-pdp .p2-allergen { margin: 12px 0 0; font-weight: 600; color: var(--p2-ink); }
+/* Product page: other ingredients as one paragraph; price and Add to bag side by side. */
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-pdp .p2-others-p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--p2-ink); }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-buy-line { display: flex; align-items: center; gap: 16px; margin: 18px 0 16px; }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-pdp3 .p2-buy-line .p2-buy-price { flex: 0 0 auto; margin: 0; padding: 0; border: 0; }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-buy-line .p2-buy-row { flex: 1; min-width: 0; }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-buy-line .p2-buy-add { width: 100%; min-height: 54px; }
+/* Product page batch card: inset from the screen edges on phones and tablets, like the other cards. */
+@media (max-width: 1100px) { body[data-variant-e-part="2"] .p2-pdp-lot .p2-lot-band { width: auto; margin-left: var(--p2-side); margin-right: var(--p2-side); } }
+/* Product gallery (6 Nov 2026): framed to the bottle mockup (1196 x 1315) so the whole bottle shows; the cap close-up fills the same frame. */
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-pdp3 .p2-gallery-main { aspect-ratio: 1196 / 1315; background: #efe7da; }
+/* Colour columns, desktop: the open column's bottle keeps its own proportions and fits inside its area
+   (before, a fixed width with a capped height squashed it, and its base ran into the text). */
+@media (min-width: 1101px) {
+  body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-art { padding: 28px 16px 8px; place-items: center; }
+  body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-art img { width: auto; height: auto; max-width: min(48%, 240px); max-height: 92%; object-fit: contain; }
+}
+/* Colour columns, desktop (replaces the block above for the open bottle): the bottle is pinned to its picture area and
+   scaled with "contain", so tall bottles (Creatine, Omega-3, Myo-Inositol, Psyllium) always show whole at any height. */
+@media (min-width: 1101px) {
+  body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-art { position: relative; display: block; padding: 0; }
+  body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-col-art img { position: absolute; top: 24px; left: 16px; width: calc(100% - 32px); height: calc(100% - 32px); max-width: none; max-height: none; object-fit: contain; object-position: center; }
+}

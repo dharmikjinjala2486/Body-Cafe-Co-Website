@@ -141,8 +141,10 @@
     o = o || {}; var list = ctx.catalog, first = list[0];
     return '<form id="home-lot" class="p2-lot ' + (o.cls || "") + '" data-p2-lot><div class="p2-lot-caps" role="group" aria-label="Choose your product">' + list.map(function (p, i) {
       return '<button type="button" data-p2-lotpick="' + esc(p.id) + '" aria-pressed="' + (i === 0) + '" aria-label="' + esc(p.name) + '" style="--cap:' + esc(p.color) + '">' + capImg(p) + "<span>" + esc(p.name) + "</span></button>";
-    }).join("") + '</div><select id="home-lot-product" name="product" hidden>' + list.map(function (p, i) { return '<option value="' + esc(p.id) + '" data-sample="DEMO-' + (i < 9 ? "0" : "") + (i + 1) + '-01">' + esc(p.name) + "</option>"; }).join("") + "</select>" +
-      '<label class="p2-lot-label" for="home-lot-number">Lot number on your pack</label><div class="p2-lot-row"><input id="home-lot-number" name="lot" placeholder="e.g. DEMO-01-01" maxlength="60" required autocomplete="off"><button class="p2-btn' + (o.light ? " p2-btn-light" : "") + '" type="submit">Look up</button></div>' +
+    }).join("") + '</div>' +
+      // Name of the chosen cap. Shown in Part 2 only; Parts 3 and 4 label their caps their own way.
+      '<p class="p2-lot-now" data-p2-lot-now aria-hidden="true"' + (first ? ' style="--cap:' + esc(first.color) + '"' : "") + ">" + (first ? esc(first.name) : "") + '</p><select id="home-lot-product" name="product" hidden>' + list.map(function (p, i) { return '<option value="' + esc(p.id) + '" data-sample="' + esc(p.sample_lot || "DEMO-" + (i < 9 ? "0" : "") + (i + 1) + "-01") + '">' + esc(p.name) + "</option>"; }).join("") + "</select>" +
+      '<label class="p2-lot-label" for="home-lot-number">Lot number on your pack</label><div class="p2-lot-row"><input id="home-lot-number" name="lot" placeholder="e.g. ' + esc((first && first.sample_lot) || "DEMO-01-01") + '" maxlength="60" required autocomplete="off"><button class="p2-btn' + (o.light ? " p2-btn-light" : "") + '" type="submit">Look up</button></div>' +
       '<p class="p2-lot-note">Not your order number or barcode. Preview records only: try <button type="button" class="p2-linkbtn" data-fill-lot>the sample lot</button>.</p>' + (first ? "" : "") + "</form>";
   }
 
@@ -152,7 +154,7 @@
       var c = copy(p.id), ok = L.avail(p);
       return '<li class="p2-col" style="--cap:' + esc(p.color) + ";--on-cap:" + esc(ctx.onCap(p.color)) + '"' + (i === 0 ? ' data-open="true"' : "") + ">" +
         '<a class="p2-col-art" href="' + href(p) + '" tabindex="-1" aria-hidden="true">' + bottle(p, { alt: "" }) + "</a>" +
-        '<div class="p2-col-body"><h3><a href="' + href(p) + '">' + esc(p.name) + "</a></h3>" + (c.headline ? '<p class="p2-col-line">' + esc(c.headline) + "</p>" : "") + '<p class="p2-col-fact">' + fact(ctx, p) + "</p>" +
+        '<div class="p2-col-body"><h3><a href="' + href(p) + '">' + esc(p.name).replace(/(\S+-\S+)/g, '<span class="p2-nobr">$1</span>') + "</a></h3>" + (c.headline ? '<p class="p2-col-line">' + esc(c.headline) + "</p>" : "") + '<p class="p2-col-fact">' + fact(ctx, p).replace(/(\S+-\S+)/g, '<span class="p2-nobr">$1</span>') + "</p>" +
         '<div class="p2-col-foot"><span class="p2-price">' + ctx.money(p.price) + '</span><button class="p2-add" data-add="' + esc(p.id) + '" aria-label="Add ' + esc(p.name) + ' to bag"' + (ok ? "" : " disabled") + ">" + (ok ? "Add" : "Unavailable") + "</button></div></div></li>";
     }).join("") + "</ul>";
   }
@@ -160,18 +162,15 @@
     var list = ctx.published, first = list[0], rv = reviewsFor().slice(0, 3);
     if (!first) return head({ title: "The seven are resting." });
     return '<div class="p2-home">' +
-      /* 1 · Hero */
-      '<section class="p2-hero2" data-p2-hero style="--hc:' + esc(first.color) + '" aria-labelledby="p2-hero-t">' +
-      '<div class="p2-wrap p2-hero2-grid"><div class="p2-hero2-copy"><p class="p2-eyebrow">The Super Sevens</p>' +
+      /* 1 · Hero: words first, then the seven caps in a row. No bottle. */
+      '<section class="p2-hero2c" data-p2-hero aria-labelledby="p2-hero-t">' +
+      '<div class="p2-wrap p2-hc-copy"><p class="p2-eyebrow">The Super Sevens</p>' +
       '<h1 id="p2-hero-t"><b>Seven supplements.</b> <span><b>One uncompromising</b> <b>standard.</b></span></h1>' +
-      '<p class="p2-lede">Exact doses, stated. Every lot tested. Nothing hidden.</p>' +
-      '<div class="p2-actions p2-actions-left"><a class="p2-btn" href="/shop">Shop the seven</a><a class="p2-link" href="/standards">Our standard</a></div></div>' +
-      /* Right: the bottle, the seven caps that choose it, and what it is, as one group */
-      '<div class="p2-hero2-side"><div class="p2-hero2-stage"><span class="p2-disc" aria-hidden="true"></span>' + spin(first, { eager: true, only: true, cls: "p2-hero2-spin p2-spin-only" }) + '<p class="p2-hint" aria-hidden="true">Drag to turn</p></div>' +
-      '<div class="p2-capbar" role="group" aria-label="Choose one of the seven">' + list.map(function (p, i) {
-        return '<button type="button" data-p2-pick="' + i + '" data-id="' + esc(p.id) + '" data-name="' + esc(p.name) + '" data-fact="' + fact(ctx, p) + '" data-href="' + href(p) + '" data-color="' + esc(p.color) + '" aria-pressed="' + (i === 0) + '" aria-label="' + esc(p.name) + '">' + capImg(p) + "<span>" + esc(p.name) + "</span></button>";
-      }).join("") + "</div>" +
-      '<div class="p2-hero2-meta"><a class="p2-now" href="' + href(first) + '" data-p2-now><i class="p2-dot"></i><span><strong data-p2-now-name>' + esc(first.name) + '</strong><small data-p2-now-fact>' + fact(ctx, first) + "</small></span></a></div></div></div></section>" +
+      '<div class="p2-actions"><a class="p2-btn" href="/shop">Shop the seven</a><a class="p2-link" href="/standards">Our standard</a></div></div>' +
+      '<ul class="p2-hc-caps" aria-label="The seven">' + list.map(function (p, i) {
+        return '<li style="--cap:' + esc(p.color) + ';--i:' + i + '"><a href="' + href(p) + '" data-p2-pick data-name="' + esc(p.name) + '" data-fact="' + fact(ctx, p) + '" data-color="' + esc(p.color) + '" aria-label="' + esc(p.name) + '">' + capImg(p) + '<span class="p2-hc-name">' + esc(p.name) + "</span></a></li>";
+      }).join("") + "</ul>" +
+      '<p class="p2-hc-now" aria-hidden="true"><strong data-p2-now-name></strong><small data-p2-now-fact></small></p></section>' +
 
       /* 2 · Trust claims stripe */
       '<div class="p2-claims" role="list" aria-label="Our assurances"><div class="p2-claims-track">' + [0, 1].map(function (k) { return CLAIMS.map(function (c, i) { return '<span role="listitem"' + (k ? ' aria-hidden="true"' : "") + '><i style="--cap:' + esc((ctx.catalog[i] || {}).color || "#999") + '"></i>' + c + "</span>"; }).join(""); }).join("") + "</div></div>" +
@@ -219,13 +218,10 @@
 
   /* ---------- Shop: the seven, one quiet filter ---------- */
   function shopPage(ctx, title) {
-    var list = ctx.published, groups = ["Capsules", "Softgels", "Chews"].filter(function (g) { return list.some(function (p) { return formatGroup(ctx, p) === g; }); });
-    var count = function (g) { return list.filter(function (p) { return formatGroup(ctx, p) === g; }).length; };
+    var list = ctx.published; // All seven in one grid; no format tabs.
     return '<div class="p2-shop">' + head({ eyebrow: "The Super Sevens", title: title || "Shop the seven.", lede: "Seven supplements, each made to one uncompromising standard.", art: scene("home-hero-lineup", { eager: true, alt: "The seven Body Café Co. bottles in a row" }) }) +
-      '<div class="p2-wrap"><div class="p2-filter" role="group" aria-label="Filter by format">' +
-      '<button type="button" data-p2-filter="" aria-pressed="true">All <span>' + list.length + "</span></button>" +
-      groups.map(function (g) { return '<button type="button" data-p2-filter="' + g + '" aria-pressed="false">' + g + " <span>" + count(g) + "</span></button>"; }).join("") + "</div>" +
-      '<ul class="p2-tiles p2-tiles-shop">' + list.map(function (p) { return tile(ctx, p).replace('<li class="p2-tile"', '<li class="p2-tile" data-p2-format="' + formatGroup(ctx, p) + '"'); }).join("") + "</ul>" +
+      '<div class="p2-wrap">' +
+      '<ul class="p2-tiles p2-tiles-shop">' + list.map(function (p) { return tile(ctx, p); }).join("") + "</ul>" +
       '<p class="p2-shop-note">All prices are MRP, inclusive of all taxes. Delivery is free on orders of ₹1,499 or more.</p></div></div>';
   }
   part2("shop", function (ctx) { return shopPage(ctx); });
@@ -248,24 +244,39 @@
     return out.length ? '<ul class="p2-dash">' + out.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "";
   }
   function dlist(rows) { rows = rows.filter(function (x) { return x[1]; }); return rows.length ? '<dl class="p2-dl">' + rows.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : ""; }
+  /* Product page copy (6 Nov 2026): short, and only what the label states. "claim" is the front-of-pack claim as printed;
+     the points are label facts. How long a bottle lasts is worked out from servings_per_pack and added after them. */
+  var PDP = {
+    "omega-3-fish-oil": { desc: "Fish oil concentrate from anchovy, with its omega-3 kept in triglyceride form.",
+      points: ["800 mg omega-3 per softgel", "400 mg EPA and 300 mg DHA", "Triglyceride form, from anchovy"] },
+    "vitamin-d3-k2": { desc: "Three nutrients in one softgel: vitamin D3, vitamin K2 (MK-7) and omega-3 from anchovy fish oil.",
+      points: ["600 IU vitamin D3", "55 mcg vitamin K2 as MK-7", "200 mg omega-3: 100 mg EPA and 75 mg DHA"] },
+    "creatine-chews": { desc: "Creatine monohydrate in an orange chewable tablet. No powder, no shaker.",
+      points: ["3,000 mg creatine monohydrate per serving", "Orange-flavoured chewable tablets"] },
+    "iron-bisglycinate": { desc: "Iron as Ferrochel® ferrous bisglycinate chelate: iron bound to glycine.",
+      points: ["29 mg elemental iron per capsule", "Ferrochel® chelate, neutrally charged", "Vegetarian capsule"] },
+    "l-theanine": { desc: "L-Theanine, an amino acid naturally found in green tea.",
+      points: ["200 mg L-Theanine per capsule", "Vegetarian capsule"] },
+    "myo-d-chiro-inositol": { desc: "Myo-Inositol and D-Chiro Inositol in a 40:1 ratio, with each amount printed on the label.",
+      points: ["2,000 mg Myo-Inositol per serving", "50 mg D-Chiro Inositol per serving", "40:1 Myo-to-D-Chiro ratio"] },
+    "psyllium-husk": { desc: "Psyllium husk (isabgol) in capsules: a measured amount of fibre, with nothing to stir.",
+      points: ["2,000 mg psyllium husk per serving", "1,578 mg dietary fibre, of which 1,362 mg soluble", "Vegetarian capsules"] },
+  };
   part2("product", function (ctx, p) {
-    var m = window.BCCEH.h.pdp(ctx, p), h = window.BCCEH.h, c = copy(p.id), sd = std(p.id) || {}, front = p.label_front || {};
-    var prem = function (name, w, hh, alt) { return '<img src="/web/media/premium/' + esc(name) + '.webp" alt="' + esc(alt || "") + '" width="' + w + '" height="' + hh + '" loading="lazy" decoding="async">'; };
+    var m = window.BCCEH.h.pdp(ctx, p), h = window.BCCEH.h, c = copy(p.id), front = p.label_front || {};
+    var prem = function (name, w, hh, alt, eager) { return '<img src="/web/media/premium/' + esc(name) + '.webp" alt="' + esc(alt || "") + '" width="' + w + '" height="' + hh + '"' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + ' decoding="async">'; };
+    // Gallery (6 Nov 2026): the bottle-on-cloth mockup first, then the cap close-up. The turning 3D bottle is gone from product pages.
     var shots = [
-      { cls: "spin", main: spin(p, { eager: true }) + '<p class="p2-hint" aria-hidden="true">Drag to turn</p>', thumb: bottle(p, { alt: "" }), label: "Turn the bottle" },
-      { cls: "photo", main: prem(p.id + "-still", 1196, 1315, p.name + " on cloth"), thumb: prem(p.id + "-still", 1196, 1315), label: "Bottle on cloth" },
+      { cls: "photo", main: prem(p.id + "-still", 1196, 1315, p.name + " bottle", true), thumb: prem(p.id + "-still", 1196, 1315), label: "Bottle" },
       { cls: "photo", main: prem(p.id + "-detail", 1800, 2400, p.name + " cap, close up"), thumb: prem(p.id + "-detail", 1800, 2400), label: "Cap, close up" },
     ];
-    var serves = parseInt(p.servings_per_pack, 10), perServe = serves ? "₹" + (p.price / serves).toFixed(2) + " per serving" : "";
-    var why = uniq(sentences(clean(sd.why)));
+    var serves = parseInt(p.servings_per_pack, 10);
     var timing = p.label_timing || {}, slots = [["morning", "Morning"], ["noon", "Noon"], ["night", "Night"]];
     var rows = (p.supplement_facts && p.supplement_facts.rows) || [];
     var cautions = uniq(sentences(p.warnings));
-    var keep = c.keep && c.keep !== "—" && !norm(p.directions).includes(norm(c.keep).replace(/^avoid|^always/, "")) ? c.keep : "";
     var others = ctx.published.filter(function (x) { return x.id !== p.id; });
     var rv = reviewsFor(p.id);
     var avg = rv.length ? rv.reduce(function (t, r) { return t + r[1]; }, 0) / rv.length : 0;
-    var main = String(p.ingredients || "").split(";")[0];
     var pair = (Array.isArray(p.related_product_ids) ? p.related_product_ids.map(function (id) { return others.filter(function (x) { return x.id === id; })[0]; }).filter(Boolean) : m.related || others).slice(0, 2);
     var fbtItem = function (x, current) {
       return '<div class="p2-fbt-i' + (current ? " is-current" : "") + '" style="--cap:' + esc(x.color) + '">' + (current ? "" : '<label class="p2-fbt-check"><input type="checkbox" checked data-p2-fbt="' + esc(x.id) + '" data-price="' + (+x.price || 0) + '"' + (L.avail(x) ? "" : " disabled") + '><span class="sr-only">Add ' + esc(x.name) + "</span></label>") +
@@ -275,19 +286,18 @@
       '<div class="p2-fbt-grid"><div class="p2-fbt-cur"><p class="p2-fbt-k">Current item selected</p>' + fbtItem(p, true) + '</div><span class="p2-fbt-plus" aria-hidden="true">+</span><div class="p2-fbt-list">' + pair.map(function (x) { return fbtItem(x); }).join("") + "</div></div>" +
       '<div class="p2-fbt-foot"><p>Your total: <b data-p2-fbt-total>' + ctx.money([p].concat(pair).reduce(function (n, x) { return n + (+x.price || 0); }, 0)) + '</b></p><button type="button" class="p2-btn" data-p2-fbt-add>Add these to your bag</button></div></div></div></section>' : "";
 
+    var pc = PDP[p.id] || {}, lasts = serves ? "One bottle lasts " + serves + " days" : "";
+    var points = (pc.points || []).concat(lasts ? [lasts] : []);
     var sections = [
-      ["Description", '<h3 class="p2-acc-h">' + esc(c.headline || p.name) + "</h3>" + para(clean(c.intro || p.description)) +
-        (why.length ? '<h4>Why this form?</h4><ul class="p2-ticks">' + why.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul>" : "")], // "The story" removed (owner, 4 Nov 2026)
+      ["Description", '<h3 class="p2-acc-h">' + esc(c.headline || p.name) + "</h3>" + para(pc.desc || clean(c.intro || p.description))],
       ["Key Benefits", (front.claim ? '<p class="p2-claim">' + esc(front.claim) + "</p>" : "") +
-        '<p class="p2-key"><b>' + esc(sd.key || p.subtitle || "") + "</b><span>" + esc(clean(sd.form || main)) + "</span></p>" +
-        dlist([["Serving", p.serving_size], ["Pack", p.pack_size], ["Product type", front.category], ["On the front", front.descriptor]])],
-      ["Suggested Use", '<ol class="p2-slots">' + slots.map(function (s) { var t = String(timing[s[0]] || ""), best = /^best/i.test(t); return '<li class="' + (best ? "is-best" : "") + '"><span>' + s[1] + "</span><b>" + (best ? "Best" : t ? "Also fine" : "—") + "</b></li>"; }).join("") + "</ol>" +
-        dlist([["How to take", p.directions], ["With food?", p.directions_tag], ["Keep in mind", keep], ["Age", p.age_guidance]]) +
-        (cautions.length ? '<h4>Cautions</h4><ul class="p2-dash">' + cautions.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "")],
-      ["Nutritional Information", rows.length ? '<table class="p2-table p2-table-sm"><caption>Per ' + esc((p.supplement_facts && p.supplement_facts.serving) || p.serving_size || "serving") + " (approximate values)</caption><thead><tr><th scope=\"col\">Nutrient</th><th scope=\"col\">Amount</th><th scope=\"col\">% RDA</th></tr></thead><tbody>" +
+        (points.length ? '<ul class="p2-ticks">' + points.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "")],
+      ["Direction for Use", '<ol class="p2-slots">' + slots.map(function (s) { var t = String(timing[s[0]] || ""), best = /^best/i.test(t); return '<li class="' + (best ? "is-best" : "") + '"><span>' + s[1] + "</span><b>" + (best ? "Best" : t ? "Also fine" : "—") + "</b></li>"; }).join("") + "</ol>" +
+        (p.directions ? '<p class="p2-use">' + esc(p.directions) + "</p>" : "") +
+        (cautions.length ? '<p class="p2-small p2-cautions">' + esc(cautions.join(" ")) + "</p>" : "")],
+      ["Supplement Facts", rows.length ? '<table class="p2-table p2-table-sm"><caption>Per ' + esc((p.supplement_facts && p.supplement_facts.serving) || p.serving_size || "serving") + " (approximate values)</caption><thead><tr><th scope=\"col\">Nutrient</th><th scope=\"col\">Amount</th><th scope=\"col\">% RDA</th></tr></thead><tbody>" +
         rows.map(function (r) { return '<tr class="lvl-' + (r.level || 0) + (r.active ? " is-active" : "") + '"><th scope="row">' + esc(r.name) + "</th><td>" + esc(r.amount) + "</td><td>" + esc(r.rda) + "</td></tr>"; }).join("") + '</tbody></table><p class="p2-small">%RDA as per ICMR 2020. # %RDA not established.</p>' : para(p.nutrition_information)],
-      // Ingredients: only the other-ingredients list (owner, 4 Nov 2026).
-      ["Ingredients", otherIngredients(p.other_ingredients)],
+      ["Other Ingredients", (p.other_ingredients ? '<p class="p2-others-p">' + esc(String(p.other_ingredients).trim()) + "</p>" : "") + (p.allergens ? '<p class="p2-small p2-allergen">' + esc(p.allergens) + "</p>" : "")],
     ];
 
     return '<article class="p2-pdp p2-pdp3" style="--cap:' + esc(p.color) + '">' +
@@ -298,14 +308,14 @@
       '<div class="p2-thumbs" role="group" aria-label="Product images">' + shots.map(function (s, i) { return '<button type="button" data-p2-thumb="' + i + '" aria-pressed="' + (i === 0) + '" aria-label="' + s.label + '" class="p2-thumb-' + s.cls + '">' + s.thumb + "</button>"; }).join("") + "</div></div>" +
       '<div class="p2-accs p2-pdp-accs">' + sections.map(function (s) { return acc(s[0], s[1], s[2]); }).join("") + "</div></div>" +
 
-      '<aside class="p2-buy" data-pk-scope aria-label="Buy ' + esc(p.name) + '"><div class="p2-buy-chips"><span class="p2-chip">' + esc(formatOf(ctx, p)) + "</span>" + dietMark(p) + "</div>" +
+      '<aside class="p2-buy" data-pk-scope aria-label="Buy ' + esc(p.name) + '"><div class="p2-buy-chips"><span class="p2-chip">' + esc(p.pack_size || formatOf(ctx, p)) + "</span>" + dietMark(p) + "</div>" +
       (rv.length ? '<a class="p2-buy-rating" href="#p2-reviews">' + stars(Math.round(avg)) + "<span>" + rv.length + " sample review" + (rv.length === 1 ? "" : "s") + "</span></a>" : "") +
-      "<h1>" + esc(p.name) + '</h1><p class="p2-buy-sub">' + esc(p.subtitle || "") + "</p>" +
-      (p.pack_size ? '<p class="p2-buy-pack"><span>Per bottle</span><b>' + esc(p.pack_size) + "</b>" + (perServe ? "<small>" + perServe + "</small>" : "") + "</p>" : "") +
+      "<h1>" + esc(p.name) + '</h1><p class="p2-buy-sub">' + esc(String(p.subtitle || "").split(" · ").filter(function (x) { return !p.pack_size || x.trim().toLowerCase() !== String(p.pack_size).toLowerCase(); }).join(" · ")) + "</p>" +
       // Choose your pack (owner, 4 Nov 2026): the cards drive the hidden quantity select that add-product reads (web/packs-e.js).
-      (window.BCCPacks ? window.BCCPacks.picker(p, { max: m.max, off: !!m.off, cls: "pk-p2" }) : "") +
-      '<div class="p2-buy-price"><s class="p2-buy-was" data-pk-was hidden></s><strong data-pk-total>' + ctx.money(p.price) + "</strong><span>Inclusive of all taxes</span></div>" +
-      '<div class="p2-buy-row" data-pd-buy><div class="sr-only" aria-hidden="true" inert>' + h.qtySelect(m, "p2-qty") + "</div>" + h.addMain(m, "p2-btn p2-buy-add") + "</div>" +
+      (window.BCCPacks ? window.BCCPacks.picker(p, { max: m.max, off: !!m.off, cls: "pk-p2", months: true }) : "") +
+      // Price and Add to bag on one line.
+      '<div class="p2-buy-line"><div class="p2-buy-price"><s class="p2-buy-was" data-pk-was hidden></s><strong data-pk-total>' + ctx.money(p.price) + "</strong><span>Inclusive of all taxes</span></div>" +
+      '<div class="p2-buy-row" data-pd-buy><div class="sr-only" aria-hidden="true" inert>' + h.qtySelect(m, "p2-qty") + "</div>" + h.addMain(m, "p2-btn p2-buy-add") + "</div></div>" +
       (window.BCCPacks ? window.BCCPacks.pincode("pc-p2") : "") +
       '<ul class="p2-buy-notes"><li>' + esc(m.stockLine || "In stock") + '</li><li>Ships in 3–4 days</li><li>Free delivery on orders of ₹1,499 or more</li><li><a href="#p2-lot">Look up your lot online</a></li></ul>' +
       (m.off ? "" : '<button type="button" class="p2-btn p2-sticky-add" data-action="add-product" data-id="' + esc(p.id) + '">Add to bag · <span data-pk-total-page>' + ctx.money(p.price) + "</span></button>") +
@@ -513,34 +523,22 @@
     }, { signal: signal });
   }
 
-  /* ---------- Home hero: the caps choose the bottle; the stage takes its colour ---------- */
+  /* ---------- Home hero: pointing at a cap names it and tints the page ---------- */
   function mountHero(hero, signal) {
-    var el = hero.querySelector("[data-p2-spin]"), picks = [].slice.call(hero.querySelectorAll("[data-p2-pick]")), now = hero.querySelector("[data-p2-now]");
-    var cur = 0, timer = 0, auto = !still();
-    function show(i, user) {
-      if (i === cur && !user) return;
-      var b = picks[i]; if (!b) return; cur = i;
-      picks.forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
-      hero.style.setProperty("--hc", b.dataset.color);
-      now.href = b.dataset.href; now.querySelector("[data-p2-now-name]").textContent = b.dataset.name; now.querySelector("[data-p2-now-fact]").textContent = b.dataset.fact;
-      if (el.dataset.p2Spin !== b.dataset.id) {
-        el.classList.remove("is-ready"); el.classList.add("is-swap");
-        el.dataset.p2Spin = b.dataset.id; el.setAttribute("aria-label", b.dataset.name + " bottle. Drag or use the arrow keys to turn it.");
-        var poster = el.querySelector(".p2-spin-poster"); poster.src = "/web/media/spin/" + b.dataset.id + "-00.webp";
-        el._f = 12; el._twirl = true; // arrive from the back, then turn to face you
-        arm(el);
-        setTimeout(function () { el.classList.remove("is-swap"); }, 260);
-      }
-      // Warm the next sprite so the next switch is instant.
-      var nx = picks[(i + 1) % picks.length]; if (nx) atlas(nx.dataset.id, function () {});
+    var picks = [].slice.call(hero.querySelectorAll("[data-p2-pick]")), name = hero.querySelector("[data-p2-now-name]"), fct = hero.querySelector("[data-p2-now-fact]");
+    function show(b) {
+      picks.forEach(function (x) { x.classList.toggle("is-on", x === b); });
+      hero.classList.add("has-pick"); hero.style.setProperty("--hc", b.dataset.color);
+      name.textContent = b.dataset.name; fct.textContent = b.dataset.fact;
     }
-    function stop() { auto = false; clearInterval(timer); }
-    picks.forEach(function (b, i) { b.addEventListener("click", function () { stop(); show(i, true); }, { signal: signal }); });
-    hero.addEventListener("p2-touch", stop, { signal: signal });
-    hero.addEventListener("focusin", stop, { signal: signal });
-    if (auto) timer = setInterval(function () { if (!document.hidden) show((cur + 1) % picks.length); }, 4200);
-    if (signal) signal.addEventListener("abort", function () { clearInterval(timer); });
-    if (el.classList.contains("is-ready")) twirl(el); else el._twirl = true;
+    picks.forEach(function (b) {
+      b.addEventListener("pointerenter", function () { show(b); }, { signal: signal });
+      b.addEventListener("focus", function () { show(b); }, { signal: signal });
+    });
+    // Nothing is chosen until a cap is pointed at; the last one pointed at stays chosen.
+    // The whole hero fits the first screen: size it to whatever sits above it (header, preview bar).
+    function fit() { var top = Math.max(0, hero.getBoundingClientRect().top + window.scrollY); hero.style.setProperty("--p2-hc-u", Math.max(3.6, (window.innerHeight - top) / 100) + "px"); }
+    fit(); window.addEventListener("resize", fit, { signal: signal });
   }
 
   /* Gallery thumbnails and shop filter. */
@@ -565,6 +563,7 @@
           sel.value = b.dataset.p2Lotpick;
           picks.forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
           form.style.setProperty("--cap", b.style.getPropertyValue("--cap"));
+          var now = form.querySelector("[data-p2-lot-now]"); if (now) { now.textContent = b.getAttribute("aria-label"); now.style.setProperty("--cap", b.style.getPropertyValue("--cap")); }
           var input = form.querySelector("#home-lot-number"); if (input) input.placeholder = "e.g. " + sel.selectedOptions[0].dataset.sample;
         }, { signal: signal });
       });

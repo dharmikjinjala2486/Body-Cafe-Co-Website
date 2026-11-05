@@ -62,7 +62,7 @@
       inView: esc(main), parts: parts.map(esc), partsNote: note ? esc(note.charAt(0).toUpperCase() + note.slice(1)) + "." : "",
       price: ctx.money(p.price),
       off: off, max: max, stock: p.stock,
-      sample: "DEMO-" + no + "-01",
+      sample: p.sample_lot || "DEMO-" + no + "-01",
       confirm: (TO_CONFIRM[p.id] || []).concat([ALWAYS_CONFIRM]),
       related: related, learning: learning, faqs: ctx.faqs || [],
       home: ctx.homeHref, collection: ctx.collectionHref,

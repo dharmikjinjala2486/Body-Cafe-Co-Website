@@ -355,7 +355,7 @@ function menuBoard(list) {
     )}</ul><p class="menu-note">All prices are samples. Pack sizes, serving quantities, directions and approved product purposes are awaiting final labels. Final prices, GST and delivery are confirmed before launch.</p><div class="menu-peek" aria-hidden="true">${list.map((p) => `<img src="${escape(window.BCCBottleAssets.url(p.id))}" alt="" data-peek-img="${p.id}" width="${bottleWidth[p.id]}" height="1000" loading="lazy">`).join("")}</div></section>`;
 }
 function homeLot() {
-  return `<section id="home-report" class="lot-band" aria-labelledby="lot-title"><div class="lot-inner"><div class="lot-copy"><h2 id="lot-title" class="display">Turn the bottle over.</h2><p>Understand the evidence before you choose. Already have a bottle? Its lot number connects a pack to the corresponding batch record.</p>${window.BCCHome.example()}</div><form id="home-lot" class="lot-form"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">${state.catalog.map((p, i) => `<option value="${p.id}" data-sample="DEMO-${String(i + 1).padStart(2, "0")}-01">${escape(p.name)}</option>`).join("")}</select><label for="home-lot-number">Lot number</label><div class="lot-input"><input id="home-lot-number" name="lot" placeholder="DEMO-01-01" maxlength="60" required autocomplete="off"><button class="button on-dark" type="submit">Look up</button></div><p class="micro">Demonstration only. Try <button type="button" class="link-button" data-fill-lot>the sample lot</button> for the product you picked. No real laboratory document is connected.</p></form></div></section>`;
+  return `<section id="home-report" class="lot-band" aria-labelledby="lot-title"><div class="lot-inner"><div class="lot-copy"><h2 id="lot-title" class="display">Turn the bottle over.</h2><p>Understand the evidence before you choose. Already have a bottle? Its lot number connects a pack to the corresponding batch record.</p>${window.BCCHome.example()}</div><form id="home-lot" class="lot-form"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">${state.catalog.map((p, i) => `<option value="${p.id}" data-sample="${p.sample_lot || "DEMO-" + String(i + 1).padStart(2, "0") + "-01"}">${escape(p.name)}</option>`).join("")}</select><label for="home-lot-number">Lot number</label><div class="lot-input"><input id="home-lot-number" name="lot" placeholder="${state.catalog[0]?.sample_lot || "DEMO-01-01"}" maxlength="60" required autocomplete="off"><button class="button on-dark" type="submit">Look up</button></div><p class="micro">Demonstration only. Try <button type="button" class="link-button" data-fill-lot>the sample lot</button> for the product you picked. No real laboratory document is connected.</p></form></div></section>`;
 }
 const faqs = [
   [
@@ -854,7 +854,7 @@ const forms = {
   },
   reportForm(pid, lot) {
     const index = Math.max(0, state.catalog.findIndex((p) => p.id === pid));
-    const sample = "DEMO-" + String(index + 1).padStart(2, "0") + "-01";
+    const sample = state.catalog[index]?.sample_lot || "DEMO-" + String(index + 1).padStart(2, "0") + "-01";
     return `<form id="report-form" class="form-panel report-form-x"><label for="report-product">Product</label><select id="report-product" name="product">${state.catalog.map((p) => `<option value="${p.id}" ${p.id === pid ? "selected" : ""}>${escape(p.name)}</option>`).join("")}</select><label for="lot">Lot number</label><span class="field-hint" id="hint-lot">As printed on the pack. Not your order number or barcode.</span><input id="lot" name="lot" value="${escape(lot || "")}" placeholder="e.g. ${sample}" maxlength="60" required autocomplete="off" aria-describedby="hint-lot"><p class="micro">For a sample match, try <strong id="sample-lot">${sample}</strong>.</p><button class="button full" type="submit"><span>Look up lot</span>${icon("arrow")}</button><details class="sample-states"><summary><span>Try other sample results</span>${icon("plus")}</summary><div class="sample-buttons">${[["UNKNOWN", "Not found"], ["DEMO-UNPUBLISHED", "Unpublished"], ["DEMO-WITHDRAWN", "Withdrawn"], ["DEMO-OUTAGE", "Service down"]].map(([s, l]) => `<button type="button" data-sample-lot="${s}">${l}</button>`).join("")}</div></details><div id="report-result" role="status" aria-live="polite"></div></form>`;
   },
   productPicker(pid) {
@@ -891,7 +891,7 @@ function siteCtx() {
     design: activeDesign, state, catalog: state.catalog, published: state.catalog.filter((p) => p.published), product, image, cap, capStyle, onCap,
     escape, money, date, format, shortName, bottleWidth, icon, link, badge, price, faqs, learning, count: count(), total: total(), staticPreview: !!window.BCCStaticPreview,
     query: new URL(location.href).searchParams, path: window.BCCProductRoutes.internalPath(location.pathname), forms, site: window.BCCSite, homeLot, menuBoard, user: state.user, account: state.account,
-    orderCard, caseCard, accountNav, sampleLot: (id) => "DEMO-" + String(Math.max(0, state.catalog.findIndex((p) => p.id === id)) + 1).padStart(2, "0") + "-01",
+    orderCard, caseCard, accountNav, sampleLot: (id) => state.catalog.find((p) => p.id === id)?.sample_lot || "DEMO-" + String(Math.max(0, state.catalog.findIndex((p) => p.id === id)) + 1).padStart(2, "0") + "-01",
   };
 }
 function checkout() {
@@ -1246,6 +1246,14 @@ function navigate(href, color, switchingPreview = false) {
 async function refreshCatalog() {
   const c = await api("/catalog");
   c.products = await window.BCCLabelContent.enrich(c.products);
+  // Anchor products lead everywhere on the storefront, in this order; the rest keep the catalog's order after them.
+  // Sample batches are numbered by the order the server seeded its products (DEMO-01 is Iron Bisglycinate), not by the
+  // order the catalog arrives in, so each product carries its own sample number.
+  const SEEDED = ["iron-bisglycinate", "l-theanine", "vitamin-d3-k2", "omega-3-fish-oil", "myo-d-chiro-inositol", "creatine-chews", "psyllium-husk"];
+  c.products.forEach((p, i) => { const n = SEEDED.indexOf(p.id); p.sample_lot = "DEMO-" + String((n < 0 ? i : n) + 1).padStart(2, "0") + "-01"; });
+  const ANCHORS = ["omega-3-fish-oil", "vitamin-d3-k2", "creatine-chews"];
+  const rank = (p, i) => { const a = ANCHORS.indexOf(p.id); return a < 0 ? ANCHORS.length + i : a; };
+  c.products = c.products.map((p, i) => [rank(p, i), p]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
   state.catalog = c.products;
   window.BCCCatalogImages = Object.fromEntries(c.products.filter(p => p.gallery?.length).map(p => [p.id,p.gallery[0].src]));
   window.BCCCatalogSecondary = Object.fromEntries(c.products.filter(p => p.gallery?.length > 1).map(p => [p.id,p.gallery[1].src]));
@@ -1334,7 +1342,7 @@ document.addEventListener("click", async (e) => {
       $("#report-result").replaceChildren();
       const picked = product(pid);
       if (picked) $(".report-page")?.setAttribute("style", capStyle(picked));
-      $("#sample-lot").textContent = "DEMO-" + String(state.catalog.findIndex((p) => p.id === pid) + 1).padStart(2, "0") + "-01";
+      $("#sample-lot").textContent = picked?.sample_lot || "DEMO-" + String(state.catalog.findIndex((p) => p.id === pid) + 1).padStart(2, "0") + "-01";
     } else if (button.dataset.sampleLot) {
       $("#lot").value = button.dataset.sampleLot;
       $("#report-form").requestSubmit();

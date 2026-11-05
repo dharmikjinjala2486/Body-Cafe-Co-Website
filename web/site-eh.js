@@ -94,7 +94,7 @@
 
   function homeLotForm(ctx, cls, btnCls) {
     return '<form id="home-lot" class="' + (cls || "x-lotform") + '"><div class="x-field"><label for="home-lot-product">Product</label><select id="home-lot-product" name="product">' +
-      ctx.catalog.map(function (p, i) { return '<option value="' + p.id + '" data-sample="DEMO-' + pad(i + 1) + '-01">' + ctx.escape(p.name) + "</option>"; }).join("") +
+      ctx.catalog.map(function (p, i) { return '<option value="' + p.id + '" data-sample="' + (p.sample_lot || "DEMO-" + pad(i + 1) + "-01") + '">' + ctx.escape(p.name) + "</option>"; }).join("") +
       '</select></div><div class="x-field"><label for="home-lot-number">Lot number</label><input id="home-lot-number" name="lot" placeholder="As printed on your pack" maxlength="60" required autocomplete="off"></div><button class="' + (btnCls || "x-btn") + '" type="submit"><span>Look up</span></button>' +
       '<p class="x-micro" hidden>Try <button type="button" class="x-linkbtn" data-fill-lot>the sample lot</button> for the product you picked. No laboratory document is connected.</p></form>';
   }
@@ -115,7 +115,7 @@
     var m = {
       p: p, id: p.id, name: ctx.escape(p.name), sub: ctx.escape(p.subtitle), no: pad(idx + 1), total: pad(ctx.catalog.length),
       format: ctx.escape(ctx.format[p.id] || ""), inView: ctx.escape(main), note: note ? ctx.escape(note.charAt(0).toUpperCase() + note.slice(1)) + "." : "",
-      price: ctx.money(p.price), off: off, max: max, stock: p.stock, sample: "DEMO-" + pad(idx + 1) + "-01", confirm: confirm, related: related, next: related[0] || null,
+      price: ctx.money(p.price), off: off, max: max, stock: p.stock, sample: p.sample_lot || "DEMO-" + pad(idx + 1) + "-01", confirm: confirm, related: related, next: related[0] || null,
       notes: S.notes[p.id] || { lead: "", check: [], compound: "", sources: [] },
     };
     m.stockLine = off === "unpublished" ? "Not available. This product isn't published right now." : off === "stock" ? "Out of stock" : p.stock <= 5 ? "Only " + p.stock + " left" : "In stock";

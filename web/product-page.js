@@ -103,7 +103,7 @@
       name: esc(ctx, p.name), sub: esc(ctx, p.subtitle), format: esc(ctx, p.format || ctx.format[p.id] || ""), category: esc(ctx, p.category || ""),
       inView: esc(ctx, raw.split(";")[0]), formulationPending: !p.label_source && !!f.formulationPending, flavourPending: !p.label_source && !!f.flavourPending, allergenNote: p.allergens ? esc(ctx,p.allergens) : f.allergenNote || "",
       price: ctx.money(p.price), off: off, stock: p.stock, max: off ? 1 : Math.max(1, Math.min(5, p.stock)),
-      sample: "DEMO-" + pad(idx + 1) + "-01", notes: notes, confirm: confirm, images: images(p, ctx), rating: rating,
+      sample: p.sample_lot || "DEMO-" + pad(idx + 1) + "-01", notes: notes, confirm: confirm, images: images(p, ctx), rating: rating,
       related: Array.isArray(p.related_product_ids) ? p.related_product_ids.map(function(id){return published.find(function(x){return x.id===id;});}).filter(Boolean) : after.concat(published.filter(function (x) { return ctx.catalog.indexOf(x) < idx; })).slice(0, 3),
       color: p.color, staticPreview: !!ctx.staticPreview,
     };
