@@ -13,7 +13,7 @@ export function salesReport(orders,payments,query){
  const date=t=>new Date(t*1000+19800000).toISOString().slice(0,10),period=d=>group==='month'?d.slice(0,7)+'-01':group==='week'?new Date(Date.parse(d)-((new Date(d).getUTCDay()+6)%7)*86400000).toISOString().slice(0,10):d;
  const blank=()=>({orders:0,units:0,gross_sales:0,discounts:0,shipping:0,refunds:0,net_sales:0,refunded_units:0}),totals=blank(),buckets=new Map(),products=new Map(),all=new Set();
  for(let t=Date.parse(start);t<=Date.parse(end);t+=86400000){let p=period(new Date(t).toISOString().slice(0,10));if(!buckets.has(p))buckets.set(p,{period:p,label:group==='month'?p.slice(0,7):p,...blank(),ids:new Set()});}
- for(const pay of payments){if(!pay.captured)continue;let order=orders.find(o=>o.id===pay.order_id);if(!order)continue;let d=order.data||order,lines=d.items||[],weights=lines.map(i=>i.unit_price*i.quantity),disc=allocate(d.discount||0,weights),ship=allocate(d.shipping||0,weights),paid=weights.map((w,i)=>w-disc[i]+ship[i]),refund=allocate(pay.status==='refunded_preview'?pay.amount:0,paid),captureDate=date(pay.captured),refundDate=pay.refunded?date(pay.refunded):null;
+ for(const pay of payments){if(!pay.captured)continue;let order=orders.find(o=>o.id===pay.order_id);if(!order)continue;let d=order.data||order,lines=d.items||[],weights=lines.map(i=>i.unit_price*i.quantity),disc=allocate(d.discount||0,weights).map((x,i)=>x+(lines[i].pack_saving||0)),ship=allocate(d.shipping||0,weights),paid=weights.map((w,i)=>w-disc[i]+ship[i]),refund=allocate(pay.status==='refunded_preview'?pay.amount:0,paid),captureDate=date(pay.captured),refundDate=pay.refunded?date(pay.refunded):null;
   lines.forEach((line,i)=>{if(pid&&line.id!==pid)return;const capturedIn=start<=captureDate&&captureDate<=end,refundedIn=refundDate&&start<=refundDate&&refundDate<=end;if(!capturedIn&&!refundedIn)return;let product=products.get(line.id);if(!product){product={id:line.id,name:line.name,...blank()};products.set(line.id,product);}if(capturedIn){let bucket=buckets.get(period(captureDate));bucket.ids.add(order.id);all.add(order.id);let delta={units:line.quantity,gross_sales:weights[i],discounts:disc[i],shipping:ship[i],net_sales:paid[i]};for(let target of [bucket,product,totals])for(let [k,v]of Object.entries(delta))target[k]+=v;}if(refundedIn){let bucket=buckets.get(period(refundDate));for(let target of[bucket,product,totals]){target.refunds+=refund[i];target.net_sales-=refund[i];target.refunded_units+=line.quantity;}}});
  }
  totals.orders=all.size;const periods=[...buckets.values()].map(({ids,...b})=>({...b,orders:ids.size}));return {group,from:start,to:end,product:pid,timezone:'Asia/Kolkata',totals,periods,products:[...products.values()].sort((a,b)=>b.net_sales-a.net_sales),definition:'Captured sales; refunds on refund date. Net includes shipping. Weeks start Monday.'};
@@ -67,7 +67,10 @@ export function validateReport(raw){
  return out;
 }
 export function createHandler(config){
- if(!config.url||!config.serviceKey||!/^https:\/\//.test(config.origin||''))throw new Error('Hosted API configuration missing.');
+ // config.origin is a comma-separated list of storefront origins; config.previewOrigin optionally matches branch previews.
+ const origins=String(config.origin||'').split(',').map(x=>x.trim()).filter(Boolean);
+ if(!config.url||!config.serviceKey||!origins.length||!origins.every(o=>/^https:\/\/[^/]+$/.test(o)))throw new Error('Hosted API configuration missing.');
+ const allowedOrigin=o=>origins.includes(o)||!!(config.previewOrigin&&config.previewOrigin.test(o));
  const fetcher=config.fetch||fetch,base=config.url.replace(/\/$/,''),serviceHeaders={apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'};
  async function remote(path,{method='GET',body,headers={}}={}){const r=await fetcher(base+path,{method,headers:{...serviceHeaders,...headers},body:body===undefined?undefined:JSON.stringify(body)});if(!r.ok){let e;try{e=await r.json();}catch{e={};}if(r.status>=500)throw new ApiError('The store service is temporarily unavailable.',503);throw new ApiError(e.message||e.msg||e.error_description||'That action could not be completed.',r.status===401||r.status===403?403:400);}return r.status===204?null:r.json();}
  const db=(table,query='',method='GET',body)=>remote('/rest/v1/bcc_'+table+'?'+query,{method,body,headers:method==='POST'?{Prefer:'return=representation'}:{}});
@@ -94,7 +97,39 @@ export function createHandler(config){
  // Pack saving (owner, 4 Nov 2026): on one product line, 2 bottles save 5% and 3 or more save 10%, rounded to the rupee. Same rule as web/packs-e.js.
  function packPct(q){return q>=3?10:q===2?5:0;}
  function packSaving(price,q){return Math.round(price*q*packPct(q)/100);}
- async function quote(data){let cat=await catalog(),items=data.items;if(!Array.isArray(items)||items.length>30)throw new ApiError('Invalid bag.');let seen=new Set(),changes=[];let lines=items.map(it=>{if(seen.has(it.id)||!Number.isInteger(it.quantity)||it.quantity<1||it.quantity>99)throw new ApiError('Invalid bag quantity.');seen.add(it.id);let p=cat.products.find(x=>x.id===it.id),max=p?Math.min(10,p.stock):0,q=Math.min(it.quantity,max),status=!p?'unknown':!max?'unavailable':it.quantity>max?'reduced':'ok',priceChanged=Number.isInteger(it.price)&&p&&it.price!==p.price;if(status!=='ok')changes.push({id:it.id,kind:status,from:it.quantity,to:q});if(priceChanged)changes.push({id:it.id,kind:'price',from:it.price,to:p.price});return {id:it.id,name:p?.name||null,quantity:it.quantity,payable_quantity:q,status,available:p?.stock||0,max,limit:10,unit_price:p?.price??null,line_total:(p?.price||0)*q,pack_pct:packPct(q),pack_saving:packSaving(p?.price||0,q),price_changed:!!priceChanged,seen_price:it.price??null,color:p?.color};});let subtotal=lines.reduce((a,l)=>a+l.line_total,0),pack_saving=lines.reduce((a,l)=>a+l.pack_saving,0),code=String(data.discount||'').trim().toUpperCase(),discount=code==='PREVIEW10'?Math.floor((subtotal-pack_saving+5)/10):0,shipping=subtotal===0||subtotal-pack_saving-discount>=1499?0:75;return {lines,changes,subtotal,pack_saving,discount,discount_applied:discount?{code,label:'Sample 10% discount'}:null,discount_error:code&&code!=='PREVIEW10'?'This code is unavailable.':'',shipping,total:subtotal-pack_saving-discount+shipping,ready:!!cat.flags.checkout_enabled&&lines.length>0&&lines.every(l=>l.status==='ok'&&!l.price_changed),sample:true};}
+ async function placeOrder(data,user){
+  const text=(x,min,max,msg)=>{if(typeof x!=='string')throw new ApiError(msg);x=x.trim();if(x.length<min||x.length>max)throw new ApiError(msg);return x;};
+  if(data.adult!==true)throw new ApiError('Confirm that the purchaser is 18 or older.');
+  if((data.method||'prepaid')!=='prepaid')throw new ApiError('Cash on delivery isn’t offered. Choose online payment.',409);
+  const c=data.contact&&typeof data.contact==='object'?data.contact:{};
+  const contact={name:text(c.name,2,120,'Enter your full name.'),mobile:String(c.mobile||'').replace(/\D/g,''),email:typeof c.email==='string'?c.email.trim():'',
+   address:text(c.address,5,300,'Enter your full delivery address.'),city:text(c.city,2,80,'Enter your city.'),state:text(c.state,2,80,'Enter your state.'),pincode:String(c.pincode||'').trim()};
+  if(!/^[6-9][0-9]{9}$/.test(contact.mobile))throw new ApiError('Enter a valid 10-digit mobile number.');
+  if(!/^[1-9][0-9]{5}$/.test(contact.pincode))throw new ApiError('Enter a valid 6-digit pincode.');
+  if(contact.email&&(contact.email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)))throw new ApiError('Enter a valid email address, or leave it blank.');
+  const gstin=String(data.gstin||'').trim().toUpperCase(),legal=String(data.legal_name||'').trim();
+  if(gstin&&(!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(gstin)||legal.length<2||legal.length>200))throw new ApiError('Enter a valid GSTIN and legal name, or leave both blank.');
+  if(gstin){contact.gstin=gstin;contact.legal_name=legal;}
+  contact.email_consent=data.email_consent===true;contact.whatsapp_consent=data.whatsapp_consent===true;
+  const key=String(data.idempotency_key||'');if(!/^[A-Za-z0-9-]{8,100}$/.test(key))throw new ApiError('Refresh the page and retry.');
+  if(!Array.isArray(data.items)||!data.items.length||data.items.length>30)throw new ApiError('Your bag is empty.');
+  const merged=new Map();for(const it of data.items){if(!it||typeof it.id!=='string'||!Number.isInteger(it.quantity)||it.quantity<1||it.quantity>10)throw new ApiError('Choose a quantity between 1 and 10.');merged.set(it.id,(merged.get(it.id)||0)+it.quantity);}
+  if([...merged.values()].some(q=>q>10))throw new ApiError('You can order up to 10 of each product.');
+  const items=[...merged].map(([id,quantity])=>({id,quantity})),discount=String(data.discount||'').trim().toUpperCase();
+  // The bag must be what the customer reviewed: same stock and prices, and (when sent) the same total.
+  const q=await quote({items,discount});
+  if(q.lines.some(l=>l.status!=='ok'))throw new ApiError('Your bag changed: an item is no longer available in that quantity. Review your bag and try again.',409);
+  if(q.discount_error)throw new ApiError(q.discount_error);
+  if(Number.isInteger(data.expected_total)&&data.expected_total!==q.total)throw new ApiError('Prices in your bag changed. Review the new total and try again.',409);
+  try{return await rpc('checkout',{p_user:user.id,p_key:key,p_items:items,p_contact:contact,p_discount:discount});}
+  catch(e){const m=String(e.message||'');
+   if(/paused/i.test(m))throw new ApiError('Checkout is paused for a moment. Your bag is saved.',409);
+   if(/Not enough released stock/i.test(m))throw new ApiError('One of your items just sold out. Review your bag and try again.',409);
+   if(/Product unavailable|price unavailable/i.test(m))throw new ApiError('One of your items isn’t available right now. Review your bag and try again.',409);
+   if(/Discount unavailable/i.test(m))throw new ApiError('This code is unavailable.');
+   throw e;}
+ }
+ async function quote(data){let cat=await catalog(),items=data.items;if(!Array.isArray(items)||items.length>30)throw new ApiError('Invalid bag.');let seen=new Set(),changes=[];let lines=items.map(it=>{if(seen.has(it.id)||!Number.isInteger(it.quantity)||it.quantity<1||it.quantity>99)throw new ApiError('Invalid bag quantity.');seen.add(it.id);let p=cat.products.find(x=>x.id===it.id),max=p?Math.min(10,p.stock):0,q=Math.min(it.quantity,max),status=!p?'unknown':!max?'unavailable':it.quantity>max?'reduced':'ok',priceChanged=Number.isInteger(it.price)&&p&&it.price!==p.price;if(status!=='ok')changes.push({id:it.id,kind:status,from:it.quantity,to:q});if(priceChanged)changes.push({id:it.id,kind:'price',from:it.price,to:p.price});return {id:it.id,name:p?.name||null,quantity:it.quantity,payable_quantity:q,status,available:p?.stock||0,max,limit:10,unit_price:p?.price??null,line_total:(p?.price||0)*q,pack_pct:packPct(q),pack_saving:packSaving(p?.price||0,q),price_changed:!!priceChanged,seen_price:it.price??null,color:p?.color};});let subtotal=lines.reduce((a,l)=>a+l.line_total,0),pack_saving=lines.reduce((a,l)=>a+l.pack_saving,0),code=String(data.discount||'').trim().toUpperCase(),discount=code==='PREVIEW10'?Math.floor((subtotal-pack_saving+5)/10):0,shipping=subtotal===0||subtotal-pack_saving-discount>=1499?0:75;return {lines,changes,subtotal,pack_saving,discount,discount_applied:discount?{code,label:'Sample 10% discount'}:null,discount_error:code&&code!=='PREVIEW10'?'This code is unavailable.':'',shipping,shipping_rule:{fee:75,free_from:1499,note:'Delivery is ₹75, free when your order after savings is ₹1,499 or more.'},tax_note:'Prices are MRP, inclusive of all taxes.',total:subtotal-pack_saving-discount+shipping,ready:!!cat.flags.checkout_enabled&&lines.length>0&&lines.every(l=>l.status==='ok'&&!l.price_changed),sample:true};}
  async function getMedia(id,kind,user){let m=(await db('media','id=eq.'+encodeURIComponent(id)))[0];if(!m||m.kind!==kind)throw new ApiError('File not found.',404);let allowed=user.role==='admin';if(kind==='catalog'){let cat=await catalog();allowed||=cat.products.some(p=>(p.gallery||[]).some(g=>g.src==='/api/catalog-media/'+id));}else if(kind==='report'){let report=(await db('lot_reports','id=eq.'+encodeURIComponent(m.report_id)))[0];allowed||=report&&['published','superseded'].includes(report.state);}else {allowed||=m.owner_id===user.id;if(kind==='review'&&m.data.state==='approved'&&m.data.review_id){const review=(await db('reviews','id=eq.'+encodeURIComponent(m.data.review_id)))[0];allowed||=review?.data.state==='published';}}if(!allowed)throw new ApiError('File not found.',404);let r=await fetcher(base+'/storage/v1/object/bcc-private/'+m.object_key,{headers:serviceHeaders});if(!r.ok)throw new ApiError('File not found.',404);let bytes=await r.arrayBuffer();if(hex(await crypto.subtle.digest('SHA-256',bytes))!==m.sha256)throw new ApiError('File integrity check failed.',409);return new Response(bytes,{headers:{'Content-Type':m.mime,'X-Content-Type-Options':'nosniff','Cache-Control':'private, no-store','Content-Security-Policy':"sandbox; default-src 'none'",'X-Document-SHA256':m.sha256}});}
  async function upload(req,path,query,user){
   const kind=path==='/admin/catalog-image'?'catalog':path==='/case-media'?'case':path==='/review-media'?'review':'report',pdf=path==='/admin-lot-document';
@@ -137,7 +172,7 @@ export function createHandler(config){
     throw new ApiError('Endpoint not found.',404);
    }
    if(req.method!=='POST')throw new ApiError('Method not allowed.',405);
-   let origin=req.headers.get('Origin');if(origin&&origin!==config.origin)throw new ApiError('Cross-origin requests are not allowed.',403);
+   let origin=req.headers.get('Origin');if(origin&&!allowedOrigin(origin))throw new ApiError('Cross-origin requests are not allowed.',403);
    if(!cookies.bcc_csrf||req.headers.get('X-CSRF-Token')!==s.csrf)throw new ApiError('Refresh the page and retry.',403);
    if(['/admin/catalog-image','/admin/lot-image','/admin-lot-document','/case-media','/review-media'].includes(path))return json(await upload(req,path,u.searchParams,user));
    let length=Number(req.headers.get('Content-Length')||0);if(length>65536)throw new ApiError('Request too large.',413);
@@ -160,7 +195,7 @@ export function createHandler(config){
    if(path==='/admin/logout'||path==='/logout'){if(adminRoute&&user.role==='admin')await rpc('revoke_admin_sessions',{p_actor:user.id});if(s.token)await remote('/auth/v1/logout',{method:'POST',headers:{Authorization:'Bearer '+s.token}}).catch(()=>{});cookie(adminRoute?'bcc_admin':'bcc_customer','',0);cookie('bcc_csrf',random());return json({ok:true});}
    if(path.startsWith('/auth/'))throw new ApiError('Customer sign-in needs a connected OTP provider.',503);
    if(path==='/bag/quote')return json(await quote(data));
-   if(path==='/orders')throw new ApiError('Hosted checkout is paused until the payment provider is connected.',503);
+   if(path==='/orders')return json(await placeOrder(data,user));
    if(/\/orders\/[^/]+\/(pay|reconcile)$/.test(path))throw new ApiError('Live payments are not connected.',503);
    if(path==='/bag'){
     await quote(data);await remote('/rest/v1/bcc_bags?on_conflict=user_id',{method:'POST',body:{user_id:user.id,data:data.items,updated:now()},headers:{Prefer:'resolution=merge-duplicates'}});return json({ok:true,account:!user.id.startsWith('guest-')});

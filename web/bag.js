@@ -109,8 +109,8 @@
     var rows = q ? '<div class="bg-row"><span>Subtotal</span><strong>' + money(q.subtotal) + "</strong></div>" +
       (q.pack_saving ? '<div class="bg-row is-disc"><span>Pack saving<small>2 bottles of one product save 5%, 3 or more save 10%.</small></span><strong>−' + money(q.pack_saving) + "</strong></div>" : "") +
       (q.discount_applied ? '<div class="bg-row is-disc"><span>' + h(q.discount_applied.label) + '<small>' + h(q.discount_applied.condition) + "</small></span><strong>−" + money(q.discount) + "</strong></div>" : "") +
-      '<div class="bg-row"><span>Delivery<small>' + h(q.shipping_rule.note) + "</small></span><strong>" + (q.subtotal ? (q.shipping ? money(q.shipping) : "Free") : "—") + "</strong></div>" +
-      '<div class="bg-row is-total"><span>Total<small>' + h(q.tax_note) + "</small></span><strong>" + money(q.total) + "</strong></div>" : '<p class="bg-meta">Checking prices and stock…</p>';
+      '<div class="bg-row"><span>Delivery<small>' + h((q.shipping_rule || {}).note || "") + "</small></span><strong>" + (q.subtotal ? (q.shipping ? money(q.shipping) : "Free") : "—") + "</strong></div>" +
+      '<div class="bg-row is-total"><span>Total<small>' + h(q.tax_note || "") + "</small></span><strong>" + money(q.total) + "</strong></div>" : '<p class="bg-meta">Checking prices and stock…</p>';
     var blocked = !q || !q.ready;
     var why = !q ? "" : q.discount_error ? "Fix or remove the discount code to continue." : q.lines.some(function (x) { return x.status === "unavailable"; }) ? "Move unavailable items to Saved for later, or remove them, to continue." : "";
     return '<aside class="bg-summary" aria-labelledby="bg-sum-h"><h2 id="bg-sum-h" class="bg-sum-h">Order summary</h2>' + rows +

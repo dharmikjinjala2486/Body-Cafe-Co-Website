@@ -10,6 +10,7 @@ await db.exec(await fs.readFile(new URL('../../supabase/migrations/202610280002_
 await db.exec(await fs.readFile(new URL('../../supabase/migrations/202610290001_sessions.sql',import.meta.url),'utf8'));
 await db.exec(await fs.readFile(new URL('../../supabase/migrations/202610290002_customer_actions.sql',import.meta.url),'utf8'));
 await db.exec(await fs.readFile(new URL('../../supabase/migrations/202611020001_existing_product_editor.sql',import.meta.url),'utf8'));
+await db.exec(await fs.readFile(new URL('../../supabase/migrations/202611060001_checkout_pricing.sql',import.meta.url),'utf8'));
 let checks=0;
 const q=(sql,args=[])=>db.query(sql,args);
 const one=async(sql,args=[]) => (await q(sql,args)).rows[0];
@@ -21,7 +22,8 @@ const checkout=(user,key,n)=>q('select bcc_checkout($1,$2,$3,$4) result',[user,k
 await assert.rejects(checkout('guest-user-1','checkout-key-01',1),/paused/);checks++;
 await q("update bcc_settings set data=jsonb_set(data,'{checkout_enabled}','true') where id='flags'");
 let order=(await checkout('guest-user-1','checkout-key-01',3)).rows[0].result;
-assert.equal(order.total,2697);
+assert.equal(order.subtotal,2697);assert.equal(order.pack_saving,270);assert.equal(order.items[0].pack_saving,270);assert.equal(order.shipping,0);assert.equal(order.total,2427);
+assert.equal((await one("select amount from bcc_payments where order_id=$1",[order.id])).amount,2427);
 assert.equal((await one("select available from bcc_batches where id='EARLY'")).available,0);
 assert.equal((await one("select available from bcc_batches where id='LATE'")).available,1);checks++;
 assert.equal((await checkout('guest-user-1','checkout-key-01',3)).rows[0].result.idempotent,true);
@@ -96,5 +98,16 @@ await assert.rejects(q("select bcc_expire_holds(1)"),/permission denied/);checks
 await db.exec('reset role;set role authenticated');
 await assert.rejects(q('select * from bcc_admin'),/permission denied/);checks++;
 await db.exec('reset role');
+// Pricing matches the bag quote: 2 of one product save 5%, PREVIEW10 applies after the pack saving, delivery is free from 1,499.
+await q("insert into bcc_products(id,data) values('price-a',$1),('price-b',$2)",[{id:'price-a',name:'Price A',price:749,published:true},{id:'price-b',name:'Price B',price:949,published:true}]);
+await q("insert into bcc_batches(id,product,expiry,available,state,proof) values('PA',  'price-a',$1,10,'released',true),('PB','price-b',$1,10,'released',true)",[future]);
+const priced=async(items,code='')=>(await q('select bcc_checkout($1,$2,$3,$4,$5) result',['guest-pricing-1','price-'+Math.random().toString(36).slice(2,10),items,contact,code])).rows[0].result;
+let p1=await priced([{id:'price-a',quantity:1}]);
+assert.deepEqual([p1.subtotal,p1.pack_saving,p1.discount,p1.shipping,p1.total],[749,0,0,75,824]);checks++;
+let p2=await priced([{id:'price-a',quantity:2}]);
+assert.deepEqual([p2.subtotal,p2.pack_saving,p2.shipping,p2.total],[1498,75,75,1498]);checks++;
+let p3=await priced([{id:'price-a',quantity:2},{id:'price-b',quantity:1}],'preview10');
+// 1498+949=2447; pack 75; discount round((2447-75)/10)=237; delivery free; total 2135.
+assert.deepEqual([p3.subtotal,p3.pack_saving,p3.discount,p3.shipping,p3.total],[2447,75,237,0,2135]);checks++;
 await db.close();
 console.log(`${checks} PostgreSQL migration and transactional checks passed.`);

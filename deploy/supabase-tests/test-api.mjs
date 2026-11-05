@@ -16,8 +16,8 @@ assert.throws(()=>salesReport([],[],new URLSearchParams('from=2026-02-30')));che
 const normalReport=validateReport({title:'Laboratory report',presentation:{show_documents:true,show_summary:false,show_results:false,show_lab:false,show_dates:false},results:[]});assert.equal(normalReport.presentation.show_summary,false);checks++;
 for(const r of [{lab:{accreditation:{verify_url:'javascript:alert(1)'}}},{dates:{issued:'2026-02-30'}},{results:[{parameter:'Lead',result:'ND',assessment:'meets'}]},{sample:{type:'made_up'}}]){assert.throws(()=>validateReport(r));checks++;}
 const uid='00000000-0000-4000-8000-000000000001',admin={auth_user_id:uid,username:'bodycafe.com'};
-let calls=[],fixtureReports=[];
-const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-secret',origin:'https://body-cafe-co-website.netlify.app',fetch:async(url,opts)=>{
+let calls=[],fixtureReports=[],checkoutCalls=[];
+const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-secret',origin:'https://body-cafe-co-website.netlify.app,https://body-cafe-co-website.vercel.app',previewOrigin:/^https:\/\/body-cafe-co-website-[a-z0-9-]+-dharmik123\.vercel\.app$/,fetch:async(url,opts)=>{
  calls.push({url,opts});const u=new URL(url),name=u.pathname.split('/').pop();let result=[];
  if(u.pathname.startsWith('/auth/v1/admin/users/'))result={id:uid,email:'admin@example.test'};
  else if(u.pathname==='/auth/v1/token'){let input=JSON.parse(opts.body);if(input.password!=='qa-current-password')return new Response(JSON.stringify({msg:'Invalid credentials'}),{status:403});result={access_token:'good-admin',expires_in:3600,user:{id:uid}};}
@@ -30,6 +30,7 @@ const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-
  else if(name==='bcc_reservations')result=[];
  else if(name==='bcc_settings')result=[{id:'flags',data:{checkout_enabled:false}}];
  else if(name==='bcc_expire_holds')result=null;
+ else if(name==='bcc_checkout'){const b=JSON.parse(opts.body);checkoutCalls.push(b);result={id:'BCC-0000TEST',state:'pending',total:100,items:b.p_items};}
  return new Response(JSON.stringify(result),{headers:{'Content-Type':'application/json'}});
 }});
 const signedPart=Buffer.from(JSON.stringify({token:'good-admin',version:0,expires:Math.floor(Date.now()/1000)+3600})).toString('base64url');
@@ -45,7 +46,20 @@ const cookies=response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')
 response=await request('/admin/product_archive',{method:'POST',headers:{Cookie:cookies,'Content-Type':'application/json','X-CSRF-Token':session.csrf,Origin:'https://evil.example'},body:'{}'});assert.equal(response.status,403);checks++;
 response=await request('/admin/product_archive',{method:'POST',headers:{Cookie:cookies,'Content-Type':'application/json'},body:'{}'});assert.equal(response.status,403);checks++;
 response=await request('/admin/approve',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:'{}'});assert.equal(response.status,404);checks++;
-response=await request('/orders',{method:'POST',headers:{Cookie:cookies,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:'{}'});assert.equal(response.status,503);checks++;
+// Storefront origins: the Vercel site and its branch previews are accepted; lookalikes are not.
+const post=(path,body,origin)=>request(path,{method:'POST',headers:{Cookie:cookies,'Content-Type':'application/json','X-CSRF-Token':session.csrf,...(origin?{Origin:origin}:{})},body:JSON.stringify(body)});
+response=await post('/bag/quote',{items:[{id:'test-product',quantity:1}]},'https://body-cafe-co-website.vercel.app');assert.equal(response.status,200);let bagQuote=await response.json();assert.match(bagQuote.shipping_rule.note,/1,499/);assert.match(bagQuote.tax_note,/inclusive/);checks++;
+response=await post('/bag/quote',{items:[{id:'test-product',quantity:1}]},'https://body-cafe-co-website-git-design-concepts-dharmik123.vercel.app');assert.equal(response.status,200);checks++;
+response=await post('/bag/quote',{items:[{id:'test-product',quantity:1}]},'https://body-cafe-co-website.vercel.app.evil.example');assert.equal(response.status,403);checks++;
+// Guest orders: details are checked before any stock is reserved.
+const order={adult:true,method:'prepaid',idempotency_key:'test-order-key-01',items:[{id:'test-product',quantity:1},{id:'test-product',quantity:1}],contact:{name:' Test Buyer ',mobile:'98765 43210',email:'',address:'12 Test Road, Adajan',city:'Surat',state:'Gujarat',pincode:'395009'}};
+response=await post('/orders',{});assert.equal(response.status,400);assert.match((await response.json()).error,/18 or older/);checks++;
+for(const bad of[{contact:{...order.contact,mobile:'12345'}},{contact:{...order.contact,pincode:'012345'}},{items:[{id:'test-product',quantity:11}]},{method:'cod'},{idempotency_key:'x'}]){response=await post('/orders',{...order,...bad});assert.ok([400,409].includes(response.status));}checks++;
+response=await post('/orders',{...order,expected_total:1});assert.equal(response.status,409);assert.match((await response.json()).error,/Prices in your bag changed/);checks++;
+assert.equal(checkoutCalls.length,0);checks++;
+response=await post('/orders',order,'https://body-cafe-co-website.vercel.app');assert.equal(response.status,200);assert.equal((await response.json()).id,'BCC-0000TEST');
+assert.equal(checkoutCalls.length,1);assert.deepEqual(checkoutCalls[0].p_items,[{id:'test-product',quantity:2}]);assert.equal(checkoutCalls[0].p_contact.mobile,'9876543210');assert.equal(checkoutCalls[0].p_contact.name,'Test Buyer');assert.ok(checkoutCalls[0].p_user.startsWith('guest-'));checks++;
+response=await post('/orders/BCC-0000TEST/pay',{});assert.equal(response.status,503);checks++;
 response=await request('/admin/product_save',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:JSON.stringify({product:{...product,price:-1}})});assert.equal(response.status,400);checks++;
 response=await request('/admin/product_save',{method:'POST',headers:{Cookie:cookies+'; '+adminCookie,'Content-Type':'application/json','X-CSRF-Token':session.csrf},body:JSON.stringify({product:{...product,id:'not-existing'}})});assert.equal(response.status,403);checks++;
 const labelFields={headline:'Editable headline',home_highlight:'800 mg Omega-3',label_front:{category:'Nutraceutical'},label_timing:{morning:'Best'},label_badges:['GMP certified'],supplement_facts:{serving:'1 softgel',notes:['Edited note'],rows:[{name:'Omega-3',amount:'800 mg',rda:'#',active:true,level:0}]}};
