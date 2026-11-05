@@ -9,3 +9,5 @@ __pycache__/
 *.pyc
 web/qa/
 dist/
+# Supabase CLI local cache
+supabase/.temp/
