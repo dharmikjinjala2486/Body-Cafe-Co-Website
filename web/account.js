@@ -29,7 +29,7 @@
 
   /* ---------------- safe return destinations ---------------- */
   var NEXT_OK = [/^\/checkout$/, /^\/cart$/, /^\/orders\/BCC-[0-9A-F]{8}$/, /^\/payment\/BCC-[0-9A-F]{8}$/, /^\/products\/[a-z0-9-]{1,60}$/, /^\/contact$/,
-    /^\/account(\/(orders|addresses|support|reviews|profile|preferences))?$/];
+    /^\/account(\/(orders|addresses|cards|support|reviews|profile|preferences))?$/];
   function safeNext(raw) {
     if (!raw) return "/account";
     var u;
@@ -649,5 +649,6 @@
     swrite("bcc-last-user", now);
   }
 
-  window.BCCAccount = { enhance: enhance, safeNext: safeNext, signInHref: signInHref, contactSent: function () { swrite("bcc-case-draft", ""); }, signedOut: function () { swrite("bcc-signed-out", "1"); } };
+  // Part 4 (web/part4-e.js) draws its own account and sign-in, and reuses these sections and the shared behaviour.
+  window.BCCAccount = { enhance: enhance, safeNext: safeNext, signInHref: signInHref, taskName: taskName, sections: { support: support, reviews: reviews, prefs: prefs, privacy: privacySection, stateChips: stateChips }, FUL: FUL, PAY: PAY, contactSent: function () { swrite("bcc-case-draft", ""); }, signedOut: function () { swrite("bcc-signed-out", "1"); } };
 })();
