@@ -1119,7 +1119,18 @@ async function render(scroll = true) {
     if (!state.sessionReady || state.sessionScope !== scope) { await session(); state.opsLoadedAt = 0; }
     let content;
     const fx = fixtureState(path);
-    if (!fx && (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/") || path === "/checkout" || path === "/contact" || path === "/settings")) state.account = await api("/account");
+    if (!fx && (path.startsWith("/account") || path.startsWith("/orders/") || path.startsWith("/payment/") || path === "/checkout" || path === "/contact" || path === "/settings")) {
+      // A design may draw its account page without waiting for the account record: "skip" (it needs none, e.g. the
+      // sign-in screen), "stale" (draw now with what is held, refresh in the background if it is older than 2 s) or
+      // "load" (what is held isn't this user's: draw a placeholder now, fetch in the background). Otherwise wait.
+      const fast = window.BCCAccountFast?.(path, state.user, state.account) || "";
+      if (fast === "stale" || fast === "load") {
+        if (fast === "load" || Date.now() - (state.accountAt || 0) > 2000) {
+          const route = location.pathname + location.search;
+          api("/account").then((a) => { state.account = a; state.accountAt = Date.now(); if (route === location.pathname + location.search) render(false); }).catch(() => {});
+        }
+      } else if (fast !== "skip") { state.account = await api("/account"); state.accountAt = Date.now(); }
+    }
     if (path.startsWith("/ops") && ["admin", "viewer"].includes(state.user.role)) {
       if (!state.ops || Date.now() - state.opsLoadedAt > 30000) {
         state.ops = await api("/admin");

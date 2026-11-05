@@ -48,8 +48,10 @@
   var LABELS = [["home", "Home"], ["office", "Office"], ["other", "Other"]];
   var NETWORKS = { visa: "Visa", mastercard: "Mastercard", rupay: "RuPay", amex: "American Express", diners: "Diners Club" };
   var MAX = 5;
+  // Saved cards stay hidden until the payment provider is connected (they will be its tokens; we store nothing). Owner, 6 Nov 2026.
+  var CARDS = false;
   function labelOf(a) { return a.label === "other" ? a.label_name || "Other" : (LABELS.filter(function (x) { return x[0] === (a.label || "home"); })[0] || LABELS[0])[1]; }
-  function sampleBanner(t) { return '<p class="p2a-sample" role="note"><b>Sample</b>' + t + "</p>"; }
+  function sampleBanner(t, label) { return '<p class="p2a-sample" role="note"><b>' + (label || "Sample") + "</b>" + t + "</p>"; }
   function thumbs(ctx, items) { return '<span class="p2a-thumbs" aria-hidden="true">' + items.slice(0, 3).map(function (i) { var p = ctx.product(i.id); return p ? '<span style="' + cap(p) + '">' + P.bottle(p, { alt: "", cls: "p2a-thumb" }) + "</span>" : ""; }).join("") + "</span>"; }
 
   /* ---------- Synthetic data for the design states (never saved) ---------- */
@@ -75,23 +77,157 @@
     };
   }
 
+  /* ---------- Preview account (preview builds only; never in production) ----------
+     Lets anyone reviewing the design sign in and try everything, on the hosted preview too, where the real API has no
+     customer sign-in. Everything is kept in this browser tab (sessionStorage) and nothing is sent anywhere.
+     · The preview account: mobile 99999 99999 or preview@bodycafeco.com, password preview123 (or any one-time code shown).
+     · On the hosted preview every sign-in and sign-up goes here; on the local server only the preview account does. */
+  var DEMO = { mobile: "9999999999", email: "preview@bodycafeco.com", password: "preview123" }, DKEY = "bcc-p2-preview";
+  function demoAllowed() { return !(window.BCCRelease && window.BCCRelease.production); }
+  // Both the local server and the hosted API now sign customers in for real (hosted: email code or password, 6 Nov 2026).
+  function realBackend() { return !window.BCCStaticPreview; }
+  // The hosted API has no text-message provider yet: sign-in and sign-up are by email there.
+  function emailOnly() { return !!window.BCCConnectedHosted; }
+  function dstore() { try { return JSON.parse(sessionStorage.getItem(DKEY) || "null") || { accts: {}, current: "", codes: {}, pending: {} }; } catch (e) { return { accts: {}, current: "", codes: {}, pending: {} }; } }
+  function dsave(st) { try { sessionStorage.setItem(DKEY, JSON.stringify(st)); } catch (e) {} }
+  function demoCurrent() { if (!demoAllowed()) return null; var st = dstore(); return st.current && st.accts[st.current] ? st.accts[st.current] : null; }
+  function presetAccount() {
+    var a = sampleAccount({ catalog: A().catalog() || [] }, "sample");
+    a.profile.mobile = DEMO.mobile; a.profile.email = DEMO.email; a.sample = false; a.preview = true;
+    return { pw: DEMO.password, account: a };
+  }
+  function ensurePreset(st) { if (!st.accts[DEMO.mobile]) st.accts[DEMO.mobile] = presetAccount(); return st; }
+  function normId(v) { v = String(v || "").trim().toLowerCase(); var d = v.replace(/\D/g, ""); if (/^[+\d\s()-]+$/.test(v)) { if (d.length === 12 && d.indexOf("91") === 0) d = d.slice(2); return d; } return v; }
+  function routeDemo(path, data) {
+    if (!demoAllowed()) return false;
+    if (demoCurrent() && /^\/(profile|addresses|cards|logout)/.test(path)) return true;
+    if (/^\/auth\//.test(path)) {
+      if (!realBackend()) return true;
+      var id = normId(data.mobile || data.email || data.identifier);
+      return id === DEMO.mobile || id === DEMO.email;
+    }
+    return false;
+  }
+  function api(path, data) { return routeDemo(path, data || {}) ? demoApi(path, data || {}) : A().api(path, data); }
+  function fail(msg, extra) { var e = new Error(msg); e.data = Object.assign({ error: msg }, extra || {}); return Promise.reject(e); }
+  function mask(key) { if (/^\d{10}$/.test(key)) return "+91 " + key.slice(0, 2) + "••••••" + key.slice(-2); var e = key.replace(/^(email|confirm):/, ""), x = e.split("@"); return x[0].slice(0, 2) + "•••@" + x[1]; }
+  function issue(st, key) {
+    var now = Date.now() / 1000, prev = st.codes[key];
+    if (prev && now - prev.sent < 20) return fail("Please wait " + Math.ceil(20 - (now - prev.sent)) + " seconds before requesting another code.", { reason: "resend_wait" });
+    var code = String(Math.floor(100000 + Math.random() * 900000));
+    st.codes[key] = { code: code, sent: now, exp: now + 300, tries: 0 }; dsave(st);
+    return Promise.resolve({ expires_in: 300, resend_in: 20, destination: mask(key), mode: "preview", preview_code: code, channel: /^\d{10}$/.test(key) ? "sms" : "email", preview_account: true });
+  }
+  function check(st, key, code) {
+    var c = st.codes[key], now = Date.now() / 1000;
+    if (!c) return "That code has expired or was replaced. Request a new code.";
+    if (c.exp < now) return "That code has expired. Request a new code.";
+    if (c.tries >= 5) return "Too many incorrect attempts. Request a new code.";
+    if (c.code !== String(code).replace(/\D/g, "")) { c.tries++; dsave(st); var left = 5 - c.tries; return left ? "That code doesn’t match. " + left + " attempt" + (left === 1 ? "" : "s") + " left." : "That code doesn’t match, and no attempts are left. Request a new code."; }
+    delete st.codes[key]; return "";
+  }
+  function byEmail(st, email) { for (var m in st.accts) { var p = st.accts[m].account.profile; if (p.email && p.email.toLowerCase() === email && p.email_verified) return m; } return ""; }
+  function blank(name, mobile, email, pw) {
+    return { pw: pw || "", account: { preview: true, orders: [], cases: [], reviews: [], addresses: [], cards: [], sessions: 1,
+      profile: { name: name || "Customer", mobile: mobile, email: email || "", email_verified: false, has_password: !!pw, pw_updated: pw ? Math.floor(Date.now() / 1000) : null, default_address: null, default_card: null, prefs: { email: false, whatsapp: false } } } };
+  }
+  function signedIn(st, mobile, r) { st.current = mobile; dsave(st); return Promise.resolve(Object.assign({ ok: true, claimed_orders: 0, preview: true }, r || {})); }
+  function demoApi(path, d) {
+    var st = ensurePreset(dstore()), cur = st.current && st.accts[st.current], a = cur && cur.account, p = a && a.profile, m;
+    var mob = function (v) { return /^[6-9]\d{9}$/.test(v); }, mailOk = function (v) { return /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,24}$/.test(v); };
+    if (path === "/auth/otp") {
+      if (d.email != null) { var em = String(d.email).trim().toLowerCase(); if (!mailOk(em)) return fail("Enter a valid email address.", { reason: "email" }); if (!byEmail(st, em)) return fail("No account uses this email yet. Sign in with your mobile number, or create an account.", { reason: "unknown_email" }); return issue(st, "email:" + em); }
+      if (!mob(String(d.mobile))) return fail("Enter a 10-digit Indian mobile number starting with 6, 7, 8 or 9.", { reason: "mobile" });
+      return issue(st, String(d.mobile));
+    }
+    if (path === "/auth/verify") {
+      var em2 = String(d.email || "").trim().toLowerCase(), key = em2 ? "email:" + em2 : String(d.mobile), bad = check(st, key, d.code);
+      if (bad) { dsave(st); return fail(bad, { reason: /expired|no attempts|Too many/.test(bad) ? "expired" : "mismatch" }); }
+      if (em2) return signedIn(st, byEmail(st, em2), { created: false });
+      var mm = String(d.mobile), created = !st.accts[mm], su = st.pending[mm];
+      if (created) st.accts[mm] = su ? blank(su.name, mm, su.email, su.pw) : blank("", mm);
+      delete st.pending[mm];
+      return signedIn(st, mm, { created: created, email_pending: created && su && su.email ? su.email : "" });
+    }
+    if (path === "/auth/signup") {
+      var f = {}; if (!String(d.name || "").trim()) f.name = "Enter your name."; if (!mob(d.mobile)) f.mobile = "Enter a 10-digit Indian mobile number starting with 6, 7, 8 or 9.";
+      if (d.email && !mailOk(d.email)) f.email = "Enter a valid email address, or leave it blank.";
+      if (Object.keys(f).length) return fail("Check the highlighted fields.", { fields: f });
+      if (st.accts[d.mobile]) return fail(d.mobile === DEMO.mobile ? "This is the preview account. Sign in instead." : "This number already has an account. Sign in instead.", { reason: "exists", fields: { mobile: "This number already has an account." } });
+      if (d.email && byEmail(st, String(d.email).toLowerCase())) return fail("Check the highlighted fields.", { fields: { email: "Another account already uses this email." } });
+      st.pending[d.mobile] = { name: String(d.name).trim(), email: String(d.email || "").trim().toLowerCase(), pw: d.password || "" };
+      return issue(st, d.mobile).then(function (r) { r.signup = true; return r; });
+    }
+    if (path === "/auth/password") {
+      var id = normId(d.identifier), who = mob(id) ? id : byEmail(st, id), acct = who && st.accts[who];
+      if (!acct || !acct.pw || acct.pw !== d.password) return fail("That password doesn’t match, or this account has no password yet. Try a one-time code instead.", { reason: "mismatch" });
+      return signedIn(st, who, { created: false });
+    }
+    if (!a) return fail("Sign in first.", { reason: "signed_out" });
+    if (path === "/logout") { st.current = ""; dsave(st); return Promise.resolve({ ok: true }); }
+    if (path === "/profile") {
+      var ne = String(d.email || "").trim().toLowerCase();
+      if (ne !== String(p.email || "").toLowerCase()) p.email_verified = false;
+      p.name = String(d.name || "").trim(); p.email = ne; dsave(st); return Promise.resolve({ ok: true });
+    }
+    if (path === "/profile/email-code") { var ce = String(d.email || "").trim().toLowerCase(); if (!mailOk(ce)) return fail("Enter a valid email address.", { field: "email" }); return issue(st, "confirm:" + ce); }
+    if (path === "/profile/email-verify") {
+      var ve = String(d.email || "").trim().toLowerCase(), vb = check(st, "confirm:" + ve, d.code);
+      if (vb) { dsave(st); return fail(vb); }
+      p.email = ve; p.email_verified = true; dsave(st); return Promise.resolve({ ok: true });
+    }
+    if (path === "/profile/password") {
+      if (cur.pw && d.current !== cur.pw) return fail("Your current password doesn’t match.", { field: "current" });
+      cur.pw = d.password; p.has_password = true; p.pw_updated = Math.floor(Date.now() / 1000); dsave(st); return Promise.resolve({ ok: true });
+    }
+    if (path === "/addresses") {
+      var rec = { label: d.label || "home", label_name: d.label === "other" ? d.label_name : "", name: d.name, mobile: d.mobile || "", address: d.address, landmark: d.landmark || "", city: d.city, state: d.state, pincode: d.pincode };
+      if (d.id) { var ex = a.addresses.filter(function (x) { return x.id === d.id; })[0]; if (!ex) return fail("Address not found."); Object.assign(ex, rec); }
+      else { if (a.addresses.length >= MAX) return fail("You can save up to 5 addresses. Remove one to add another."); rec.id = "ADDR-" + Math.random().toString(16).slice(2, 12); a.addresses.push(rec); d.id = rec.id; }
+      if (d["default"] || a.addresses.length === 1) p.default_address = d.id;
+      dsave(st); return Promise.resolve({ id: d.id });
+    }
+    if ((m = path.match(/^\/addresses\/([^/]+)\/(delete|default)$/))) {
+      if (m[2] === "default") p.default_address = m[1];
+      else { a.addresses = a.addresses.filter(function (x) { return x.id !== m[1]; }); if (p.default_address === m[1]) p.default_address = a.addresses[0] ? a.addresses[0].id : null; }
+      dsave(st); return Promise.resolve({ ok: true });
+    }
+    if (path === "/cards") {
+      if (a.cards.length >= MAX) return fail("You can save up to 5 cards. Remove one to add another.");
+      if (a.cards.some(function (c) { return c.network === d.network && c.last4 === d.last4 && c.exp_month === d.exp_month && c.exp_year === d.exp_year; })) return fail("Check the highlighted fields.", { fields: { number: "This card is already saved." } });
+      var card = { id: "CARD-" + Math.random().toString(16).slice(2, 12), network: d.network, kind: d.kind, last4: d.last4, exp_month: d.exp_month, exp_year: d.exp_year, name: d.name, nickname: d.nickname || "" };
+      a.cards.push(card); if (d["default"] || a.cards.length === 1) p.default_card = card.id;
+      dsave(st); return Promise.resolve({ id: card.id });
+    }
+    if ((m = path.match(/^\/cards\/([^/]+)\/(delete|default)$/))) {
+      if (m[2] === "default") p.default_card = m[1];
+      else { a.cards = a.cards.filter(function (x) { return x.id !== m[1]; }); if (p.default_card === m[1]) p.default_card = a.cards[0] ? a.cards[0].id : null; }
+      dsave(st); return Promise.resolve({ ok: true });
+    }
+    return fail("Not available in the preview account.");
+  }
+  function previewBox(hosted) {
+    return '<div class="p2a-previewacct" role="note"><p><b>Preview account</b>Try a full account without signing up. It’s kept in this browser tab only; real accounts work as normal.</p>' +
+      '<dl>' + (emailOnly() ? "" : "<div><dt>Mobile</dt><dd>99999 99999</dd></div>") + "<div><dt>" + (emailOnly() ? "Email" : "or email") + "</dt><dd>" + DEMO.email + '</dd></div><div><dt>Password</dt><dd>' + DEMO.password + "</dd></div></dl>" +
+      '<button type="button" class="p2a-textbtn" data-p2a-fill>Fill these in for me</button></div>';
+  }
+
   /* ---------- Signed out: sign in, or create an account ---------- */
-  var WORDS = { signin: ["Welcome back.", "Sign in to see your orders, addresses and saved cards."], signup: ["Create your account.", "Two minutes, once. Then checkout knows where to deliver and how you like to pay."] };
+  var WORDS = { signin: ["Welcome back.", "Sign in to see your orders, addresses and support cases."], signup: ["Create your account.", "Save your delivery addresses once, and checkout is quicker every time."] };
   function authPage(ctx, o) {
     o = o || {};
-    var list = ctx.published.length ? ctx.published : ctx.catalog, a = list[0] || {}, b = list[1] || a;
+    var list = ctx.published.length ? ctx.published : ctx.catalog, a = list[0] || {};
     var next = AC().safeNext ? AC().safeNext(o.next || ctx.query.get("next") || (ctx.path.indexOf("/account") === 0 ? ctx.path : "/account")) : "/account";
     var task = AC().taskName ? AC().taskName(next) : "your account";
     var mode = o.mode || (ctx.query.get("mode") === "signup" ? "signup" : "signin"), dis = !!o.sample, hosted = !!window.BCCConnectedHosted && !o.sample;
     var pending = o.code ? { destination: "+91 98••••••10", preview_code: "482913" } : null;
     var tab = function (m, t) { return '<button type="button" role="tab" id="p2a-tab-' + m + '" aria-controls="p2a-panel-' + m + '" aria-selected="' + (mode === m) + '" tabindex="' + (mode === m ? 0 : -1) + '" data-p2a-mode="' + m + '">' + t + "</button>"; };
-    var keeps = [["Orders", "Status and tracking, with the lot in every bottle."], ["Addresses", "Up to five, for home, office and more."], ["Saved cards", "Up to five, kept as a secure token."], ["Support", "Every case, with its order attached."]];
 
     var signin =
       '<div class="p2a-panel" role="tabpanel" id="p2a-panel-signin" aria-labelledby="p2a-tab-signin"' + (mode === "signin" ? "" : " hidden") + ">" +
       '<form class="p2a-form" data-p2a-signin novalidate' + (pending ? " hidden" : "") + ">" +
-      field({ id: "si-id", name: "identifier", label: "Mobile number or email", hint: "Type either. We’ll know which.", ac: "username", max: 254, dis: dis, extra: ' spellcheck="false" autocapitalize="off"' }) +
-      '<fieldset class="p2a-choice"><legend>How would you like to sign in?</legend><label><input type="radio" name="method" value="code" checked' + (dis ? " disabled" : "") + '><span><b>One-time code</b><small>By SMS or email</small></span></label><label><input type="radio" name="method" value="password"' + (dis ? " disabled" : "") + "><span><b>Password</b><small>If you’ve set one</small></span></label></fieldset>" +
+      field({ id: "si-id", name: "identifier", label: emailOnly() ? "Email" : "Mobile number or email", hint: emailOnly() ? "We’ll email you a code, or you can use your password." : "Type either. We’ll know which.", type: emailOnly() ? "email" : "text", ac: emailOnly() ? "email" : "username", max: 254, dis: dis, extra: ' spellcheck="false" autocapitalize="off"' }) +
+      '<fieldset class="p2a-choice"><legend>How would you like to sign in?</legend><label><input type="radio" name="method" value="code" checked' + (dis ? " disabled" : "") + '><span><b>One-time code</b><small>' + (emailOnly() ? "Sent to your email" : "By SMS or email") + '</small></span></label><label><input type="radio" name="method" value="password"' + (dis ? " disabled" : "") + "><span><b>Password</b><small>If you’ve set one</small></span></label></fieldset>" +
       field({ id: "si-pw", name: "password", label: "Password", type: "password", ac: "current-password", max: 128, reveal: true, dis: dis, hidden: true, cls: "p2a-pw" }) +
       '<p class="p2a-err" data-p2a-form-err hidden></p><button type="submit" class="p2-btn p2a-submit"' + (dis ? " disabled" : "") + ' data-p2a-submit-label>Send code</button>' +
       '<p class="p2a-alt" data-p2a-forgot hidden>Forgot your password? <button type="button" class="p2a-textbtn" data-p2a-use-code>Sign in with a code instead</button>, then set a new one in Profile and security.</p>' +
@@ -100,10 +236,13 @@
 
     var signup =
       '<div class="p2a-panel" role="tabpanel" id="p2a-panel-signup" aria-labelledby="p2a-tab-signup"' + (mode === "signup" ? "" : " hidden") + ">" +
-      '<form class="p2a-form" data-p2a-signup novalidate><ol class="p2a-steps" aria-label="Step 1 of 2"><li class="is-on">Your details</li><li>Confirm your number</li></ol>' +
+      '<form class="p2a-form" data-p2a-signup novalidate><ol class="p2a-steps" aria-label="Step 1 of 2"><li class="is-on">Your details</li><li>' + (emailOnly() ? "Confirm your email" : "Confirm your number") + '</li></ol>' +
       '<div class="p2a-grid">' + field({ id: "su-name", name: "name", label: "Your name", ac: "name", max: 80, dis: dis, wide: true }) +
-      field({ id: "su-mobile", name: "mobile", label: "Mobile number", hint: "We’ll send a code to confirm it. Your orders are linked to it.", prefix: "+91", type: "tel", mode: "numeric", ac: "tel-national", max: 10, dis: dis, wide: true }) +
-      field({ id: "su-email", name: "email", label: "Email", optional: true, hint: "Confirm it once and you can sign in with it too.", type: "email", ac: "email", max: 254, dis: dis, wide: true, extra: ' spellcheck="false" autocapitalize="off"' }) +
+      (emailOnly()
+        ? field({ id: "su-email", name: "email", label: "Email", hint: "We’ll send a code to confirm it. You sign in with it.", type: "email", ac: "email", max: 254, dis: dis, wide: true, extra: ' spellcheck="false" autocapitalize="off"' }) +
+          field({ id: "su-mobile", name: "mobile", label: "Mobile number", optional: true, hint: "For delivery updates.", prefix: "+91", type: "tel", mode: "numeric", ac: "tel-national", max: 10, dis: dis, wide: true })
+        : field({ id: "su-mobile", name: "mobile", label: "Mobile number", hint: "We’ll send a code to confirm it. Your orders are linked to it.", prefix: "+91", type: "tel", mode: "numeric", ac: "tel-national", max: 10, dis: dis, wide: true }) +
+          field({ id: "su-email", name: "email", label: "Email", optional: true, hint: "Confirm it once and you can sign in with it too.", type: "email", ac: "email", max: 254, dis: dis, wide: true, extra: ' spellcheck="false" autocapitalize="off"' })) +
       field({ id: "su-pw", name: "password", label: "Password", optional: true, hint: "At least 8 characters, with a letter and a number. Or skip it and sign in with codes.", type: "password", ac: "new-password", max: 128, reveal: true, dis: dis, wide: true }) + "</div>" +
       '<div class="p2a-meter" data-p2a-meter aria-hidden="true"><i></i><i></i><i></i></div>' +
       '<p class="p2a-err" data-p2a-form-err hidden></p><button type="submit" class="p2-btn p2a-submit"' + (dis ? " disabled" : "") + ">Create account</button>" +
@@ -115,24 +254,22 @@
       '<button type="submit" class="p2-btn p2a-submit">Confirm email</button><p class="p2a-alt"><button type="button" class="p2a-textbtn" data-p2a-skip-email>Skip for now</button>. You can confirm it later in Profile and security.</p></form></div>';
 
     return '<div class="p2a p2a-auth" data-ac data-p2a-auth data-next="' + esc(next) + '"' + (dis ? " data-p2a-sample" : "") + ">" +
+      // A focused page: the site header, footer and nav are hidden (part2-account-e.css). Only the mark and a way back stay.
+      '<header class="p2a-bar"><a class="p2a-bar-logo" href="/" aria-label="Body Café Co. home"><img src="/web/media/brand-original.svg" alt="" width="456" height="443"></a>' +
+      '<a class="p2a-bar-back" href="' + esc(next !== "/account" ? next : "/") + '"><span aria-hidden="true">←</span> ' + (next !== "/account" ? "Back to " + esc(task) : "Back to the store") + "</a></header>" +
       (o.sample ? sampleBanner("Design state. Nothing you type is sent, and no code is issued.") : "") +
-      '<section class="p2a-top" data-p2a-block style="' + cap(mode === "signup" ? b : a) + '" data-cap-signin="' + esc(cap(a)) + '" data-cap-signup="' + esc(cap(b)) + '"><div class="p2-wrap p2a-split">' +
-      '<div class="p2a-stage"><div class="p2a-stage-copy">' + eb("Your account") +
-      '<h1 tabindex="-1" data-p2a-word>' + WORDS[mode][0] + '</h1><p class="p2-lede" data-p2a-sub>' + (next !== "/account" ? "Sign in and you’ll go straight back to " + esc(task) + "." : WORDS[mode][1]) + "</p></div>" +
-      '<div class="p2a-stage-art" aria-hidden="true">' + P.bottle(a, { alt: "", cls: "p2a-bottle p2a-bottle-signin" + (mode !== "signup" ? " is-on" : ""), eager: true }) + P.bottle(b, { alt: "", cls: "p2a-bottle p2a-bottle-signup" + (mode === "signup" ? " is-on" : "") }) + "</div>" +
-      '<ul class="p2a-keeps">' + keeps.map(function (x) { return "<li><i class=\"p2-dot\"></i><span><b>" + x[0] + "</b>" + x[1] + "</span></li>"; }).join("") + "</ul></div>" +
+      '<section class="p2a-top" data-p2a-block style="' + cap(a) + '"><div class="p2a-center">' +
+      '<header class="p2a-center-head"><h1 tabindex="-1" data-p2a-word>' + WORDS[mode][0] + '</h1><p class="p2a-center-sub" data-p2a-sub>' + (next !== "/account" ? "Sign in and you’ll go straight back to " + esc(task) + "." : WORDS[mode][1]) + "</p></header>" +
       '<div class="p2a-card p2a-authcard">' +
       '<div class="p2a-tabs" role="tablist" aria-label="Sign in or create an account">' + tab("signin", "Sign in") + tab("signup", "Create account") + "</div>" +
-      (hosted ? '<p class="p2a-note" role="note">' + ICON.lock + "<span><b>Opens with ordering.</b> Customer sign-in switches on when the store opens. You can look around; nothing is sent.</span></p>" : "") +
+      (demoAllowed() && !dis ? previewBox(hosted) : "") +
       signin + signup +
       '<p class="p2a-guest">Just buying? You don’t need an account. <a href="/checkout">Check out as a guest</a>, then sign in later with the same number and the order joins your account.</p></div></div></section>' +
-      '<section class="p2-wrap p2a-without" aria-labelledby="p2a-without-h"><h2 id="p2a-without-h">No account? You can still</h2><ul class="p2-quick">' +
-      [["/checkout", "Check out as a guest", "No account needed to buy."], ["/reports", "Look up a lot", "Type the number on your pack."], ["/help", "Get help", "Track an order or open a case."]].map(function (r) { return '<li><a href="' + r[0] + '"><strong>' + r[1] + "</strong><span>" + r[2] + "</span></a></li>"; }).join("") + "</ul></section>" +
-      states() + '<p class="sr-only" role="status" id="ac-status"></p></div>';
+      '<p class="sr-only" role="status" id="ac-status"></p></div>';
   }
   function codeStep(flow, pending, dis) {
     return '<form class="p2a-form p2a-code" data-p2a-code="' + flow + '" novalidate' + (pending ? "" : " hidden") + ">" +
-      (flow === "signup" ? '<ol class="p2a-steps" aria-label="Step 2 of 2"><li class="is-done">Your details</li><li class="is-on">Confirm your number</li></ol>' : "") +
+      (flow === "signup" ? '<ol class="p2a-steps" aria-label="Step 2 of 2"><li class="is-done">Your details</li><li class="is-on">' + (emailOnly() ? "Confirm your email" : "Confirm your number") + '</li></ol>' : "") +
       '<h2 class="p2a-h">Enter your code</h2><p class="p2a-dest" data-p2a-dest>' + (pending ? "Sent to <strong>" + esc(pending.destination) + "</strong>." : "") + "</p>" +
       '<div class="p2a-preview" data-p2a-preview role="status"' + (pending && pending.preview_code ? "" : " hidden") + ">" + (pending && pending.preview_code ? previewText(pending.preview_code, "sms") : "") + "</div>" +
       field({ id: flow + "-code", name: "code", label: "6-digit code", hint: "You can paste the whole code.", ac: "one-time-code", mode: "numeric", max: 6, cls: "p2a-codefield", dis: dis, extra: ' spellcheck="false"' }) +
@@ -143,12 +280,12 @@
   function previewText(code, channel) { return "<p>Preview only. In the live store this code arrives by " + (channel === "email" ? "email" : "SMS") + '.</p><p class="p2a-preview-code">Your code <strong>' + esc(code) + "</strong></p>"; }
   function states() {
     if (window.BCCRelease && window.BCCRelease.production) return "";
-    var l = [["/account?state=signed-out", "Sign in"], ["/account?state=code", "Code entry"], ["/account?state=empty", "New account"], ["/account?state=sample", "Signed in"], ["/account/addresses?state=sample", "Addresses"], ["/account/cards?state=sample", "Saved cards"], ["/account/profile?state=sample", "Security"]];
+    var l = [["/account?state=signed-out", "Sign in"], ["/account?state=code", "Code entry"], ["/account?state=empty", "New account"], ["/account?state=sample", "Signed in"], ["/account/addresses?state=sample", "Addresses"], ["/account/profile?state=sample", "Security"]];
     return '<nav class="p2-wrap p2a-states" aria-label="Design states"><span>Design states</span>' + l.map(function (x) { return '<a href="' + x[0] + '">' + x[1] + "</a>"; }).join("") + "</nav>";
   }
 
   /* ---------- Signed in ---------- */
-  var TABS = [["overview", "Overview", "/account"], ["orders", "Orders", "/account/orders"], ["addresses", "Addresses", "/account/addresses"], ["cards", "Saved cards", "/account/cards"], ["support", "Support", "/account/support"], ["reviews", "Reviews", "/account/reviews"], ["profile", "Profile and security", "/account/profile"], ["preferences", "Preferences", "/account/preferences"]];
+  var TABS = [["overview", "Overview", "/account"], ["orders", "Orders", "/account/orders"], ["addresses", "Addresses", "/account/addresses"]].concat(CARDS ? [["cards", "Saved cards", "/account/cards"]] : []).concat([ ["support", "Support", "/account/support"], ["reviews", "Reviews", "/account/reviews"], ["profile", "Profile and security", "/account/profile"], ["preferences", "Preferences", "/account/preferences"]]);
   function statusChips(o) {
     var kind = o.state === "delivered" ? "ok" : o.state === "cancelled" || o.state === "expired" ? "muted" : o.state === "pending" ? "warn" : "on";
     return chip(FUL[o.state] || o.state, kind) + (o.state === "pending" || o.payment === "failed" || o.payment === "processing" ? chip(PAY[o.payment] || "", o.payment === "failed" ? "bad" : "warn") : "");
@@ -164,7 +301,7 @@
     var active = a.orders.filter(function (o) { return ["pending", "paid", "shipped"].indexOf(o.state) >= 0; });
     var openCases = (a.cases || []).filter(function (c) { return c.state !== "resolved"; });
     var cs = ctx.catalog, q = sample ? "?state=sample" : "";
-    var tiles = [["/account/addresses", "Addresses", a.addresses.length ? a.addresses.length + " of " + MAX + " saved" : "Add home, office and more", "home"], ["/account/cards", "Saved cards", (a.cards || []).length ? (a.cards || []).length + " of " + MAX + " saved" : "Pay faster at checkout", "lock"], ["/account/support", "Support", openCases.length ? openCases.length + " open case" + (openCases.length === 1 ? "" : "s") : "Ask us anything", "other"], ["/account/profile", "Profile and security", a.profile && a.profile.has_password ? "Code or password" : "Add a password", "check"]];
+    var tiles = [["/account/addresses", "Addresses", a.addresses.length ? a.addresses.length + " of " + MAX + " saved" : "Add home, office and more", "home"], ["/account/support", "Support", openCases.length ? openCases.length + " open case" + (openCases.length === 1 ? "" : "s") : "Ask us anything", "other"], ["/account/profile", "Profile and security", a.profile && a.profile.has_password ? "Code or password" : "Add a password", "check"]];
     return '<section class="p2a-sec" aria-labelledby="p2a-active">' + secHead("p2a-active", "Active orders", a.orders.length ? '<a class="p2-link" href="/account/orders' + q + '">All orders</a>' : "") +
       (active.length ? '<ul class="p2a-actives">' + active.map(function (o) {
         var act = o.state === "pending" ? (o.payment === "processing" ? ["Check payment", "/payment/" + o.id] : ["Complete payment", "/payment/" + o.id]) : ["Track order", "/orders/" + o.id + (sample ? "?state=" + o.state : "")];
@@ -187,7 +324,7 @@
       '<fieldset class="p2a-choice p2a-labels"><legend>Save as</legend>' + LABELS.map(function (x) { return '<label><input type="radio" name="label" value="' + x[0] + '"' + (lbl === x[0] ? " checked" : "") + (dis ? " disabled" : "") + "><span>" + ICON[x[0]] + "<b>" + x[1] + "</b></span></label>"; }).join("") + '<p class="p2a-err" data-err-for="label" hidden></p></fieldset>' +
       '<div class="p2a-grid">' + field({ id: pre + "label_name", name: "label_name", label: "Name this address", hint: "For example Parents, Gym or Studio.", max: 24, value: a.label_name, dis: dis, hidden: lbl !== "other", cls: "p2a-labelname", wide: true }) +
       field({ id: pre + "name", name: "name", label: "Full name", ac: "name", max: 200, value: a.name, dis: dis }) +
-      field({ id: pre + "mobile", name: "mobile", label: "Phone for delivery", optional: true, prefix: "+91", type: "tel", mode: "numeric", ac: "tel-national", max: 10, value: a.mobile, dis: dis }) +
+      field({ id: pre + "mobile", name: "mobile", label: "Phone for delivery", optional: !emailOnly(), prefix: "+91", type: "tel", mode: "numeric", ac: "tel-national", max: 10, value: a.mobile, dis: dis }) +
       field({ id: pre + "address", name: "address", label: "House or flat, building, street and area", ac: "street-address", max: 200, value: a.address, dis: dis, wide: true }) +
       field({ id: pre + "landmark", name: "landmark", label: "Landmark", optional: true, max: 120, value: a.landmark, dis: dis, wide: true }) +
       field({ id: pre + "pincode", name: "pincode", label: "Pincode", mode: "numeric", ac: "postal-code", max: 6, value: a.pincode, dis: dis }) +
@@ -197,7 +334,8 @@
       '<p class="p2a-err" data-p2a-form-err hidden></p><div class="p2a-row"><button type="submit" class="p2-btn"' + (dis ? " disabled" : "") + ">Save address</button><button type=\"button\" class=\"p2-btn p2-btn-ghost\" data-p2a-close>Cancel</button></div></form>";
   }
   function addresses(ctx, a, sample) {
-    var def = a.profile && a.profile.default_address, n = a.addresses.length, cs = ctx.catalog;
+    // The local server keeps the default on the profile; the hosted API marks the address itself (default: true).
+    var def = (a.profile && a.profile.default_address) || (a.addresses.filter(function (x) { return x.default === true; })[0] || {}).id, n = a.addresses.length, cs = ctx.catalog;
     var list = a.addresses.slice().sort(function (x, y) { return (y.id === def) - (x.id === def); });
     return '<section class="p2a-sec" aria-labelledby="p2a-addr-h">' + secHead("p2a-addr-h", "Addresses", '<span class="p2a-count">' + n + " of " + MAX + " saved</span>") +
       '<p class="p2a-intro">Save where we deliver: home, office, or somewhere you name yourself. Your default is filled in at checkout, and you can pick another there.</p>' +
@@ -238,21 +376,24 @@
       '<p class="p2a-fine">UPI, wallets and net banking are chosen at checkout each time, so there’s nothing to save for them.</p></section>';
   }
   function profile(ctx, a, u, sample) {
-    var p = a.profile || {}, dis = sample, m = String(p.mobile || (u && u.mobile) || "");
+    var p = Object.assign({}, a.profile || {}), dis = sample, m = String(p.mobile || (u && u.mobile) || "");
+    // The hosted account record carries name and mobile; the email (already confirmed by its sign-in code) comes from the session.
+    if (!p.email && u && u.email) { p.email = u.email; p.email_verified = true; }
+    var pwKnown = p.has_password !== undefined;
     var em = p.email ? (p.email_verified ? chip("Confirmed", "ok") : chip("Not confirmed", "warn")) : "";
     var row = function (title, value, note) { return '<li><span class="p2a-m-t">' + title + '</span><span class="p2a-m-v">' + value + "</span>" + (note ? '<span class="p2a-m-n">' + note + "</span>" : "") + "</li>"; };
     return '<section class="p2a-sec" aria-labelledby="p2a-prof-h">' + secHead("p2a-prof-h", "Profile") +
-      '<form class="p2a-form p2a-card" data-p2a-profile novalidate><div class="p2a-grid">' + field({ id: "pf-name", name: "name", label: "Name", ac: "name", max: 80, value: p.name === "Customer" ? "" : p.name, dis: dis }) +
-      field({ id: "pf-email", name: "email", label: "Email", optional: true, hint: "For receipts and replies. Confirm it to sign in with it.", type: "email", ac: "email", max: 254, value: p.email, dis: dis, extra: ' spellcheck="false" autocapitalize="off"' }) + "</div>" +
+      '<form class="p2a-form p2a-card" data-p2a-profile data-email="' + esc(p.email || "") + '" novalidate><div class="p2a-grid">' + field({ id: "pf-name", name: "name", label: "Name", ac: "name", max: 80, value: p.name === "Customer" ? "" : p.name, dis: dis }) +
+      field({ id: "pf-email", name: "email", label: "Email", optional: !emailOnly(), hint: emailOnly() ? "You sign in with this. If you change it, we’ll send a code to the new address." : "For receipts and replies. Confirm it to sign in with it.", type: "email", ac: "email", max: 254, value: p.email, dis: dis, extra: ' spellcheck="false" autocapitalize="off"' }) + "</div>" +
       '<p class="p2a-err" data-p2a-form-err hidden></p><div class="p2a-row"><button type="submit" class="p2-btn"' + (dis ? " disabled" : "") + ">Save profile</button></div></form></section>" +
       '<section class="p2a-sec" aria-labelledby="p2a-sec-h">' + secHead("p2a-sec-h", "Sign-in and security") +
       '<ul class="p2a-card p2a-methods">' +
-      row("Mobile", "+91 " + esc(m.slice(0, 2)) + "••••••" + esc(m.slice(-2)) + " " + chip("Confirmed", "ok"), 'Your orders are linked to this number. To change it, <a href="/contact?kind=general">contact us</a>.') +
+      (m ? row("Mobile", "+91 " + esc(m.slice(0, 2)) + "••••••" + esc(m.slice(-2)) + (emailOnly() ? "" : " " + chip("Confirmed", "ok")), emailOnly() ? "Used for delivery updates." : 'Your orders are linked to this number. To change it, <a href="/contact?kind=general">contact us</a>.') : "") +
       row("Email", (p.email ? esc(p.email) + " " + em : "Not added"), p.email && !p.email_verified ? '<button type="button" class="p2a-textbtn" data-p2a-email-confirm' + (dis ? " disabled" : "") + ">Send a code to confirm it</button>" : p.email ? "You can sign in with this email." : "Add one above to sign in with it.") +
-      row("Password", p.has_password ? "Set" + (p.pw_updated ? " · changed " + day(p.pw_updated) : "") : "Not set", '<button type="button" class="p2a-textbtn" data-p2a-open="password"' + (dis ? " disabled" : "") + ">" + (p.has_password ? "Change password" : "Add a password") + "</button>" + (p.has_password ? "" : " Optional: you can keep signing in with codes.")) +
+      row("Password", !pwKnown ? "Optional" : p.has_password ? "Set" + (p.pw_updated ? " · changed " + day(p.pw_updated) : "") : "Not set", '<button type="button" class="p2a-textbtn" data-p2a-open="password"' + (dis ? " disabled" : "") + ">" + (!pwKnown ? "Add or change your password" : p.has_password ? "Change password" : "Add a password") + "</button>" + (p.has_password ? "" : " You can keep signing in with codes.")) +
       row("Signed in", esc(a.sessions || 1) + " device" + ((a.sessions || 1) === 1 ? "" : "s"), "A signed-in session lasts up to eight hours.") + "</ul>" +
       '<form class="p2a-form p2a-card" data-p2a-email-code-form novalidate hidden><p class="p2a-dest" data-p2a-dest></p><div class="p2a-preview" data-p2a-preview hidden role="status"></div>' + field({ id: "pe-code", name: "code", label: "6-digit code", ac: "one-time-code", mode: "numeric", max: 6, cls: "p2a-codefield" }) + '<div class="p2a-row"><button type="submit" class="p2-btn">Confirm email</button><button type="button" class="p2-btn p2-btn-ghost" data-p2a-close>Cancel</button></div></form>' +
-      '<div class="p2a-slot" data-p2a-slot="password" hidden><form class="p2a-form p2a-card" data-p2a-password novalidate><h3 class="p2a-h3">' + (p.has_password ? "Change password" : "Add a password") + '</h3><div class="p2a-grid">' + (p.has_password ? field({ id: "pw-current", name: "current", label: "Current password", type: "password", ac: "current-password", max: 128, reveal: true }) : "") +
+      '<div class="p2a-slot" data-p2a-slot="password" hidden><form class="p2a-form p2a-card" data-p2a-password novalidate><h3 class="p2a-h3">' + (!pwKnown ? "Your password" : p.has_password ? "Change password" : "Add a password") + '</h3><div class="p2a-grid">' + (p.has_password || !pwKnown ? field({ id: "pw-current", name: "current", label: "Current password", optional: !pwKnown, hint: pwKnown ? "" : "Leave blank if you’ve never set one.", type: "password", ac: "current-password", max: 128, reveal: true }) : "") +
       field({ id: "pw-new", name: "password", label: "New password", hint: "At least 8 characters, with a letter and a number.", type: "password", ac: "new-password", max: 128, reveal: true }) + '</div><div class="p2a-meter" data-p2a-meter aria-hidden="true"><i></i><i></i><i></i></div><p class="p2a-err" data-p2a-form-err hidden></p><div class="p2a-row"><button type="submit" class="p2-btn">Save password</button><button type="button" class="p2-btn p2-btn-ghost" data-p2a-close>Cancel</button></div></form></div>' +
       '<div class="p2a-row"><button type="button" class="p2-btn p2-btn-ghost" data-action="logout"' + (dis ? " disabled" : "") + '>Sign out</button><button type="button" class="p2a-textbtn" data-ac-everywhere' + (dis ? " disabled" : "") + ">Sign out on all devices</button></div></section>" +
       (AC().sections && !sample ? '<div class="p2a-reuse p2a-card">' + AC().sections.privacy() + "</div>" : "");
@@ -261,24 +402,46 @@
     var X = AC().sections; if (!X || !X[name]) return "";
     return '<div class="p2a-reuse">' + X[name](a, u, { key: "e", k: function (t) { return t; } }) + "</div>";
   }
-  function dashboard(ctx, tab, a, u, sample) {
+  function dashboard(ctx, tab, a, u, sample, preview) {
     var p = a.profile || {}, first = p.name && p.name !== "Customer" ? p.name.split(" ")[0] : "", cs = ctx.catalog, q = sample ? "?state=sample" : "";
     var openCases = (a.cases || []).filter(function (c) { return c.state !== "resolved"; }).length;
-    var count = { orders: a.orders.length, addresses: a.addresses.length, cards: (a.cards || []).length, support: openCases || "" };
-    var body = tab === "orders" ? orders(ctx, a, sample) : tab === "addresses" ? addresses(ctx, a, sample) : tab === "cards" ? cards(ctx, a, sample) : tab === "profile" ? profile(ctx, a, u, sample)
+    var count = { orders: a.orders.length, addresses: a.addresses.length, cards: CARDS ? (a.cards || []).length : "", support: openCases || "" };
+    var body = tab === "orders" ? orders(ctx, a, sample) : tab === "addresses" ? addresses(ctx, a, sample) : tab === "cards" && CARDS ? cards(ctx, a, sample) : tab === "profile" ? profile(ctx, a, u, sample)
       : tab === "support" ? reused("support", ctx, a, u) : tab === "reviews" ? reused("reviews", ctx, a, u) : tab === "preferences" ? reused("prefs", ctx, a, u) : overview(ctx, a, sample);
     var since = a.orders.length ? a.orders[a.orders.length - 1].created : 0;
-    return '<div class="p2a p2a-dash" data-ac data-ac-page="account"' + (sample ? " data-p2a-sample" : "") + ">" +
+    return ('<div class="p2a p2a-dash" data-ac data-ac-page="account"' + (sample ? " data-p2a-sample" : "") + ">" +
+      (preview ? sampleBanner("Preview account. Everything you change is kept in this browser tab only; nothing is sent.", "Preview") : "") +
       (sample ? sampleBanner("Synthetic account for reviewing the design. Controls are disabled and nothing is saved.") : "") +
       '<header class="p2-wrap p2a-hello"><div>' + eb("Your account") + '<h1 tabindex="-1">' + (first ? "Hello, " + esc(first) + "." : "Hello again.") + "</h1>" +
-      '<p class="p2a-hello-sub">+91 ••••••' + esc(String(p.mobile || (u && u.mobile) || "").slice(-4)) + (p.email ? " · " + esc(p.email) : "") + (since ? " · Ordering since " + new Date(since * 1000).toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "") + "</p></div>" +
+      '<p class="p2a-hello-sub">+91 ••••••' + esc(String(p.mobile || (u && u.mobile) || "").slice(-4)) + ((p.email || (u && u.email)) ? " · " + esc(p.email || u.email) : "") + (since ? " · Ordering since " + new Date(since * 1000).toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "") + "</p></div>" +
       '<span class="p2a-hello-caps" aria-hidden="true">' + cs.map(function (c) { return P.capImg(c, "p2a-capimg"); }).join("") + "</span></header>" +
       '<div class="p2-wrap p2a-layout"><nav class="p2a-nav" aria-label="Account"><ul>' + TABS.map(function (t) {
         var c = count[t[0]];
         return '<li><a href="' + t[2] + q + '"' + (t[0] === tab ? ' aria-current="page"' : "") + "><span>" + t[1] + "</span>" + (c !== undefined && c !== "" ? "<small>" + c + "</small>" : "") + "</a></li>";
       }).join("") + '</ul><button type="button" class="p2a-textbtn p2a-nav-out" data-action="logout"' + (sample ? " disabled" : "") + ">Sign out</button></nav>" +
-      '<div class="p2a-body" id="ac-body">' + body + "</div></div>" + (sample ? states() : "") + '<p class="sr-only" role="status" id="ac-status"></p></div>';
+      '<div class="p2a-body" id="ac-body">' + body + "</div></div>" + (sample ? states() : "") + '<p class="sr-only" role="status" id="ac-status"></p></div>')
+      // The preview account signs out here, not through the real API.
+      .replace(preview ? /data-action="logout"|data-ac-everywhere/g : /$^/, "data-p2a-logout");
   }
+
+  function loadingDash(ctx, tab, u) {
+    var a = { orders: [], addresses: [], cases: [], reviews: [], cards: [], profile: { mobile: u.mobile, name: u.name } };
+    return dashboard(ctx, tab, a, u, false).replace('<div class="p2a-body" id="ac-body">', '<div class="p2a-body is-loading" id="ac-body" aria-busy="true"><div class="p2a-skel" role="status"><span class="sr-only">Loading your account…</span><i></i><i></i><i></i></div><div hidden>');
+  }
+
+  /* Speed: the page draws at once. The app (web/app.js) asks BCCAccountFast whether to wait for the account record:
+     the sign-in screen and the preview account need none; a signed-in customer sees what is already held and it
+     refreshes in the background. After a save, refresh() makes the next draw wait for the new record. */
+  var forceNext = false, heldFor = "", waitingFor = "";
+  function refresh() { forceNext = true; return A().rerender(); }
+  window.BCCAccountFast = function (path, user, acct) {
+    if (!on2() || !/^\/account(\/|$)/.test(path)) return "";
+    if (forceNext) { forceNext = false; heldFor = user && user.id; waitingFor = ""; return ""; }
+    if (demoCurrent() || !isCustomer(user)) return "skip";
+    if (user.id !== heldFor) { heldFor = user.id; waitingFor = user.id; return "load"; }
+    waitingFor = "";
+    return "stale";
+  };
 
   part2("account", function (base, ctx, tab, fx) {
     var map = { orders: "orders", addresses: "addresses", cards: "cards", support: "support", cases: "support", reviews: "reviews", profile: "profile", security: "profile", preferences: "preferences" };
@@ -286,19 +449,23 @@
     if (fx === "signed-out") return authPage(ctx, { sample: true, next: "/account" });
     if (fx === "code") return authPage(ctx, { sample: true, code: true, next: "/account" });
     if (fx) return dashboard(ctx, tab, sampleAccount(ctx, fx), { id: "customer-sample", mobile: "9876543210" }, true);
-    var u = ctx.user, a = ctx.account || { orders: [], addresses: [], cases: [], reviews: [], cards: [] };
+    var dc = demoCurrent();
+    if (dc) return dashboard(ctx, tab, dc.account, { id: "customer-preview", mobile: dc.account.profile.mobile }, false, true);
+    var u = ctx.user;
+    // Signed in but the account record hasn't arrived yet (it loads in the background): a quiet placeholder, never a wait.
+    if (isCustomer(u) && (waitingFor === u.id || !(ctx.account && ctx.account.profile))) return loadingDash(ctx, tab, u);
+    var a = ctx.account || { orders: [], addresses: [], cases: [], reviews: [], cards: [] };
     if (!a.cards) a.cards = [];
     if (!isCustomer(u)) {
-      // Guests keep what this browser session made (orders and cases), shown under the sign-in screen when there is any.
-      var extra = (a.orders && a.orders.length) || (a.cases && a.cases.length) ? '<section class="p2-wrap p2a-guestbox"><header class="p2a-sec-head"><h2>From this browser</h2><span class="p2a-count">Sign in to keep these</span></header>' + (a.orders.length ? '<ul class="p2a-orders">' + a.orders.map(function (o) { return orderRow(ctx, o); }).join("") + "</ul>" : "") + (a.cases && a.cases.length ? reused("support", ctx, a, u) : "") + "</section>" : "";
-      return authPage(ctx, { next: tab === "overview" ? "/account" : (TABS.filter(function (t) { return t[0] === tab; })[0] || TABS[0])[2] }).replace('<p class="sr-only" role="status" id="ac-status"></p></div>', extra + '<p class="sr-only" role="status" id="ac-status"></p></div>');
+      // The sign-in screen stays focused: guest orders and cases from this browser join the account once signed in.
+      return authPage(ctx, { next: tab === "overview" ? "/account" : (TABS.filter(function (t) { return t[0] === tab; })[0] || TABS[0])[2] });
     }
     return dashboard(ctx, tab, a, u, false);
   });
   part2("signIn", function (base, ctx) {
-    if (isCustomer(ctx.user)) {
+    if (isCustomer(ctx.user) || demoCurrent()) {
       var next = AC().safeNext ? AC().safeNext(ctx.query.get("next")) : "/account";
-      return '<div class="p2a"><header class="p2-wrap p2-page-head">' + eb("Your account") + '<h1>You’re signed in.</h1><p class="p2-lede">Signed in with +91 ••••••' + esc(String(ctx.user.mobile).slice(-4)) + '.</p><div class="p2a-row"><a class="p2-btn" href="' + esc(next) + '">Continue to ' + esc(AC().taskName ? AC().taskName(next) : "your account") + "</a></div></header></div>";
+      return '<div class="p2a"><header class="p2-wrap p2-page-head">' + eb("Your account") + '<h1>You’re signed in.</h1><p class="p2-lede">Signed in with +91 ••••••' + esc(String((demoCurrent() ? demoCurrent().account.profile : ctx.user).mobile).slice(-4)) + '.</p><div class="p2a-row"><a class="p2-btn" href="' + esc(next) + '">Continue to ' + esc(AC().taskName ? AC().taskName(next) : "your account") + "</a></div></header></div>";
     }
     return authPage(ctx, {});
   });
@@ -346,13 +513,15 @@
   function luhn(d) { var s = 0, alt = false; for (var i = d.length - 1; i >= 0; i--) { var n = +d[i]; if (alt) { n *= 2; if (n > 9) n -= 9; } s += n; alt = !alt; } return s % 10 === 0; }
   async function finish(root, r) {
     swrite("bcc-p2-otp", ""); clearInterval(timer);
-    await A().session();
-    var merged = window.BCCBag ? await window.BCCBag.afterSignIn() : "";
+    if (!r.preview) await A().session();
+    var merged = window.BCCBag && !r.preview ? await window.BCCBag.afterSignIn() : "";
     if (merged) swrite("bcc-bag-notice", merged);
     swrite("bcc-signed-out", "");
     A().toast((r.created ? "Account created. " : "Welcome back. ") + (r.claimed_orders ? r.claimed_orders + " order" + (r.claimed_orders > 1 ? "s" : "") + " from this browser joined your account. " : "") + (merged ? "Your bag was combined; review it before checkout." : ""));
-    A().navigate(root.getAttribute("data-next") || "/account");
+    go(root.getAttribute("data-next") || "/account");
   }
+  // navigate() to the page already open does not always redraw it; sign-in and sign-out must.
+  function go(href) { var u = new URL(href, location.origin); if (u.pathname === location.pathname) { var q = new URL(location.href); q.searchParams.delete("mode"); history.replaceState(history.state, "", q.pathname + q.search); refresh(); window.scrollTo(0, 0); } else A().navigate(href); }
 
   function mountAuth(root, signal) {
     var on = function (el, ev, fn) { if (el) el.addEventListener(ev, fn, { signal: signal }); };
@@ -389,6 +558,7 @@
       si.querySelector("[data-p2a-submit-label]").textContent = pw ? "Sign in" : "Send code";
     }
     si.querySelectorAll("input[name=method]").forEach(function (r) { on(r, "change", syncMethod); });
+    on(root.querySelector("[data-p2a-fill]"), "click", function () { setMode("signin"); si.hidden = false; si.elements.identifier.value = emailOnly() ? DEMO.email : "99999 99999"; si.querySelector('input[value="password"]').checked = true; syncMethod(); si.elements.password.value = DEMO.password; si.querySelector("button[type=submit]").focus(); });
     on(si.querySelector("[data-p2a-use-code]"), "click", function () { si.querySelector('input[value="code"]').checked = true; syncMethod(); si.elements.identifier.focus(); });
     on(su.elements.mobile, "input", function () { var v = digits(su.elements.mobile.value); if (v.length > 10 && v.indexOf("91") === 0) v = v.slice(-10); su.elements.mobile.value = v.slice(0, 10); });
 
@@ -416,31 +586,36 @@
     on(si, "submit", async function (e) {
       e.preventDefault(); e.stopPropagation();
       var who = identify(si.elements.identifier.value), btn = si.querySelector("button[type=submit]");
+      if (emailOnly() && who.mobile && who.mobile !== DEMO.mobile) who = { bad: "Sign in with your email address for now. Codes by text message come later." };
       if (who.bad) { errs(si, { identifier: who.bad }); return; }
-      if (hosted) { errs(si, {}, "Customer sign-in opens when ordering does. Nothing was sent."); return; }
       if (method() === "password") {
         if (!si.elements.password.value) { errs(si, { password: "Enter your password." }); return; }
         errs(si, {});
-        try { var r = await busy(btn, "Signing in…", function () { return A().api("/auth/password", { identifier: who.mobile || who.email, password: si.elements.password.value }); }); await finish(root, r); }
+        try { var r = await busy(btn, "Signing in…", function () { return api("/auth/password", { identifier: who.mobile || who.email, password: si.elements.password.value }); }); await finish(root, r); }
         catch (x) { errs(si, {}, x.message); si.querySelector("[data-p2a-forgot]").hidden = false; }
         return;
       }
       errs(si, {});
-      try { var o = await busy(btn, "Sending…", function () { return A().api("/auth/otp", who); }); remember("signin", who, o); codes.signin.elements.code.value = ""; showCode(true); }
+      try { var o = await busy(btn, "Sending…", function () { return api("/auth/otp", who); }); remember("signin", who, o); codes.signin.elements.code.value = ""; showCode(true); }
       catch (x) { errs(si, x.data && x.data.reason === "unknown_email" ? { identifier: x.message } : {}, x.data && x.data.reason === "unknown_email" ? "" : x.message); }
     });
     on(su, "submit", async function (e) {
       e.preventDefault(); e.stopPropagation();
       var d = { name: su.elements.name.value.trim(), mobile: digits(su.elements.mobile.value), email: su.elements.email.value.trim(), password: su.elements.password.value }, bad = {};
       if (!d.name) bad.name = "Enter your name.";
-      if (!/^[6-9]\d{9}$/.test(d.mobile)) bad.mobile = "Enter a 10-digit Indian mobile number starting with 6, 7, 8 or 9.";
-      if (d.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) bad.email = "Enter a valid email address, or leave it blank.";
+      var mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email);
+      if (emailOnly()) {
+        if (!mailOk) bad.email = "Enter your email address. Your code is sent there.";
+        if (d.mobile && !/^[6-9]\d{9}$/.test(d.mobile)) bad.mobile = "Enter a 10-digit Indian mobile number, or leave it blank.";
+      } else {
+        if (!/^[6-9]\d{9}$/.test(d.mobile)) bad.mobile = "Enter a 10-digit Indian mobile number starting with 6, 7, 8 or 9.";
+        if (d.email && !mailOk) bad.email = "Enter a valid email address, or leave it blank.";
+      }
       if (d.password && strength(d.password) < 2) bad.password = "Use at least 8 characters, with a letter and a number.";
       if (errs(su, bad)) return;
-      if (hosted) { errs(su, {}, "Accounts open when ordering does. Nothing was sent."); return; }
-      try { var o = await busy(su.querySelector("button[type=submit]"), "Creating…", function () { return A().api("/auth/signup", d); }); remember("signup", { mobile: d.mobile }, o); codes.signup.elements.code.value = ""; showCode(true); }
+      try { var o = await busy(su.querySelector("button[type=submit]"), "Creating…", function () { return api("/auth/signup", d); }); remember("signup", emailOnly() ? { email: d.email.toLowerCase() } : { mobile: d.mobile }, o); codes.signup.elements.code.value = ""; showCode(true); }
       catch (x) {
-        if (x.data && x.data.reason === "exists") { errs(su, x.data.fields || {}, ""); var box = su.querySelector('[data-err-for="mobile"]'); box.innerHTML = esc(x.message) + ' <button type="button" class="p2a-textbtn" data-p2a-mode="signin">Sign in</button>'; si.elements.identifier.value = d.mobile; }
+        if (x.data && x.data.reason === "exists") { errs(su, x.data.fields || {}, ""); var key = Object.keys(x.data.fields || {})[0] || (emailOnly() ? "email" : "mobile"), box = su.querySelector('[data-err-for="' + key + '"]'); box.hidden = false; box.innerHTML = esc(x.message) + ' <button type="button" class="p2a-textbtn" data-p2a-mode="signin">Sign in</button>'; si.elements.identifier.value = key === "email" ? d.email : d.mobile; }
         else fromError(su, x);
       }
     });
@@ -450,7 +625,7 @@
       on(cf.querySelector("[data-p2a-back]"), "click", function () { pending = null; swrite("bcc-p2-otp", ""); clearInterval(timer); cf.hidden = true; var f = flow === "signup" ? su : si; f.hidden = false; (flow === "signup" ? su.elements.mobile : si.elements.identifier).focus(); });
       on(cf.querySelector("[data-p2a-resend]"), "click", async function (e) {
         var b = e.currentTarget;
-        try { var o = await busy(b, "Sending…", function () { return A().api("/auth/otp", pending.who); }); remember(flow, pending.who, o); cf.elements.code.value = ""; errs(cf, {}); showCode(true); }
+        try { var o = await busy(b, "Sending…", function () { return api("/auth/otp", pending.who); }); remember(flow, pending.who, o); cf.elements.code.value = ""; errs(cf, {}); showCode(true); }
         catch (x) { errs(cf, {}, x.message); }
       });
       on(cf, "submit", async function (e) {
@@ -460,13 +635,13 @@
         if (btn.disabled || !pending) return;
         errs(cf, {});
         try {
-          var r = await busy(btn, "Checking…", function () { return A().api("/auth/verify", Object.assign({ code: code }, pending.who)); });
+          var r = await busy(btn, "Checking…", function () { return api("/auth/verify", Object.assign({ code: code }, pending.who)); });
           if (flow === "signup" && r.email_pending) {
             swrite("bcc-p2-otp", ""); clearInterval(timer);
             await A().session();
             cf.hidden = true; es.hidden = false; es.dataset.email = r.email_pending; es.dataset.result = JSON.stringify(r);
             try {
-              var ec = await A().api("/profile/email-code", { email: r.email_pending });
+              var ec = await api("/profile/email-code", { email: r.email_pending });
               es.querySelector("[data-p2a-email-dest]").innerHTML = "We sent a code to <strong>" + esc(ec.destination) + "</strong>" + (ec.mode === "preview" ? ". Preview: nothing is actually sent." : ".");
               var pv = es.querySelector("[data-p2a-preview]"); pv.hidden = !ec.preview_code; pv.innerHTML = ec.preview_code ? previewText(ec.preview_code, "email") : "";
             } catch (x2) { es.querySelector("[data-p2a-email-dest]").textContent = x2.message; }
@@ -487,7 +662,7 @@
       e.preventDefault(); e.stopPropagation();
       var code = digits(es.elements.code.value);
       if (code.length !== 6) { errs(es, { code: "Enter all 6 digits of the code." }); return; }
-      try { await busy(es.querySelector("button[type=submit]"), "Checking…", function () { return A().api("/profile/email-verify", { email: es.dataset.email, code: code }); }); await finish(root, JSON.parse(es.dataset.result || "{}")); }
+      try { await busy(es.querySelector("button[type=submit]"), "Checking…", function () { return api("/profile/email-verify", { email: es.dataset.email, code: code }); }); await finish(root, JSON.parse(es.dataset.result || "{}")); }
       catch (x) { errs(es, { code: x.message }); }
     });
     on(es.querySelector("[data-p2a-skip-email]"), "click", function () { finish(root, JSON.parse(es.dataset.result || "{}")); });
@@ -502,17 +677,18 @@
       var t = e.target.closest("button"); if (!t || !root.contains(t) || t.disabled) return;
       var d = t.dataset;
       try {
-        if (d.p2aOpen) { open(root.querySelector('[data-p2a-slot="' + d.p2aOpen + '"]')); if (t.closest(".is-new")) t.closest(".is-new").hidden = true; }
+        if (t.hasAttribute("data-p2a-logout")) { t.disabled = true; await api("/logout", {}); go("/account"); A().toast("Signed out of the preview account."); }
+        else if (d.p2aOpen) { open(root.querySelector('[data-p2a-slot="' + d.p2aOpen + '"]')); if (t.closest(".is-new")) t.closest(".is-new").hidden = true; }
         else if (t.hasAttribute("data-p2a-close")) { var sl = t.closest("[data-p2a-slot], [data-p2a-email-code-form]"); sl.hidden = true; var nw = root.querySelector(".is-new"); if (nw) nw.hidden = false; }
         else if (t.hasAttribute("data-p2a-edit")) open(t.closest("[data-p2a-addr-item]").querySelector("[data-p2a-slot]"));
-        else if (d.p2aAddrDefault) { t.disabled = true; await A().api("/addresses/" + d.p2aAddrDefault + "/default", {}); await A().rerender(); A().toast("Default address updated."); }
-        else if (d.p2aCardDefault) { t.disabled = true; await A().api("/cards/" + d.p2aCardDefault + "/default", {}); await A().rerender(); A().toast("Default card updated."); }
+        else if (d.p2aAddrDefault) { t.disabled = true; await api("/addresses/" + d.p2aAddrDefault + "/default", {}); await refresh(); A().toast("Default address updated."); }
+        else if (d.p2aCardDefault) { t.disabled = true; await api("/cards/" + d.p2aCardDefault + "/default", {}); await refresh(); A().toast("Default card updated."); }
         else if (d.p2aAddrDelete || d.p2aCardDelete) {
           if (t.getAttribute("data-confirm") !== "1") { t.setAttribute("data-confirm", "1"); t.textContent = "Confirm remove"; t.classList.add("is-confirm"); say("Select Confirm remove to delete it."); return; }
-          t.disabled = true; await A().api((d.p2aAddrDelete ? "/addresses/" + d.p2aAddrDelete : "/cards/" + d.p2aCardDelete) + "/delete", {}); await A().rerender(); A().toast(d.p2aAddrDelete ? "Address removed." : "Card removed.");
+          t.disabled = true; await api((d.p2aAddrDelete ? "/addresses/" + d.p2aAddrDelete : "/cards/" + d.p2aCardDelete) + "/delete", {}); await refresh(); A().toast(d.p2aAddrDelete ? "Address removed." : "Card removed.");
         } else if (t.hasAttribute("data-p2a-email-confirm")) {
           var ef = root.querySelector("[data-p2a-email-code-form]");
-          var r = await busy(t, "Sending…", function () { return A().api("/profile/email-code", { email: (root.querySelector('[name="email"]') || {}).value || "" }); });
+          var r = await busy(t, "Sending…", function () { return api("/profile/email-code", { email: (root.querySelector('[name="email"]') || {}).value || "" }); });
           ef.hidden = false; ef.dataset.email = root.querySelector('[name="email"]').value;
           ef.querySelector("[data-p2a-dest]").innerHTML = "Code sent to <strong>" + esc(r.destination) + "</strong>" + (r.mode === "preview" ? ". Preview: nothing is actually sent." : ".");
           var pv = ef.querySelector("[data-p2a-preview]"); pv.hidden = !r.preview_code; pv.innerHTML = r.preview_code ? previewText(r.preview_code, "email") : "";
@@ -532,13 +708,14 @@
         if (f.dataset.p2aAddress) data.id = f.dataset.p2aAddress;
         if (data.label === "other" && !data.label_name) bad.label_name = "Name this address, for example Parents or Gym.";
         if (data.name.length < 2) bad.name = "Enter the full name.";
-        if (data.mobile && !/^[6-9]\d{9}$/.test(data.mobile)) bad.mobile = "Enter a 10-digit mobile number, or leave it blank.";
+        if ((data.mobile || emailOnly()) && !/^[6-9]\d{9}$/.test(data.mobile)) bad.mobile = emailOnly() ? "Enter a 10-digit mobile number for the courier." : "Enter a 10-digit mobile number, or leave it blank.";
+        if (data.address.length < 5) bad.address = "Enter the house or flat, street and area.";
         if (data.address.length < 2) bad.address = "Enter the house or flat, street and area.";
         if (!/^[1-9]\d{5}$/.test(data.pincode)) bad.pincode = "Enter a 6-digit pincode that doesn’t start with 0.";
         if (data.city.length < 2) bad.city = "Enter the city or town.";
         if (!data.state) bad.state = "Choose a state.";
         if (errs(f, bad)) return;
-        try { await busy(f.querySelector("button[type=submit]"), "Saving…", function () { return A().api("/addresses", data); }); await A().rerender(); A().toast("Address saved."); }
+        try { await busy(f.querySelector("button[type=submit]"), "Saving…", function () { return api("/addresses", data); }); await refresh(); A().toast("Address saved."); }
         catch (x) { fromError(f, x); }
       });
     });
@@ -566,34 +743,46 @@
         if (errs(cf, bad)) return;
         var data = { network: net, kind: cf.elements.kind.value, last4: d.slice(-4), exp_month: mm, exp_year: yy, name: cf.elements.ccname.value.trim(), nickname: cf.elements.nickname.value.trim(), "default": cf.elements["default"].checked };
         cf.elements.cardnumber.value = "•••• •••• •••• " + data.last4; d = "";
-        try { await busy(cf.querySelector("button[type=submit]"), "Saving…", function () { return A().api("/cards", data); }); await A().rerender(); A().toast("Card ending " + data.last4 + " saved."); }
+        try { await busy(cf.querySelector("button[type=submit]"), "Saving…", function () { return api("/cards", data); }); await refresh(); A().toast("Card ending " + data.last4 + " saved."); }
         catch (x) { cf.elements.cardnumber.value = ""; fromError(cf, x); }
       });
     }
-    var pf = root.querySelector("[data-p2a-profile]");
+    var pf = root.querySelector("[data-p2a-profile]"), ef = root.querySelector("[data-p2a-email-code-form]");
     on(pf, "submit", async function (e) {
       e.preventDefault(); e.stopPropagation();
       var name = pf.elements.name.value.trim(), email = pf.elements.email.value.trim();
       if (errs(pf, name ? (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? { email: "Enter a valid email address, or leave it blank." } : {}) : { name: "Enter your name." })) return;
-      try { await busy(pf.querySelector("button[type=submit]"), "Saving…", function () { return A().api("/profile", { name: name, email: email }); }); await A().session(); await A().rerender(); A().toast("Profile saved."); }
+      var was = pf.dataset.email || "", change = emailOnly() && !demoCurrent() && email && email.toLowerCase() !== was.toLowerCase();
+      if (emailOnly() && !email) { errs(pf, { email: "Enter your email address. You sign in with it." }); return; }
+      try {
+        await busy(pf.querySelector("button[type=submit]"), "Saving…", function () { return api("/profile", { name: name, email: change ? was : email }); });
+        if (change) {
+          // Hosted: the new address is confirmed with a code before it replaces the old one.
+          var r = await api("/profile/email-code", { email: email });
+          ef.hidden = false; ef.dataset.email = email;
+          ef.querySelector("[data-p2a-dest]").innerHTML = "To change your email, enter the code we sent to <strong>" + esc(r.destination) + "</strong>.";
+          var pv = ef.querySelector("[data-p2a-preview]"); pv.hidden = !r.preview_code; pv.innerHTML = r.preview_code ? previewText(r.preview_code, "email") : "";
+          ef.elements.code.focus(); A().toast("Name saved. Check your new email for the code."); return;
+        }
+        await A().session(); await refresh(); A().toast("Profile saved.");
+      }
       catch (x) { fromError(pf, x); }
     });
-    var ef = root.querySelector("[data-p2a-email-code-form]");
     on(ef, "submit", async function (e) {
       e.preventDefault(); e.stopPropagation();
       var code = digits(ef.elements.code.value);
       if (code.length !== 6) { errs(ef, { code: "Enter all 6 digits of the code." }); return; }
-      try { await busy(ef.querySelector("button[type=submit]"), "Checking…", function () { return A().api("/profile/email-verify", { email: ef.dataset.email, code: code }); }); await A().rerender(); A().toast("Email confirmed. You can sign in with it now."); }
+      try { await busy(ef.querySelector("button[type=submit]"), "Checking…", function () { return api("/profile/email-verify", { email: ef.dataset.email, code: code }); }); await A().session(); await refresh(); A().toast("Email confirmed. You can sign in with it now."); }
       catch (x) { errs(ef, { code: x.message }); }
     });
     var pw = root.querySelector("[data-p2a-password]");
     on(pw, "submit", async function (e) {
       e.preventDefault(); e.stopPropagation();
       var v = pw.elements.password.value, bad = {};
-      if (pw.elements.current && !pw.elements.current.value) bad.current = "Enter your current password.";
+      if (pw.elements.current && !pw.elements.current.value && !pw.querySelector("#p2a-pw-current-hint")) bad.current = "Enter your current password.";
       if (strength(v) < 2) bad.password = "Use at least 8 characters, with a letter and a number.";
       if (errs(pw, bad)) return;
-      try { await busy(pw.querySelector("button[type=submit]"), "Saving…", function () { return A().api("/profile/password", { password: v, current: pw.elements.current ? pw.elements.current.value : "" }); }); await A().rerender(); A().toast("Password saved. You can sign in with it or with a code."); }
+      try { await busy(pw.querySelector("button[type=submit]"), "Saving…", function () { return api("/profile/password", { password: v, current: pw.elements.current ? pw.elements.current.value : "" }); }); await refresh(); A().toast("Password saved. You can sign in with it or with a code."); }
       catch (x) { fromError(pw, x); }
     });
   }

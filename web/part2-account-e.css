@@ -87,7 +87,16 @@ body[data-variant-e-part="2"] .p2 .p2a-done { display: flex; gap: 12px; align-it
 body[data-variant-e-part="2"] .p2 .p2a-done svg { flex: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
 body[data-variant-e-part="2"] .p2 .p2a-done p { margin: 0; font-size: 14px; color: var(--p2-ink); }
 
-/* ---------- Signed out: like the product page, a tinted stage with the bottle, the form on a white card ---------- */
+/* ---------- Signed out: a focused page. No site header, nav stripe, mobile menu or footer; only the mark and a way back. ---------- */
+body[data-variant-e-part="2"]:has(.p2a-auth) :is(.p2-head, .p2-stripe, #mobile-nav, .p2-foot) { display: none !important; }
+body[data-variant-e-part="2"] .p2 .p2a-auth { display: flex; flex-direction: column; min-height: 100svh; background: color-mix(in srgb, var(--cap, var(--p2-ink)) 6%, var(--p2-paper)); }
+body[data-variant-e-part="2"] .p2 .p2a-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--p2-side); }
+body[data-variant-e-part="2"] .p2 .p2a-bar-logo img { display: block; height: 40px; width: auto; }
+body[data-variant-e-part="2"] .p2 .p2a-bar-back { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border-radius: 999px; background: rgb(255 255 255 / .7); color: var(--p2-ink); font-size: 14px; font-weight: 600; text-decoration: none; transition: background .2s; }
+body[data-variant-e-part="2"] .p2 .p2a-bar-back:hover { background: #fff; }
+body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-top { flex: 1; display: grid; align-items: center; padding-top: clamp(8px, 2vw, 24px); }
+
+/* Like the product page, a tinted stage with the bottle, the form on a white card */
 body[data-variant-e-part="2"] .p2 .p2a-top { padding: clamp(32px, 5vw, 72px) 0 clamp(48px, 6vw, 88px); background: linear-gradient(180deg, color-mix(in srgb, var(--cap) 15%, var(--p2-paper)) 0, color-mix(in srgb, var(--cap) 6%, var(--p2-paper)) 70%, var(--p2-paper) 100%); transition: background .6s var(--p2-ease); }
 body[data-variant-e-part="2"] .p2 .p2a-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); gap: clamp(28px, 5vw, 80px); align-items: start; }
 body[data-variant-e-part="2"] .p2 .p2a-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); grid-template-rows: auto 1fr; gap: 24px 32px; min-height: 100%; padding: clamp(28px, 3.4vw, 48px); border-radius: 28px; background: radial-gradient(circle at 72% 46%, color-mix(in srgb, var(--cap) 8%, #fff) 0, color-mix(in srgb, var(--cap) 24%, var(--p2-plate)) 100%); box-sizing: border-box; overflow: hidden; transition: background .6s var(--p2-ease); }
@@ -279,6 +288,12 @@ body[data-variant-e-part="2"] .p2 .p2a-reuse a { color: var(--p2-ink); }
   body[data-variant-e-part="2"] .p2 .p2a-stage-art { grid-row: 1; min-height: 190px; }
   body[data-variant-e-part="2"] .p2 .p2a-bottle { height: 100%; bottom: 0; }
   body[data-variant-e-part="2"] .p2 .p2a-keeps { display: none; }
+  /* Phones: just the heading, then the form. */
+  body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-stage { display: block; padding: 4px 0 0; border-radius: 0; background: none; min-height: 0; }
+  body[data-variant-e-part="2"] .p2 .p2a-auth :is(.p2a-stage-art, .p2a-stage .p2-lede, .p2a-stage .p2-eyebrow) { display: none; }
+  body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-stage h1 { max-width: none; margin: 0; font-size: 34px; }
+  body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-split { gap: 18px; }
+  body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-top { align-items: start; }
   body[data-variant-e-part="2"] .p2 .p2a-top { padding-top: 20px; }
   body[data-variant-e-part="2"] .p2 .p2a-sample { margin: 16px var(--p2-side) 0; }
   body[data-variant-e-part="2"] .p2 .p2a-stage h1 { font-size: 38px; }
@@ -304,3 +319,32 @@ body[data-variant-e-part="2"] .p2 .p2a-reuse a { color: var(--p2-ink); }
 @media (prefers-reduced-motion: reduce) {
   body[data-variant-e-part="2"] .p2 :is(.p2a-bottle, .p2a-top, .p2a-stage, .p2a-order a, .p2a-tiles a) { transition: none; }
 }
+
+/* ---------- Sign in / sign up, simple and centred (5 Nov 2026): one column, the heading, then the card ---------- */
+body[data-variant-e-part="2"] .p2 .p2a-auth { background: var(--p2-paper); }
+body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-top { background: none; padding: clamp(16px, 4vh, 56px) var(--p2-side) clamp(40px, 8vh, 96px); align-items: start; }
+body[data-variant-e-part="2"] .p2 .p2a-center { display: grid; gap: 28px; width: 100%; max-width: 480px; margin: 0 auto; }
+body[data-variant-e-part="2"] .p2 .p2a-center-head { text-align: center; }
+body[data-variant-e-part="2"] .p2 .p2a-center-head h1 { margin: 0 0 10px; font-size: clamp(34px, 4vw, 48px); }
+body[data-variant-e-part="2"] .p2 .p2a-center-sub { margin: 0 auto; max-width: 36ch; font-size: 16px; line-height: 1.5; color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-authcard { position: static; }
+body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-grid { grid-template-columns: 1fr; }
+body[data-variant-e-part="2"] .p2 .p2a-previewacct { display: grid; gap: 10px; padding: 14px 16px; border: 1.5px dashed color-mix(in srgb, var(--p2-ink) 22%, var(--p2-line)); border-radius: 14px; font-size: 13px; line-height: 1.45; color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2 .p2a-previewacct p { margin: 0; }
+body[data-variant-e-part="2"] .p2 .p2a-previewacct p b { display: block; margin-bottom: 2px; color: var(--p2-ink); font-size: 14px; }
+body[data-variant-e-part="2"] .p2 .p2a-previewacct dl { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 4px 22px; margin: 0; }
+body[data-variant-e-part="2"] .p2 .p2a-previewacct dt { font-size: 11px; color: var(--p2-mute); }
+body[data-variant-e-part="2"] .p2 .p2a-previewacct dd { margin: 0; color: var(--p2-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+body[data-variant-e-part="2"] .p2 .p2a-previewacct .p2a-textbtn { justify-self: start; font-size: 13px; }
+@media (max-width: 520px) {
+  body[data-variant-e-part="2"] .p2 .p2a-previewacct dl { grid-template-columns: auto 1fr; }
+  body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-card { padding: 20px 18px; }
+}
+
+/* Placeholder while a signed-in account loads in the background */
+body[data-variant-e-part="2"] .p2 .p2a-skel { display: grid; gap: 14px; }
+body[data-variant-e-part="2"] .p2 .p2a-skel i { display: block; height: 120px; border-radius: 20px; background: linear-gradient(90deg, var(--p2-plate) 0, #fff 50%, var(--p2-plate) 100%) 0 0 / 200% 100%; animation: p2a-shimmer 1.2s linear infinite; }
+body[data-variant-e-part="2"] .p2 .p2a-skel i:first-child { height: 44px; width: 40%; }
+@keyframes p2a-shimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { body[data-variant-e-part="2"] .p2 .p2a-skel i { animation: none; } }
+body[data-variant-e-part="2"] .p2 .p2a-tiles { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
