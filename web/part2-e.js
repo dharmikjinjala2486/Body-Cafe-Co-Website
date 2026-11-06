@@ -168,7 +168,7 @@
       '<h1 id="p2-hero-t"><b>Seven supplements.</b> <span><b>One uncompromising</b> <b>standard.</b></span></h1>' +
       '<div class="p2-actions"><a class="p2-btn" href="/shop">Shop the seven</a><a class="p2-link" href="/standards">Our standard</a></div></div>' +
       '<ul class="p2-hc-caps" aria-label="The seven">' + list.map(function (p, i) {
-        return '<li style="--cap:' + esc(p.color) + ';--i:' + i + '"><a href="' + href(p) + '" data-p2-pick data-name="' + esc(p.name) + '" data-fact="' + fact(ctx, p) + '" data-color="' + esc(p.color) + '" aria-label="' + esc(p.name) + '">' + capImg(p) + '<span class="p2-hc-name">' + esc(p.name) + "</span></a></li>";
+        return '<li style="--cap:' + esc(p.color) + ';--i:' + i + '"><a href="' + href(p) + '" data-p2-pick data-id="' + esc(p.id) + '" data-name="' + esc(p.name) + '" data-fact="' + fact(ctx, p) + '" data-color="' + esc(p.color) + '" aria-label="' + esc(p.name) + '">' + capImg(p) + '<span class="p2-hc-name">' + esc(p.name) + "</span></a></li>";
       }).join("") + "</ul>" +
       '<p class="p2-hc-now" aria-hidden="true"><strong data-p2-now-name></strong><small data-p2-now-fact></small></p></section>' +
 
@@ -701,21 +701,115 @@
   }
 
   /* ---------- Home hero: pointing at a cap names it and tints the page ---------- */
-  function mountHero(hero, signal) {
-    var picks = [].slice.call(hero.querySelectorAll("[data-p2-pick]")), name = hero.querySelector("[data-p2-now-name]"), fct = hero.querySelector("[data-p2-now-fact]");
+  function mountHero(hero, signal, fill, placed) {
+    var picks = [].slice.call(hero.querySelectorAll("[data-p2-pick]")), name = hero.querySelector("[data-p2-now-name]"), fct = hero.querySelector("[data-p2-now-fact]"), play = null;
     function show(b) {
       picks.forEach(function (x) { x.classList.toggle("is-on", x === b); });
       hero.classList.add("has-pick"); hero.style.setProperty("--hc", b.dataset.color);
       name.textContent = b.dataset.name; fct.textContent = b.dataset.fact;
     }
-    picks.forEach(function (b) {
-      b.addEventListener("pointerenter", function () { show(b); }, { signal: signal });
-      b.addEventListener("focus", function () { show(b); }, { signal: signal });
+    picks.forEach(function (b, i) {
+      // Part 2 plays by itself (mountHeroShow): pointing at a cap brings its bottle out and holds it there.
+      function point(e) { if (!play) show(b); else if (e.pointerType !== "touch") play.point(i); }
+      function leave() { if (play) play.leave(); }
+      b.addEventListener("pointerenter", point, { signal: signal });
+      b.addEventListener("focus", point, { signal: signal });
+      b.addEventListener("pointerleave", leave, { signal: signal });
+      b.addEventListener("blur", leave, { signal: signal });
     });
     // Nothing is chosen until a cap is pointed at; the last one pointed at stays chosen.
     // The whole hero fits the first screen: size it to whatever sits above it (header, preview bar).
     function fit() { var top = Math.max(0, hero.getBoundingClientRect().top + window.scrollY); hero.style.setProperty("--p2-hc-u", Math.max(3.6, (window.innerHeight - top) / 100) + "px"); }
     fit(); window.addEventListener("resize", fit, { signal: signal });
+    if (fill || document.body.dataset.variantEPart === "2") play = mountHeroShow(hero, picks, show, signal, fill || heroBottle, placed);
+  }
+
+  // Part 2's stage: the disc and, inside it, the bottle. Part 1 passes its own (web/hero-caps-e.js).
+  function heroBottle(a, b) {
+    var disc = document.createElement("i"), img = new Image();
+    disc.className = "p2-hc-disc";
+    img.alt = ""; img.decoding = "async"; img.src = "/web/media/premium/front-" + b.dataset.id + ".webp";
+    a.appendChild(disc); a.appendChild(img);
+  }
+  window.BCCHeroShow = { mount: mountHero };
+
+  /* ---------- The hero opens on the first product: left-aligned words, its bottle inside a disc in its cap colour.
+     Every few seconds the disc shrinks back into its cap and the next cap swells into a disc with its bottle.
+     Stacked (phones, tall windows): words above, stage in the middle, caps below.
+     Split (wide windows): words and caps on the left half, stage on the right. ---------- */
+  function mountHeroShow(hero, picks, show, signal, fill, placed) {
+    var tall = window.matchMedia("(max-width: 620px), (max-aspect-ratio: 1/1)"), still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var HOLD = 3200, BACK = 560, QUICK = 240;
+    var stage = null, items = [], timer = 0, at = 0, seen = true, held = false, watch = null;
+    function later(fn, ms) { clearTimeout(timer); timer = setTimeout(fn, ms); }
+    function box(el) { var r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width, h: r.height }; }
+    // Each item starts exactly over its own cap: the disc is the cap, enlarged. The bottle is sized to sit wholly inside the disc.
+    function place() {
+      if (!stage) return;
+      var st = box(stage), d = tall.matches ? Math.min(st.h * .98, st.w * .84) : Math.min(st.h * .98, st.w * .96, 760), h = d * .82;
+      stage.style.setProperty("--d", Math.round(d) + "px"); stage.style.setProperty("--h", Math.round(h) + "px");
+      items.forEach(function (it, i) {
+        var c = box(picks[i]);
+        it.style.setProperty("--dx", Math.round(c.x - st.x) + "px");
+        it.style.setProperty("--dy", Math.round(c.y - st.y) + "px");
+        it.style.setProperty("--ds", (c.w / d).toFixed(4));
+        it.style.setProperty("--bs", (c.w * .7 / h).toFixed(4));
+      });
+      if (placed) placed(stage, d);
+    }
+    function reveal() {
+      var it = items[at], pick = picks[at], img = it.querySelector("img");
+      (img.decode ? img.decode() : Promise.resolve()).catch(function () {}).then(function () {
+        if (!stage || it !== items[at]) return;
+        hero.classList.remove("is-swap"); show(pick); it.classList.add("is-out");
+        if (!still.matches && !held) later(retire, HOLD);
+      });
+    }
+    function swap(to, ms) {
+      var out = items[at].classList.contains("is-out");
+      place(); // the caps were still dropping in when the first bottle was placed
+      items[at].classList.remove("is-out"); at = to;
+      if (out) { hero.classList.add("is-swap"); later(reveal, ms); } else { clearTimeout(timer); reveal(); }
+    }
+    function retire() {
+      if (document.hidden || !seen) return later(retire, 800); // no point playing to nobody
+      swap((at + 1) % items.length, BACK);
+    }
+    function start() {
+      stage = document.createElement("div"); stage.className = "p2-hc-stage";
+      items = picks.map(function (b) {
+        var a = document.createElement("a");
+        a.className = "p2-hc-item"; a.href = b.getAttribute("href"); a.tabIndex = -1; a.setAttribute("aria-hidden", "true"); a.style.setProperty("--cap", b.dataset.color);
+        fill(a, b); stage.appendChild(a);
+        return a;
+      });
+      hero.insertBefore(stage, hero.querySelector(".p2-hc-caps"));
+      hero.classList.add("is-show", "is-still", tall.matches ? "is-stack" : "is-split"); at = 0; place();
+      show(picks[0]); items[0].classList.add("is-out");
+      requestAnimationFrame(function () { requestAnimationFrame(function () { hero.classList.remove("is-still"); }); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+      if ("IntersectionObserver" in window) { watch = new IntersectionObserver(function (e) { seen = e[0].isIntersecting; }); watch.observe(hero); }
+      if (!still.matches) later(retire, HOLD);
+    }
+    function stop() {
+      clearTimeout(timer); if (watch) watch.disconnect(); watch = null; seen = true; held = false;
+      if (stage) stage.remove();
+      stage = null; items = [];
+      hero.classList.remove("is-show", "is-still", "is-stack", "is-split", "is-swap", "has-pick");
+      picks.forEach(function (x) { x.classList.remove("is-on"); });
+    }
+    tall.addEventListener("change", function () { stop(); start(); }, { signal: signal });
+    window.addEventListener("resize", place, { signal: signal });
+    signal.addEventListener("abort", stop);
+    start();
+    return {
+      point: function (i) {
+        if (!stage) return;
+        held = true;
+        if (i !== at || !items[at].classList.contains("is-out")) swap(i, QUICK); else clearTimeout(timer);
+      },
+      leave: function () { if (!held) return; held = false; if (stage && !still.matches) later(retire, HOLD); }
+    };
   }
 
   /* Gallery thumbnails and shop filter. */
