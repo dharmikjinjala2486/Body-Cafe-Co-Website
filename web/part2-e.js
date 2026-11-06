@@ -724,22 +724,23 @@
     if (fill || document.body.dataset.variantEPart === "2") play = mountHeroShow(hero, picks, show, signal, fill || heroBottle, placed);
   }
 
-  // Part 2's stage: the disc and, inside it, the bottle. Part 1 passes its own (web/hero-caps-e.js).
+  // Part 2's stage: one circle that stays put; the bottles change inside it. Part 1 passes its own (web/hero-caps-e.js).
   function heroBottle(a, b) {
-    var disc = document.createElement("i"), img = new Image();
-    disc.className = "p2-hc-disc";
+    var img = new Image();
     img.alt = ""; img.decoding = "async"; img.src = "/web/media/premium/front-" + b.dataset.id + ".webp";
-    a.appendChild(disc); a.appendChild(img);
+    a.appendChild(img);
   }
+  heroBottle.gap = 120; // one bottle leaves as the next arrives
   window.BCCHeroShow = { mount: mountHero };
 
   /* ---------- The hero opens on the first product: left-aligned words, its bottle inside a disc in its cap colour.
-     Every few seconds the disc shrinks back into its cap and the next cap swells into a disc with its bottle.
+     Every few seconds the next product takes over. Part 2: the circle stays and the bottles pass through it.
+     Part 1: the disc shrinks back into its cap and the next cap swells out.
      Stacked (phones, tall windows): words above, stage in the middle, caps below.
      Split (wide windows): words and caps on the left half, stage on the right. ---------- */
   function mountHeroShow(hero, picks, show, signal, fill, placed) {
     var tall = window.matchMedia("(max-width: 620px), (max-aspect-ratio: 1/1)"), still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    var HOLD = 3200, BACK = 560, QUICK = 240;
+    var HOLD = 3200, BACK = fill.gap || 560, QUICK = fill.gap || 240;
     var stage = null, items = [], timer = 0, at = 0, seen = true, held = false, watch = null;
     function later(fn, ms) { clearTimeout(timer); timer = setTimeout(fn, ms); }
     function box(el) { var r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width, h: r.height }; }
@@ -759,17 +760,20 @@
     }
     function reveal() {
       var it = items[at], pick = picks[at], img = it.querySelector("img");
-      (img.decode ? img.decode() : Promise.resolve()).catch(function () {}).then(function () {
+      // Wait for the image to be ready, but never for long: a decode can stall, and the show must go on.
+      Promise.race([img.decode ? img.decode().catch(function () {}) : null, new Promise(function (r) { setTimeout(r, 400); })]).then(function () {
         if (!stage || it !== items[at]) return;
-        hero.classList.remove("is-swap"); show(pick); it.classList.add("is-out");
+        hero.classList.remove("is-swap"); show(pick); it.classList.remove("is-gone"); it.classList.add("is-out");
         if (!still.matches && !held) later(retire, HOLD);
       });
     }
     function swap(to, ms) {
-      var out = items[at].classList.contains("is-out");
+      var prev = items[at], out = prev.classList.contains("is-out");
       place(); // the caps were still dropping in when the first bottle was placed
-      items[at].classList.remove("is-out"); at = to;
-      if (out) { hero.classList.add("is-swap"); later(reveal, ms); } else { clearTimeout(timer); reveal(); }
+      prev.classList.remove("is-out"); at = to;
+      if (!out) { clearTimeout(timer); reveal(); return; }
+      prev.classList.add("is-gone"); setTimeout(function () { prev.classList.remove("is-gone"); }, 900);
+      hero.classList.add("is-swap"); later(reveal, ms);
     }
     function retire() {
       if (document.hidden || !seen) return later(retire, 800); // no point playing to nobody
@@ -786,7 +790,7 @@
       hero.insertBefore(stage, hero.querySelector(".p2-hc-caps"));
       hero.classList.add("is-show", "is-still", tall.matches ? "is-stack" : "is-split"); at = 0; place();
       show(picks[0]); items[0].classList.add("is-out");
-      requestAnimationFrame(function () { requestAnimationFrame(function () { hero.classList.remove("is-still"); }); });
+      setTimeout(function () { hero.classList.remove("is-still"); }, 80);
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
       if ("IntersectionObserver" in window) { watch = new IntersectionObserver(function (e) { seen = e[0].isIntersecting; }); watch.observe(hero); }
       if (!still.matches) later(retire, HOLD);

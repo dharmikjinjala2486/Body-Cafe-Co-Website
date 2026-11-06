@@ -1272,7 +1272,7 @@ body[data-variant-e-part="2"] .p2-hero2c.is-swap .p2-hc-now { opacity: 0; }
 /* The disc travels behind the words and caps, never over them. */
 body[data-variant-e-part="2"] .p2-hc-stage { z-index: 0; }
 body[data-variant-e-part="2"] .p2-hero2c.is-show :is(.p2-hc-copy, .p2-hc-caps, .p2-hc-now) { position: relative; z-index: 1; }
-body[data-variant-e-part="2"] .p2-hero2c.is-still :is(.p2-hc-disc, .p2-hc-item img, .p2-hc-now, .p2-hc-caps a::after) { transition: none; }
+body[data-variant-e-part="2"] .p2-hero2c.is-still .p2-hc-stage::before, body[data-variant-e-part="2"] .p2-hero2c.is-still .p2-hc-caps a::after, body[data-variant-e-part="2"] .p2-hero2c.is-still :is(.p2-hc-now, .p2-hc-item img) { transition: none; }
 
 body[data-variant-e-part="2"] .p2-hero2c.is-show { text-align: left; }
 body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-hc-copy .p2-actions { justify-content: flex-start; }
@@ -1294,13 +1294,14 @@ body[data-variant-e-part="2"] .p2-hero2c.is-split .p2-hc-now strong { font-size:
 body[data-variant-e-part="2"] .p2-hero2c.is-split .p2-hc-now small { font-size: 15px; }
 body[data-variant-e-part="2"] .p2-hero2c.is-split .p2-hc-stage { position: absolute; top: 3%; bottom: 3%; left: 50%; right: 3%; }
 
+/* One circle that stays where it is, taking each product's colour. The bottles pass through it, clipped to its edge:
+   the old one leaves through the top as the new one rises from below. */
+body[data-variant-e-part="2"] .p2-hc-stage { clip-path: circle(calc(var(--d) / 2) at 50% 50%); }
+body[data-variant-e-part="2"] .p2-hc-stage::before { content: ""; position: absolute; top: 50%; left: 50%; width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2); border-radius: 50%; background: var(--hc); transition: background-color .8s ease; }
 body[data-variant-e-part="2"] .p2-hc-item { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; -webkit-tap-highlight-color: transparent; }
-body[data-variant-e-part="2"] .p2-hc-disc,
-body[data-variant-e-part="2"] .p2-hc-item img { grid-area: 1 / 1; opacity: 0; will-change: transform, opacity; }
-body[data-variant-e-part="2"] .p2-hc-disc { width: var(--d); height: var(--d); border-radius: 50%; background: var(--cap); transform: translate(var(--dx), var(--dy)) scale(var(--ds)); transition: transform .52s cubic-bezier(.6, 0, .8, .3), opacity .12s linear .42s; }
-body[data-variant-e-part="2"] .p2-hc-item img { display: block; width: auto; height: var(--h); max-width: none; transform: translate(var(--dx), var(--dy)) scale(var(--bs)); transition: transform .46s cubic-bezier(.6, 0, .8, .3), opacity .16s linear .3s; }
-body[data-variant-e-part="2"] .p2-hc-item.is-out img { pointer-events: auto; opacity: 1; transform: none; transition: transform 1.15s var(--p2-hc-ease) .1s, opacity .22s linear .1s; }
-body[data-variant-e-part="2"] .p2-hc-item.is-out .p2-hc-disc { pointer-events: auto; opacity: 1; transform: none; transition: transform 1s var(--p2-hc-ease), opacity .12s linear; }
+body[data-variant-e-part="2"] .p2-hc-item img { grid-area: 1 / 1; display: block; width: auto; height: var(--h); max-width: none; will-change: transform; transform: translateY(var(--d)); }
+body[data-variant-e-part="2"] .p2-hc-item.is-gone img { transform: translateY(calc(var(--d) * -1)); transition: transform .8s cubic-bezier(.65, 0, .35, 1); }
+body[data-variant-e-part="2"] .p2-hc-item.is-out img { pointer-events: auto; transform: none; transition: transform .8s cubic-bezier(.65, 0, .35, 1); }
 
 /* The cap whose turn it is stays put, so the disc grows from where it sits, and takes a ring. */
 body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-hc-caps a.is-on img { transform: none; }
@@ -1308,7 +1309,7 @@ body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-hc-caps a.is-on::before { t
 body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-hc-caps a::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid var(--cap); opacity: 0; transform: scale(.86); transition: transform .5s var(--p2-hc-ease), opacity .3s ease; }
 body[data-variant-e-part="2"] .p2-hero2c.is-show:not(.is-swap) .p2-hc-caps a.is-on::after { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  body[data-variant-e-part="2"] .p2-hero2c.is-show :is(.p2-hc-disc, .p2-hc-item img) { transition: none; }
+  body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-hc-item img, body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-hc-stage::before { transition: none; }
 }
 /* Small phones: the actions stay on one row, so the stage still fits. */
 @media (max-width: 380px) {

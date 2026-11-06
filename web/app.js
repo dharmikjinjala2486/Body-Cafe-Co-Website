@@ -18,7 +18,9 @@ let activeDesign = "e";
 // (deploy/connected-runtime.js mirrors this choice in connected builds); the others are static design previews.
 const DEFAULT_PART = "2";
 let activePart = DEFAULT_PART;
-const WORKING_PARTS = ["1", "2", "3", "4"];
+const WORKING_PARTS = ["1", "2", "3", "4", "5"];
+// Part 5 is "Part 2 · Content Focus": it runs as Part 2 and marks the body so its own changes can be scoped to body[data-content-focus="1"].
+const CONTENT_FOCUS_PART = "5";
 function syncDesign() {
   const params = new URL(location.href).searchParams;
   const requested = params.get("design");
@@ -29,7 +31,8 @@ function syncDesign() {
   try { sessionStorage.setItem("bcc-design", activeDesign); } catch {}
   activePart = activeDesign !== "e" || location.pathname.startsWith("/ops") ? "1" : window.BCCRelease?.production ? DEFAULT_PART : WORKING_PARTS.includes(params.get("part")) ? params.get("part") : DEFAULT_PART;
   document.body.dataset.design = activeDesign;
-  document.body.dataset.variantEPart = activeDesign === "e" ? activePart : "";
+  document.body.dataset.variantEPart = activeDesign !== "e" ? "" : activePart === CONTENT_FOCUS_PART ? "2" : activePart;
+  document.body.dataset.contentFocus = activeDesign === "e" && activePart === CONTENT_FOCUS_PART ? "1" : "";
 }
 syncDesign();
 /* Where "home" is for the active direction: A/B return to their concept homepage. */
@@ -276,8 +279,8 @@ function grid(products = state.catalog) {
 /* Switch previews on the same page, preserving its filters and anchor. */
 function designHref(value) {
   const u = new URL(location.href);
-  // "e" is Part 1; "e2"…"e4" the other parts. The default part (2) needs no ?part.
-  const part = value === "e" ? "1" : (/^e([234])$/.exec(value) || [])[1];
+  // "e" is Part 1; "e2"…"e5" the other parts. The default part (2) needs no ?part.
+  const part = value === "e" ? "1" : (/^e([2345])$/.exec(value) || [])[1];
   u.searchParams.set("design", part ? "e" : value);
   if (part && part !== DEFAULT_PART) u.searchParams.set("part", part);
   else u.searchParams.delete("part");
@@ -288,6 +291,7 @@ function previewBar() {
   const option = (value, label, selected) => `<option value="${value}"${selected ? " selected" : ""}>${label}</option>`;
   const variant = option("e", "Part 1 · Finalized", activeDesign === "e" && activePart === "1") +
     option("e2", "Part 2 · Creative", activeDesign === "e" && activePart === "2") +
+    option("e5", "Part 2 · Content Focus", activeDesign === "e" && activePart === CONTENT_FOCUS_PART) +
     option("e3", "Part 3 · Minimal", activeDesign === "e" && activePart === "3") +
     option("e4", "Part 4 · Index", activeDesign === "e" && activePart === "4");
   const archive = DESIGN_LABELS.filter(([d]) => availableDesigns().includes(d))
@@ -1217,7 +1221,7 @@ async function render(scroll = true) {
     document.title = shown
       ? `${shown.seo_title || shown.name} — Body Café Co.`
       : path !== "/" && pageTitle ? `${pageTitle} — Body Café Co.` : (path === "/"
-        ? "Seven everyday essentials"
+        ? (document.body.dataset.contentFocus === "1" ? "It’s not the list. It’s the logic." : "Seven everyday essentials")
         : path
             .split("/")
             .filter(Boolean)

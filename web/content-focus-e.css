@@ -1,0 +1,5 @@
+/* Body Café Co. — "Part 2 · Content Focus" (?design=e&part=5). Only what its new copy needs; everything else is Part 2. */
+body[data-content-focus="1"] .p2-hero2c .cf-hero-lede { max-width: 44ch; margin: 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.45; text-align: left; color: var(--p2-text); }
+body[data-content-focus="1"] .p2-hero2c .p2-actions { margin-top: clamp(14px, calc(var(--p2-hc-u, 1svh) * 3), 28px); }
+body[data-content-focus="1"] .cf-support { font-weight: 500; }
+body[data-content-focus="1"] .cf-q { margin: 18px 0 4px; font: 600 15px/1.3 "Aileron", sans-serif; color: var(--p2-ink); }
