@@ -55,7 +55,7 @@
       '<ul class="p2-mnav-products">' + ctx.published.map(function (p) { return '<li><a href="' + href(p) + '"><i class="p2-dot" style="--cap:' + esc(p.color) + '"></i>' + esc(p.name) + "</a></li>"; }).join("") + "</ul></nav>";
     var foot =
       '<footer class="p2-foot"><div class="p2-foot-caps" aria-hidden="true">' + ctx.catalog.map(function (p) { return capImg(p); }).join("") + "</div>" +
-      '<div class="p2-foot-grid" style="--p2-foot-cols:' + (2 + care.length) + '"><div class="p2-foot-brand"><img src="/web/media/brand-original.svg" alt="Body Café Co." width="456" height="443"><p>Seven supplements.<br>One uncompromising standard.</p></div>' +
+      '<div class="p2-foot-grid" style="--p2-foot-cols:' + (2 + care.length) + '"><div class="p2-foot-brand"><img src="/web/media/brand-original.svg" alt="Body Café Co." width="456" height="443"><p>Seven supplements.<br>No ingredient without a reason.</p></div>' +
       '<div><h2>Shop</h2><a href="/shop">All seven</a>' + ctx.published.map(function (p) { return '<a href="' + href(p) + '">' + esc(p.name) + "</a>"; }).join("") + "</div>" +
       '<div><h2>Know more</h2><a href="/standards">Our standard</a><a href="/learn">Learn</a><a href="/story">Story</a><a href="/reports">Look up a lot</a></div>' +
       care.map(function (g) { return "<div><h2>" + g.group + "</h2>" + g.items.map(function (x) { return '<a href="' + x[1] + '">' + x[0] + "</a>"; }).join("") + "</div>"; }).join("") + "</div>" +
@@ -103,7 +103,7 @@
   }
 
   /* ---------- Home building blocks, shared by Part 2 and Part 3 ---------- */
-  var CLAIMS = ["FSSAI licensed", "GMP-certified production", "Third-party tested", "Lot number on every pack", "Free delivery from ₹1,499"];
+  var CLAIMS = ["FSSAI licensed", "GMP-certified production", "Independent testing from batch one", "Lot number on every pack", "Free delivery from ₹1,499"];
   // The four rules, with what is in place now and what is still coming (never shown as done before it is).
   var PROOF = [
     ["Right form", "Named on every label.", "In place"],
@@ -165,8 +165,9 @@
       /* 1 · Hero: words first, then the seven caps in a row. No bottle. */
       '<section class="p2-hero2c" data-p2-hero aria-labelledby="p2-hero-t">' +
       '<div class="p2-wrap p2-hc-copy"><p class="p2-eyebrow">The Super Sevens</p>' +
-      '<h1 id="p2-hero-t"><b>Seven supplements.</b> <span><b>One uncompromising</b> <b>standard.</b></span></h1>' +
-      '<div class="p2-actions"><a class="p2-btn" href="/shop">Shop the seven</a><a class="p2-link" href="/standards">Our standard</a></div></div>' +
+      '<h1 id="p2-hero-t"><b>It’s not the list.</b> <span><b>It’s the</b> <b>logic.</b></span></h1>' +
+      '<p class="p2-lede">Seven supplements. Every ingredient, form and amount chosen by a formulation scientist, for a reason you can read.</p>' +
+      '<div class="p2-actions"><a class="p2-btn" href="/shop">Shop the seven</a><a class="p2-link" href="/standards">See the reasoning</a></div></div>' +
       '<ul class="p2-hc-caps" aria-label="The seven">' + list.map(function (p, i) {
         return '<li style="--cap:' + esc(p.color) + ';--i:' + i + '"><a href="' + href(p) + '" data-p2-pick data-name="' + esc(p.name) + '" data-fact="' + fact(ctx, p) + '" data-color="' + esc(p.color) + '" aria-label="' + esc(p.name) + '">' + capImg(p) + '<span class="p2-hc-name">' + esc(p.name) + "</span></a></li>";
       }).join("") + "</ul>" +
@@ -176,11 +177,11 @@
       '<div class="p2-claims" role="list" aria-label="Our assurances"><div class="p2-claims-track">' + [0, 1].map(function (k) { return CLAIMS.map(function (c, i) { return '<span role="listitem"' + (k ? ' aria-hidden="true"' : "") + '><i style="--cap:' + esc((ctx.catalog[i] || {}).color || "#999") + '"></i>' + c + "</span>"; }).join(""); }).join("") + "</div></div>" +
 
       /* 3 · Products: seven colour columns; one opens at a time */
-      '<section class="p2-section p2-seven3" aria-labelledby="p2-seven-t"><div class="p2-wrap"><header class="p2-sec-head"><div><p class="p2-eyebrow">The range</p><h2 id="p2-seven-t">Seven. Each in its own colour.</h2></div>' +
+      '<section class="p2-section p2-seven3" aria-labelledby="p2-seven-t"><div class="p2-wrap"><header class="p2-sec-head"><div><p class="p2-eyebrow">The range</p><h2 id="p2-seven-t">Seven formulas. Nothing along for the ride.</h2></div>' +
       '<a class="p2-link" href="/shop">Shop all seven</a></header>' + columns(ctx, list) + "</div></section>" +
 
       /* 5 · Lot record */
-      '<section class="p2-lotband" aria-labelledby="p2-lot-t"><div class="p2-wrap p2-lotband-in"><div><p class="p2-eyebrow">Lot record</p><h2 id="p2-lot-t">Every bottle carries a lot number.</h2><p>Choose your product by its cap, type the number from the pack, and see the record for that batch.</p></div>' + lotForm(ctx, { light: true }) + "</div></section>" +
+      '<section class="p2-lotband" aria-labelledby="p2-lot-t"><div class="p2-wrap p2-lotband-in"><div><p class="p2-eyebrow">Lot record</p><h2 id="p2-lot-t">Your bottle has a paper trail.</h2><p>Every pack carries a Batch No. Choose your product by its cap, type the number, and see the record for that batch.</p></div>' + lotForm(ctx, { light: true }) + "</div></section>" +
 
       /* 6 · Testimonials */
       (rv.length ? '<section class="p2-section p2-voices" aria-labelledby="p2-voices-t"><div class="p2-wrap"><header class="p2-sec-head"><div><p class="p2-eyebrow">Reviews</p><h2 id="p2-voices-t">In their words.</h2></div>' + reviewSummary(reviewsFor()) + "</header>" +
@@ -219,7 +220,7 @@
   /* ---------- Shop: the seven, one quiet filter ---------- */
   function shopPage(ctx, title) {
     var list = ctx.published; // All seven in one grid; no format tabs.
-    return '<div class="p2-shop">' + head({ eyebrow: "The Super Sevens", title: title || "Shop the seven.", lede: "Seven supplements, each made to one uncompromising standard.", art: scene("home-hero-lineup", { eager: true, alt: "The seven Body Café Co. bottles in a row" }) }) +
+    return '<div class="p2-shop">' + head({ eyebrow: "The Super Sevens", title: title || "Shop the seven.", lede: "Five single-ingredient formulas. Two deliberate combinations. Every amount printed.", art: scene("home-hero-lineup", { eager: true, alt: "The seven Body Café Co. bottles in a row" }) }) +
       '<div class="p2-wrap">' +
       '<ul class="p2-tiles p2-tiles-shop">' + list.map(function (p) { return tile(ctx, p); }).join("") + "</ul>" +
       '<p class="p2-shop-note">All prices are MRP, inclusive of all taxes. Delivery is free on orders of ₹1,499 or more.</p></div></div>';
@@ -246,20 +247,21 @@
   function dlist(rows) { rows = rows.filter(function (x) { return x[1]; }); return rows.length ? '<dl class="p2-dl">' + rows.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : ""; }
   /* Product page copy (6 Nov 2026): short, and only what the label states. "claim" is the front-of-pack claim as printed;
      the points are label facts. How long a bottle lasts is worked out from servings_per_pack and added after them. */
+  var WHY = {"iron-bisglycinate": "<p><strong>Why this ingredient.</strong> Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg.</p><p><strong>Why this form.</strong> Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.</p><p><strong>Why this amount.</strong> 29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in.</p><p><strong>The decision.</strong> Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away.</p>", "vitamin-d3-k2": "<p><strong>Why this ingredient.</strong> Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.</p><p><strong>Why this form.</strong> D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.</p><p><strong>Why this amount.</strong> 600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose.</p><p><strong>The decision.</strong> A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal.</p>", "omega-3-fish-oil": "<p><strong>Why this ingredient.</strong> EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.</p><p><strong>Why this form.</strong> Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.</p><p><strong>Why this amount.</strong> 800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.</p><p><strong>The decision.</strong> One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.</p>", "l-theanine": "<p><strong>Why this ingredient.</strong> L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient.</p><p><strong>Why this form.</strong> Free-form L-theanine, on its own, so the amount you take is the amount on the label.</p><p><strong>Why this amount.</strong> 200 mg, an amount used in published studies.</p><p><strong>The decision.</strong> One ingredient, one number, one capsule. No blend to divide the dose.</p>", "myo-d-chiro-inositol": "<p><strong>Why this ingredient.</strong> Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.</p><p><strong>Why this form.</strong> Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.</p><p><strong>Why this amount.</strong> 2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1.</p><p><strong>The decision.</strong> A deliberate combination where the ratio is the formula, so the ratio goes on the front.</p>", "creatine-chews": "<p><strong>Why this ingredient.</strong> Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day.</p><p><strong>Why this form.</strong> Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing.</p><p><strong>Why this amount.</strong> 3 g per serving, within the 3–5 g daily intake commonly used in research.</p><p><strong>The decision.</strong> We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving.</p>", "psyllium-husk": "<p><strong>Why this ingredient.</strong> Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes.</p><p><strong>Why this form.</strong> Whole psyllium husk in capsules: the same ingredient, with nothing to stir.</p><p><strong>Why this amount.</strong> 2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers.</p><p><strong>The decision.</strong> Isabgol, measured. Always with a full glass of water.</p>"}; // copy demo, pending approval
   var PDP = {
-    "omega-3-fish-oil": { desc: "Fish oil concentrate from anchovy, with its omega-3 kept in triglyceride form.",
+    "omega-3-fish-oil": { desc: "1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA.",
       points: ["800 mg omega-3 per softgel", "400 mg EPA and 300 mg DHA", "Triglyceride form, from anchovy"] },
-    "vitamin-d3-k2": { desc: "Three nutrients in one softgel: vitamin D3, vitamin K2 (MK-7) and omega-3 from anchovy fish oil.",
+    "vitamin-d3-k2": { desc: "600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel.",
       points: ["600 IU vitamin D3", "55 mcg vitamin K2 as MK-7", "200 mg omega-3: 100 mg EPA and 75 mg DHA"] },
-    "creatine-chews": { desc: "Creatine monohydrate in an orange chewable tablet. No powder, no shaker.",
+    "creatine-chews": { desc: "3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker.",
       points: ["3,000 mg creatine monohydrate per serving", "Orange-flavoured chewable tablets"] },
-    "iron-bisglycinate": { desc: "Iron as Ferrochel® ferrous bisglycinate chelate: iron bound to glycine.",
+    "iron-bisglycinate": { desc: "29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.",
       points: ["29 mg elemental iron per capsule", "Ferrochel® chelate, neutrally charged", "Vegetarian capsule"] },
-    "l-theanine": { desc: "L-Theanine, an amino acid naturally found in green tea.",
+    "l-theanine": { desc: "200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule.",
       points: ["200 mg L-Theanine per capsule", "Vegetarian capsule"] },
-    "myo-d-chiro-inositol": { desc: "Myo-Inositol and D-Chiro Inositol in a 40:1 ratio, with each amount printed on the label.",
+    "myo-d-chiro-inositol": { desc: "2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front.",
       points: ["2,000 mg Myo-Inositol per serving", "50 mg D-Chiro Inositol per serving", "40:1 Myo-to-D-Chiro ratio"] },
-    "psyllium-husk": { desc: "Psyllium husk (isabgol) in capsules: a measured amount of fibre, with nothing to stir.",
+    "psyllium-husk": { desc: "2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble.",
       points: ["2,000 mg psyllium husk per serving", "1,578 mg dietary fibre, of which 1,362 mg soluble", "Vegetarian capsules"] },
   };
   part2("product", function (ctx, p) {
@@ -282,14 +284,14 @@
       return '<div class="p2-fbt-i' + (current ? " is-current" : "") + '" style="--cap:' + esc(x.color) + '">' + (current ? "" : '<label class="p2-fbt-check"><input type="checkbox" checked data-p2-fbt="' + esc(x.id) + '" data-price="' + (+x.price || 0) + '"' + (L.avail(x) ? "" : " disabled") + '><span class="sr-only">Add ' + esc(x.name) + "</span></label>") +
         '<a class="p2-fbt-img" href="' + href(x) + '">' + bottle(x, { alt: "" }) + '</a><div class="p2-fbt-t"><a href="' + href(x) + '">' + esc(x.name) + " · " + esc(formatOf(ctx, x)) + "</a><b>" + ctx.money(x.price) + "</b><small>Inclusive of all taxes</small></div></div>";
     };
-    var fbt = pair.length ? '<section class="p2-section p2-fbt" data-p2-fbt-box data-self="' + esc(p.id) + '" data-self-price="' + (+p.price || 0) + '"><div class="p2-wrap"><div class="p2-fbt-card"><header><h2>Frequently bought with</h2><p>Complete your routine with products that sit well together</p></header>' +
+    var fbt = pair.length ? '<section class="p2-section p2-fbt" data-p2-fbt-box data-self="' + esc(p.id) + '" data-self-price="' + (+p.price || 0) + '"><div class="p2-wrap"><div class="p2-fbt-card"><header><h2>Build your routine</h2><p>Each one has its own timing. Follow every label.</p></header>' +
       '<div class="p2-fbt-grid"><div class="p2-fbt-cur"><p class="p2-fbt-k">Current item selected</p>' + fbtItem(p, true) + '</div><span class="p2-fbt-plus" aria-hidden="true">+</span><div class="p2-fbt-list">' + pair.map(function (x) { return fbtItem(x); }).join("") + "</div></div>" +
       '<div class="p2-fbt-foot"><p>Your total: <b data-p2-fbt-total>' + ctx.money([p].concat(pair).reduce(function (n, x) { return n + (+x.price || 0); }, 0)) + '</b></p><button type="button" class="p2-btn" data-p2-fbt-add>Add these to your bag</button></div></div></div></section>' : "";
 
     var pc = PDP[p.id] || {}, lasts = serves ? "One bottle lasts " + serves + " days" : "";
     var points = (pc.points || []).concat(lasts ? [lasts] : []);
     var sections = [
-      ["Description", '<h3 class="p2-acc-h">' + esc(c.headline || p.name) + "</h3>" + para(pc.desc || clean(c.intro || p.description))],
+      ["Description", '<h3 class="p2-acc-h">' + esc(c.headline || p.name) + "</h3>" + para(pc.desc || clean(c.intro || p.description)) + (WHY[p.id] || "")],
       ["Key Benefits", (front.claim ? '<p class="p2-claim">' + esc(front.claim) + "</p>" : "") +
         (points.length ? '<ul class="p2-ticks">' + points.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "")],
       ["Direction for Use", '<ol class="p2-slots">' + slots.map(function (s) { var t = String(timing[s[0]] || ""), best = /^best/i.test(t); return '<li class="' + (best ? "is-best" : "") + '"><span>' + s[1] + "</span><b>" + (best ? "Best" : t ? "Also fine" : "—") + "</b></li>"; }).join("") + "</ol>" +
@@ -332,7 +334,7 @@
       (rv.length ? '<ul class="p2-reviews-list">' + rv.slice(0, 3).map(function (r) { return reviewCard(ctx, r); }).join("") + "</ul>" : "") + '<p class="p2-fine">' + REVIEW_RULE + "</p></div></section>" +
 
       /* Recommended for you */
-      sec({ cls: "p2-others", eyebrow: "Recommended for you", title: "The rest of the seven." }, '<ul class="p2-mini">' + others.map(function (o) { return '<li style="--cap:' + esc(o.color) + '"><a href="' + href(o) + '"><span class="p2-mini-media">' + bottle(o, { alt: "" }) + '</span><span class="p2-mini-name"><i class="p2-dot"></i>' + esc(o.name) + '</span><span class="p2-mini-price">' + ctx.money(o.price) + "</span></a></li>"; }).join("") + "</ul>") +
+      sec({ cls: "p2-others", eyebrow: "Also in the range", title: "The rest of the seven." }, '<ul class="p2-mini">' + others.map(function (o) { return '<li style="--cap:' + esc(o.color) + '"><a href="' + href(o) + '"><span class="p2-mini-media">' + bottle(o, { alt: "" }) + '</span><span class="p2-mini-name"><i class="p2-dot"></i>' + esc(o.name) + '</span><span class="p2-mini-price">' + ctx.money(o.price) + "</span></a></li>"; }).join("") + "</ul>") +
       "</article>";
   });
 
@@ -521,12 +523,12 @@
     var dose = function (p) { var s = std(p.id); return s ? s.key + (s.serving ? " · " + s.serving : "") : p.subtitle; };
     var art = { form: RULE_ART[0], dose: RULE_ART[1], tested: RULE_ART[2], hidden: RULE_ART[3] };
     var block = function (id, title, text, extra) { return '<section class="p2-std" id="' + id + '"><div class="p2-std-copy"><figure class="p2-std-art">' + scene(art[id]) + "</figure><h2>" + title + "</h2><p>" + text + "</p></div><div class=\"p2-std-proof\">" + extra + "</div></section>"; };
-    return '<div class="p2-standards">' + head({ eyebrow: "Our standard", title: "One uncompromising standard.", lede: "Seven supplements. Four rules we never bend. This is what they look like on every bottle.", art: scene("blogs/blog_evidence", { eager: true }) }) +
+    return '<div class="p2-standards">' + head({ eyebrow: "Our standard", title: "Every formula is four decisions.", lede: "Which ingredient. Which form. How much. And what, if anything, it belongs with. Here are our answers, bottle by bottle.", art: scene("blogs/blog_evidence", { eager: true }) }) +
       '<div class="p2-wrap p2-std-wrap">' +
-      block("form", "Right form", "We choose the form of each ingredient first, then name it on the label. Form decides what you are actually taking, so you should never have to guess it.", rows(form)) +
-      block("dose", "Exact dose, stated", "The amount in every serving is printed on the label and on this site. Where two ingredients work together, you see both numbers.", rows(dose)) +
-      block("tested", "Every lot tested", "Every product is made in GMP-certified facilities and third-party tested. Every lot carries its own number, so a record can be traced to the batch in your hand.",
-        '<ul class="p2-std-status"><li><span class="is-done">In place</span>GMP-certified production for all seven</li><li><span class="is-done">In place</span>Third-party testing for every product</li><li><span class="is-done">In place</span>A lot number printed on every pack</li><li><span class="is-soon">Coming</span>Certificates and lot reports published on this site</li></ul><a class="p2-link" href="/reports">Look up your lot</a>') +
+      block("form", "Form first", "The same nutrient comes in different forms, and the form decides what you are actually taking. We choose it first, then name it on the label: iron as Ferrochel® bisglycinate, K2 as MK-7, omega-3 as triglycerides.", rows(form)) +
+      block("dose", "Amounts that mean something", "We print the amount you actually get: 29 mg of elemental iron, not the weight of the compound; the omega-3, not just the oil. Where two ingredients share a product, there is a reason, and you see both numbers.", rows(dose)) +
+      block("tested", "Checked, not assumed", "Every product is made in GMP-certified facilities against a written specification. From our first production batch, independent laboratories test each batch, and its Batch No. links the result to the bottle in your hand.",
+        '<ul class="p2-std-status"><li><span class="is-done">In place</span>GMP-certified production for all seven</li><li><span class="is-soon">From batch one</span>Independent testing by Choksi Laboratories and Eurofins</li><li><span class="is-done">In place</span>A lot number printed on every pack</li><li><span class="is-soon">Coming</span>Certificates and lot reports published on this site</li></ul><a class="p2-link" href="/reports">Look up your lot</a>') +
       block("hidden", "Nothing hidden", "Full ingredients, nutrition information, directions, storage and cautions for every product, on the pack and on its page here. No proprietary blends.",
         '<ul class="p2-std-links">' + list.map(function (p) { return '<li><a href="' + href(p) + '"><i class="p2-dot" style="--cap:' + esc(p.color) + '"></i>' + esc(p.name) + "<span>Read the label</span></a></li>"; }).join("") + "</ul>") +
       '<p class="p2-std-licence">Body Café Co. · FSSAI Lic. No. 10726994000121</p></div></div>';
@@ -548,15 +550,15 @@
   var FILM = '<video class="p2-film" muted loop playsinline autoplay preload="metadata" poster="/web/media/e/story-dawn.jpg" aria-hidden="true"><source src="/web/media/e/story-dawn.mp4" type="video/mp4"></video>';
   function storyPage(ctx) {
     var list = ctx.published;
-    return '<div class="p2-story">' + head({ eyebrow: "Our story", title: "You should always know what you’re being served.", lede: "A good café shows you the menu. So do we." }) +
+    return '<div class="p2-story">' + head({ eyebrow: "Our story", title: "The questions come before the capsule.", lede: "Meet Dr. Nayan Solanki, our Scientific Founder & Formulation Lead, and the decisions behind our seven." }) +
       // Until the seven-from-above image is delivered, the opener is twelve seconds of dawn on water (owner's footage, 4 Nov 2026).
       '<figure class="p2-wide">' + (scene("story-seven", { eager: true, alt: "The seven bottles from above" }) || FILM) + "</figure>" +
-      '<div class="p2-wrap p2-prose"><h2>The front of the label shouts. The back whispers.</h2><p>Most supplement labels lead with promises and leave the facts in small print: which form the ingredient is in, how much you actually get, and when to take it. We turned that around.</p>' +
-      "<h2>Seven, and only seven.</h2><p>We make seven supplements. Each one is an everyday essential, and each one is made the same way. A small range lets us hold every product to the same standard, and say exactly what is in it.</p>" +
+      '<div class="p2-wrap p2-prose"><h2>A longer list isn’t a better formula.</h2><p>Supplements are often judged by how many ingredients they contain. But a list can’t tell you why each ingredient was chosen, whether the amount means anything, or whether the ingredients work well together. Sometimes one ingredient is right. Sometimes a combination is justified. The reason is what matters.</p>' +
+      "<h2>Trained where every milligram must be justified.</h2><p>Dr. Nayan Solanki holds a PhD in Industrial Pharmacy. His career has been in pharmaceutical development: formulating medicines, preparing the chemistry, manufacturing and controls (CMC) work that regulators review, validating processes and scaling products up for manufacture. In that work, every ingredient, dose and form is a decision you must be able to explain. He brought the same discipline to Body Café Co., personally selecting the ingredient, form, dose and combination in each of our seven products.</p>" +
       '<h2>One colour each.</h2><p>Every product has its own cap colour, so you can tell them apart at a glance on a shelf, in a bag, or half-awake in the morning.</p><ul class="p2-capnames">' + list.map(function (p) { return '<li><a href="' + href(p) + '">' + capImg(p) + "<span>" + esc(p.name) + "</span></a></li>"; }).join("") + "</ul>" +
       '<figure class="p2-prose-art">' + (scene("about/about_curiosity", { alt: "" }) || '<img src="/web/media/e/story-sky.webp" alt="" width="2560" height="1460" loading="lazy" decoding="async">') + "</figure>" +
-      '<h2>How we work.</h2><ol class="p2-rules"><li><strong>Name the form.</strong> On the front, every time.</li><li><strong>State the amount.</strong> Per serving, in plain numbers.</li><li><strong>Make the routine obvious.</strong> When to take it, with what, and what to avoid.</li><li><strong>Test every lot.</strong> And print the lot number on every pack.</li></ol>' +
-      '<div class="p2-actions p2-actions-left"><a class="p2-btn" href="/shop">Shop the seven</a><a class="p2-link" href="/standards">Our standard</a></div></div></div>';
+      '<h2>Four questions, asked of every formula.</h2><ol class="p2-rules"><li><strong>Is this the right ingredient?</strong> Chosen for the purpose, never to lengthen a label.</li><li><strong>Is this the right form?</strong> The form decides what you actually take.</li><li><strong>Is this the right amount?</strong> Set against a reference, printed per serving.</li><li><strong>Does it belong with anything else?</strong> Combined only when there’s a reason.</li></ol>' +
+      '<div class="p2-actions p2-actions-left"><a class="p2-btn" href="/shop">Shop the seven</a><a class="p2-link" href="/standards">See the reasoning</a></div></div></div>';
   }
   part2("story", storyPage);
   part2("about", storyPage);
@@ -565,11 +567,11 @@
   /* ---------- Learn (index only; guides keep their own pages) ---------- */
   part2("learn", function (ctx, seg) {
     if (seg) return LEARN_BASE.apply(this, arguments);
-    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a tested sample."]];
+    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Same nutrient, different form: why the full name matters."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a tested sample."]];
     var gArt = ["blogs/blog_label", "blogs/blog_forms", "blogs/blog_reports"];
-    return '<div class="p2-learn">' + head({ eyebrow: "Learn", title: "Read the label. Know the form.", lede: "Short, plain guides to the seven and to reading any supplement label.", art: scene("learn/learn_hub", { eager: true }) }) +
+    return '<div class="p2-learn">' + head({ eyebrow: "Learn", title: "Ask what’s in it. Then ask why.", lede: "Plain-English guides to each of the seven, and to the questions worth asking of any supplement label.", art: scene("learn/learn_hub", { eager: true }) }) +
       sec({ eyebrow: "The seven", title: "One guide for each." }, '<ul class="p2-guides">' + ctx.published.map(function (p) { return '<li style="--cap:' + esc(p.color) + '"><a href="/learn/' + p.id + '"><span class="p2-guide-media">' + world(p) + '<span class="p2-guide-bottle">' + bottle(p, { alt: "" }) + '</span></span><span class="p2-guide-copy"><strong>' + esc(p.name) + "</strong><span>" + esc(copy(p.id).headline || p.subtitle || "") + "</span></span></a></li>"; }).join("") + "</ul>") +
-      sec({ eyebrow: "Guides", title: "Reading any label." }, '<ul class="p2-articles">' + guides.map(function (g, i) { return '<li><a href="' + g[0] + '"><figure>' + scene(gArt[i]) + "</figure><strong>" + g[1] + "</strong><span>" + g[2] + "</span></a></li>"; }).join("") + "</ul>") + "</div>";
+      sec({ eyebrow: "Guides", title: "The label, decoded." }, '<ul class="p2-articles">' + guides.map(function (g, i) { return '<li><a href="' + g[0] + '"><figure>' + scene(gArt[i]) + "</figure><strong>" + g[1] + "</strong><span>" + g[2] + "</span></a></li>"; }).join("") + "</ul>") + "</div>";
   });
 
   /* ---------- Help (index only; articles and forms keep their own pages) ---------- */
