@@ -1217,7 +1217,7 @@ async function render(scroll = true) {
     document.title = shown
       ? `${shown.seo_title || shown.name} — Body Café Co.`
       : path !== "/" && pageTitle ? `${pageTitle} — Body Café Co.` : (path === "/"
-        ? "Seven everyday essentials"
+        ? "It’s not the list. It’s the logic. — Body Café Co."
         : path
             .split("/")
             .filter(Boolean)

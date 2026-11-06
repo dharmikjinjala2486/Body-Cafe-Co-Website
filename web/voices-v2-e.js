@@ -22,7 +22,7 @@
   var SAMPLES = [
     ['iron-bisglycinate', 5, 'The iron number, right on the front', 'I used to work out how much iron I was actually getting. Here it is 29 mg, written plainly, and the label says to take it in the morning away from milk.', 'Ananya', 'Pune', 'Oct 2026'],
     ['l-theanine', 5, 'Simple label, simple routine', 'One capsule, 200 mg, with or without food. Nothing to decode, which is exactly what I wanted.', 'Meera', 'Ahmedabad', 'Oct 2026'],
-    ['vitamin-d3-k2', 4, 'Glad it says non-veg up front', 'The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.', 'Nisha', 'Delhi', 'Oct 2026'],
+    ['vitamin-d3-k2', 4, 'Glad it says non-veg up front', 'The softgel contains fish oil and gelatin, and the pack says so clearly, right on the front.', 'Nisha', 'Delhi', 'Oct 2026'],
     ['creatine-chews', 4, 'Orange, not chalk', 'Two chews, easy to remember. Tastes like orange rather than powder. I would like a bigger pack.', 'Kabir', 'Mumbai', 'Sep 2026'],
     ['omega-3-fish-oil', 5, 'Every number is there', 'EPA and DHA are both listed, with the total. The softgels are easy to swallow.', 'Rohan', 'Bengaluru', 'Sep 2026'],
     ['myo-d-chiro-inositol', 5, 'The 40:1 ratio, stated', 'I had read about the ratio before buying. Both amounts are on the label, so I did not have to guess.', 'Fatima', 'Hyderabad', 'Sep 2026'],
