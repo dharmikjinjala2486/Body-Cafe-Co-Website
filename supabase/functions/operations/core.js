@@ -1,11 +1,12 @@
 import {sanitiseImage} from './media.js';
 import {chatMessages,chatStream,CHAT_LIMITS} from './chat.js';
+import {shipneer,SHIP_ACTIONS,cleanParcel,orderPayload,deliveryDays,stateName,SMALL_BOX,BASE_GRAMS,GRAMS_PER_UNIT,CHECK_TTL,CHECK_LIMIT,TRACK_EVERY} from './shipping.js';
 /* Hosted API migration. Service credentials stay in the function environment. */
 export class ApiError extends Error { constructor(message,status=400,extra){super(message);this.status=status;this.extra=extra||null;} }
 const now=()=>Math.floor(Date.now()/1000), hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 const random=()=>hex(crypto.getRandomValues(new Uint8Array(16)));
 const clean=(x,n=6000)=>{if(typeof x!=='string'||x.length>n)throw new ApiError('Check the text field.');return x.trim();};
-const publicRecord=x=>Object.fromEntries(Object.entries(x).filter(([k])=>!['internal','internal_notes'].includes(k)));
+const publicRecord=x=>Object.fromEntries(Object.entries(x).filter(([k])=>!['internal','internal_notes','shipneer'].includes(k)));
 export function allocate(amount,weights){let total=weights.reduce((a,b)=>a+b,0);if(!weights.length)return [];if(!total)return [amount,...weights.slice(1).map(()=>0)];let out=weights.map(w=>Math.floor(amount*w/total)),left=amount-out.reduce((a,b)=>a+b,0);let indexes=weights.map((w,i)=>({i,r:amount*w%total})).sort((a,b)=>b.r-a.r||a.i-b.i);for(let k=0;k<left;k++)out[indexes[k].i]++;return out;}
 export function salesReport(orders,payments,query){
  const today=new Date(Date.now()+19800000).toISOString().slice(0,10),end=query.get('to')||today,start=query.get('from')||new Date(Date.parse(today)-29*86400000).toISOString().slice(0,10),group=query.get('group')||'day',pid=query.get('product')||'';
@@ -76,6 +77,11 @@ export function createHandler(config){
  async function remote(path,{method='GET',body,headers={}}={}){const r=await fetcher(base+path,{method,headers:{...serviceHeaders,...headers},body:body===undefined?undefined:JSON.stringify(body)});if(!r.ok){let e;try{e=await r.json();}catch{e={};}if(r.status>=500)throw new ApiError('The store service is temporarily unavailable.',503);throw new ApiError(e.message||e.msg||e.error_description||'That action could not be completed.',r.status===401||r.status===403?403:400);}return r.status===204?null:r.json();}
  const db=(table,query='',method='GET',body)=>remote('/rest/v1/bcc_'+table+'?'+query,{method,body,headers:method==='POST'?{Prefer:'return=representation'}:{}});
  const rpc=(name,body)=>remote('/rest/v1/rpc/bcc_'+name,{method:'POST',body});
+ // Shipneer (shipping.js): courier prices, booking, labels and tracking for staff; a pincode check for shoppers.
+ const fail=(m,status,extra)=>new ApiError(m,status,extra),ship=shipneer({key:config.shipneerKey,pickupId:config.shipneerPickupId||undefined,pickupPin:config.shipneerPickupPin||undefined,fetcher,fail,wait:config.wait});
+ const shipAct=(actor,action,id,d={})=>rpc('ship_action',{p_actor:actor,p_action:action,p_id:id,p_data:d});
+ // Booked parcels not checked in the last hour are checked when staff open the portal (the hosted API has no background clock).
+ async function shipTick(){if(!ship.configured)return 0;let done=0;for(const x of await shipAct('shipneer','due','',{every:TRACK_EVERY,limit:5})||[]){let t;try{t=await ship.track(x.ordref,20000);}catch{break;}await shipAct('shipneer','track',x.id,{ordref:x.ordref,...t});done++;}return done;}
  const signingKey=crypto.subtle.importKey('raw',new TextEncoder().encode(config.serviceKey),{name:'HMAC',hash:'SHA-256'},false,['sign','verify']);
  const encode=x=>btoa(JSON.stringify(x)).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');
  async function seal(value){const part=encode(value);return part+'.'+hex(await crypto.subtle.sign('HMAC',await signingKey,new TextEncoder().encode(part)));}
@@ -95,7 +101,7 @@ export function createHandler(config){
   const decoded=orders.map(o=>({...o.data,id:o.id,user_id:o.user_id,state:o.state,created:o.created,payment:payments.find(p=>p.order_id===o.id)?.status||'pending',allocations:reservations.filter(r=>r.order_id===o.id)}));
   const summary={on_hand:0,available:0,reserved:0,quarantined:0,damaged:0,expired:0,low_stock_batches:0,expiring_batches:0};
   for(let b of batches){b.meta={damaged:0,returned_pending:0,low_stock_threshold:5,...b.meta};let allocations=reservations.filter(r=>r.batch===b.id);b.held=allocations.filter(r=>r.state==='held').reduce((a,r)=>a+r.quantity,0);b.committed=allocations.filter(r=>r.state==='consumed'&&['paid','packing'].includes(orders.find(o=>o.id===r.order_id)?.state)).reduce((a,r)=>a+r.quantity,0);b.reserved=b.held+b.committed;b.damaged=b.meta.damaged;b.on_hand=b.available+b.reserved+b.damaged+b.meta.returned_pending;b.expired=b.expiry<=now()?b.on_hand:0;b.sellable=b.state==='released'&&b.proof&&!b.expired?b.available:0;b.quarantined=b.state==='quarantined'&&!b.expired?b.available+b.reserved:0;b.low_stock=b.state==='released'&&!b.expired&&b.sellable<=b.meta.low_stock_threshold;b.expiring_soon=b.expiry>now()&&b.expiry<=now()+60*86400;b.sold=allocations.filter(r=>r.state==='consumed').reduce((a,r)=>a+r.quantity,0);for(let k of['on_hand','reserved','quarantined','damaged','expired'])summary[k]+=b[k];summary.available+=b.sellable;summary.low_stock_batches+=Number(b.low_stock);summary.expiring_batches+=Number(b.expiring_soon);}
-  return {products:cat.products,flags:cat.flags,orders:decoded,payments,batches,inventory_summary:summary,cases:cases.map(c=>({...c.data,id:c.id,user_id:c.user_id,created:c.created})),reviews:reviews.map(r=>({...r.data,id:r.id,user_id:r.user_id,product:r.product,order_id:r.order_id})),review_media:media.filter(m=>m.kind==='review').map(m=>({...m,...m.data})),review_reports:[],events:[],addresses:[],lot_reports:await Promise.all(reports.map(r=>reportView(r,true))),movements,questions,sales:salesReport(orders,payments,new URLSearchParams()),help_feedback:[],learn_feedback:[],integrations:['Payments','Shipping','Email & messaging','Amazon'].map(name=>({id:name.toLowerCase(),name,state:'not_connected',description:'Provider credentials and a verified integration are required.'}))};
+  return {products:cat.products,flags:cat.flags,orders:decoded,payments,batches,inventory_summary:summary,cases:cases.map(c=>({...c.data,id:c.id,user_id:c.user_id,created:c.created})),reviews:reviews.map(r=>({...r.data,id:r.id,user_id:r.user_id,product:r.product,order_id:r.order_id})),review_media:media.filter(m=>m.kind==='review').map(m=>({...m,...m.data})),review_reports:[],events:[],addresses:[],lot_reports:await Promise.all(reports.map(r=>reportView(r,true))),movements,questions,sales:salesReport(orders,payments,new URLSearchParams()),help_feedback:[],learn_feedback:[],integrations:['Payments','Shipping','Email & messaging','Amazon'].map(name=>name==='Shipping'&&ship.configured?{id:'shipping',name,state:'connected',description:'Shipneer: on each paid order, get courier prices, choose one and book. Print the label from the order; tracking is checked about once an hour while the portal is in use, and delivered orders close themselves.'}:{id:name.toLowerCase(),name,state:'not_connected',description:name==='Shipping'?'Manual tracking can be recorded. Add SHIPNEER_API_KEY to the function secrets to book couriers.':'Provider credentials and a verified integration are required.'})};
  }
  async function lotLookup(product,entered){let cat=await catalog();if(!cat.products.some(p=>p.id===product))throw new ApiError('Choose a product.');let lot=entered.trim().toUpperCase();if(!lot||lot.length>40||!/^[\x21-\x7e ]+$/.test(lot))throw new ApiError('Enter the lot number printed on your pack.');let batches=await db('batches'),b=batches.find(b=>b.id.toUpperCase()===lot),baseResult={entered,searched:lot,changed:entered!==lot,product,lot,url:'/reports/'+product+'/'+encodeURIComponent(lot),demo:lot.startsWith('DEMO-')};if(!b)return {...baseResult,state:'not_found'};if(b.product!==product)return {...baseResult,state:'other_product',other_products:[b.product]};let records=await db('lot_reports','product=eq.'+encodeURIComponent(product)+'&lot=eq.'+encodeURIComponent(b.id)+'&state=in.(published,superseded,withdrawn)&order=version.desc'),current=records.find(r=>r.state==='published'),withdrawn=records.find(r=>r.state==='withdrawn'&&r.published);return {...baseResult,state:'match',availability:current?'published':withdrawn?'withdrawn':'unavailable',current:current?await reportView(current):null,history:records.filter(r=>r.published).map(r=>({id:r.id,version:r.version,state:r.state,published:r.published,superseded:r.superseded,withdrawn:r.withdrawn,withdrawn_reason:r.withdrawn_reason,change_note:r.record.change_note})),notices:[],manufactured:b.meta.manufactured||null,expiry:b.expiry,lab_document_connected:!!current};}
  // Pack saving (owner, 4 Nov 2026): on one product line, 2 bottles save 5% and 3 or more save 10%, rounded to the rupee. Same rule as web/packs-e.js.
@@ -107,7 +113,7 @@ export function createHandler(config){
   if((data.method||'prepaid')!=='prepaid')throw new ApiError('Cash on delivery isn’t offered. Choose online payment.',409);
   const c=data.contact&&typeof data.contact==='object'?data.contact:{};
   const contact={name:text(c.name,2,120,'Enter your full name.'),mobile:String(c.mobile||'').replace(/\D/g,''),email:typeof c.email==='string'?c.email.trim():'',
-   address:text(c.address,5,300,'Enter your full delivery address.'),city:text(c.city,2,80,'Enter your city.'),state:text(c.state,2,80,'Enter your state.'),pincode:String(c.pincode||'').trim()};
+   address:text(c.address,5,300,'Enter your full delivery address.'),city:text(c.city,2,80,'Enter your city.'),state:stateName(text(c.state,2,80,'Enter your state.'),(m,st,extra)=>new ApiError(m,st,extra)),pincode:String(c.pincode||'').trim()};
   if(!/^[6-9][0-9]{9}$/.test(contact.mobile))throw new ApiError('Enter a valid 10-digit mobile number.');
   if(!/^[1-9][0-9]{5}$/.test(contact.pincode))throw new ApiError('Enter a valid 6-digit pincode.');
   if(contact.email&&(contact.email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)))throw new ApiError('Enter a valid email address, or leave it blank.');
@@ -159,7 +165,19 @@ export function createHandler(config){
     if(path==='/health')return json({ok:true,mode:'hosted-preview',release:config.release||'development'});
     if(path==='/session'||path==='/admin/session')return json({user,csrf:s.csrf,preview:true,...(path==='/admin/session'?{configured:(await db('admin')).length===1}:{})});
     if(path==='/catalog')return json(await catalog());
-    if(path==='/admin'){mustAdmin();return json(await snapshot());}
+    if(path==='/admin'){mustAdmin();const tick=shipTick().catch(()=>0);if(globalThis.EdgeRuntime?.waitUntil)globalThis.EdgeRuntime.waitUntil(tick);return json(await snapshot());}
+    if(path==='/delivery'){
+     // Product-page pincode check: Shipneer's free rate check (no order is created), cached per pincode for a day, with an hourly allowance per visitor.
+     const pin=(u.searchParams.get('pincode')||'').trim(),rule={fee:75,free_from:1499};
+     if(!/^[1-9][0-9]{5}$/.test(pin))throw new ApiError('Enter a 6-digit pincode that doesn’t start with 0.',400,{field:'pincode'});
+     if(!ship.configured)return json({pincode:pin,status:'unknown',...rule});
+     const hit=await rpc('delivery_hit',{p_key:user.id,p_pincode:pin,p_limit:CHECK_LIMIT});
+     if(hit.cached)return json({...hit.cached,...rule});
+     if(!hit.ok)throw new ApiError('You’ve checked a lot of pincodes. Please try again in a while.',429);
+     let status;try{status=(await ship.rates(pin,BASE_GRAMS+GRAMS_PER_UNIT,SMALL_BOX,1000)).length?'yes':'no';}catch(e){if(e instanceof ApiError&&/destination_pin|pincode/i.test(e.message))status='no';else return json({pincode:pin,status:'unknown',...rule});} // Shipneer slow or down: don't cache, don't guess
+     const answer={pincode:pin,status,...(status==='yes'?{days:deliveryDays(pin)}:{})};await rpc('delivery_save',{p_pincode:pin,p_data:answer,p_ttl:CHECK_TTL});return json({...answer,...rule});
+    }
+    if(/^\/admin\/shipping-label\/BCC-[A-F0-9]{8}$/.test(path)){mustAdmin();const id=path.split('/').pop(),o=(await db('orders','id=eq.'+id))[0],ref=o?.data?.shipneer?.ordref;if(!ref)throw new ApiError('This order has no Shipneer booking.',404);const file=await ship.label(ref);headers.set('Content-Type',file.mime);headers.set('Content-Disposition','inline; filename="label-'+id+'"');return new Response(file.bytes,{headers});}
     if(path==='/admin/sales'){mustAdmin();let [orders,payments]=await Promise.all([db('orders'),db('payments')]);return json(salesReport(orders,payments,u.searchParams));}
     if(path==='/lots')return json(await lotLookup(u.searchParams.get('product')||'',u.searchParams.get('lot')||''));
     if(path==='/lots/archive'){let cat=await catalog(),product=u.searchParams.get('product')||'',term=(u.searchParams.get('q')||'').trim().toUpperCase();if(product&&!cat.products.some(p=>p.id===product))throw new ApiError('Choose a product.');let batches=await db('batches'),records=await db('lot_reports');let items=batches.filter(b=>(!product||b.product===product)&&b.id.toUpperCase().includes(term)).map(b=>{let r=records.filter(r=>r.product===b.product&&r.lot===b.id&&r.published&&['published','withdrawn'].includes(r.state)).sort((a,b)=>b.version-a.version)[0];return {product:b.product,lot:b.id,availability:r?.state||'unavailable',version:r?.version||null,published:r?.published||null,withdrawn:r?.withdrawn||null,manufactured:b.meta.manufactured||null,expiry:b.expiry,demo:b.id.startsWith('DEMO-'),notice:false};});return json({items,total:items.length});}
@@ -321,6 +339,23 @@ export function createHandler(config){
    if(path.startsWith('/admin/')){mustAdmin();let action=path.split('/').pop();if(['request','approve','lot_submit','lot_notice_request','lot_notice_retire_request','lot_withdraw_request'].includes(action))throw new ApiError('Endpoint removed.',404);if(action==='lot_update')data.record=validateReport(data.record);if(action==='product_save'){validateProduct(data.product);if(!(await db('products','id=eq.'+encodeURIComponent(data.product.id))).length)throw new ApiError('Adding products is disabled. Choose an existing product.',403);for(let g of data.product.gallery)if(g.src.startsWith('/api/catalog-media/')&&!(await db('media','id=eq.'+g.src.split('/').pop())).length)throw new ApiError('An uploaded image is missing.');}
     if(action==='order_update'&&!['note','packing','shipped','delivered','cancelled'].includes(data.state))throw new ApiError('Choose a supported fulfillment action.');
     if(action==='refund')throw new ApiError('Live refunds require a connected payment provider.',503);
+    if(SHIP_ACTIONS.includes(action)){
+     const id=String(data.id||''),act=(a,d={})=>shipAct(user.id,a,id,d);if(!/^BCC-[A-F0-9]{8}$/.test(id))throw new ApiError('Order not found.',404);
+     if(!ship.configured)throw new ApiError('Shipneer is not connected. Add SHIPNEER_API_KEY to the server settings.',503);
+     if(action==='ship_quote'){const b=await act('quote_begin'),parcel=cleanParcel(data,b.order.items,fail),q=await ship.addOrder(orderPayload(id,b.order,parcel,b.created,b.ship_id,ship.pickupId,fail));await act('quote_save',{ship_id:b.ship_id,parcel,couriers:q.couriers,chargeable_weight:q.chargeable_weight});return json({ok:true,couriers:q.couriers});}
+     if(action==='ship_book'){
+      // book_begin leaves a two-minute claim on the order, so a second click can't book a second parcel while Shipneer answers.
+      const b=await act('book_begin',{code:String(data.code||'')});let booked;
+      try{booked=await ship.book(b.ship_id,b.courier.code);}catch(e){await act('book_fail').catch(()=>{});throw e;}
+      const done={ordref:booked.ordref,awb:booked.awb,courier:booked.courier||b.courier.name,charge:booked.charge,rate:b.courier.rate};
+      try{await act('book_done',done);}catch{try{await act('book_done',done);}catch{throw new ApiError(`Booked with ${done.courier} (tracking ${done.awb}, Shipneer reference ${done.ordref}), but the order could not be updated. Do not book again: note these details and contact support.`,502);}}
+      return json({ok:true,awb:done.awb,courier:done.courier});
+     }
+     if(action==='ship_track'){const o=(await db('orders','id=eq.'+id))[0],ref=o?.data?.shipneer?.ordref;if(!o)throw new ApiError('Order not found.',404);if(!ref)throw new ApiError('This order has no Shipneer booking.',409);return json(await act('track',{ordref:ref,...await ship.track(ref)}));}
+     if(action==='ship_cancel'){const remarks=String(data.remarks||''),b=await act('cancel_begin',{remarks});await ship.cancel(b.ordref);await act('cancel_done',{remarks,ordref:b.ordref});return json({ok:true});}
+     await act('restock',{remarks:String(data.remarks||'')});return json({ok:true});
+    }
+    if(action==='order_update'&&['cancelled','shipped','packing'].includes(data.state)&&(await db('orders','id=eq.'+encodeURIComponent(String(data.id||''))))[0]?.data?.shipneer?.ordref)throw new ApiError('This order has a Shipneer booking. Cancel the booking first.',409);
     if(action==='batch_adjust')return json(await rpc('adjust_stock',{p_batch:data.id,p_quantity:data.quantity,p_kind:data.kind||'count_correction',p_reason:data.remarks,p_actor:user.id,p_request:data.request_id}));
     return json(await rpc('admin_action',{p_actor:user.id,p_action:action,p_data:data}));
    }

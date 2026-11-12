@@ -27,3 +27,11 @@ Live API checks confirmed health, seven-product catalog, configured admin login 
 ## Remaining commerce launch work
 
 Payment/refund, phone OTP, courier and external messaging providers remain unconnected. No simulated OTP is exposed online. Hosted ordering remains paused. Returns inspection, partial refunds, warehouse transfers, settlement/profit accounting and automated production backups remain outside this release. Free-plan quotas and inactivity pausing apply; no paid plan or resources were purchased. Keep external backups before using real operational records.
+
+## 12 November 2026: store assistant and Shipneer
+
+- Release `20261112-shipneer`. `/api/chat` (store assistant) needs the `ANTHROPIC_API_KEY` function secret; without it the route answers 503.
+- Shipneer courier booking is in the hosted API (`supabase/functions/operations/shipping.js`, migration `202611120002_shipping.sql`): `/api/delivery` pincode check, staff `ship_quote`, `ship_book`, `ship_track`, `ship_cancel`, `ship_restock`, and `/api/admin/shipping-label/<order>`. It needs the `SHIPNEER_API_KEY` function secret (`SHIPNEER_PICKUP_ID` and `SHIPNEER_PICKUP_PIN` are optional). Without the key couriers are recorded by hand and the pincode check answers "unknown". There is no background clock: booked parcels are re-checked about hourly when staff open the portal.
+- Deploy: `supabase functions deploy operations --no-verify-jwt --use-api`. The live database has no migration history recorded, so do not run `supabase db push` (it would replay every migration); apply a new migration file with `supabase db query --remote -f <file>`.
+- Tests: `node deploy/supabase-tests/test-shipping.mjs` runs the handler against an in-memory Postgres with a stand-in for Shipneer.
+
