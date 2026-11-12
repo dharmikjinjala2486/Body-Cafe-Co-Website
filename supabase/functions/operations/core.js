@@ -1,4 +1,5 @@
 import {sanitiseImage} from './media.js';
+import {chatMessages,chatStream,CHAT_LIMITS} from './chat.js';
 /* Hosted API migration. Service credentials stay in the function environment. */
 export class ApiError extends Error { constructor(message,status=400,extra){super(message);this.status=status;this.extra=extra||null;} }
 const now=()=>Math.floor(Date.now()/1000), hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
@@ -180,6 +181,16 @@ export function createHandler(config){
    if(['/admin/catalog-image','/admin/lot-image','/admin-lot-document','/case-media','/review-media'].includes(path))return json(await upload(req,path,u.searchParams,user));
    let length=Number(req.headers.get('Content-Length')||0);if(length>65536)throw new ApiError('Request too large.',413);
    const rawText=await req.text();if(new TextEncoder().encode(rawText).length>65536)throw new ApiError('Request too large.',413);const data=JSON.parse(rawText);if(!data||typeof data!=='object'||Array.isArray(data))throw new ApiError('Invalid request.');
+   if(path==='/chat'){
+    // Store assistant (chat.js). Guests may ask; each question counts against an hourly limit per visitor and a daily limit for the store.
+    if(!config.anthropicKey)throw new ApiError('The assistant is not switched on yet.',503);
+    const fail=(m,status)=>new ApiError(m,status),messages=chatMessages(data.messages,fail);
+    const ip=(req.headers.get('x-forwarded-for')||'').split(',')[0].trim()||'unknown',ipKey='ip-'+hex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(ip+'|'+config.serviceKey))).slice(0,32);
+    const hit=await rpc('chat_hit',{p_keys:[user.id,ipKey],p_hour_limit:CHAT_LIMITS.perHour,p_day_limit:CHAT_LIMITS.perDay});
+    if(!hit||!hit.ok)throw new ApiError(hit&&hit.reason==='day'?'The assistant has answered all it can today. Please contact us instead.':'You have asked a lot in the last hour. Please try again a little later.',429);
+    const stream=await chatStream({fetcher,key:config.anthropicKey,url:config.chatUrl,messages,products:(await catalog()).products,fail});
+    headers.set('Content-Type','text/plain; charset=utf-8');headers.set('X-Accel-Buffering','no');return new Response(stream,{headers});
+   }
    if(path==='/admin/login'){
     const row=(await db('admin'))[0];if(!row||String(data.username||'').trim().toLowerCase()!==row.username)throw new ApiError('Check your username and password.',403);
     let account=await remote('/auth/v1/admin/users/'+row.auth_user_id),auth;try{auth=await remote('/auth/v1/token?grant_type=password',{method:'POST',body:{email:account.email,password:data.password}});}catch{throw new ApiError('Check your username and password.',403);}if(auth.user.id!==row.auth_user_id)throw new ApiError('Admin access required.',403);

@@ -15,10 +15,12 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
 
 try:
-    from app import media, lots, account, support, operations, commerce
+    from app import media, lots, account, support, operations, commerce, shipping, chat
+    from app.shipping import state_name as shipping_state_name
     from app.errors import Error
 except ImportError:  # run as a script: python3 app/server.py
-    import media, lots, account, support, operations, commerce
+    import media, lots, account, support, operations, commerce, shipping, chat
+    from shipping import state_name as shipping_state_name
     from errors import Error
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -39,7 +41,7 @@ BUNDLES = [
 LEARN_TOPIC=re.compile(r'/learn(/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?')
 CASE_TOPIC=re.compile(r'/(learn(/[a-z0-9-]{1,60})?|story|about|help/[a-z]{2,20}/[a-z0-9-]{2,60}|policies/(shipping|returns|cancellation|privacy|terms)|products/[a-z0-9-]{1,60})(#[a-z0-9-]{1,40})?')
 
-class Store(commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, account.AccountMixin, support.SupportMixin):
+class Store(shipping.ShippingMixin, commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, account.AccountMixin, support.SupportMixin):
     def __init__(self, path):
         self.path = str(path)
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -160,6 +162,7 @@ class Store(commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, 
         for key in ['name','address','city','state']:
             if not isinstance(contact.get(key),str) or not 2<=len(contact[key].strip())<=200:raise Error('Complete your delivery address.')
         if contact.get('email') and not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',str(contact['email'])):raise Error('Enter a valid email address or leave it blank.')
+        contact['state']=shipping_state_name(contact['state'])  # couriers need a real state; checkout offers a list
         gst=str(data.get('gstin','')).upper().strip()
         if gst and (not re.fullmatch(r'[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]',gst) or not str(data.get('legal_name','')).strip()):raise Error('Enter a valid GSTIN and legal name.')
         if data.get('method','prepaid')!='prepaid':raise Error('COD is pending a policy decision and is unavailable in this preview.',409)
@@ -278,7 +281,7 @@ class Store(commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, 
         self.require(s,'admin')
         with self.db() as c:
             self.expire(c)
-            if action in ('product_save','product_publish','product_archive','batch_create','batch_adjust','batch_release','order_update','flags_update'):
+            if action in ('product_save','product_publish','product_archive','batch_create','batch_adjust','batch_release','order_update','flags_update')+shipping.SHIP_ACTIONS:
                 return self.operations_dispatch(c,s,action,data)
             if action=='quarantine':
                 batch=c.execute('SELECT * FROM batches WHERE id=?',(data.get('batch'),)).fetchone()
@@ -323,7 +326,7 @@ class Store(commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, 
                 return d
             result={t:[decode(r) for r in rows(t)] for t in ['orders','cases','addresses','reviews']}
             if not privileged:
-                for item in result['orders']:item.pop('internal_notes',None)
+                for item in result['orders']:item.pop('internal_notes',None);item.pop('shipneer',None)
                 for item in result['cases']:item.pop('internal',None)
             result['flags']=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0])
             if privileged:
@@ -788,6 +791,22 @@ class Handler(BaseHTTPRequestHandler):
         body=json.dumps(data).encode();self.send_response(status);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('X-Content-Type-Options','nosniff')
         if cookie:self.send_header('Set-Cookie',f'{getattr(self,"cookie_name","bcc_session")}={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800')
         self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+    def chat(self,s,data,cookie):
+        # Store assistant (app/chat.py): the answer is streamed to the browser as plain text while Claude writes it.
+        key=os.getenv('ANTHROPIC_API_KEY','')
+        if not key:raise Error('The assistant is not switched on yet.',503)
+        msgs=chat.messages(data.get('messages'));chat.allow(s['id'])
+        pieces=chat.stream(msgs,self.store.products(),key);first=next(pieces,'')  # an upstream failure raises here, before any header is sent
+        self.send_response(200);self.send_header('Content-Type','text/plain; charset=utf-8');self.send_header('Cache-Control','no-store');self.send_header('X-Content-Type-Options','nosniff');self.send_header('Connection','close')
+        if cookie:self.send_header('Set-Cookie',f'bcc_session={cookie}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800')
+        self.end_headers()
+        try:
+            for piece in self._chain(first,pieces):self.wfile.write(piece.encode());self.wfile.flush()
+        except (BrokenPipeError,ConnectionResetError):pass
+    @staticmethod
+    def _chain(first,rest):
+        yield first
+        yield from rest
     def api(self):
         path=urlparse(self.path).path;sid=''
         self.cookie_name='bcc_admin' if path.startswith('/api/admin') or ('bcc_admin=' in self.headers.get('Cookie','') and (path.startswith('/api/catalog-media/') or path.startswith('/api/lots/documents/') or path.startswith('/api/review-media/'))) else 'bcc_session'
@@ -828,6 +847,7 @@ class Handler(BaseHTTPRequestHandler):
                 if length<0 or length>(65536 if path.startswith('/api/admin/') else 20000):raise Error('Request too large or invalid.',413)
                 data=json.loads(self.rfile.read(length) or b'{}')
                 if not isinstance(data,dict):raise Error('Invalid request.')
+                if path=='/api/chat':return self.chat(s,data,cookie)
             if self.command=='GET':
                 if path=='/api/session':result={'user':{'id':s['user_id'],'name':s['name'],'role':s['role'],'mobile':s['mobile']},'csrf':s['csrf'],'preview':True}
                 elif path=='/api/admin/session':
@@ -836,6 +856,9 @@ class Handler(BaseHTTPRequestHandler):
                 elif re.fullmatch(r'/api/catalog-media/CM-[0-9a-f]{16}',path):
                     mime,body=self.store.catalog_file(s,path.rsplit('/',1)[1])
                     self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(body)));self.send_header('X-Content-Type-Options','nosniff');self.send_header('Cache-Control','private, no-store');self.end_headers();self.wfile.write(body);return
+                elif path=='/api/delivery':
+                    pin=parse_qs(urlparse(self.path).query).get('pincode',[''])[0]
+                    result={**shipping.delivery_check(s['id'],pin),'fee':account.SHIPPING_RULE['fee'],'free_from':account.SHIPPING_RULE['free_from']}
                 elif path=='/api/catalog':
                     with self.store.db() as c:flags=json.loads(c.execute("SELECT data FROM settings WHERE id='flags'").fetchone()[0])
                     result={'products':self.store.products(),'bundles':BUNDLES,'flags':flags,'preview':True}
@@ -845,6 +868,12 @@ class Handler(BaseHTTPRequestHandler):
                 elif re.fullmatch(r'/api/orders/BCC-[0-9A-F]{8}/cancel-check',path):result=self.store.cancel_check(s,path.split('/')[3])
                 elif re.fullmatch(r'/api/cases/CASE-[0-9A-F]{8}',path):result=self.store.case_view(s,path.split('/')[3])
                 elif path=='/api/account/export':result=self.store.data_export(s)
+                elif re.fullmatch(r'/api/admin/shipping-label/BCC-[0-9A-F]{8}',path):
+                    mime,body=self.store.shipping_label(s,path.rsplit('/',1)[1])
+                    if mime not in ('application/pdf','image/png','image/jpeg','text/html'):mime='application/octet-stream'
+                    self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(body)));self.send_header('X-Content-Type-Options','nosniff')
+                    self.send_header('Content-Security-Policy',"default-src 'none'; img-src 'self' data: https:; style-src 'unsafe-inline' https:; font-src https: data:")
+                    self.send_header('Referrer-Policy','no-referrer');self.send_header('Cache-Control','private, no-store');self.end_headers();self.wfile.write(body);return
                 elif path=='/api/admin/sales':
                     self.store.require(s,'admin')
                     with self.store.db() as c:result=self.store.sales_report(c,parse_qs(urlparse(self.path).query))
@@ -950,6 +979,7 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=4174);parser.add_argument('--db',default=str(ROOT/'.local/preview.sqlite3'));args=parser.parse_args()
     if os.getenv('BCC_MODE','preview')!='preview':raise SystemExit('Live mode is not implemented. Configure real authentication, payment and provider adapters before production.')
     Handler.store=Store(args.db)
+    Handler.store.shipping_scheduler()  # hourly Shipneer tracking checks for booked parcels
     server=ThreadingHTTPServer(('127.0.0.1',args.port),Handler)
     print(f'Body Cafe Co local preview: http://127.0.0.1:{args.port}',flush=True)
     try:server.serve_forever()

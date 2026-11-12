@@ -73,15 +73,18 @@
     const pages = Math.ceil(rows.length / size), active = Math.min(Math.max(1, Number(q().get(key)) || 1), pages);
     const href = p => { const u = new URL(location.href); u.searchParams.set(key, p); return u.pathname + u.search; };
     const cls = headers.map(x => Array.isArray(x) && x[1] === 'num' ? ' class="op-num"' : '');
-    return `<div class="op-table-wrap"><table class="op-table">${opts.caption ? `<caption class="sr-only">${h(opts.caption)}</caption>` : ''}<thead><tr>${headers.map((x, i) => `<th scope="col"${cls[i]}>${Array.isArray(x) ? x[0] : x}</th>`).join('')}</tr></thead><tbody>${rows.slice((active - 1) * size, active * size).map(r => `<tr>${r.map((c, i) => `<td${cls[i]}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${pages > 1 ? `<nav class="op-pagination" aria-label="Pages"><span>${rows.length} records · page ${active} of ${pages}</span><div>${active > 1 ? link('← Previous', href(active - 1)) : ''}${active < pages ? link('Next →', href(active + 1)) : ''}</div></nav>` : `<p class="op-count">${rows.length} record${rows.length === 1 ? '' : 's'}</p>`}`;
+    const labels = headers.map(x => h((Array.isArray(x) ? x[0] : x).replace(/<[^>]*>/g, '')));
+    const start = (active - 1) * size;
+    return `<div class="op-table-wrap${opts.cards ? ' op-cards' : ''}"><table class="op-table">${opts.caption ? `<caption class="sr-only">${h(opts.caption)}</caption>` : ''}<thead><tr>${headers.map((x, i) => `<th scope="col"${cls[i]}>${Array.isArray(x) ? x[0] : x}</th>`).join('')}</tr></thead><tbody>${rows.slice(start, start + size).map((r, n) => { const to = opts.hrefs?.[start + n]; return `<tr${to ? ` class="op-row-link" data-href="${h(to)}"` : ''}>${r.map((c, i) => `<td${cls[i]}${labels[i] ? ` data-label="${labels[i]}"` : ''}>${c}</td>`).join('')}</tr>`; }).join('')}</tbody></table></div>${pages > 1 ? `<nav class="op-pagination" aria-label="Pages"><span>Page ${active} of ${pages}</span><div>${active > 1 ? link('← Previous', href(active - 1)) : ''}${active < pages ? link('Next →', href(active + 1)) : ''}</div></nav>` : ''}`;
   }
-  function filtered(list) {
+  function filtered(list, text = r => JSON.stringify(r)) {
     const search = (q().get('q') || '').trim().toLowerCase(), status = q().get('status') || '';
-    return list.filter(r => (!search || JSON.stringify(r).toLowerCase().includes(search)) && (!status || r.state === status));
+    return list.filter(r => (!search || String(text(r)).toLowerCase().includes(search)) && (!status || r.state === status));
   }
   /* Search + status filter. `extra` adds fields; `clear` lists the query keys this form owns. */
-  function tools({ statuses = [], extra = '', clear = 'q,status,page', exportable = true } = {}) {
-    return `<form class="op-tools" data-op-form="filter" data-clear="${clear}" role="search"><div class="op-field op-tools-search"><label for="op-q">Search</label><input id="op-q" name="q" type="search" placeholder="Name, ID, phone…" value="${h(q().get('q') || '')}"></div>${statuses.length ? select({ name: 'status', label: 'Status', items: [['', 'All statuses'], ...statuses.map(s => [s, s.replaceAll('_', ' ')])], value: q().get('status') || '', id: 'op-status' }) : ''}${extra}<div class="op-tools-actions"><button class="op-btn op-primary" type="submit">Apply</button>${link('Reset', location.pathname)}${exportable ? button('Export CSV', 'export') : ''}</div></form>`;
+  function tools({ statuses = [], extra = '', clear = 'q,status,page', exportable = true, placeholder = 'Search', keep = '', clearHref = location.pathname } = {}) {
+    const dirty = clear.split(',').some(k => q().get(k));
+    return `<form class="op-tools" data-op-form="filter" data-clear="${clear}" role="search">${keep}<div class="op-field op-tools-search"><label for="op-q" class="sr-only">Search</label><input id="op-q" name="q" type="search" placeholder="${h(placeholder)}" value="${h(q().get('q') || '')}" autocomplete="off" data-live-search></div>${statuses.length ? select({ name: 'status', label: 'Status', items: [['', 'All statuses'], ...statuses.map(s => [s, s.replaceAll('_', ' ')])], value: q().get('status') || '', id: 'op-status', attrs: 'data-auto-submit' }) : ''}${extra}<div class="op-tools-actions"><button class="op-btn op-primary sr-only" type="submit" tabindex="-1">Search</button>${dirty ? link('Clear', clearHref, 'op-quiet') : ''}${exportable ? button('Export CSV', 'export', '', 'op-quiet') : ''}</div></form>`;
   }
   function downloadCSV(name, headers, rows) {
     const cell = v => { let t = v != null && typeof v === 'object' ? JSON.stringify(v) : String(v ?? ''); if (/^[=+@\-\t\r]/.test(t)) t = "'" + t; return '"' + t.replaceAll('"', '""') + '"'; };
@@ -132,7 +135,7 @@
     const open = o.cases.filter(x => x.state !== 'resolved'), safety = open.filter(c => c.kind === 'safety');
     const inv = invSummary(o), drafts = o.products.filter(p => p.draft);
     const attention = [
-      ['Orders to fulfil', toFulfil.length, '/ops/orders?status=paid'],
+      ['Orders to ship', toFulfil.length, '/ops/orders?view=ship'],
       ['Open safety cases', safety.length, '/ops/cases?status=open'],
       ['Low-stock batches', inv.low_stock_batches, '/ops/inventory?alert=low'],
       ['Batches expiring within 60 days', inv.expiring_batches, '/ops/inventory?alert=expiring'],
@@ -141,7 +144,7 @@
     ];
     const recent = [...o.orders].sort((a, b) => b.created - a.created).slice(0, 6);
     return metrics([
-      ['Orders to fulfil', fmt(toFulfil.length), 'Paid or packing'],
+      ['Orders to ship', fmt(toFulfil.length), 'Paid, waiting for the courier'],
       ['Open cases', fmt(open.length), safety.length ? `${safety.length} safety priority` : 'No safety cases open', safety.length ? 'warning' : ''],
       ['Available units', fmt(inv.available), `${fmt(inv.reserved)} reserved · ${fmt(inv.quarantined)} quarantined`],
       ['Stock alerts', fmt(inv.low_stock_batches + inv.expiring_batches), `${inv.low_stock_batches} low · ${inv.expiring_batches} expiring`, inv.low_stock_batches + inv.expiring_batches ? 'warning' : ''],
@@ -287,15 +290,16 @@
   function products(o) {
     const id = q().get('product');
     if (id) return productEditor(o, id);
-    const list = filtered(o.products.map(p => ({ ...p, state: p.draft ? 'draft' : p.published ? 'published' : 'hidden' })));
-    return tools({ statuses: ['published', 'draft', 'hidden'] }) + `<section class="op-card op-flush">${table(['Product', 'SKU', ['Price', 'num'], 'Website', 'Images', ''], list.map(p => {
+    const list = filtered(o.products.map(p => ({ ...p, state: p.draft ? 'draft' : p.published ? 'published' : 'hidden' })), p => [p.id, p.name, p.sku, p.category].join(' '));
+    const views = o.batches.map(batchView), stock = id => views.filter(v => v.b.product === id && v.status === 'released').reduce((n, v) => n + num(v.sellable), 0);
+    return tools({ statuses: ['published', 'draft', 'hidden'], placeholder: 'Search product name or SKU' }) + `<section class="op-card op-flush">${table(['Product', 'SKU', ['Price', 'num'], ['In stock', 'num'], 'Website', ''], list.map(p => {
       const img = visibleImages(p.draft?.gallery || p.gallery)[0]?.src || (window.BCCBottleAssets ? window.BCCBottleAssets.url(p.id) : '/web/media/' + p.id + '.webp');
-      return [`<div class="op-product-cell"><img src="${h(img)}" alt=""><div><strong>${h(p.name)}</strong><small>${h(p.id)}</small></div></div>`, h(p.sku || p.id), cash(p.price), `${tag(p.published ? 'Published' : 'Hidden')}${p.draft ? tag('Unpublished changes', 'warning') : ''}`, `${visibleImages(normGallery(p.draft || p, p)).length} shown`, link('Edit', '/ops/products?product=' + encodeURIComponent(p.id), 'op-small', `aria-label="Edit ${h(p.name)}"`)];
-    }), { caption: 'Products', emptyTitle: 'No products match', emptyText: 'Try another filter to find one of the seven products.' })}</section>`;
+      return [`<div class="op-product-cell"><img src="${h(img)}" alt=""><div><strong>${h(p.name)}</strong><small>${h(p.id)}</small></div></div>`, h(p.sku || p.id), cash(p.price), (n => n ? fmt(n) : '<span class="op-bad-text">Out of stock</span>')(stock(p.id)), `${tag(p.published ? 'Published' : 'Hidden')}${p.draft ? tag('Unpublished changes', 'warning') : ''}`, link('Edit', '/ops/products?product=' + encodeURIComponent(p.id), 'op-small', `aria-label="Edit ${h(p.name)}"`)];
+    }), { caption: 'Products', hrefs: list.map(p => '/ops/products?product=' + encodeURIComponent(p.id)), emptyTitle: 'No products match', emptyText: 'Try another filter to find one of the seven products.' })}</section>`;
   }
 
   /* ---------------------------------------------------------------- inventory */
-  const MOVES = { receive: 'Received', opening: 'Opening stock', damage: 'Damaged', write_off: 'Written off', count_correction: 'Count correction', reserve: 'Reserved', unreserve: 'Reservation released', allocate: 'Allocated', ship: 'Shipped', return: 'Returned', release: 'Released', quarantine: 'Quarantined', adjust: 'Adjustment' };
+  const MOVES = { receive: 'Received', opening: 'Opening stock', damage: 'Damaged', write_off: 'Written off', count_correction: 'Count correction', reserve: 'Reserved', unreserve: 'Reservation released', allocate: 'Allocated', ship: 'Shipped (left the warehouse)', unship: 'Booking cancelled (back on the shelf)', return: 'Returned by courier', release: 'Released', quarantine: 'Quarantined', adjust: 'Adjustment' };
   const moveLabel = k => MOVES[k] || String(k || '').replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
   function inventory(o) {
     const p = q(), pf = p.get('product') || '', st = p.get('status') || '', alert = p.get('alert') || '', search = (p.get('q') || '').trim().toLowerCase(), bf = p.get('batch') || '';
@@ -303,9 +307,9 @@
     const views = o.batches.map(batchView).filter(v => (!pf || v.b.product === pf) && (!st || v.status === st) && (!alert || (alert === 'low' ? v.low : v.expiring)) && (!search || JSON.stringify(v.b).toLowerCase().includes(search) || productName(v.b.product).toLowerCase().includes(search)));
     const anyFilter = st || alert || search;
     const opts = o.products.map(x => [x.id, x.name]);
-    const create = `<details class="op-card op-create" ${p.has('new') ? 'open' : ''}><summary><span>＋ Add a batch</span></summary><form data-op-form="batch"><div class="op-form-grid">${select({ name: 'product', label: 'Product', items: opts, value: pf })}${field({ name: 'id', label: 'Batch / lot number', attrs: 'maxlength="40" spellcheck="false" autocapitalize="characters"', required: true })}${field({ name: 'manufactured', label: 'Manufacturing date', type: 'date' })}${field({ name: 'expiry', label: 'Expiry date', type: 'date', required: true })}${field({ name: 'quantity', label: 'Opening quantity (units)', value: 0, type: 'number', attrs: 'min="0" step="1" inputmode="numeric"', required: true })}${field({ name: 'low_stock_threshold', label: 'Low-stock alert at (units)', value: 20, type: 'number', attrs: 'min="0" step="1" inputmode="numeric"' })}${field({ name: 'location', label: 'Storage location', value: 'Main warehouse', attrs: 'maxlength="120"' })}${area({ name: 'remarks', label: 'Opening-stock note', rows: 2, attrs: 'minlength="5" maxlength="1000"', required: true })}</div><p class="op-help">New batches start quarantined. Release them once the batch evidence is checked.</p>${formEnd('Create batch')}</form></details>`;
+    const create = !p.has('new') ? '' : `<details class="op-card op-create" open><summary><span>Add a batch</span></summary><form data-op-form="batch"><div class="op-form-grid">${select({ name: 'product', label: 'Product', items: opts, value: pf })}${field({ name: 'id', label: 'Batch / lot number', attrs: 'maxlength="40" spellcheck="false" autocapitalize="characters"', required: true })}${field({ name: 'manufactured', label: 'Manufacturing date', type: 'date' })}${field({ name: 'expiry', label: 'Expiry date', type: 'date', required: true })}${field({ name: 'quantity', label: 'Opening quantity (units)', value: 0, type: 'number', attrs: 'min="0" step="1" inputmode="numeric"', required: true })}${field({ name: 'low_stock_threshold', label: 'Low-stock alert at (units)', value: 20, type: 'number', attrs: 'min="0" step="1" inputmode="numeric"' })}${field({ name: 'location', label: 'Storage location', value: 'Main warehouse', attrs: 'maxlength="120"' })}${area({ name: 'remarks', label: 'Opening-stock note', rows: 2, attrs: 'minlength="5" maxlength="1000"', required: true })}</div><p class="op-help">New batches start quarantined. Release them once the batch evidence is checked.</p>${formEnd('Create batch')}</form></details>`;
     const alerts = (inv.low_stock_batches || inv.expiring_batches) ? `<div class="op-alerts">${inv.low_stock_batches ? `<a class="op-alert" href="/ops/inventory?alert=low"><strong>${inv.low_stock_batches}</strong> low-stock batch${inv.low_stock_batches === 1 ? '' : 'es'} →</a>` : ''}${inv.expiring_batches ? `<a class="op-alert" href="/ops/inventory?alert=expiring"><strong>${inv.expiring_batches}</strong> expiring within 60 days →</a>` : ''}</div>` : '';
-    const filters = tools({ statuses: ['released', 'quarantined', 'expired'], clear: 'q,status,product,alert,page,mpage,batch', extra: select({ name: 'product', label: 'Product', items: [['', 'All products'], ...opts], value: pf, id: 'op-inv-product' }) + select({ name: 'alert', label: 'Alerts', items: [['', 'Any'], ['low', 'Low stock'], ['expiring', 'Expiring ≤ 60 days']], value: alert, id: 'op-inv-alert' }) });
+    const filters = tools({ statuses: ['released', 'quarantined', 'expired'], clear: 'q,status,product,alert,page,mpage,batch', extra: select({ name: 'product', label: 'Product', items: [['', 'All products'], ...opts], value: pf, id: 'op-inv-product', attrs: 'data-auto-submit' }) + select({ name: 'alert', label: 'Alerts', items: [['', 'Any'], ['low', 'Low stock'], ['expiring', 'Expiring ≤ 60 days']], value: alert, id: 'op-inv-alert', attrs: 'data-auto-submit' }), placeholder: 'Search batch or product' });
     const groups = o.products.filter(x => !pf || x.id === pf).map(prod => {
       const bs = views.filter(v => v.b.product === prod.id).sort((a, b) => num(a.b.expiry) - num(b.b.expiry));
       if (!bs.length && anyFilter) return '';
@@ -337,18 +341,78 @@
   }
 
   /* ---------------------------------------------------------------- orders */
+
+  /* ---------------------------------------------------------------- Shipneer courier booking */
+  const shipConnected = o => (o.integrations || []).some(i => i.id === 'shipping' && i.state === 'connected');
+  function shipBlock(order, o) {
+    if (!shipConnected(o)) return '';
+    const sn = order.shipneer || {}, units = (order.items || []).reduce((a, i) => a + num(i.quantity), 0);
+    const parcel = sn.parcel || { weight_g: 100 + 150 * Math.max(units, 1), length: 20, width: 15, height: 10 };
+    if (sn.ordref) {
+      const ev = order.tracking_events || [];
+      return `<h2>Courier</h2>${order.state === 'shipped' && !sn.returned ? notice('Booked. Print the label and hand the parcel to the courier.') : ''}<dl class="op-dl"><div><dt>Booked with</dt><dd><strong>${h(sn.courier)}</strong> · ${cash(sn.charge)} <small class="op-muted">${when(sn.booked)}</small></dd></div><div><dt>Tracking number</dt><dd>${h(sn.awb || '—')}</dd></div><div><dt>Status</dt><dd>${tag(order.tracking_status || 'Booked', 'info')} <small class="op-muted">${sn.tracking_checked ? 'checked ' + when(sn.tracking_checked) : 'not checked yet'}</small></dd></div></dl>${ev.length ? `<ol class="op-timeline">${ev.slice(0, 8).map(e => `<li>${tag(e.note, 'neutral')}<span>${e.at ? when(e.at) : h(e.text)}</span>${e.location ? `<p>${h(e.location)}</p>` : ''}</li>`).join('')}</ol>` : ''}<div class="op-row-actions">${link('Print label ↗', '/api/admin/shipping-label/' + encodeURIComponent(order.id), '', 'target="_blank" rel="noopener"')}${button('Refresh tracking', 'ship-track', order.id)}</div>${sn.returned && order.state === 'shipped' ? `<div class="op-divider"></div>${notice('<strong>The courier is returning this parcel.</strong> When it arrives, check it and put it back in stock.', 'danger')}<form data-op-form="ship-restock" data-id="${h(order.id)}">${area({ name: 'remarks', label: 'Parcel condition', rows: 2, attrs: 'minlength="5" maxlength="1000"', required: true, help: 'Units go back to their batches; the order is cancelled with a refund to make.' })}${formEnd('Restock returned parcel', 'op-danger')}</form>` : ''}${order.state === 'shipped' && !sn.returned ? `<details class="op-ship-cancel"><summary>Cancel this booking</summary><form data-op-form="ship-cancel" data-id="${h(order.id)}">${area({ name: 'remarks', label: 'Why are you cancelling it?', rows: 2, attrs: 'minlength="5" maxlength="1000"', required: true })}<p class="op-help">Only works before the courier picks it up. The order goes back to packing.</p>${formEnd('Cancel booking')}</form></details>` : ''}<div class="op-divider"></div>`;
+    }
+    if (!['paid', 'packing'].includes(order.state)) return '';
+    const fresh = sn.couriers && sn.quoted && Date.now() / 1000 - sn.quoted < 6 * 3600;
+    const small = units <= 2, std = { weight_g: 100 + 150 * Math.max(units, 1), length: small ? 15 : 20, width: small ? 10 : 15, height: small ? 8 : 10 };
+    const p0 = sn.parcel || std;
+    const dims = `<div class="op-form-grid op-ship-dims">${field({ name: 'weight_g', label: 'Weight (g)', value: p0.weight_g, type: 'number', attrs: 'min="10" max="30000" step="1" inputmode="numeric"', required: true })}${field({ name: 'length', label: 'Length (cm)', value: p0.length, type: 'number', attrs: 'min="1" max="150" step="1"', required: true })}${field({ name: 'width', label: 'Width (cm)', value: p0.width, type: 'number', attrs: 'min="1" max="150" step="1"', required: true })}${field({ name: 'height', label: 'Height (cm)', value: p0.height, type: 'number', attrs: 'min="1" max="150" step="1"', required: true })}</div>`;
+    const quote = `<form data-op-form="ship-quote" data-id="${h(order.id)}"><details class="op-ship-more"><summary>Parcel: ${fmt(p0.weight_g)} g, ${p0.length} × ${p0.width} × ${p0.height} cm · change</summary>${dims}</details>${formEnd(fresh ? 'Refresh prices' : 'Get courier prices', fresh ? '' : 'op-primary')}</form>`;
+    const pick = fresh ? `<form data-op-form="ship-book" data-id="${h(order.id)}"><fieldset class="op-ship-list"><legend>Choose a courier <small class="op-muted">charged as ${h(sn.chargeable_weight)} kg · prices include GST</small></legend>${sn.couriers.map((x, i) => `<label class="op-ship-opt"><input type="radio" name="code" value="${h(x.code)}" required><span>${h(x.name)}${i === 0 ? ' <small class="op-tag op-tag-success">Cheapest</small>' : ''}</span><strong>${x.rate == null ? '—' : '₹' + Number(x.rate).toFixed(2)}</strong></label>`).join('')}</fieldset>${formEnd('Book selected courier')}</form><div class="op-divider"></div>` : '';
+    return `<h2>Courier</h2>${fresh ? '' : `<p class="op-muted">Get prices from Shipneer, then choose a courier.</p>`}${pick}${quote}`;
+  }
+  const ORDER_VIEWS = [
+    ['ship', 'To ship', x => ['paid', 'packing'].includes(x.state)],
+    ['shipped', 'On the way', x => x.state === 'shipped'],
+    ['delivered', 'Delivered', x => x.state === 'delivered'],
+    ['all', 'All', () => true],
+  ];
+  const itemsLine = items => { const it = items || [], first = it[0]; if (!first) return '—'; return h(first.name) + (first.quantity > 1 ? ' × ' + fmt(first.quantity) : '') + (it.length > 1 ? ` <span class="op-muted">+ ${it.length - 1} more</span>` : ''); };
+  function orderView(o) {
+    const v = q().get('view');
+    if (ORDER_VIEWS.some(x => x[0] === v)) return v;
+    if (q().get('status') || q().get('q')) return 'all';
+    return o.orders.some(ORDER_VIEWS[0][2]) ? 'ship' : 'all';
+  }
+  function orderList(o) {
+    const view = orderView(o), test = ORDER_VIEWS.find(x => x[0] === view)[2];
+    const counts = Object.fromEntries(ORDER_VIEWS.map(([k, , f]) => [k, o.orders.filter(f).length]));
+    const tabs = `<nav class="op-seg op-order-tabs" aria-label="Order lists">${ORDER_VIEWS.map(([k, label]) => `<a href="/ops/orders${k === 'ship' ? '?view=ship' : '?view=' + k}" ${k === view ? 'aria-current="page" class="is-on"' : ''}>${label}${k !== 'all' && k !== 'delivered' ? ` <b>${fmt(counts[k])}</b>` : ''}</a>`).join('')}</nav>`;
+    const list = filtered([...o.orders].filter(test).sort((a, b) => view === 'ship' ? a.created - b.created : b.created - a.created), x => [x.id, x.contact?.name, x.contact?.mobile, x.contact?.email, x.contact?.city, x.contact?.pincode, x.tracking, x.provider, ...(x.items || []).map(i => i.name)].join(' '));
+    const statuses = view === 'all' ? ['pending', 'paid', 'packing', 'shipped', 'delivered', 'cancelled', 'expired'] : [];
+    const search = tools({ statuses, placeholder: 'Search order number, name, phone or city', keep: `<input type="hidden" name="view" value="${h(view)}">`, clear: 'q,status,page', clearHref: '/ops/orders?view=' + view });
+    const empties = { ship: ['Nothing to ship', 'New paid orders appear here, oldest first.'], shipped: ['No parcels on the way', 'Booked parcels appear here until they’re delivered.'], delivered: ['No deliveries yet', 'Delivered orders appear here.'], all: ['No orders match', 'Try another search.'] }[view];
+    const courier = x => x.shipneer?.returned && x.state === 'shipped' ? '<small class="op-bad-text">Coming back to us</small>' : x.shipneer?.ordref ? `<small>${h(x.provider)} · ${h(x.tracking_status || 'Booked')}</small>` : x.provider ? `<small>${h(x.provider)}</small>` : '';
+    return tabs + search + `<section class="op-card op-flush">${table(['Order', 'Customer', 'Items', ['Total', 'num'], 'Status'], list.map(x => [
+      `<a class="op-row-main" href="/ops/orders?order=${encodeURIComponent(x.id)}"><strong>${h(x.id)}</strong></a><small>${when(x.created)}</small>`,
+      `<strong>${h(x.contact?.name || '—')}</strong><small>${h([x.contact?.city, x.contact?.pincode].filter(Boolean).join(' · '))}</small>`,
+      itemsLine(x.items),
+      `<strong>${cash(x.total)}</strong>`,
+      `${tag(x.state)}${courier(x)}`,
+    ]), { caption: 'Orders', cards: true, hrefs: list.map(x => '/ops/orders?order=' + encodeURIComponent(x.id)), emptyTitle: empties[0], emptyText: empties[1] })}</section>`;
+  }
   function orders(o) {
     const id = q().get('order'), order = o.orders.find(x => x.id === id);
     if (id && !order) return empty('Order not found', 'It may have been removed or the link is incomplete.', link('← All orders', '/ops/orders'));
-    if (order) {
-      const pay = o.payments.find(p => p.order_id === order.id);
-      const canRefund = order.state === 'cancelled' && pay && pay.status === 'captured' && !['refunded', 'refunded_preview'].includes(order.refund);
-      const actions = [['note', 'Add a note'], ...(order.state === 'paid' ? [['packing', 'Mark packing']] : []), ...(['paid', 'packing'].includes(order.state) ? [['shipped', 'Record shipment']] : []), ...(order.state === 'shipped' ? [['delivered', 'Mark delivered']] : []), ...(['pending', 'paid', 'packing'].includes(order.state) ? [['cancelled', 'Cancel order']] : [])];
-      const c = order.contact || {};
-      return `<div class="op-subnav">${link('← All orders', '/ops/orders', 'op-quiet')}</div><div class="op-two op-two-wide"><section class="op-card"><div class="op-card-title"><h2>${h(order.id)}</h2>${tag(order.state)}</div>${table(['Item', ['Qty', 'num'], ['Unit price', 'num'], ['Line total', 'num']], order.items.map(i => [h(i.name), fmt(i.quantity), cash(i.unit_price), cash(i.unit_price * i.quantity)]), { size: 100, pageKey: 'ip' })}<dl class="op-dl"><div><dt>Total</dt><dd><strong>${cash(order.total)}</strong>${order.discount ? ` · discount ${cash(order.discount)}` : ''}${order.shipping ? ` · shipping ${cash(order.shipping)}` : ''}</dd></div><div><dt>Payment</dt><dd>${tag(pay?.status || 'unknown')}${order.refund && order.refund !== 'none' ? ' ' + tag('Refund: ' + order.refund, 'danger') : ''}</dd></div><div><dt>Customer</dt><dd>${h(c.name)} · ${h(c.mobile)}${c.email ? ' · ' + h(c.email) : ''}</dd></div><div><dt>Address</dt><dd>${h([c.address, c.city, c.state, c.pincode].filter(Boolean).join(', '))}</dd></div><div><dt>Courier / tracking</dt><dd>${h(order.provider || 'Unassigned')} / ${h(order.tracking || '—')}</dd></div><div><dt>Allocated batches</dt><dd>${(order.allocations || []).map(a => `${h(a.batch)} × ${fmt(a.quantity)} <small class="op-muted">${h(a.state)}</small>`).join('<br>') || '—'}</dd></div></dl><h3 class="op-h3">Customer timeline</h3><ol class="op-timeline">${(order.history || []).map(x => `<li>${tag(x.state)}<span>${when(x.at)}</span>${x.note ? `<p>${h(x.note)}</p>` : ''}</li>`).join('')}</ol><h3 class="op-h3">Internal notes</h3>${(order.internal_notes || []).map(x => `<p class="op-note">${h(x.text)}<small>${when(x.at)}</small></p>`).join('') || '<p class="op-muted">No internal notes.</p>'}</section><section class="op-card"><h2>Next step</h2><form data-op-form="order" data-id="${h(order.id)}">${select({ name: 'state', label: 'Action', items: actions, wide: true })}<div class="op-form-grid">${field({ name: 'provider', label: 'Courier', value: order.provider || '', attrs: 'maxlength="80"' })}${field({ name: 'tracking', label: 'Tracking number', value: order.tracking || '', attrs: 'maxlength="80"' })}</div>${area({ name: 'remarks', label: 'Internal note', rows: 2, attrs: 'minlength="5" maxlength="1000"', required: true })}${area({ name: 'public_note', label: 'Update for the customer (optional)', rows: 2, attrs: 'maxlength="1000"', help: 'Shown on the customer’s order page.' })}${formEnd('Update order')}</form>${canRefund ? `<div class="op-divider"></div><h3 class="op-h3">Refund</h3><p class="op-muted">Record the full cancellation refund in this local preview. No money moves; it appears in Sales as a refund.</p>${button('Record refund', 'refund', order.id, 'op-danger')}` : ''}${notice('Recording a shipment does not book a courier.')}</section></div>`;
-    }
-    return tools({ statuses: ['pending', 'paid', 'packing', 'shipped', 'delivered', 'cancelled', 'expired'] }) + `<section class="op-card op-flush">${table(['Order', 'Customer', 'Status', ['Total', 'num'], 'Created', ''], filtered([...o.orders].sort((a, b) => b.created - a.created)).map(x => [`<strong>${h(x.id)}</strong>`, h(x.contact?.name), tag(x.state), cash(x.total), when(x.created), link('Open', '/ops/orders?order=' + encodeURIComponent(x.id), 'op-small', `aria-label="Open order ${h(x.id)}"`)]), { caption: 'Orders', emptyTitle: 'No orders match', emptyText: 'Change the filters to see more orders.' })}</section>`;
+    if (!order) return orderList(o);
+    const pay = o.payments.find(p => p.order_id === order.id);
+    const canRefund = order.state === 'cancelled' && pay && pay.status === 'captured' && !['refunded', 'refunded_preview'].includes(order.refund);
+    const sn = order.shipneer || {}, booked = !!sn.ordref, auto = shipConnected(o);
+    const actions = booked ? [['note', 'Add a note']] : [['note', 'Add a note'], ...(order.state === 'paid' && !auto ? [['packing', 'Mark packing']] : []), ...(['paid', 'packing'].includes(order.state) ? [['shipped', auto ? 'Sent without Shipneer' : 'Record shipment']] : []), ...(order.state === 'shipped' ? [['delivered', 'Mark delivered']] : []), ...(['pending', 'paid', 'packing'].includes(order.state) ? [['cancelled', 'Cancel order']] : [])];
+    const c = order.contact || {};
+    const units = (order.items || []).reduce((n, i) => n + num(i.quantity), 0);
+    const primary = booked ? link('Print label', '/api/admin/shipping-label/' + encodeURIComponent(order.id), 'op-primary', 'target="_blank" rel="noopener"')
+      : '';
+    const head = `<section class="op-order-head"><div><p class="op-eyebrow-sm">${link('← Orders', '/ops/orders', 'op-back')} · placed ${when(order.created)}</p><div class="op-order-title">${tag(order.state)}</div><p class="op-order-meta"><strong>${cash(order.total)}</strong> · ${fmt(units)} item${units === 1 ? '' : 's'} · payment ${tag(pay?.status || 'unknown')}${order.refund && order.refund !== 'none' ? ' ' + tag('Refund: ' + order.refund, 'danger') : ''}</p></div><div class="op-order-cta">${primary}</div></section>`;
+    const shipTo = `<section class="op-card"><h2 class="op-card-h">Ship to</h2><address class="op-address"><strong>${h(c.name)}</strong>${h(c.address)}<br>${h([c.city, c.state].filter(Boolean).join(', '))} ${h(c.pincode || '')}</address><p class="op-contact">${c.mobile ? `<a href="tel:+91${h(c.mobile)}">+91 ${h(c.mobile)}</a>` : ''}${c.email ? `<a href="mailto:${h(c.email)}">${h(c.email)}</a>` : ''}</p></section>`;
+    const items = `<section class="op-card"><h2 class="op-card-h">Items</h2><ul class="op-items">${(order.items || []).map(i => `<li><span><strong>${h(i.name)}</strong><small>${cash(i.unit_price)} each</small></span><span class="op-qty">× ${fmt(i.quantity)}</span><b>${cash(i.unit_price * i.quantity)}</b></li>`).join('')}</ul><dl class="op-sum">${order.subtotal != null ? `<div><dt>Subtotal</dt><dd>${cash(order.subtotal)}</dd></div>` : ''}${order.pack_saving ? `<div><dt>Pack saving</dt><dd>−${cash(order.pack_saving)}</dd></div>` : ''}${order.discount ? `<div><dt>Discount</dt><dd>−${cash(order.discount)}</dd></div>` : ''}<div><dt>Delivery</dt><dd>${order.shipping ? cash(order.shipping) : 'Free'}</dd></div><div class="op-sum-total"><dt>Total</dt><dd>${cash(order.total)}</dd></div></dl>${(order.allocations || []).length ? `<p class="op-help">Batches: ${order.allocations.map(a => `${h(a.batch)} × ${fmt(a.quantity)}`).join(', ')}</p>` : ''}</section>`;
+    const notes = order.internal_notes || [];
+    const history = `<section class="op-card"><h2 class="op-card-h">Timeline</h2><ol class="op-timeline">${[...(order.history || [])].reverse().map(x => `<li>${tag(x.state)}<span>${when(x.at)}</span>${x.note ? `<p>${h(x.note)}</p>` : ''}</li>`).join('')}</ol>${notes.length ? `<details class="op-fold"><summary>Internal notes (${notes.length})</summary>${[...notes].reverse().map(x => `<p class="op-note">${h(x.text)}<small>${when(x.at)}</small></p>`).join('')}</details>` : ''}</section>`;
+    const manual = `<section class="op-card"><details class="op-fold" ${auto ? '' : 'open'}><summary>${auto ? 'More actions' : 'Update order'}</summary><form data-op-form="order" data-id="${h(order.id)}">${select({ name: 'state', label: 'Action', items: actions, wide: true })}<div class="op-form-grid" data-ship-manual ${auto ? 'hidden' : ''}>${field({ name: 'provider', label: 'Courier', value: order.provider || '', attrs: 'maxlength="80"' })}${field({ name: 'tracking', label: 'Tracking number', value: order.tracking || '', attrs: 'maxlength="80"' })}</div>${area({ name: 'remarks', label: 'Internal note', rows: 2, attrs: 'minlength="5" maxlength="1000"', required: true })}${area({ name: 'public_note', label: 'Message for the customer (optional)', rows: 2, attrs: 'maxlength="1000"', help: 'Shown on the customer’s order page.' })}${formEnd('Save')}</form>${canRefund ? `<div class="op-divider"></div><h3 class="op-h3">Refund</h3><p class="op-muted">Record the full cancellation refund in this local preview. No money moves; it appears in Sales as a refund.</p>${button('Record refund', 'refund', order.id, 'op-danger')}` : ''}${auto ? '' : notice('Recording a shipment does not book a courier.')}</details></section>`;
+    const courier = auto && (booked || ['paid', 'packing'].includes(order.state)) ? `<section class="op-card op-ship-card">${shipBlock(order, o).replace(/<div class="op-divider"><\/div>$/, '')}</section>` : (order.provider ? `<section class="op-card"><h2 class="op-card-h">Courier</h2><p>${h(order.provider)} · ${h(order.tracking || '—')}</p></section>` : '');
+    return head + `<div class="op-order-grid"><div class="op-order-col">${courier}${shipTo}${items}</div><div class="op-order-col">${history}${manual}</div></div>`;
   }
+
 
   /* ---------------------------------------------------------------- sales */
   function niceStep(x) { if (!(x > 0)) return 1; const p = Math.pow(10, Math.floor(Math.log10(x))), f = x / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p; }
@@ -388,7 +452,7 @@
 
   /* ---------------------------------------------------------------- support, channels, flags */
   function cases(o) {
-    return tools({ statuses: ['open', 'investigating', 'escalated', 'resolved'] }) + (filtered(o.cases).map(c => `<details class="op-card op-case"><summary><span class="op-case-title"><strong>${h(c.subject || c.kind)}</strong><small>${h(c.id)} · ${when(c.created)}</small></span><span>${tag(c.state)}${c.kind === 'safety' ? tag('Safety priority', 'danger') : ''}</span></summary><p class="op-case-message">${lines(c.message)}</p><dl class="op-dl"><div><dt>Queue</dt><dd>${h(c.queue || 'General')}</dd></div><div><dt>Order / lot</dt><dd>${c.order_id ? `<a href="/ops/orders?order=${encodeURIComponent(c.order_id)}">${h(c.order_id)}</a>` : '—'} ${h(c.lot || '')}</dd></div><div><dt>Contact</dt><dd>${h([c.contact?.name, c.contact?.email, c.contact?.mobile].filter(Boolean).join(' · ') || '—')}</dd></div></dl>${(c.history || []).length ? `<ol class="op-timeline">${c.history.map(x => `<li>${tag(x.state)}<span>${when(x.at)}</span>${x.note || x.message ? `<p>${h(x.note || x.message)}</p>` : ''}</li>`).join('')}</ol>` : ''}${(c.internal || []).map(n => `<p class="op-note"><strong>Internal:</strong> ${h(n.text)}<small>${when(n.at)}</small></p>`).join('')}${(c.media || []).map((m, i) => link('Attachment ' + (i + 1) + ' ↗', '/api/review-media/' + m, 'op-small', 'target="_blank" rel="noopener"')).join('')}<form data-op-form="case" data-id="${h(c.id)}"><div class="op-form-grid">${select({ name: 'state', label: 'Status', items: ['open', 'investigating', 'escalated', 'resolved'].map(s => [s, s[0].toUpperCase() + s.slice(1)]), value: c.state })}<span></span>${area({ name: 'internal_note', label: 'Internal note (admins only)', rows: 2, attrs: 'maxlength="2000"' })}${area({ name: 'note', label: 'Reply to the customer', rows: 3, attrs: 'maxlength="2000"' })}</div>${formEnd('Save & reply')}</form></details>`).join('') || empty('No cases', 'Support and safety submissions will appear here.'));
+    return tools({ statuses: ['open', 'investigating', 'escalated', 'resolved'], placeholder: 'Search case, customer or order' }) + (filtered(o.cases).map(c => `<details class="op-card op-case"><summary><span class="op-case-title"><strong>${h(c.subject || c.kind)}</strong><small>${h(c.id)} · ${when(c.created)}</small></span><span>${tag(c.state)}${c.kind === 'safety' ? tag('Safety priority', 'danger') : ''}</span></summary><p class="op-case-message">${lines(c.message)}</p><dl class="op-dl"><div><dt>Queue</dt><dd>${h(c.queue || 'General')}</dd></div><div><dt>Order / lot</dt><dd>${c.order_id ? `<a href="/ops/orders?order=${encodeURIComponent(c.order_id)}">${h(c.order_id)}</a>` : '—'} ${h(c.lot || '')}</dd></div><div><dt>Contact</dt><dd>${h([c.contact?.name, c.contact?.email, c.contact?.mobile].filter(Boolean).join(' · ') || '—')}</dd></div></dl>${(c.history || []).length ? `<ol class="op-timeline">${c.history.map(x => `<li>${tag(x.state)}<span>${when(x.at)}</span>${x.note || x.message ? `<p>${h(x.note || x.message)}</p>` : ''}</li>`).join('')}</ol>` : ''}${(c.internal || []).map(n => `<p class="op-note"><strong>Internal:</strong> ${h(n.text)}<small>${when(n.at)}</small></p>`).join('')}${(c.media || []).map((m, i) => link('Attachment ' + (i + 1) + ' ↗', '/api/review-media/' + m, 'op-small', 'target="_blank" rel="noopener"')).join('')}<form data-op-form="case" data-id="${h(c.id)}"><div class="op-form-grid">${select({ name: 'state', label: 'Status', items: ['open', 'investigating', 'escalated', 'resolved'].map(s => [s, s[0].toUpperCase() + s.slice(1)]), value: c.state })}<span></span>${area({ name: 'internal_note', label: 'Internal note (admins only)', rows: 2, attrs: 'maxlength="2000"' })}${area({ name: 'note', label: 'Reply to the customer', rows: 3, attrs: 'maxlength="2000"' })}</div>${formEnd('Save & reply')}</form></details>`).join('') || empty('No cases', 'Support and safety submissions will appear here.'));
   }
   function channels(o) { return notice('Provider accounts must be set up before real payments, courier booking, messages or marketplace sync can run.') + `<div class="op-grid3">${(o.integrations || []).map(i => `<section class="op-card"><div class="op-card-title"><h2>${h(i.name)}</h2>${tag(i.state)}</div><p class="op-muted">${h(i.description)}</p></section>`).join('')}</div>`; }
   function flags(o) {
@@ -403,7 +467,7 @@
     records = o;
     const tab = location.pathname.split('/')[2] || 'overview', found = TABS.find(t => t[0] === tab);
     const pid = q().get('product');
-    const titles = { products: pid ? 'Edit product' : 'Products', orders: q().get('order') ? 'Order' : 'Orders', account: 'Account', analytics: 'Sales' };
+    const titles = { products: pid ? 'Edit product' : 'Products', orders: q().get('order') || 'Orders', account: 'Account', analytics: 'Sales' };
     let content;
     try {
       content = ({ overview, products, inventory, orders, sales, cases, channels, flags, account })[tab]?.(o)
@@ -415,7 +479,10 @@
     const badge = { orders: o.orders.filter(x => ['paid', 'packing'].includes(x.state)).length, cases: o.cases.filter(x => x.state !== 'resolved' && x.kind === 'safety').length };
     const pageAction = tab === 'inventory' ? link('＋ Add batch', '/ops/inventory?new=1' + (q().get('product') ? '&product=' + encodeURIComponent(q().get('product')) : ''), 'op-primary') : '';
     const nav = NAV.map(([group, items]) => `${group ? `<p class="op-nav-label">${group}</p>` : ''}${items.map(([id, label, icon]) => `<a class="${id === tab ? 'is-active' : ''}" href="/ops${id === 'overview' ? '' : '/' + id}" ${id === tab ? 'aria-current="page"' : ''}><span class="op-nav-icon" aria-hidden="true">${icon}</span><span>${label}</span>${badge[id] ? `<b aria-label="${badge[id]} need attention">${badge[id]}</b>` : ''}</a>`).join('')}`).join('');
-    return `<div class="op-layout"><a class="op-skip" href="#main">Skip to content</a><aside class="op-sidebar"><a class="op-brand" href="/ops" aria-label="Operations overview"><img src="/web/media/brand-horizontal.svg" alt="Body Café Co."><span>Operations</span></a><nav class="op-nav" aria-label="Operations sections">${nav}</nav><div class="op-sidebar-bottom">${link('View storefront ↗', '/?design=e', 'op-quiet op-block')}<a href="/ops/account" class="op-owner" ${tab === 'account' ? 'aria-current="page"' : ''}><span aria-hidden="true">BC</span><div><strong>Store admin</strong><small>Account & password</small></div></a>${button('Sign out', 'logout', '', 'op-block')}</div></aside><main id="main" class="op-main" tabindex="-1"><header class="op-topbar"><span class="op-crumb">Operations <i aria-hidden="true">/</i> ${h(found?.[1] || titles[tab] || 'Account')}</span><div class="op-topbar-actions">${button('Refresh', 'refresh', '', 'op-small')}<span class="op-mobile-account">${link('Account', '/ops/account', 'op-small')}${button('Sign out', 'logout', '', 'op-small')}</span></div></header><div class="op-content"><div class="op-page-title"><h1>${h(titles[tab] || found?.[1] || 'Account')}</h1>${pageAction}</div>${content}</div></main></div>`;
+    const MAIN = ['overview', 'orders', 'products', 'inventory'];
+    const more = TABS.filter(t => !MAIN.includes(t[0]));
+    const tabbar = `<nav class="op-tabbar" aria-label="Main sections">${MAIN.map(id => { const t = TABS.find(x => x[0] === id); return `<a href="/ops${id === 'overview' ? '' : '/' + id}" ${id === tab ? 'aria-current="page" class="is-active"' : ''}><span aria-hidden="true">${t[2]}</span>${id === 'overview' ? 'Home' : id === 'inventory' ? 'Stock' : t[1]}${badge[id] ? `<b>${badge[id]}</b>` : ''}</a>`; }).join('')}<details class="op-tabbar-more"><summary class="${more.some(t => t[0] === tab) || tab === 'account' ? 'is-active' : ''}"><span aria-hidden="true">⋯</span>More${badge.cases ? '<b>' + badge.cases + '</b>' : ''}</summary><div class="op-tabbar-sheet">${more.map(([id, label, icon]) => `<a href="/ops/${id}" ${id === tab ? 'aria-current="page"' : ''}><span aria-hidden="true">${icon}</span>${label}${badge[id] ? `<b>${badge[id]}</b>` : ''}</a>`).join('')}<a href="/ops/account"><span aria-hidden="true">◎</span>Account &amp; password</a>${link('View storefront ↗', '/?design=e', 'op-quiet')}${button('Sign out', 'logout', '', 'op-small')}</div></details></nav>`;
+    return `<div class="op-layout"><a class="op-skip" href="#main">Skip to content</a><aside class="op-sidebar"><a class="op-brand" href="/ops" aria-label="Operations overview"><img src="/web/media/brand-horizontal.svg" alt="Body Café Co."><span>Operations</span></a><nav class="op-nav" aria-label="Operations sections">${nav}</nav><div class="op-sidebar-bottom">${link('View storefront ↗', '/?design=e', 'op-quiet op-block')}<a href="/ops/account" class="op-owner" ${tab === 'account' ? 'aria-current="page"' : ''}><span aria-hidden="true">BC</span><div><strong>Store admin</strong><small>Account & password</small></div></a>${button('Sign out', 'logout', '', 'op-block')}</div></aside><main id="main" class="op-main" tabindex="-1"><header class="op-topbar"><span class="op-crumb">Operations <i aria-hidden="true">/</i> ${h(found?.[1] || titles[tab] || 'Account')}</span><div class="op-topbar-actions">${button('Refresh', 'refresh', '', 'op-small')}<span class="op-mobile-account">${link('Account', '/ops/account', 'op-small')}${button('Sign out', 'logout', '', 'op-small')}</span></div></header><div class="op-content"><div class="op-page-title"><h1>${h(titles[tab] || found?.[1] || 'Account')}</h1>${pageAction}</div>${content}</div></main>${tabbar}</div>`;
   }
 
   /* ---------------------------------------------------------------- dialogs & mutations */
@@ -605,12 +672,40 @@
       }
       if (kind === 'batch') return await mutate('batch_create', { product: data.product, id: data.id.trim(), manufactured: data.manufactured, expiry: Date.parse(data.expiry + 'T23:59:59+05:30') / 1000, quantity: Number(data.quantity), location: (data.location || '').trim(), low_stock_threshold: data.low_stock_threshold === '' ? undefined : Number(data.low_stock_threshold), remarks: data.remarks, request_id: requestId });
       if (kind === 'order') return await mutate('order_update', { ...data, request_id: requestId, id: f.dataset.id });
+      if (kind === 'ship-quote') { const n = k => Number(data[k]); await mutate('ship_quote', { id: f.dataset.id, weight_g: n('weight_g'), length: n('length'), width: n('width'), height: n('height') }); A().toast('Prices ready. Choose a courier.'); return; }
+      if (kind === 'ship-book') { { const pick = f.querySelector('input[name=code]:checked'), name = pick?.closest('label')?.querySelector('span')?.textContent.replace('Cheapest', '').trim(), price = pick?.closest('label')?.querySelector('strong')?.textContent; if (!confirm(`Book ${name} for ${price}? Your Shipneer account is charged.`)) return; } await mutate('ship_book', { id: f.dataset.id, code: data.code, request_id: requestId }); A().toast('Courier booked. Print the label.'); return; }
+      if (kind === 'ship-restock') { if (!confirm('Put these units back in stock and cancel the order?')) return; await mutate('ship_restock', { id: f.dataset.id, remarks: data.remarks, request_id: requestId }); A().toast('Back in stock. Record the refund when it’s paid.'); return; }
+      if (kind === 'ship-cancel') { await mutate('ship_cancel', { id: f.dataset.id, remarks: data.remarks, request_id: requestId }); A().toast('Booking cancelled.'); return; }
       if (kind === 'case') return await mutate('case', { ...data, id: f.dataset.id });
       if (kind === 'action') return await mutate(f.dataset.action, buildAction(f, data, requestId));
     } catch (err) { if (box) box.textContent = err.message; else A().toast(err.message); }
     finally { if (submit && submit.isConnected) submit.disabled = false; }
   }, true);
 
+  // Whole table rows open their record; links and buttons inside keep their own behaviour.
+  document.addEventListener('click', e => {
+    const row = e.target.closest('tr[data-href]'); if (!row || e.target.closest('a,button,input,select,textarea,label')) return;
+    if (e.metaKey || e.ctrlKey) { window.open(row.dataset.href, '_blank'); return; }
+    A().navigate(row.dataset.href);
+  });
+  // The phone "More" menu closes when you tap outside it or pick a page.
+  document.addEventListener('click', e => {
+    const menu = document.querySelector('.op-tabbar-more[open]'); if (!menu) return;
+    if (!e.target.closest('.op-tabbar-sheet, .op-tabbar-more > summary') || e.target.closest('.op-tabbar-sheet a')) menu.open = false;
+  });
+  // Search as you type; dropdown filters apply on change.
+  let searchTimer;
+  document.addEventListener('input', e => {
+    const box = e.target.closest('input[data-live-search]'); if (!box) return;
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { const pos = box.selectionStart; box.form.requestSubmit(); setTimeout(() => { const again = document.getElementById('op-q'); if (again) { again.focus(); try { again.setSelectionRange(pos, pos); } catch (_) {} } }, 60); }, 350);
+  });
+  document.addEventListener('change', e => { const sel = e.target.closest('select[data-auto-submit]'); if (sel) sel.form.requestSubmit(); });
+  // Courier and tracking fields only matter for a parcel sent without Shipneer.
+  document.addEventListener('change', e => {
+    const sel = e.target.closest('[data-op-form="order"] select[name="state"]'); if (!sel) return;
+    const box = sel.form.querySelector('[data-ship-manual]'); if (box && shipConnected(records || {})) box.hidden = sel.value !== 'shipped';
+  });
   document.addEventListener('click', async e => {
     const b = e.target.closest('[data-op]'); if (!b) return;
     e.preventDefault(); e.stopImmediatePropagation();
@@ -635,6 +730,7 @@
       if (action === 'fact-add') { const list=document.querySelector('#op-facts'); if(list.children.length>=40) throw Error('Use up to 40 fact rows.'); list.insertAdjacentHTML('beforeend',factRows([{name:'',amount:'',rda:'',level:0,active:false}])); dirty=true; return; }
       if (action === 'fact-remove') { b.closest('[data-fact-row]').remove(); dirty=true; return; }
       if (action === 'product-preview') return previewModal(id, b);
+      if (action === 'ship-track') { b.disabled = true; try { await mutate('ship_track', { id }); } finally { if (b.isConnected) b.disabled = false; } return; }
       if (action === 'export') return exportCurrent();
       if (action === 'sales-export-periods') return exportSales('periods');
       if (action === 'sales-export-products') return exportSales('products');

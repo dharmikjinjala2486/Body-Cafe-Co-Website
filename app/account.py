@@ -24,8 +24,10 @@ import time
 
 try:
     from app.errors import Error
+    from app.shipping import state_name
 except ImportError:
     from errors import Error
+    from shipping import state_name
 
 OTP_TTL = 300
 OTP_RESEND = 20
@@ -500,6 +502,9 @@ class AccountMixin:
         for k, label in [('name', 'name'), ('address', 'address'), ('city', 'city'), ('state', 'state')]:
             if not 2 <= len(str(data.get(k, '')).strip()) <= 200:
                 errors[k] = 'Enter the ' + label + '.'
+        if 'state' not in errors:
+            try: data = {**data, 'state': state_name(data.get('state'))}
+            except Error: errors['state'] = 'Choose your state from the list.'
         label = str(data.get('label') or 'home').strip().lower()
         if label not in ADDRESS_LABELS:
             errors['label'] = 'Choose Home, Office or Other.'

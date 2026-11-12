@@ -724,6 +724,8 @@ function keepDesignOnLinks() {
   });
 }
 function enhance() {
+  const pinInput = document.querySelector("#pincode-form #pincode");
+  if (pinInput && !pinInput.value) { try { const saved = localStorage.getItem("bcc-pincode"); if (saved) pinInput.value = saved; } catch (_) {} }
   keepDesignOnLinks();
   counter.paused = false;
   counter.mount($("[data-counter]"));
@@ -769,6 +771,12 @@ function cart() {
       : empty("Your bag is empty", "Pick a cap and add something to it.")
   }</section>`;
 }
+// The state is chosen from a list so every order carries a name the courier accepts (the API checks it too).
+const INDIA_STATES = ["Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"];
+function stateSelect(id, value, attrs = "") {
+  const v = String(value || "").trim().toLowerCase();
+  return `<select id="${id}" name="state" autocomplete="address-level1" required ${attrs}><option value="">Choose your state</option>${INDIA_STATES.map((n) => `<option ${n.toLowerCase() === v ? "selected" : ""}>${n}</option>`).join("")}</select>`;
+}
 function addressFields(prefix = "", v = {}) {
   return `<div class="field-grid">${[
     ["name", "Full name", "text"],
@@ -782,7 +790,7 @@ function addressFields(prefix = "", v = {}) {
     .filter(([k]) => prefix !== "saved-" || !["mobile", "email"].includes(k))
     .map(
       ([k, l, t]) =>
-        `<div class="field ${k === "address" ? "span-two" : ""}"><label for="${prefix + k}">${l}</label><input id="${prefix + k}" name="${k}" type="${t}" value="${escape(v[k] || "")}" ${k === "email" ? "" : "required"} ${k === "mobile" ? 'inputmode="tel" pattern="[6-9][0-9]{9}" maxlength="10"' : k === "pincode" ? 'inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6"' : 'maxlength="200"'}></div>`,
+        k === "state" ? `<div class="field"><label for="${prefix + k}">${l}</label>${stateSelect(prefix + k, v[k])}</div>` : `<div class="field ${k === "address" ? "span-two" : ""}"><label for="${prefix + k}">${l}</label><input id="${prefix + k}" name="${k}" type="${t}" value="${escape(v[k] || "")}" ${k === "email" ? "" : "required"} ${k === "mobile" ? 'inputmode="tel" pattern="[6-9][0-9]{9}" maxlength="10"' : k === "pincode" ? 'inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6"' : 'maxlength="200"'}></div>`,
     )
     .join("")}</div>`;
 }
@@ -806,6 +814,7 @@ function addressFieldsX(prefix = "", v = {}, dis = false, err = null) {
     .map(([k, l, t, hint, ac]) => {
       const e = err && err[k];
       const desc = [hint ? `hint-${prefix + k}` : "", e ? `err-${k}` : ""].filter(Boolean).join(" ");
+      if (k === "state") return `<div class="field${e ? " has-error" : ""}"><label for="${prefix + k}">${l}</label>${stateSelect(prefix + k, v[k], (dis ? "disabled " : "") + (desc ? `aria-describedby="${desc}"` : "") + (e ? ' aria-invalid="true"' : ""))}${fieldError(err, k)}</div>`;
       return `<div class="field ${k === "address" ? "span-two" : ""}${e ? " has-error" : ""}"><label for="${prefix + k}">${l}</label>${hint ? `<span class="field-hint" id="hint-${prefix + k}">${hint}</span>` : ""}<input id="${prefix + k}" name="${k}" type="${t}" autocomplete="${ac}" value="${escape(v[k] || "")}" ${k === "email" ? "" : "required"} ${k === "mobile" ? 'inputmode="tel" pattern="[6-9][0-9]{9}" maxlength="10"' : k === "pincode" ? 'inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6"' : 'maxlength="200"'}${desc ? ` aria-describedby="${desc}"` : ""}${e ? ' aria-invalid="true"' : ""}${dis ? " disabled" : ""}>${fieldError(err, k)}</div>`;
     })
     .join("")}</div>`;
@@ -1442,14 +1451,35 @@ document.addEventListener("submit", async (e) => {
     } else if (form.id === "pdp-lot") {
       navigate("/reports?product=" + encodeURIComponent(data.product) + "&lot=" + encodeURIComponent(data.lot.trim()), "#2d2926");
     } else if (form.id === "pincode-form") {
-      // No serviceability data is connected, so the preview checks the format only and promises no date.
+      // Asks the server, which checks the pincode with our courier partner (Shipneer) and caches the answer.
       const pin = String(data.pincode || "").trim();
-      const valid = /^[1-9][0-9]{5}$/.test(pin);
+      const out = $("#pincode-result"), valid = /^[1-9][0-9]{5}$/.test(pin);
+      const ticket = (form._pinTicket = (form._pinTicket || 0) + 1), stale = () => ticket !== form._pinTicket; // only the latest check may write
       form.elements.pincode.setAttribute("aria-invalid", String(!valid));
-      $("#pincode-result").textContent = valid
-        ? `${pin} is a valid pincode format. Delivery availability, charges and dates for it will be confirmed once courier serviceability is set up; the preview doesn't promise a delivery date.`
-        : "Enter a 6-digit Indian pincode that doesn't start with 0.";
-      if (!valid) form.elements.pincode.focus();
+      const mark = (k) => { out.classList.remove("pincode-result-ok", "pincode-result-bad", "pincode-result-busy"); if (k) out.classList.add("pincode-result-" + k); };
+      mark("");
+      if (!valid) { out.textContent = "Enter a 6-digit Indian pincode that doesn't start with 0."; mark("bad"); form.elements.pincode.focus(); return; }
+      try { localStorage.setItem("bcc-pincode", pin); } catch (_) {}
+      out.textContent = "Checking " + pin + "…";
+      mark("busy");
+      const button = form.querySelector("button"); if (button) button.disabled = true;
+      let r = null, missing = false;
+      try { r = await api("/delivery?pincode=" + pin); } catch (err) { if (stale()) return; missing = err.status === 404 || !err.status; if (err.status && err.status < 500 && err.status !== 404) { mark("bad"); out.textContent = err.message; if (button) button.disabled = false; return; } }
+      if (stale()) return;
+      if (button) button.disabled = false;
+      mark("");
+      const fee = r && r.fee ? `Delivery ₹${r.fee}, free on orders of ₹${Number(r.free_from).toLocaleString("en-IN")} or more.` : "";
+      if (r && r.status === "yes") {
+        mark("ok");
+        out.innerHTML = `<strong>✓ We deliver to ${pin}</strong><span>Once shipped, the courier usually takes ${r.days[0]}–${r.days[1]} days to reach you. ${fee}</span>`;
+      } else if (r && r.status === "no") {
+        mark("bad");
+        out.innerHTML = `<strong>We can't deliver to ${pin} yet</strong><span>Check the pincode, or <a href="/contact">ask us</a> and we'll see what we can do.</span>`;
+      } else if (missing || !r) {
+        out.innerHTML = `<strong>${pin} looks right</strong><span>We deliver across India. You'll see delivery for ${pin} confirmed at checkout, before you pay.</span>`;
+      } else {
+        out.innerHTML = `<strong>We couldn't check ${pin} just now</strong><span>Please try again in a minute. You'll know whether we deliver there before you pay.</span>`;
+      }
     } else if (form.id === "checkout-form") {
       // One order per checkout: the key travels with every submission of this bag, so a double click or a retry
       // after a network error returns the order already created instead of making a second one.
@@ -1485,7 +1515,13 @@ document.addEventListener("submit", async (e) => {
       result.innerHTML = '<div class="rr rr-loading" aria-busy="true"><span class="rr-spinner" aria-hidden="true"></span><p>Looking up the record for this lot…</p></div>';
       event("report_lookup");
       try {
-        const r = await api("/reports?product=" + encodeURIComponent(data.product) + "&lot=" + encodeURIComponent(data.lot));
+        // The lookup endpoint is /api/lots (/api/reports was retired). Its answer is mapped to this form's four result states.
+        const found = await api("/lots?product=" + encodeURIComponent(data.product) + "&lot=" + encodeURIComponent(data.lot));
+        const r = {
+          ...found,
+          lot: found.lot || data.lot,
+          state: found.state !== "match" ? "not_found" : (found.notices || []).some((n) => n.kind === "withdrawal") ? "withdrawn" : found.availability === "under_review" ? "unpublished" : "sample_match",
+        };
         const t = {
           sample_match: ["Lot found", "This sample lot belongs to the product you chose. No lab report is attached in the preview."],
           not_found: [
@@ -1499,6 +1535,9 @@ document.addEventListener("submit", async (e) => {
           ],
         }[r.state];
         result.innerHTML = reportResult(r, data.product);
+        // A real number typed under the wrong product: say which product it belongs to.
+        const others = found.state === "other_product" ? (found.other_products || []).map((id) => product(id)?.name).filter(Boolean) : [];
+        if (others.length) result.querySelector(".rr-lede")?.insertAdjacentHTML("afterend", `<p class="rr-lede">That number belongs to <strong>${escape(others.join(", "))}</strong>. Choose that product above and look it up again.</p>`);
         keepDesignOnLinks();
       } catch (error) {
         const u = window.BCCSite?.copy.reports.unavailable || ["Lookup unavailable", ""];

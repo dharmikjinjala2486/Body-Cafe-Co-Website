@@ -270,6 +270,9 @@
       { cls: "photo", main: prem(p.id + "-still", 1196, 1315, p.name + " bottle", true), thumb: prem(p.id + "-still", 1196, 1315), label: "Bottle" },
       { cls: "photo", main: prem(p.id + "-detail", 1800, 2400, p.name + " cap, close up"), thumb: prem(p.id + "-detail", 1800, 2400), label: "Cap, close up" },
     ];
+    // Part 2 only (12 Nov 2026): a third view, the front of the bottle on its own cap tint, and Description starts open.
+    var only2 = document.body.dataset.variantEPart === "2";
+    if (only2) shots.push({ cls: "plate", main: bottle(p, { alt: p.name + ", front of the bottle" }), thumb: bottle(p, { alt: "" }), label: "Front of the bottle" });
     var serves = parseInt(p.servings_per_pack, 10);
     var timing = p.label_timing || {}, slots = [["morning", "Morning"], ["noon", "Noon"], ["night", "Night"]];
     var rows = (p.supplement_facts && p.supplement_facts.rows) || [];
@@ -289,7 +292,7 @@
     var pc = PDP[p.id] || {}, lasts = serves ? "One bottle lasts " + serves + " days" : "";
     var points = (pc.points || []).concat(lasts ? [lasts] : []);
     var sections = [
-      ["Description", '<h3 class="p2-acc-h">' + esc(c.headline || p.name) + "</h3>" + para(pc.desc || clean(c.intro || p.description))],
+      ["Description", '<h3 class="p2-acc-h">' + esc(c.headline || p.name) + "</h3>" + para(pc.desc || clean(c.intro || p.description)), only2],
       ["Key Benefits", (front.claim ? '<p class="p2-claim">' + esc(front.claim) + "</p>" : "") +
         (points.length ? '<ul class="p2-ticks">' + points.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "")],
       ["Direction for Use", '<ol class="p2-slots">' + slots.map(function (s) { var t = String(timing[s[0]] || ""), best = /^best/i.test(t); return '<li class="' + (best ? "is-best" : "") + '"><span>' + s[1] + "</span><b>" + (best ? "Best" : t ? "Also fine" : "—") + "</b></li>"; }).join("") + "</ol>" +
@@ -392,7 +395,7 @@
       ["pincode", function (v) { return /^[1-9][0-9]{5}$/.test(v.trim()); }, "Enter a 6-digit pincode that doesn’t start with 0."],
       ["address", function (v) { return v.trim().length >= 5; }, "Enter your house or flat, street and area."],
       ["city", function (v) { return v.trim().length >= 2; }, "Enter your city."],
-      ["state", function (v) { return v.trim().length >= 2; }, "Enter your state."],
+      ["state", function (v) { return v.trim().length >= 2; }, "Choose your state."],
     ];
     function mark(el, msg) {
       var box = el.closest(".field, .check") || el.parentElement, id = "p2-err-" + el.name, old = form.querySelector("#" + id);
@@ -461,6 +464,13 @@
       return '<li class="' + (s[1] <= done ? "is-done" : s[1] === done + 1 ? "is-next" : "") + '"><span aria-hidden="true">' + (s[1] <= done ? "✓" : s[1]) + "</span>" + s[0] + "</li>";
     }).join("") + "</ol>";
   }
+  // Courier tracking from the operations backend (Shipneer). Only our own timeline is shown: the provider's links carry a private key.
+  function orderTracking(o) {
+    if (!o.tracking || ["shipped", "delivered"].indexOf(o.state) < 0) return "";
+    var ev = (o.tracking_events || []).slice(0, 6), when = function (e) { return e.at ? new Date(e.at * 1000).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : esc(e.text || ""); };
+    return '<div class="p2-od-track"><h3>Tracking</h3><p class="p2-od-note">' + esc(o.provider || "Courier") + " · <b>" + esc(o.tracking) + "</b>" + (o.tracking_status ? " · " + esc(o.tracking_status) : "") + "</p>" +
+      (ev.length ? '<ol class="p2-od-events">' + ev.map(function (e) { return "<li><b>" + esc(e.note) + "</b><span>" + [e.location ? esc(e.location) : "", when(e)].filter(Boolean).join(" · ") + "</span></li>"; }).join("") + "</ol>" : '<p class="p2-od-note">The courier will scan it at pickup. Updates appear here.</p>') + "</div>";
+  }
   function orderPage(ctx, o, head, body, actions) {
     return '<div class="p2-co p2-od" data-p2-od="' + esc(o.id) + '" data-hold="' + (o.state === "pending" ? holdEnds(o) : "") + '"><header class="p2-wrap p2-co-head"><p class="p2-eyebrow">' + head[0] + '</p><h1>' + head[1] + '</h1><p class="p2-co-lede">' + head[2] + "</p></header>" +
       '<div class="p2-wrap p2-co-grid"><div class="p2-co-form"><section class="p2-co-step">' + body + '<div class="p2-od-actions">' + actions + "</div></section>" +
@@ -493,11 +503,11 @@
       pending: ["Order " + esc(o.id), "Waiting for payment.", "Your items are held until " + (o.state === "pending" ? clock(holdEnds(o)) : "") + "."],
       ended: ["Order " + esc(o.id), "This hold has ended.", "Nothing was charged, and the items are back in stock."],
       paid: ["Order " + esc(o.id), "We have your order.", "We’ll pack it next."], packing: ["Order " + esc(o.id), "Being packed.", "It ships soon."],
-      shipped: ["Order " + esc(o.id), "On its way.", "Your parcel has left us."], delivered: ["Order " + esc(o.id), "Delivered.", "Enjoy."],
+      shipped: /^(booked|shipping label generated|manifested|pickup scheduled)$/i.test(o.tracking_status || "") ? ["Order " + esc(o.id), "Packed.", "The courier collects it soon. Tracking is below."] : ["Order " + esc(o.id), "On its way.", "Your parcel has left us."], delivered: ["Order " + esc(o.id), "Delivered.", "Enjoy."],
       cancelled: ["Order " + esc(o.id), "Cancelled.", "This order was cancelled."], expired: ["Order " + esc(o.id), "This hold has ended.", "Nothing was charged, and the items are back in stock."],
     }[v] || ["Order " + esc(o.id), "Your order.", ""];
     var placed = o.created ? new Date(o.created * 1000).toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" }) : "";
-    return orderPage(ctx, o, head, '<h2>Order details</h2><p class="p2-od-note">' + (placed ? "Placed " + esc(placed) + ". " : "") + "Keep the order number for any question about this order.</p>" + (v === "pending" ? '<p class="p2-od-hold" data-p2-hold role="timer" aria-live="off"></p>' : ""),
+    return orderPage(ctx, o, head, '<h2>Order details</h2><p class="p2-od-note">' + (placed ? "Placed " + esc(placed) + ". " : "") + "Keep the order number for any question about this order.</p>" + orderTracking(o) + (v === "pending" ? '<p class="p2-od-hold" data-p2-hold role="timer" aria-live="off"></p>' : ""),
       v === "pending" ? '<a class="p2-btn" href="/payment/' + esc(o.id) + '">Go to payment</a>' : v === "ended" || v === "expired" ? '<a class="p2-btn" href="/cart">Back to your bag</a>' : '<a class="p2-link" href="/help">Questions about this order?</a>');
   });
   // The hold countdown; when it reaches zero the page switches to the "hold has ended" view.
@@ -747,7 +757,9 @@
     // Each item starts exactly over its own cap: the disc is the cap, enlarged. The bottle is sized to sit wholly inside the disc.
     function place() {
       if (!stage) return;
-      var st = box(stage), d = tall.matches ? Math.min(st.h * .98, st.w * .84) : Math.min(st.h * .98, st.w * .96, 760), h = d * .82;
+      // --p2-hc-pad (unset in Part 2, so 0) keeps room around the disc, e.g. for Content Focus's progress ring.
+      var pad = 2 * (parseFloat(getComputedStyle(stage).getPropertyValue("--p2-hc-pad")) || 0);
+      var st = box(stage), d = tall.matches ? Math.min(st.h * .98 - pad, st.w * .84 - pad) : Math.min(st.h * .98 - pad, st.w * .96 - pad, 760), h = d * .82;
       stage.style.setProperty("--d", Math.round(d) + "px"); stage.style.setProperty("--h", Math.round(h) + "px");
       items.forEach(function (it, i) {
         var c = box(picks[i]);
@@ -792,6 +804,8 @@
       show(picks[0]); items[0].classList.add("is-out");
       setTimeout(function () { hero.classList.remove("is-still"); }, 80);
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+      // Decode every bottle ahead of its turn, so no change waits on one (reveal gives a late decode at most 400ms).
+      items.forEach(function (it) { var im = it.querySelector("img"); if (im && im.decode) im.decode().catch(function () {}); });
       if ("IntersectionObserver" in window) { watch = new IntersectionObserver(function (e) { seen = e[0].isIntersecting; }); watch.observe(hero); }
       if (!still.matches) later(retire, HOLD);
     }

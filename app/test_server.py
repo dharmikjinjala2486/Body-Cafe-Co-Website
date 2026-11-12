@@ -65,9 +65,11 @@ class CommerceTests(unittest.TestCase):
     def test_discount_half_rupee_matches_checkout_display(self):
         payload={**self.payload,'discount':'PREVIEW10','items':[{'id':'iron-bisglycinate','quantity':10},{'id':'l-theanine','quantity':5}]}
         order=self.store.order(self.customer,payload)
+        # Pack saving comes off first (10% for 3 or more of one product), then the code takes 10% of what is left.
         self.assertEqual(order['subtotal'],17485)
-        self.assertEqual(order['discount'],1749)
-        self.assertEqual(order['total'],15736)
+        self.assertEqual(order['pack_saving'],1749)
+        self.assertEqual(order['discount'],1574)
+        self.assertEqual(order['total'],14162)
 
     def test_failed_payment_can_retry(self):
         order=self.store.order(self.customer,self.payload)

@@ -3,3 +3,69 @@ body[data-content-focus="1"] .p2-hero2c .cf-hero-lede { max-width: 44ch; margin:
 body[data-content-focus="1"] .p2-hero2c .p2-actions { margin-top: clamp(14px, calc(var(--p2-hc-u, 1svh) * 3), 28px); }
 body[data-content-focus="1"] .cf-support { font-weight: 500; }
 body[data-content-focus="1"] .cf-q { margin: 18px 0 4px; font: 600 15px/1.3 "Aileron", sans-serif; color: var(--p2-ink); }
+
+/* ---------- Hero: one circle, no row of seven caps. The products take turns inside it by themselves. ----------
+   The engine is Part 2's (mountHeroShow in part2-e.js); this only changes how it looks. The caps stay in the page
+   for keyboard and screen-reader users (focusing one brings its bottle into the circle), but are not drawn. */
+@property --cf-p { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+body[data-content-focus="1"] .p2-hero2c .p2-hc-caps { position: absolute !important; width: 1px; height: 1px; margin: 0 !important; padding: 0 !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* The circle: lit from the top left, with a soft breath each time a new product takes it. */
+body[data-content-focus="1"] .p2-hc-stage { clip-path: circle(calc(var(--d) / 2 + 14px) at 50% 50%); }
+body[data-content-focus="1"] .p2-hc-stage::before { background-image: radial-gradient(circle at 30% 26%, rgb(255 255 255 / .34), transparent 56%), radial-gradient(circle at 72% 86%, rgb(0 0 0 / .14), transparent 52%); }
+/* It starts and ends at full size, so the circle never jumps when a change begins. */
+@keyframes cf-hc-breath { 0%, 100% { transform: none; } 35% { transform: scale(.97); } }
+
+/* A thin ring around the circle fills while a product is shown; when it closes, the next one comes in. */
+body[data-content-focus="1"] .p2-hc-stage::after { --r: calc(var(--d) + 20px); content: ""; position: absolute; top: 50%; left: 50%; width: var(--r); height: var(--r); margin: calc(var(--r) / -2) 0 0 calc(var(--r) / -2); border-radius: 50%; pointer-events: none;
+  background: conic-gradient(color-mix(in srgb, var(--hc) 55%, var(--p2-ink)) var(--cf-p), color-mix(in srgb, var(--hc) 24%, transparent) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px)); mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px)); }
+@keyframes cf-hc-ring { from { --cf-p: 0deg; } to { --cf-p: 360deg; } }
+
+/* The bottles: the old one lifts away and fades as the new one rises and turns upright, the two overlapping.
+   Only position and opacity move (12 Nov 2026): a blur changing on a bottle this large made the change stutter. */
+body[data-content-focus="1"] .p2-hero2c .p2-hc-item img { opacity: 0; transform: translateY(9%) rotate(4deg) scale(.93); filter: drop-shadow(0 22px 26px rgb(0 0 0 / .2)); transition: none; will-change: transform, opacity; }
+body[data-content-focus="1"] .p2-hero2c .p2-hc-item.is-out img { opacity: 1; transform: none; transition: transform 1.1s cubic-bezier(.22, 1, .36, 1), opacity .7s cubic-bezier(.33, 0, .2, 1); }
+body[data-content-focus="1"] .p2-hero2c .p2-hc-item.is-gone img { opacity: 0; transform: translateY(-7%) rotate(-3deg) scale(.95); transition: transform .8s cubic-bezier(.4, 0, .2, 1), opacity .6s cubic-bezier(.4, 0, .2, 1); }
+@keyframes cf-hc-float { 0%, 100% { transform: none; } 50% { transform: translateY(-1%); } }
+
+/* The product line: a dot in its colour, the name a little larger, both sliding in with each change. */
+body[data-content-focus="1"] .p2-hero2c.is-split .p2-hc-now { margin-top: clamp(22px, calc(var(--p2-hc-u, 1svh) * 4.5), 44px); }
+body[data-content-focus="1"] .p2-hero2c .p2-hc-now strong { display: inline-flex; align-items: center; gap: 10px; }
+body[data-content-focus="1"] .p2-hero2c .p2-hc-now strong::before { content: ""; flex: none; width: .6em; height: .6em; border-radius: 50%; background: var(--hc); transition: background-color .8s ease; }
+body[data-content-focus="1"] .p2-hero2c.is-split .p2-hc-now strong { font-size: 22px; }
+@keyframes cf-hc-text { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* home-hero-e.css stops every animation inside .eh-e with !important, so the hero's own motion opts back in,
+   unless the device or the shopper's "Reduce motion" preference (html[data-motion="reduce"]) asks for calm. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="reduce"]) body[data-content-focus="1"] .p2-hero2c.is-show:not(.is-swap):not(.is-still) .p2-hc-stage::before { animation: cf-hc-breath 1.2s cubic-bezier(.16, 1, .3, 1) both !important; }
+  html:not([data-motion="reduce"]) body[data-content-focus="1"] .p2-hero2c.is-show:not(.is-swap) .p2-hc-stage::after { animation: cf-hc-ring 3.2s linear both !important; }
+  html:not([data-motion="reduce"]) body[data-content-focus="1"] .p2-hero2c .p2-hc-item:is(.is-out, .is-gone) { animation: cf-hc-float 6s ease-in-out 1.3s infinite !important; }
+  html:not([data-motion="reduce"]) body[data-content-focus="1"] .p2-hero2c.is-show:not(.is-swap) .p2-hc-now strong { animation: cf-hc-text .8s cubic-bezier(.16, 1, .3, 1) both !important; }
+  html:not([data-motion="reduce"]) body[data-content-focus="1"] .p2-hero2c.is-show:not(.is-swap) .p2-hc-now small { animation: cf-hc-text .8s cubic-bezier(.16, 1, .3, 1) .08s both !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-content-focus="1"] .p2-hc-stage::after { display: none; }
+}
+html[data-motion="reduce"] body[data-content-focus="1"] .p2-hc-stage::after { display: none; }
+
+/* Room for the ring: the disc is sized 14px in from every edge of its stage (read by mountHeroShow in part2-e.js). */
+body[data-content-focus="1"] .p2-hero2c .p2-hc-stage { --p2-hc-pad: 14px; }
+/* Phones (stacked): words, circle, product line — all on the first screen. The circle takes whatever height is left. */
+body[data-content-focus="1"] .p2-hero2c.is-stack { padding-bottom: clamp(14px, calc(var(--p2-hc-u, 1svh) * 3), 32px); }
+body[data-content-focus="1"] .p2-hero2c.is-stack .p2-hc-stage { min-height: 150px; margin-top: clamp(8px, calc(var(--p2-hc-u, 1svh) * 2), 20px); }
+body[data-content-focus="1"] .p2-hero2c.is-stack .p2-hc-now { justify-items: center; text-align: center; min-height: 44px; margin-top: 6px; gap: 2px; }
+body[data-content-focus="1"] .p2-hero2c.is-stack .p2-hc-now strong { font-size: 17px; }
+@media (max-height: 700px) and (max-width: 620px) {
+  body[data-content-focus="1"] .p2-hero2c.is-stack .p2-eyebrow { margin-bottom: 8px; }
+  body[data-content-focus="1"] .p2-hero2c.is-stack h1 { margin-bottom: 10px; font-size: clamp(28px, 8.6vw, 40px); }
+  body[data-content-focus="1"] .p2-hero2c.is-stack .cf-hero-lede { font-size: 14.5px; }
+}
+/* Narrow phones: both buttons stay on one line, inside the page. */
+body[data-content-focus="1"] .p2-hero2c.is-stack .p2-actions { flex-wrap: wrap; row-gap: 12px; }
+@media (max-width: 380px) {
+  body[data-content-focus="1"] .p2-hero2c.is-stack .p2-hc-copy .p2-actions { gap: 12px; }
+  body[data-content-focus="1"] .p2-hero2c.is-stack .p2-hc-copy .p2-btn { padding-left: 15px; padding-right: 15px; font-size: 13.5px; }
+  body[data-content-focus="1"] .p2-hero2c.is-stack .p2-hc-copy .p2-link { font-size: 13.5px; gap: 6px; }
+}

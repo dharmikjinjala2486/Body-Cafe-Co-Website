@@ -10,9 +10,11 @@ from pathlib import Path
 try:
     from app.errors import Error
     from app import media
+    from app.shipping import SHIP_ACTIONS, configured as shipping_configured
 except ImportError:
     from errors import Error
     import media
+    from shipping import SHIP_ACTIONS, configured as shipping_configured
 
 OWNER = 'store-owner'
 FLAG_DEFAULTS = {'ingredient_library': True, 'reviews': True, 'questions': True, 'checkout_enabled': True}
@@ -132,7 +134,7 @@ class OperationsMixin:
         result['movements'] = [dict(r) for r in c.execute('SELECT * FROM stock_moves ORDER BY created DESC,rowid DESC LIMIT 1000')]
         result['integrations'] = [
             {'id': 'payments', 'name': 'Payments', 'state': 'not_connected', 'description': 'Payment simulation remains enabled locally. Provider credentials, signed webhooks and reconciliation are needed for live payments.'},
-            {'id': 'shipping', 'name': 'Shipping', 'state': 'not_connected', 'description': 'Manual tracking can be recorded. Courier booking and status webhooks need a provider connection.'},
+            {'id': 'shipping', 'name': 'Shipping', 'state': 'connected', 'description': 'Shipneer: on each paid order, get courier prices, choose one and book. Print the label from the order; tracking is checked every hour and delivered orders close themselves.'} if shipping_configured() else {'id': 'shipping', 'name': 'Shipping', 'state': 'not_connected', 'description': 'Manual tracking can be recorded. Add SHIPNEER_API_KEY to the server settings to book couriers.'},
             {'id': 'messaging', 'name': 'Email & messaging', 'state': 'not_connected', 'description': 'Replies are saved in the customer portal. External email and WhatsApp delivery are not configured.'},
             {'id': 'marketplace', 'name': 'Amazon', 'state': 'not_connected', 'description': 'Marketplace orders and FBA stock are not imported. D2C inventory remains separate.'}]
         return result
@@ -281,6 +283,7 @@ class OperationsMixin:
             c.execute("UPDATE batches SET proof=1,state='released' WHERE id=?", (b['id'],))
             self.operation_log(c, s['user_id'], 'batch_released', b['id'], dict(b), {'state': 'released', 'proof': 1}, reason)
             return {'ok': True}
+        if action in SHIP_ACTIONS: return self.shipping_action(c, s, action, data)
         if action == 'order_update':
             r, p = self.owned_order(c, s, data.get('id'))
             if len(reason) < 5: raise Error('Add a remark for this order action.')
@@ -295,6 +298,7 @@ class OperationsMixin:
                 provider, tracking = str(data.get('provider', '')).strip(), str(data.get('tracking', '')).strip()
                 if not provider or not tracking or len(provider) > 120 or len(tracking) > 160: raise Error('Enter the courier and tracking number.')
                 p['provider'], p['tracking'] = provider, tracking
+            if target in ('cancelled', 'shipped', 'packing') and (p.get('shipneer') or {}).get('ordref'): raise Error('This order has a Shipneer booking. Cancel the booking first.', 409)
             if target == 'cancelled':
                 if self.payment_status(c, r['id']) == 'processing': raise Error('Reconcile the uncertain payment before cancelling.', 409)
                 for held in c.execute("SELECT * FROM reservations WHERE order_id=? AND state IN ('held','consumed')", (r['id'],)).fetchall():

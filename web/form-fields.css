@@ -30,3 +30,12 @@
 @media(max-width:700px){
  #main :is(.su,.ac,.pp,.lt,.lr,.bg,.sp) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea),#search-form input{font-size:16px}
 }
+
+/* Pincode delivery check (all designs): a clear first line, details below */
+#pincode-result strong, #pincode-result span { display: block; }
+#pincode-result strong { font-weight: 600; }
+#pincode-result span { margin-top: 2px; }
+#pincode-result a { color: inherit; text-decoration: underline; }
+#pincode-result.pincode-result-ok strong { color: #2f6b3a; }
+#pincode-result.pincode-result-bad strong, #pincode-result.pincode-result-bad { color: #962f22; }
+#pincode-result.pincode-result-busy { opacity: .7; }
