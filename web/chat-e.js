@@ -44,7 +44,7 @@
   }
   // The character (web/media/barista/): the whole bottle above the greeting, the face in the button and the header.
   // The drawings are placed inline (not as <img>) so the cap, apron and shoes can take the colour in --p2c-cap.
-  var drawings = {};
+  var drawings = {}, placed = 0;
   function art(name, cls) {
     var holder = el("span", cls);
     holder.setAttribute("aria-hidden", "true");
@@ -52,8 +52,25 @@
       var svg = text && new DOMParser().parseFromString(text, "image/svg+xml").documentElement;
       return svg && svg.nodeName === "svg" ? svg : null;
     }).catch(function () { return null; });
-    drawings[name].then(function (svg) { if (svg) holder.appendChild(document.importNode(svg, true)); });
+    drawings[name].then(function (svg) {
+      if (!svg) return;
+      // Each copy gets its own gradient ids: the button's copy is hidden while the panel is open, and a gradient
+      // inside a hidden drawing would leave every other copy that points at the same id unpainted.
+      var copy = document.importNode(svg, true), tag = "-" + (++placed);
+      [].forEach.call(copy.querySelectorAll("[id]"), function (n) { n.id += tag; });
+      [].forEach.call(copy.querySelectorAll("[fill^='url(#']"), function (n) { n.setAttribute("fill", n.getAttribute("fill").replace(")", tag + ")")); });
+      holder.appendChild(copy);
+    });
     return holder;
+  }
+  // The face in the header shows the mood: hello, thinking while an answer is written, unsure when one could not be had.
+  var face = null, faceMood = "";
+  function mood(name) {
+    if (!face || name === faceMood) return;
+    faceMood = name;
+    var next = art(name === "hello" ? "barista-face" : "barista-face-" + name, "p2c-face");
+    face.replaceWith(next);
+    face = next;
   }
   // On a product page Barista wears that product's cap colour; everywhere else, the indigo of the proof band.
   function dress() {
@@ -77,6 +94,7 @@
   function setBusy(on) {
     busy = on;
     root.classList.toggle("is-busy", on);
+    mood(on ? "thinking" : "hello");
     send.textContent = on ? "Stop" : "Send";
     send.setAttribute("aria-label", on ? "Stop the answer" : "Send your question");
     status.textContent = on ? "Barista is writing an answer." : "";
@@ -139,6 +157,7 @@
         grow();
         log.scrollTop = log.scrollHeight;
         setBusy(false);
+        mood("unsure");
         return;
       }
     }
@@ -181,7 +200,8 @@
     close.type = "button";
     close.setAttribute("aria-label", "Close Barista");
     close.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
-    head.appendChild(art("barista-face", "p2c-face")); head.appendChild(title); head.appendChild(fresh); head.appendChild(close);
+    face = art("barista-face", "p2c-face"); faceMood = "hello";
+    head.appendChild(face); head.appendChild(title); head.appendChild(fresh); head.appendChild(close);
 
     log = el("div", "p2c-log");
     log.setAttribute("role", "log");

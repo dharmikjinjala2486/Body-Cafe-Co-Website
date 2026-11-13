@@ -1,0 +1,26 @@
+<!-- Barista, the Body Café assistant (redrawn 13 Nov 2026 from the Claude Design canvas "Barista Character"): the cream bottle in a cap and apron, two curls of steam, no label on the body. Mood: thinking. The cap, apron and shoes take the p2c-cap colour set by web/chat-e.js (the product colour on a product page; indigo otherwise). Gradient ids are made unique when web/chat-e.js places the drawing. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" role="img" aria-label="Barista">
+<defs><linearGradient id="bztb" x1="0" x2="1"><stop offset="0" stop-color="#dfd6c2"/><stop offset=".3" stop-color="#f8f4eb"/><stop offset=".72" stop-color="#efe9dc"/><stop offset="1" stop-color="#d6ccb6"/></linearGradient>
+<linearGradient id="bztc" x1="0" x2="1"><stop offset="0" style="stop-color:color-mix(in srgb,var(--p2c-cap,#35306f) 72%,#000)"/><stop offset=".35" style="stop-color:color-mix(in srgb,var(--p2c-cap,#35306f) 84%,#fff)"/><stop offset=".75" style="stop-color:var(--p2c-cap,#35306f)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--p2c-cap,#35306f) 72%,#000)"/></linearGradient></defs>
+<ellipse cx="120" cy="288" rx="72" ry="8" fill="#1c1b1a" opacity=".1"/>
+<ellipse cx="96" cy="281" rx="19" ry="9" style="fill:color-mix(in srgb,var(--p2c-cap,#35306f) 72%,#000)"/><ellipse cx="144" cy="281" rx="19" ry="9" style="fill:color-mix(in srgb,var(--p2c-cap,#35306f) 72%,#000)"/>
+<path d="M60 104V246Q60 276 90 276H150Q180 276 180 246V104Z" fill="url(#bztb)" stroke="#cbc1ac" stroke-width="2"/>
+<rect x="70" y="114" width="9" height="124" rx="4.5" fill="#fff" opacity=".55"/><rect x="61" y="102" width="118" height="12" fill="#000" opacity=".06"/>
+<g fill="none" stroke="#cfc8b8" stroke-width="4" stroke-linecap="round"><path d="M108 32Q100 25 108 18Q116 11 108 4"/><path d="M132 30Q124 24 132 18Q140 12 132 6"/></g>
+<g transform="rotate(-5 120 70)"><rect x="52" y="38" width="136" height="66" rx="16" fill="url(#bztc)"/><rect x="52" y="88" width="136" height="16" rx="8" style="fill:color-mix(in srgb,var(--p2c-cap,#35306f) 72%,#000)"/><rect x="66" y="47" width="72" height="7" rx="3.5" fill="#fff" opacity=".2"/></g>
+<g fill="none" stroke="#2d2926" stroke-width="3" stroke-linecap="round"><path d="M92 124Q101 122 110 124"/><path d="M130 119Q139 112 148 118"/></g>
+<ellipse cx="102" cy="143" rx="7" ry="8.5" fill="#2d2926"/><ellipse cx="138" cy="143" rx="7" ry="8.5" fill="#2d2926"/>
+<g fill="#fff" transform="translate(3 -4)"><circle cx="104.2" cy="140" r="2.4"/><circle cx="140.2" cy="140" r="2.4"/><circle cx="100" cy="146.5" r="1.1"/><circle cx="136" cy="146.5" r="1.1"/></g>
+<ellipse cx="88" cy="160" rx="9.5" ry="5.5" fill="#f2b3a6" opacity=".85"/><ellipse cx="152" cy="160" rx="9.5" ry="5.5" fill="#f2b3a6" opacity=".85"/>
+<path d="M112 162Q121 166 130 160" fill="none" stroke="#2d2926" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="none" stroke-width="5" stroke-linecap="round" style="stroke:var(--p2c-cap,#35306f)"><path d="M98 182Q86 162 64 156"/><path d="M142 182Q154 162 176 156"/></g>
+<path d="M98 182Q98 177 103 177H137Q142 177 142 182V198H158V254Q158 266 146 266H94Q82 266 82 254V198H98Z" style="fill:var(--p2c-cap,#35306f)"/>
+<path d="M82 199H158" fill="none" stroke="#000" stroke-opacity=".22" stroke-width="2"/>
+<ellipse cx="120" cy="188" rx="4.6" ry="6.6" fill="#f3eee2" opacity=".9" transform="rotate(20 120 188)"/><path d="M118 183Q122 188 119 194" fill="none" stroke-width="1.4" stroke-linecap="round" style="stroke:var(--p2c-cap,#35306f)"/>
+<rect x="103" y="217" width="34" height="22" rx="6" fill="#fff" opacity=".14"/><rect x="106" y="220" width="28" height="16" rx="4" fill="none" stroke="#f3eee2" stroke-width="1.4" stroke-dasharray="3 3" opacity=".7"/>
+<path d="M62 206Q46 222 52 246" fill="none" stroke="#cbc1ac" stroke-width="15" stroke-linecap="round"/><path d="M62 206Q46 222 52 246" fill="none" stroke="#f3eee2" stroke-width="11" stroke-linecap="round"/>
+<path d="M178 214Q192 196 152 180" fill="none" stroke="#cbc1ac" stroke-width="15" stroke-linecap="round"/><path d="M178 214Q192 196 152 180" fill="none" stroke="#f3eee2" stroke-width="11" stroke-linecap="round"/>
+<circle cx="52" cy="250" r="9.5" fill="#f3eee2" stroke="#cbc1ac" stroke-width="2"/>
+<circle cx="148" cy="178" r="9.5" fill="#f3eee2" stroke="#cbc1ac" stroke-width="2"/>
+<g fill="#d9d1c0"><circle cx="196" cy="46" r="4"/><circle cx="209" cy="30" r="6"/><circle cx="225" cy="13" r="8"/></g>
+</svg>
