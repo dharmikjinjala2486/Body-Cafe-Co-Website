@@ -19,7 +19,7 @@ await db.query("update bcc_settings set data=jsonb_set(data,'{checkout_enabled}'
 
 // PostgREST and Razorpay stand-ins.
 const KEY = 'rzp_test_STANDIN0000001', SECRET = 'stand-in-secret-000000';
-const rzp = {orders: [], payments: [], calls: [], down: false, n: 0};
+const rzp = {orders: [], payments: [], calls: [], down: false, lag: false, n: 0};
 const sign = (order, payment, secret = SECRET) => createHmac('sha256', secret).update(order + '|' + payment).digest('hex');
 const payAt = (order, status = 'captured') => { const o = rzp.orders.find(x => x.id === order), p = {id: 'pay_STANDIN' + String(++rzp.n).padStart(6, '0'), order_id: order, amount: o.amount, status}; rzp.payments.push(p); o.status = status === 'captured' ? 'paid' : 'attempted'; return p.id; };
 const fetchStub = async (url, opts = {}) => {
@@ -29,7 +29,7 @@ const fetchStub = async (url, opts = {}) => {
     if (opts.headers.Authorization !== 'Basic ' + btoa(KEY + ':' + SECRET)) return reply({error: {description: 'Authentication failed'}}, 401);
     const path = u.pathname.replace('/v1/', ''), body = opts.body ? JSON.parse(opts.body) : null; rzp.calls.push([opts.method, path]);
     if (opts.method === 'POST' && path === 'orders') { const o = {id: 'order_STANDIN' + String(++rzp.n).padStart(6, '0'), ...body, status: 'created'}; rzp.orders.push(o); return reply(o); }
-    if (path === 'orders') return reply({items: rzp.orders.filter(o => o.receipt === u.searchParams.get('receipt'))});
+    if (path === 'orders') return reply({items: rzp.lag ? [] : rzp.orders.filter(o => o.receipt === u.searchParams.get('receipt'))}); // the real search trails new orders by ~30 s
     if (/^orders\/[^/]+\/payments$/.test(path)) return reply({items: rzp.payments.filter(p => p.order_id === path.split('/')[1])});
     if (path.startsWith('orders/')) { const o = rzp.orders.find(o => o.id === name); return o ? reply(o) : reply({error: {description: 'not found'}}, 400); }
     if (path.startsWith('payments/')) { const p = rzp.payments.find(p => p.id === name); return p ? reply(p) : reply({error: {description: 'not found'}}, 400); }
@@ -42,6 +42,7 @@ const fetchStub = async (url, opts = {}) => {
   if (u.pathname.startsWith('/rest/v1/bcc_')) {
     const where = [], vals = [];
     for (const [k, v] of u.searchParams) if (v.startsWith('eq.')) { vals.push(v.slice(3)); where.push(`${k}::text=$${vals.length}`); }
+    if (opts.method === 'PATCH') { const body = JSON.parse(opts.body), cols = Object.keys(body); await db.query(`update public.${name} set ${cols.map((c, i) => `${c}=$${vals.length + i + 1}`).join(',')} where ${where.join(' and ')}`, [...vals, ...cols.map(c => body[c])]); return new Response(null, {status: 204}); }
     return reply((await db.query(`select * from public.${name}${where.length ? ' where ' + where.join(' and ') : ''}`, vals)).rows);
   }
   return reply([]);
@@ -68,7 +69,8 @@ const a = await place();
 [s, j] = await post('/orders/' + a.id + '/pay', {}); assert.equal(s, 200, JSON.stringify(j));
 assert.equal(j.gateway, 'razorpay'); assert.equal(j.key, KEY); assert.equal(j.amount, a.total * 100); assert.equal(j.currency, 'INR'); assert.equal(j.test, true); assert.equal(j.prefill.contact, '+919825012345'); assert.ok(j.timeout > 600 && j.timeout <= 872);
 assert.deepEqual(rzp.orders.map(o => [o.receipt, o.amount]), [[a.id, a.total * 100]]); checks++;
-const first = j.rzp_order; [s, j] = await post('/orders/' + a.id + '/pay', {}); assert.equal(j.rzp_order, first); assert.equal(rzp.orders.length, 1); checks++;
+const first = j.rzp_order; assert.equal((await row(a.id)).data.rzp_order, first);
+rzp.lag = true; [s, j] = await post('/orders/' + a.id + '/pay', {}); assert.equal(j.rzp_order, first); assert.equal(rzp.orders.length, 1); rzp.lag = false; checks++; // reused from the recorded id even while the receipt search is behind
 [s, j] = await post('/orders/' + a.id + '/pay', {}, other); assert.equal(s, 404); checks++; // someone else's order
 
 // Verify refuses: a bad signature, a signature made with another secret, an unpaid order, and another order's payment.

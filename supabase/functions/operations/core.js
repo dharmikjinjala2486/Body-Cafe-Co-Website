@@ -96,7 +96,9 @@ export function createHandler(config){
  async function payStart(id,user){
   await rpc('expire_holds',{p_now:now()});const o=await payOrder(id,user),total=o.data.total,contact=o.data.contact||{};
   if(['paid','packing','shipped','delivered'].includes(o.state))return {id,state:'paid',payment:'captured',idempotent:true};
-  const ro=await pay.orderFor(id,total*100);
+  const known=String(o.data.rzp_order||''),ro=await pay.orderFor(id,total*100,known);
+  // Remember which Razorpay order belongs to this order, so the next Pay reuses it at once. Only while it is still pending.
+  if(ro.id!==known&&o.state==='pending')await db('orders','id=eq.'+id+'&state=eq.pending','PATCH',{data:{...o.data,rzp_order:ro.id}});
   if(ro.status==='paid')return settle(id,user,ro,await pay.paidPayment(ro.id));
   const left=o.created+900-now();
   if(o.state!=='pending')throw new ApiError('This payment reservation is no longer active. Start a new checkout.',409,{reason:'inactive'});

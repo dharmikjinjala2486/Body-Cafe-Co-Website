@@ -20,7 +20,7 @@ CONTACT = {'name': 'Preview Customer', 'mobile': '9825012345', 'address': '123 S
 
 class FakeRazorpay:
     def __init__(self):
-        self.orders, self.payments, self.n, self.down = [], [], 0, False
+        self.orders, self.payments, self.n, self.down, self.lag = [], [], 0, False, False
 
     def pay(self, order, status='captured'):
         o = next(x for x in self.orders if x['id'] == order)
@@ -38,7 +38,7 @@ class FakeRazorpay:
             self.n += 1
             o = {'id': 'order_STANDIN%06d' % self.n, **json.loads(req.data), 'status': 'created'}
             self.orders.append(o); return reply(o)
-        if path == 'orders': return reply({'items': [o for o in self.orders if o['receipt'] == q['receipt'][0]]})
+        if path == 'orders': return reply({'items': [] if self.lag else [o for o in self.orders if o['receipt'] == q['receipt'][0]]})
         if path.endswith('/payments'): return reply({'items': [p for p in self.payments if p['order_id'] == path.split('/')[1]]})
         if path.startswith('orders/'): return reply(next(o for o in self.orders if o['id'] == path.split('/')[1]))
         if path.startswith('payments/'): return reply(next(p for p in self.payments if p['id'] == path.split('/')[1]))
@@ -77,7 +77,9 @@ class RazorpayTests(unittest.TestCase):
         self.assertEqual((r['gateway'], r['key'], r['amount'], r['currency'], r['test']), ('razorpay', KEY, o['total'] * 100, 'INR', True))
         self.assertEqual(r['prefill']['contact'], '+919825012345'); self.assertTrue(600 < r['timeout'] <= 872)
         self.assertEqual([(x['receipt'], x['amount']) for x in self.fake.orders], [(o['id'], o['total'] * 100)])
+        self.fake.lag = True  # the real receipt search trails new orders by ~30 s: the recorded id is used instead
         self.assertEqual(self.store.razorpay_start(self.guest, o['id'])['rzp_order'], r['rzp_order']); self.assertEqual(len(self.fake.orders), 1)
+        self.fake.lag = False
         self.assertNotIn(SECRET, json.dumps(r))
         with self.assertRaises(Error) as e: self.store.razorpay_start(self.store.session('')[0], o['id'])
         self.assertEqual(e.exception.status, 404)

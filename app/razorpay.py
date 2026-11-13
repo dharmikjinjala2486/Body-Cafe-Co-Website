@@ -8,8 +8,8 @@ Flow, following Razorpay's integration steps:
   2. the browser opens Checkout with it  (web/part2-e.js)
   3. POST /api/orders/<id>/pay/verify   -> signature check, then the Razorpay order itself is read back and must carry
                                            our order number as its receipt, our total, and be paid. Only then: captured.
-Nothing about a Razorpay order is stored before payment: it is found again by its receipt (our order number), so a
-customer who paid but lost the page is recognised the next time the payment step is opened.
+The Razorpay order's id is recorded on our order (rzp_order) so Pay reuses it, and a customer who paid but lost the
+page is recognised the next time the payment step is opened. The receipt (our order number) is the fallback search.
 """
 import base64
 import hashlib
@@ -66,10 +66,15 @@ def call(method, path, body=None, query=None):
         raise Error('The payment service didn’t respond. Nothing was charged. Try again shortly.', 503, reason='unavailable')
 
 
-def order_for(receipt, paise):
-    """The Razorpay order for one of our orders: a paid one if there is one, else an open one for this amount, else new."""
-    found = call('GET', 'orders', query={'receipt': receipt, 'count': 20}).get('items') or []
-    mine = [o for o in found if o.get('receipt') == receipt and o.get('amount') == paise and o.get('currency') == 'INR']
+def order_for(receipt, paise, known=''):
+    """The Razorpay order for one of our orders: the one we recorded if it is paid or still open, else a paid or open one
+    found by receipt, else new. Razorpay lists a new order by receipt only after about half a minute, so the recorded id
+    (read directly, which is immediate) comes first; the receipt search covers orders made before the id was recorded."""
+    fits = lambda o: o.get('receipt') == receipt and o.get('amount') == paise and o.get('currency') == 'INR'
+    if known and RZP_ID.fullmatch(known):
+        o = call('GET', 'orders/' + known)
+        if fits(o) and o.get('status') in ('paid', 'created', 'attempted'): return o
+    mine = [o for o in call('GET', 'orders', query={'receipt': receipt, 'count': 20}).get('items') or [] if fits(o)]
     for o in mine:
         if o.get('status') == 'paid': return o
     for o in mine:
@@ -120,7 +125,15 @@ class RazorpayMixin:
             if r['state'] == 'paid' or self.payment_status(c, oid) == 'captured':
                 return {'id': oid, 'state': 'paid', 'payment': 'captured', 'idempotent': True}
             state, total, contact, expires = r['state'], int(p['total']), p.get('contact') or {}, int(p.get('expires') or 0)
-        ro = order_for(oid, total * 100)
+            known = str(p.get('rzp_order') or '')
+        ro = order_for(oid, total * 100, known)
+        if ro['id'] != known and state == 'pending':
+            # Remember which Razorpay order belongs to this order, so the next Pay reuses it at once.
+            with self.db() as c:
+                r, p = self.owned_order(c, s, oid)
+                if r['state'] == 'pending':
+                    p['rzp_order'] = ro['id']
+                    c.execute('UPDATE orders SET data=? WHERE id=?', (json.dumps(p), oid))
         if ro.get('status') == 'paid':
             return self._rzp_settle(s, oid, ro, paid_payment(ro['id']))
         if state != 'pending':

@@ -5,8 +5,8 @@
      2. the browser opens Checkout     (web/part2-e.js)
      3. POST /orders/<id>/pay/verify  -> signature check, then the Razorpay order is read back and must carry our order
                                          number as its receipt, our total, and a successful payment. Only then: paid.
-   A Razorpay order is found again by its receipt (our order number), so nothing is stored before payment and a customer
-   who paid but lost the page is recognised the next time the payment step is opened. */
+   The Razorpay order's id is recorded on our order (rzp_order) so Pay reuses it, and a customer who paid but lost the
+   page is recognised the next time the payment step is opened. The receipt (our order number) is the fallback search. */
 export const RAZORPAY_BASE = 'https://api.razorpay.com/v1/';
 export const RZP_ID = /^(order|pay)_[A-Za-z0-9]{6,40}$/;
 const hex = bytes => [...new Uint8Array(bytes)].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -26,10 +26,13 @@ export function razorpay({key = '', secret = '', fetcher = fetch, fail, base = R
     if (!r.ok) throw fail('The payment service didn’t accept the request. Nothing was charged.' + (data?.error?.description ? ' (' + String(data.error.description).slice(0, 200) + ')' : ''), 502);
     return data;
   }
-  /* The Razorpay order for one of our orders: a paid one if there is one, else an open one for this amount, else new. */
-  async function orderFor(receipt, paise) {
-    const found = (await call('GET', 'orders?' + new URLSearchParams({receipt, count: '20'}))).items || [];
-    const mine = found.filter(o => o.receipt === receipt && o.amount === paise && o.currency === 'INR');
+  /* The Razorpay order for one of our orders: the one we recorded if it is paid or still open, else a paid or open one
+     found by receipt, else new. Razorpay lists a new order by receipt only after about half a minute, so the recorded id
+     (read directly, which is immediate) comes first; the receipt search covers orders made before the id was recorded. */
+  async function orderFor(receipt, paise, known = '') {
+    const fits = o => o.receipt === receipt && o.amount === paise && o.currency === 'INR';
+    if (known && RZP_ID.test(known)) { const o = await call('GET', 'orders/' + known); if (fits(o) && ['paid', 'created', 'attempted'].includes(o.status)) return o; }
+    const mine = ((await call('GET', 'orders?' + new URLSearchParams({receipt, count: '20'}))).items || []).filter(fits);
     return mine.find(o => o.status === 'paid') || mine.find(o => o.status === 'created' || o.status === 'attempted')
       || await call('POST', 'orders', {amount: paise, currency: 'INR', receipt, notes: {order: receipt}});
   }

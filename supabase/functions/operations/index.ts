@@ -2,7 +2,7 @@ import { createHandler } from './core.js';
 // Public catalogue reads and cookie-authenticated admin requests share this API.
 // The platform service key is never sent to the browser or checked into source.
 const handler = createHandler({
-  release: '20261113-razorpay',
+  release: '20261113-razorpay-2',
   url: Deno.env.get('SUPABASE_URL'),
   serviceKey: Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
   // Store assistant (chat.js): the Anthropic API key is a function secret. Without it /api/chat answers 503.
