@@ -1,5 +1,6 @@
 import {sanitiseImage} from './media.js';
 import {chatMessages,chatStream,CHAT_LIMITS} from './chat.js';
+import {razorpay,RZP_ID} from './razorpay.js';
 import {shipneer,SHIP_ACTIONS,cleanParcel,orderPayload,deliveryDays,stateName,SMALL_BOX,BASE_GRAMS,GRAMS_PER_UNIT,CHECK_TTL,CHECK_LIMIT,TRACK_EVERY} from './shipping.js';
 /* Hosted API migration. Service credentials stay in the function environment. */
 export class ApiError extends Error { constructor(message,status=400,extra){super(message);this.status=status;this.extra=extra||null;} }
@@ -79,6 +80,44 @@ export function createHandler(config){
  const rpc=(name,body)=>remote('/rest/v1/rpc/bcc_'+name,{method:'POST',body});
  // Shipneer (shipping.js): courier prices, booking, labels and tracking for staff; a pincode check for shoppers.
  const fail=(m,status,extra)=>new ApiError(m,status,extra),ship=shipneer({key:config.shipneerKey,pickupId:config.shipneerPickupId||undefined,pickupPin:config.shipneerPickupPin||undefined,fetcher,fail,wait:config.wait});
+ // Razorpay (razorpay.js): online payment. Only settle() marks an order paid, and only for a payment Razorpay confirms.
+ const pay=razorpay({key:config.razorpayKey,secret:config.razorpaySecret,fetcher,fail});
+ async function payOrder(id,user){const o=(await db('orders','id=eq.'+id+'&user_id=eq.'+encodeURIComponent(user.id)))[0];if(!o)throw new ApiError('Order not found.',404);return o;}
+ async function settle(id,user,ro,paymentId){
+  const o=await payOrder(id,user);if(o.state!=='pending'&&o.state!=='expired'&&o.state!=='cancelled')return {id,state:'paid',payment:'captured',idempotent:true};
+  const record={razorpay:{order:ro.id,payment:paymentId,at:now()}};
+  try{await rpc('order_transition',{p_id:id,p_target:'paid',p_actor:user.id,p_note:'Razorpay payment '+(paymentId||ro.id),p_public_note:'Payment received.',p_tracking:record});}
+  catch(e){
+   // Paid after the 15-minute hold ended: the money is with us but the stock went back. A person decides.
+   await rpc('order_transition',{p_id:id,p_target:'note',p_actor:user.id,p_note:'Razorpay payment '+(paymentId||ro.id)+' arrived after the hold ended: ship or refund',p_public_note:'Payment received after the hold ended. We’ll be in touch.',p_tracking:{...record,payment_after_hold:true}}).catch(()=>{});
+   throw new ApiError('Your payment went through, but the hold on your items had already ended. Contact us with order '+id+' and we’ll ship it or refund you in full.',409,{reason:'paid_after_hold'});}
+  return {id,state:'paid',payment:'captured',message:'Payment received. Thank you.'};
+ }
+ async function payStart(id,user){
+  await rpc('expire_holds',{p_now:now()});const o=await payOrder(id,user),total=o.data.total,contact=o.data.contact||{};
+  if(['paid','packing','shipped','delivered'].includes(o.state))return {id,state:'paid',payment:'captured',idempotent:true};
+  const ro=await pay.orderFor(id,total*100);
+  if(ro.status==='paid')return settle(id,user,ro,await pay.paidPayment(ro.id));
+  const left=o.created+900-now();
+  if(o.state!=='pending')throw new ApiError('This payment reservation is no longer active. Start a new checkout.',409,{reason:'inactive'});
+  if(left<60)throw new ApiError('The hold on your items is about to end. Start a new checkout so they stay reserved while you pay.',409,{reason:'inactive'});
+  const mobile=String(contact.mobile||'').replace(/\D/g,'').slice(-10);
+  return {id,state:'pending',payment:'pending',gateway:'razorpay',key:pay.key,rzp_order:ro.id,amount:total*100,currency:'INR',timeout:left-30,test:pay.test,prefill:{name:contact.name||'',contact:mobile.length===10?'+91'+mobile:'',email:contact.email||''}};
+ }
+ async function payVerify(id,user,data){
+  const roId=String(data.razorpay_order_id||''),payId=String(data.razorpay_payment_id||'');
+  if(!pay.configured)throw new ApiError('Online payment isn’t connected yet. Nothing was charged.',503);
+  if(!RZP_ID.test(roId)||!RZP_ID.test(payId)||!await pay.signatureOk(roId,payId,data.razorpay_signature))throw new ApiError('We couldn’t confirm that payment. If money left your account, contact us with order '+id+'.',400,{reason:'signature'});
+  const o=await payOrder(id,user),total=o.data.total,ro=await pay.call('GET','orders/'+roId);
+  if(ro.receipt!==id||ro.amount!==total*100||ro.currency!=='INR')throw new ApiError('That payment doesn’t belong to this order. Contact us with order '+id+'.',400,{reason:'mismatch'});
+  if(ro.status!=='paid'){
+   // The order turns "paid" at capture, which can trail the callback by a moment. A signed payment that Razorpay
+   // reports as authorised or captured against this order is a successful payment (integration step 5).
+   const p=await pay.call('GET','payments/'+payId);
+   if(p.order_id!==roId||p.amount!==total*100||!['authorized','captured'].includes(p.status))throw new ApiError('That payment didn’t complete. Nothing was confirmed; you can try again.',409,{reason:'not_paid'});
+  }
+  return settle(id,user,ro,payId);
+ }
  const shipAct=(actor,action,id,d={})=>rpc('ship_action',{p_actor:actor,p_action:action,p_id:id,p_data:d});
  // Booked parcels not checked in the last hour are checked when staff open the portal (the hosted API has no background clock).
  async function shipTick(){if(!ship.configured)return 0;let done=0;for(const x of await shipAct('shipneer','due','',{every:TRACK_EVERY,limit:5})||[]){let t;try{t=await ship.track(x.ordref,20000);}catch{break;}await shipAct('shipneer','track',x.id,{ordref:x.ordref,...t});done++;}return done;}
@@ -309,7 +348,10 @@ export function createHandler(config){
    if(path.startsWith('/auth/'))throw new ApiError('This sign-in option isn’t available.',404);
    if(path==='/bag/quote')return json(await quote(data));
    if(path==='/orders')return json(await placeOrder(data,user));
-   if(/\/orders\/[^/]+\/(pay|reconcile)$/.test(path))throw new ApiError('Live payments are not connected.',503);
+   if(!pay.configured&&/\/orders\/[^/]+\/(pay|pay\/verify|reconcile)$/.test(path))throw new ApiError('Online payment isn’t connected yet. Nothing was charged.',503);
+   if(/^\/orders\/BCC-[A-F0-9]{8}\/pay$/.test(path))return json(await payStart(path.split('/')[2],user));
+   if(/^\/orders\/BCC-[A-F0-9]{8}\/pay\/verify$/.test(path))return json(await payVerify(path.split('/')[2],user,data));
+   if(/\/orders\/[^/]+\/(pay|reconcile)$/.test(path))throw new ApiError('That payment action isn’t available.',404);
    if(path==='/bag'){
     await quote(data);await remote('/rest/v1/bcc_bags?on_conflict=user_id',{method:'POST',body:{user_id:user.id,data:data.items,updated:now()},headers:{Prefer:'resolution=merge-duplicates'}});return json({ok:true,account:!user.id.startsWith('guest-')});
    }

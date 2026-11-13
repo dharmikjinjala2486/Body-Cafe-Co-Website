@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node test-postgres.mjs && node test-api.mjs && node test-media.mjs"
+    "test": "node test-postgres.mjs && node test-api.mjs && node test-media.mjs && node test-shipping.mjs && node test-razorpay.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "0.5.12"

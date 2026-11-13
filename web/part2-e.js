@@ -434,8 +434,9 @@
   });
 
   /* ---------- After Place order: /payment/:id and /orders/:id (6 Nov 2026) ----------
-     A placed order holds its stock for 15 minutes (bcc_checkout). Online payment connects with Razorpay later; until
-     then the payment step says so plainly and nothing is charged. The hold's end is the order time + 15 minutes; the
+     A placed order holds its stock for 15 minutes (bcc_checkout). Payment is Razorpay Standard Checkout (13 Nov 2026):
+     Pay asks the API for a Razorpay order, opens Razorpay's window, then sends its signed answer back to be verified;
+     only the API marks an order paid. The hold's end is the order time + 15 minutes; the
      API only marks an order expired at the next checkout, so the page treats a pending order as ended once that passes.
      Sample states (fx) and the static preview keep Variant E's pages. */
   var basePayment = S.themes.e.payment, baseOrder = S.themes.e.order, HOLD = 900;
@@ -486,9 +487,9 @@
     if (v === "missing") return missingOrder();
     if (v === "pending") return orderPage(ctx, o, ["Order placed · " + esc(o.id), "Your order is placed.", "We’re holding your items until " + clock(holdEnds(o)) + ". Payment is the next step."],
       '<h2><span aria-hidden="true">2</span>Payment</h2><div class="p2-od-amount"><span>To pay</span><strong>' + ctx.money(o.total) + "</strong></div>" +
-      '<p class="p2-od-note">Online payment by UPI, card, wallet or net banking is being connected. Nothing has been charged for this order. If it isn’t paid before the hold ends, the items go back on the shelf automatically.</p>' +
-      '<p class="p2-od-hold" data-p2-hold role="timer" aria-live="off"></p>',
-      '<button type="button" class="p2-btn" disabled>Pay ' + ctx.money(o.total) + ' · connects soon</button><a class="p2-link" href="/shop">Keep shopping</a>');
+      '<p class="p2-od-note">Pay by UPI, card, wallet or net banking. Payment is handled by Razorpay, so your card and UPI details never reach us. If the order isn’t paid before the hold ends, the items go back on the shelf automatically.</p>' +
+      '<p class="p2-od-hold" data-p2-hold role="timer" aria-live="off"></p><p class="p2-od-paymsg" data-p2-pay-msg role="status" aria-live="polite"></p>',
+      '<button type="button" class="p2-btn" data-p2-pay="' + esc(o.id) + '">Pay ' + ctx.money(o.total) + '</button><a class="p2-link" href="/shop">Keep shopping</a>');
     if (v === "ended") return orderPage(ctx, o, ["Order " + esc(o.id), "This hold has ended.", "Nothing was charged, and the items are back in stock."],
       '<h2>Start again</h2><p class="p2-od-note">Your bag still has your items. Check out again to hold them for another 15 minutes.</p>',
       '<a class="p2-btn" href="/cart">Back to your bag</a><a class="p2-link" href="/shop">Keep shopping</a>');
@@ -509,6 +510,45 @@
     var placed = o.created ? new Date(o.created * 1000).toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" }) : "";
     return orderPage(ctx, o, head, '<h2>Order details</h2><p class="p2-od-note">' + (placed ? "Placed " + esc(placed) + ". " : "") + "Keep the order number for any question about this order.</p>" + orderTracking(o) + (v === "pending" ? '<p class="p2-od-hold" data-p2-hold role="timer" aria-live="off"></p>' : ""),
       v === "pending" ? '<a class="p2-btn" href="/payment/' + esc(o.id) + '">Go to payment</a>' : v === "ended" || v === "expired" ? '<a class="p2-btn" href="/cart">Back to your bag</a>' : '<a class="p2-link" href="/help">Questions about this order?</a>');
+  });
+  // Pay: Razorpay Standard Checkout. The key and the Razorpay order come from the API; nothing secret is in the page.
+  var rzpLoading = null;
+  function loadRazorpay() {
+    if (window.Razorpay) return Promise.resolve();
+    return rzpLoading || (rzpLoading = new Promise(function (ok, no) {
+      var el = document.createElement("script"); el.src = "https://checkout.razorpay.com/v1/checkout.js";
+      el.onload = function () { ok(); }; el.onerror = function () { rzpLoading = null; el.remove(); no(new Error("The payment window didn’t load. Check your connection and try again.")); };
+      document.head.appendChild(el);
+    }));
+  }
+  function payNow(btn, msg) {
+    var A = window.BCCApp, id = btn.getAttribute("data-p2-pay"), label = btn.textContent, settling = false;
+    var say = function (t, bad) { if (msg) { msg.textContent = t || ""; msg.classList.toggle("is-bad", !!bad); } };
+    var reset = function () { btn.disabled = false; btn.textContent = label; };
+    var paid = function () { A.setCart([]); Promise.resolve(A.refreshCatalog && A.refreshCatalog()).catch(function () {}).then(function () { A.navigate("/orders/" + id); A.toast("Payment received. Thank you."); }); };
+    btn.disabled = true; btn.textContent = "Opening payment…"; say("");
+    A.api("/orders/" + id + "/pay", {}).then(function (r) {
+      if (r.state === "paid") return paid();
+      return loadRazorpay().then(function () {
+        var rz = new window.Razorpay({
+          key: r.key, amount: r.amount, currency: r.currency, order_id: r.rzp_order, name: "Body Café Co.", description: "Order " + id,
+          prefill: r.prefill || {}, notes: { order: id }, timeout: r.timeout, theme: { color: "#2d2926" },
+          handler: function (res) {
+            settling = true; btn.textContent = "Confirming…"; say("Confirming your payment. Please keep this page open.");
+            A.api("/orders/" + id + "/pay/verify", { razorpay_order_id: res.razorpay_order_id, razorpay_payment_id: res.razorpay_payment_id, razorpay_signature: res.razorpay_signature })
+              .then(function (v) { if (v.state === "paid") paid(); else { say(v.message || "We’re still confirming your payment."); reset(); } })
+              .catch(function (e) { say(e.message, true); reset(); });
+          },
+          modal: { ondismiss: function () { if (settling) return; say("Payment window closed. You can pay again while your items are held."); reset(); } },
+        });
+        rz.on("payment.failed", function (e) { say((e && e.error && e.error.description) || "That payment didn’t go through. You can try again.", true); });
+        rz.open();
+      });
+    }).catch(function (e) { say(e.message || "Payment couldn’t start. Try again.", true); reset(); });
+  }
+  L.onEnhance(function (main, signal) {
+    var btn = main.querySelector("[data-p2-pay]");
+    if (btn && on()) btn.addEventListener("click", function () { payNow(btn, main.querySelector("[data-p2-pay-msg]")); }, signal ? { signal: signal } : undefined);
   });
   // The hold countdown; when it reaches zero the page switches to the "hold has ended" view.
   L.onEnhance(function (main, signal) {

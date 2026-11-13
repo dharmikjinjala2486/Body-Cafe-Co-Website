@@ -1249,6 +1249,9 @@ body[data-variant-e-part="2"] .p2-od-amount strong { font-size: 28px; font-weigh
 body[data-variant-e-part="2"] .p2-od-note { margin: 16px 0 0; font-size: 15px; line-height: 1.6; color: var(--p2-text); }
 body[data-variant-e-part="2"] .p2-od-hold { margin: 12px 0 0; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--p2-ink); }
 body[data-variant-e-part="2"] .p2-od-hold:empty { display: none; }
+body[data-variant-e-part="2"] .p2-od-paymsg { margin: 12px 0 0; font-size: 14px; line-height: 1.5; color: var(--p2-text); }
+body[data-variant-e-part="2"] .p2-od-paymsg.is-bad { color: #a3261d; font-weight: 600; }
+body[data-variant-e-part="2"] .p2-od-paymsg:empty { display: none; }
 /* Courier tracking on the order page (shown only once a parcel is booked) */
 .p2-od-track { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--p2-line, rgba(0,0,0,.12)); }
 .p2-od-track h3 { margin: 0; font-size: 15px; font-weight: 600; }

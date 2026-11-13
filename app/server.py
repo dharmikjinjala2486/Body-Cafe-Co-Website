@@ -15,11 +15,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
 
 try:
-    from app import media, lots, account, support, operations, commerce, shipping, chat
+    from app import media, lots, account, support, operations, commerce, shipping, chat, razorpay
     from app.shipping import state_name as shipping_state_name
     from app.errors import Error
 except ImportError:  # run as a script: python3 app/server.py
-    import media, lots, account, support, operations, commerce, shipping, chat
+    import media, lots, account, support, operations, commerce, shipping, chat, razorpay
     from shipping import state_name as shipping_state_name
     from errors import Error
 
@@ -41,7 +41,7 @@ BUNDLES = [
 LEARN_TOPIC=re.compile(r'/learn(/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?')
 CASE_TOPIC=re.compile(r'/(learn(/[a-z0-9-]{1,60})?|story|about|help/[a-z]{2,20}/[a-z0-9-]{2,60}|policies/(shipping|returns|cancellation|privacy|terms)|products/[a-z0-9-]{1,60})(#[a-z0-9-]{1,40})?')
 
-class Store(shipping.ShippingMixin, commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, account.AccountMixin, support.SupportMixin):
+class Store(razorpay.RazorpayMixin, shipping.ShippingMixin, commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, account.AccountMixin, support.SupportMixin):
     def __init__(self, path):
         self.path = str(path)
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -923,7 +923,9 @@ class Handler(BaseHTTPRequestHandler):
                 elif path=='/api/cards':result=self.store.card_save(s,data)
                 elif re.fullmatch(r'/api/cards/CARD-[0-9a-f]{10}/(delete|default)',path):result=self.store.card_action(s,path.split('/')[3],path.split('/')[4])
                 elif path=='/api/orders':result=self.store.order(s,data)
-                elif re.fullmatch(r'/api/orders/[^/]+/pay',path):result=self.store.pay(s,path.split('/')[3],data)
+                # With Razorpay keys set, a pay request without a preview outcome starts a real Razorpay Checkout (app/razorpay.py).
+                elif re.fullmatch(r'/api/orders/[^/]+/pay',path):result=self.store.razorpay_start(s,path.split('/')[3]) if 'outcome' not in data and razorpay.configured() else self.store.pay(s,path.split('/')[3],data)
+                elif re.fullmatch(r'/api/orders/BCC-[0-9A-F]{8}/pay/verify',path):result=self.store.razorpay_verify(s,path.split('/')[3],data)
                 elif re.fullmatch(r'/api/orders/[^/]+/cancel',path):result=self.store.cancel(s,path.split('/')[3])
                 elif path=='/api/cases':result=self.store.case(s,data)
                 elif re.fullmatch(r'/api/cases/CASE-[0-9A-F]{8}/reply',path):result=self.store.case_reply(s,path.split('/')[3],data)
@@ -973,7 +975,7 @@ class Handler(BaseHTTPRequestHandler):
         else:file=ROOT/'web/index.html'
         resolved=file.resolve()
         if not resolved.is_relative_to(ROOT) or '..' in path.split('/') or not resolved.is_file():return self.json(404,{'error':'Not found'})
-        content=resolved.read_bytes();self.send_response(200);self.send_header('Content-Type',mimetypes.guess_type(str(resolved))[0] or 'application/octet-stream');self.send_header('X-Content-Type-Options','nosniff');self.send_header('Referrer-Policy','same-origin');self.send_header('Content-Security-Policy',"default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");self.send_header('Cache-Control','no-cache');self.send_header('Content-Length',str(len(content)));self.end_headers();self.wfile.write(content)
+        content=resolved.read_bytes();self.send_response(200);self.send_header('Content-Type',mimetypes.guess_type(str(resolved))[0] or 'application/octet-stream');self.send_header('X-Content-Type-Options','nosniff');self.send_header('Referrer-Policy','same-origin');self.send_header('Content-Security-Policy',"default-src 'self'; img-src 'self' data: blob: https://*.razorpay.com; style-src 'self' 'unsafe-inline'; script-src 'self' https://checkout.razorpay.com; font-src 'self'; connect-src 'self' https://*.razorpay.com; frame-src https://api.razorpay.com https://checkout.razorpay.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");self.send_header('Cache-Control','no-cache');self.send_header('Content-Length',str(len(content)));self.end_headers();self.wfile.write(content)
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=4174);parser.add_argument('--db',default=str(ROOT/'.local/preview.sqlite3'));args=parser.parse_args()
