@@ -77,3 +77,7 @@ body[data-variant-e-part="2"] .p2c:not(.is-open) { transition: bottom .25s; }
   body[data-variant-e-part="2"] .p2c-launch, body[data-variant-e-part="2"] .p2c-launch:hover { transition: none; transform: none; }
 }
 @media print { .p2c { display: none !important; } }
+
+/* On a phone the button sat over the checkout and payment forms (13 Nov 2026). It steps away on those two steps only;
+   a conversation that is already open stays open. */
+@media (max-width: 760px) { body[data-variant-e-part="2"]:has(.p2-co, [data-p2-pay]) .p2c:not(.is-open) { display: none; } }

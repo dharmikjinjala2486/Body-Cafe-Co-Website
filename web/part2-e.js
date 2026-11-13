@@ -221,7 +221,7 @@
     var list = ctx.published; // All seven in one grid; no format tabs.
     return '<div class="p2-shop">' + head({ eyebrow: "The Super Sevens", title: title || "Shop the seven.", lede: "Seven supplements, each made to one uncompromising standard.", art: scene("home-hero-lineup", { eager: true, alt: "The seven Body Café Co. bottles in a row" }) }) +
       '<div class="p2-wrap">' +
-      '<ul class="p2-tiles p2-tiles-shop">' + list.map(function (p) { return tile(ctx, p); }).join("") + "</ul>" +
+      '<h2 class="sr-only">All products</h2><ul class="p2-tiles p2-tiles-shop">' + list.map(function (p) { return tile(ctx, p); }).join("") + "</ul>" +
       '<p class="p2-shop-note">All prices are MRP, inclusive of all taxes. Delivery is free on orders of ₹1,499 or more.</p></div></div>';
   }
   part2("shop", function (ctx) { return shopPage(ctx); });
@@ -283,7 +283,7 @@
     var pair = (Array.isArray(p.related_product_ids) ? p.related_product_ids.map(function (id) { return others.filter(function (x) { return x.id === id; })[0]; }).filter(Boolean) : m.related || others).slice(0, 2);
     var fbtItem = function (x, current) {
       return '<div class="p2-fbt-i' + (current ? " is-current" : "") + '" style="--cap:' + esc(x.color) + '">' + (current ? "" : '<label class="p2-fbt-check"><input type="checkbox" checked data-p2-fbt="' + esc(x.id) + '" data-price="' + (+x.price || 0) + '"' + (L.avail(x) ? "" : " disabled") + '><span class="sr-only">Add ' + esc(x.name) + "</span></label>") +
-        '<a class="p2-fbt-img" href="' + href(x) + '">' + bottle(x, { alt: "" }) + '</a><div class="p2-fbt-t"><a href="' + href(x) + '">' + esc(x.name) + " · " + esc(formatOf(ctx, x)) + "</a><b>" + ctx.money(x.price) + "</b><small>Inclusive of all taxes</small></div></div>";
+        '<a class="p2-fbt-img" href="' + href(x) + '" tabindex="-1" aria-hidden="true">' + bottle(x, { alt: "" }) + '</a><div class="p2-fbt-t"><a href="' + href(x) + '">' + esc(x.name) + " · " + esc(formatOf(ctx, x)) + "</a><b>" + ctx.money(x.price) + "</b><small>Inclusive of all taxes</small></div></div>";
     };
     var fbt = pair.length ? '<section class="p2-section p2-fbt" data-p2-fbt-box data-self="' + esc(p.id) + '" data-self-price="' + (+p.price || 0) + '"><div class="p2-wrap"><div class="p2-fbt-card"><header><h2>Frequently bought with</h2><p>Complete your routine with products that sit well together</p></header>' +
       '<div class="p2-fbt-grid"><div class="p2-fbt-cur"><p class="p2-fbt-k">Current item selected</p>' + fbtItem(p, true) + '</div><span class="p2-fbt-plus" aria-hidden="true">+</span><div class="p2-fbt-list">' + pair.map(function (x) { return fbtItem(x); }).join("") + "</div></div>" +

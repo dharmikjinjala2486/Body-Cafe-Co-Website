@@ -3,6 +3,8 @@ from pathlib import Path
 import json
 import os
 from urllib.parse import urlparse
+import hashlib
+import re
 import shutil
 import sys
 import tempfile
@@ -42,6 +44,57 @@ def release_target(release, site_url):
     return site_url.rstrip('/')
 
 
+STYLE = re.compile(r'<link rel="stylesheet" href="/web/([\w.-]+\.css)">')
+SCRIPT = re.compile(r'<script src="/web/([\w.-]+\.js)"></script>')
+
+
+def bundle(html, out):
+    """One request instead of many (13 Nov 2026): each run of neighbouring style sheets, and each run of neighbouring
+    classic scripts, becomes a single file in web/b/ named by its content, so it can be cached for good. The files, their
+    order and what they do are unchanged; the originals stay in web/ for the local preview. A script that opens with
+    "use strict" stays on its own, because joined to others it would lose that mode or give it to them."""
+    (out / 'web/b').mkdir()
+
+    def write(parts, ext, joiner):
+        text = joiner.join(parts)
+        name = 'site-' + hashlib.sha256(text.encode('utf-8')).hexdigest()[:12] + ext
+        (out / 'web/b' / name).write_text(text, encoding='utf-8')
+        return '/web/b/' + name
+
+    lines, done, run, kind = html.split('\n'), [], [], None
+
+    def flush():
+        nonlocal run, kind
+        if len(run) > 1:
+            parts = [(out / 'web' / n).read_text(encoding='utf-8') for n in run]
+            if kind == 'css':
+                for n, t in zip(run, parts):
+                    bare = re.sub(r'/\*.*?\*/|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'', '', t, flags=re.S)
+                    if bare.count('{') != bare.count('}') or '@import' in bare or '@charset' in bare:
+                        raise ValueError(n + ' cannot be joined to the other style sheets (unbalanced braces, @import or @charset).')
+                done.append('<link rel="stylesheet" href="' + write(parts, '.css', '\n') + '">')
+            else:
+                done.append('<script src="' + write(parts, '.js', '\n;\n') + '"></script>')
+        elif run:
+            done.append(('<link rel="stylesheet" href="/web/%s">' if kind == 'css' else '<script src="/web/%s"></script>') % run[0])
+        run, kind = [], None
+
+    for line in lines:
+        css, js = STYLE.fullmatch(line.strip()), SCRIPT.fullmatch(line.strip())
+        strict = bool(js) and re.match(r'\s*(?:/\*.*?\*/\s*|//[^\n]*\n\s*)*["\']use strict["\']', (out / 'web' / js.group(1)).read_text(encoding='utf-8'), re.S)
+        if css or (js and not strict):
+            k = 'css' if css else 'js'
+            if kind != k:
+                flush()
+            kind = k
+            run.append((css or js).group(1))
+        else:
+            flush()
+            done.append(line)
+    flush()
+    return '\n'.join(done)
+
+
 def build():
     mode = os.getenv('BCC_HOSTED_MODE', 'static')
     target = api_target(mode, os.getenv('BCC_API_ORIGIN'))
@@ -75,6 +128,7 @@ def build():
         # Shared modules (world/creative/atelier/home-flow) stay loaded.
         html = '\n'.join(line for line in html.split('\n')
                           if not any('/web/' + name + ext + '"' in line for name in OTHER_DIRECTIONS for ext in ('.css', '.js')))
+    html = bundle(html, out)
     (out / 'index.html').write_text(html, encoding='utf-8')
     (out / 'web/index.html').write_text(html, encoding='utf-8')
     feedback = (ROOT / 'web/feedback.html').read_text(encoding='utf-8')
@@ -86,7 +140,7 @@ def build():
     redirects = ('/api/* ' + target + '/api/:splat 200!\n') if target else ''
     redirects += '/feedback /feedback/index.html 200\n/feedback/ /feedback/index.html 200\n/* /index.html 200\n'
     (out / '_redirects').write_text(redirects, encoding='utf-8')
-    (out / '_headers').write_text('/api/*\n  Cache-Control: no-store\n/ops*\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: same-origin\n  X-Frame-Options: DENY\n  Content-Security-Policy: frame-ancestors \'none\'; base-uri \'self\'; object-src \'none\'\n  Strict-Transport-Security: max-age=31536000\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(self)\n', encoding='utf-8')
+    (out / '_headers').write_text('/web/b/*\n  Cache-Control: public, max-age=31536000, immutable\n/api/*\n  Cache-Control: no-store\n/ops*\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: same-origin\n  X-Frame-Options: DENY\n  Content-Security-Policy: frame-ancestors \'none\'; base-uri \'self\'; object-src \'none\'\n  Strict-Transport-Security: max-age=31536000\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(self)\n', encoding='utf-8')
     if site:
         routes = ['/', '/shop', '/bundles', '/standards', '/about', '/story', '/learn', '/reports', '/help', '/contact',
                   '/policies/shipping', '/policies/returns', '/policies/cancellation', '/policies/privacy', '/policies/terms']

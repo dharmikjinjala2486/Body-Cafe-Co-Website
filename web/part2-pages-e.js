@@ -13,6 +13,13 @@
   if (!S || !S.themes || !S.themes.e || !L || !P) return;
   var esc = L.esc, bottle = P.bottle, capImg = P.capImg, href = P.href;
   function on2() { return document.body.dataset.variantEPart === "2"; }
+  /* Same rule as onCap in app.js: brand ink or cream, black when neither reaches 4.5:1. */
+  function onCap(hex) {
+    var n = parseInt(hex.slice(1), 16), c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    var l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2], r = function (a, b) { return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); };
+    if (Math.max(r(l, 0.0236), r(l, 0.925)) < 4.5) return "#000000";
+    return r(l, 0.0236) >= r(l, 0.925) ? "#2d2926" : "#f8f7f3";
+  }
   // Replace a page for Part 2 only; the renderer receives the page it replaces first (for sub-routes it does not draw).
   function page(name, fn) {
     var base = S.themes.e[name];
@@ -378,6 +385,9 @@
     var su = main.querySelector(".p2p-su");
     if (su && su.classList.contains("p2p-su-contact")) mountContact(su);
     if (su && su.classList.contains("p2p-su-policy")) mountSpy(su, signal);
+    // Product page: text on the cap colour (the "Best" time, the pack flag) takes whichever of ink, cream or black reads on it.
+    var pdp = main.querySelector(".p2-pdp");
+    if (pdp) { var cap = pdp.style.getPropertyValue("--cap").trim(); if (/^#[0-9a-f]{6}$/i.test(cap)) pdp.style.setProperty("--on-cap", onCap(cap)); }
     // Product page on a phone: the fixed Add bar steps aside while the Add button in the page is on screen, so there is only ever one.
     var addIn = main.querySelector(".p2-buy-add"), addBar = main.querySelector(".p2-sticky-add");
     if (addIn && addBar && "IntersectionObserver" in window) {

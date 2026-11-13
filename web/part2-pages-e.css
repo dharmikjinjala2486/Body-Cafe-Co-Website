@@ -627,3 +627,9 @@ body[data-variant-e-part="2"] .p2-foot-legal, body[data-variant-e-part="2"] .p2-
   body[data-variant-e-part="2"] .p2-foot-brand { grid-column: 1 / -1; display: flex; align-items: center; gap: 20px; }
   body[data-variant-e-part="2"] .p2-foot-brand img { margin-bottom: 0; }
 }
+
+/* Polish pass (13 Nov 2026), Part 2 only.
+   Small grey text (eyebrows, hints, fine print) was 3.6:1 on the paper; this grey is 4.5:1 or better on paper, plate and white. */
+body[data-variant-e-part="2"] { --p2-mute: #656a73; }
+/* iPhones zoom the page when a focused field's text is under 16px. */
+@media (max-width: 620px) { body[data-variant-e-part="2"] .p2-qty select { font-size: 16px; } }
