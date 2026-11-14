@@ -17,6 +17,7 @@
     home: [ // 6, 9, 20, 21, 24
       ["Third-party tested", "Independent testing from batch one"],
       ["Seven. Each in its own colour.", "Seven formulas. Nothing along for the ride."],
+      ["Four rules we never bend.", "Every formula is four decisions."], ["Right form", "Form first"], ["Exact dose, stated", "Amounts that mean something"], ["Every lot tested", "Checked, not assumed"],
       ["Every bottle carries a lot number.", "Your bottle has a paper trail."],
       ["Choose your product by its cap, type the number from the pack, and see the record for that batch.", "Every pack carries a Batch No. Choose your product by its cap, type the number, and see the record for that batch."],
       ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the pack says so clearly, right on the front."]
@@ -51,7 +52,7 @@
     ],
     product: [ // 68, 69, 70, 24
       ["Frequently bought with", "Build your routine"],
-      ["Complete your routine with products that sit well together", "Each one has its own timing. Follow every label."],
+      ["Nothing is ticked. Add one only if you need it.", "Each one has its own timing. Follow every label."],
       ["Recommended for you", "Also in the range"],
       ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the pack says so clearly, right on the front."]
     ]

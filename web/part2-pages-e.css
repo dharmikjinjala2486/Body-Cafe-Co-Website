@@ -633,3 +633,51 @@ body[data-variant-e-part="2"] .p2-foot-legal, body[data-variant-e-part="2"] .p2-
 body[data-variant-e-part="2"] { --p2-mute: #656a73; }
 /* iPhones zoom the page when a focused field's text is under 16px. */
 @media (max-width: 620px) { body[data-variant-e-part="2"] .p2-qty select { font-size: 16px; } }
+
+/* ---------- Design review (14 Nov 2026), Part 2 and Content Focus only ---------- */
+/* Home hero: the product's name fades in as its bottle settles, not while the last one is still leaving. */
+body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-hc-now { transition: opacity .45s var(--p2-ease) .45s; }
+body[data-variant-e-part="2"] .p2-hero2c.is-show.is-swap .p2-hc-now { transition-duration: .15s; transition-delay: 0s; }
+
+/* Home range, wide screens: a closed column reads level, with its price, instead of sideways. */
+@media (min-width: 1101px) {
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-art { padding-top: clamp(32px, 6svh, 56px); }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-body { flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 8px; padding: 0 14px 22px; }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) h3 { writing-mode: horizontal-tb; transform: none; white-space: normal; overflow-wrap: break-word; hyphens: auto; font: 600 clamp(14px, 1.15vw, 17px)/1.22 "Aileron", sans-serif; letter-spacing: 0; }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-foot { display: block; }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-add { display: none; }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-price { font-size: 14px; color: var(--p2-text); }
+}
+
+/* Home: the four rules, between the range and the batch lookup. */
+body[data-variant-e-part="2"] .p2-std4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+body[data-variant-e-part="2"] .p2-std4 li { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 28px 24px 30px; border-radius: 20px; background: var(--p2-white); }
+body[data-variant-e-part="2"] .p2-std4 li::before { content: ""; width: 32px; height: 6px; margin-bottom: 8px; border-radius: 3px; background: var(--cap); }
+body[data-variant-e-part="2"] .p2-std4-tag { padding: 6px 10px 5px; border: 1px solid var(--p2-ink); border-radius: 999px; font: 400 10px/1 "Lemon Milk", sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+body[data-variant-e-part="2"] .p2-std4-tag.is-soon { border-style: dashed; border-color: var(--p2-mute); color: var(--p2-mute); }
+body[data-variant-e-part="2"] .p2-std4 h3 { margin: 0; font: 300 clamp(22px, 1.9vw, 28px)/1.12 "Aileron", sans-serif; letter-spacing: -.015em; }
+body[data-variant-e-part="2"] .p2-std4 p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--p2-text); }
+@media (max-width: 1100px) { body[data-variant-e-part="2"] .p2-std4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) {
+  body[data-variant-e-part="2"] .p2-std4 { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  body[data-variant-e-part="2"] .p2-std4 li { padding: 22px 20px 24px; }
+}
+
+/* Shop: the eighth place asks Barista or points to the standard. */
+body[data-variant-e-part="2"] .p2-tile-ask { display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; min-width: 0; padding: clamp(22px, 2.2vw, 32px); border-radius: 14px; background: var(--p2-ink); color: var(--p2-paper); box-sizing: border-box; }
+body[data-variant-e-part="2"] .p2-tile-ask .p2-eyebrow { margin: 0; color: #c9c4ba; }
+body[data-variant-e-part="2"] .p2-tile-ask h3 { margin: 0; font: 300 clamp(22px, 2vw, 30px)/1.12 "Aileron", sans-serif; letter-spacing: -.015em; }
+body[data-variant-e-part="2"] .p2-tile-ask > p:not(.p2-eyebrow) { margin: 0; font-size: 14px; line-height: 1.5; color: #d8d3c9; }
+body[data-variant-e-part="2"] .p2-tile-ask-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-top: 8px; }
+body[data-variant-e-part="2"] .p2-tile-ask .p2-btn { height: 46px; padding: 0 22px; border-color: var(--p2-paper); background: var(--p2-paper); color: var(--p2-ink); }
+body[data-variant-e-part="2"] .p2-tile-ask .p2-btn:hover { background: transparent; color: var(--p2-paper); }
+body[data-variant-e-part="2"] .p2-tile-ask .p2-link { color: var(--p2-paper); }
+@media (min-width: 901px) and (max-width: 1180px) { body[data-variant-e-part="2"] .p2-tile-ask { grid-column: span 2; } }
+@media (max-width: 620px) {
+  body[data-variant-e-part="2"] .p2-tile-ask { padding: 18px 16px; }
+  body[data-variant-e-part="2"] .p2-tile-ask h3 { font-size: 19px; }
+  body[data-variant-e-part="2"] .p2-tile-ask > p:not(.p2-eyebrow) { display: none; }
+  body[data-variant-e-part="2"] .p2-tile-ask .p2-eyebrow { font-size: 9px; letter-spacing: .14em; }
+  body[data-variant-e-part="2"] .p2-tile-ask-actions { flex-direction: column; align-items: flex-start; gap: 12px; }
+  body[data-variant-e-part="2"] .p2-tile-ask .p2-btn { height: 40px; padding: 0 16px; font-size: 14px; }
+}

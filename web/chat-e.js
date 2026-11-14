@@ -229,6 +229,7 @@
     document.body.appendChild(root);
 
     launcher.addEventListener("click", function () { open(!root.classList.contains("is-open")); });
+    document.addEventListener("click", function (e) { var t = e.target.closest && e.target.closest("[data-p2c-open]"); if (!t || getComputedStyle(root).display === "none") return; e.preventDefault(); e.stopPropagation(); open(true); }, true);
     close.addEventListener("click", function () { open(false); });
     fresh.addEventListener("click", function () { if (controller) controller.abort(); messages = []; save(); setBusy(false); draw(); input.focus(); });
     form.addEventListener("submit", function (e) { e.preventDefault(); if (busy) { if (controller) controller.abort(); } else ask(input.value); });

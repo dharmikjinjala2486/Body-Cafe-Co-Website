@@ -179,6 +179,10 @@
       '<section class="p2-section p2-seven3" aria-labelledby="p2-seven-t"><div class="p2-wrap"><header class="p2-sec-head"><div><p class="p2-eyebrow">The range</p><h2 id="p2-seven-t">Seven. Each in its own colour.</h2></div>' +
       '<a class="p2-link" href="/shop">Shop all seven</a></header>' + columns(ctx, list) + "</div></section>" +
 
+      /* 4 · Our standard: the four rules, each with where it stands (design review, 14 Nov 2026) */
+      '<section class="p2-section p2-stdband" aria-labelledby="p2-std-t"><div class="p2-wrap"><header class="p2-sec-head"><div><p class="p2-eyebrow">Our standard</p><h2 id="p2-std-t">Four rules we never bend.</h2></div><a class="p2-link" href="/standards">Read our standard</a></header>' +
+      '<ul class="p2-std4">' + PROOF.map(function (r, i) { return '<li style="--cap:' + esc((list[(i * 2) % list.length] || {}).color || "#999") + '"><b class="p2-std4-tag' + (r[2] === "In place" ? "" : " is-soon") + '">' + r[2] + "</b><h3>" + r[0] + "</h3><p>" + r[1] + "</p></li>"; }).join("") + "</ul></div></section>" +
+
       /* 5 · Lot record */
       '<section class="p2-lotband" aria-labelledby="p2-lot-t"><div class="p2-wrap p2-lotband-in"><div><p class="p2-eyebrow">Lot record</p><h2 id="p2-lot-t">Every bottle carries a lot number.</h2><p>Choose your product by its cap, type the number from the pack, and see the record for that batch.</p></div>' + lotForm(ctx, { light: true }) + "</div></section>" +
 
@@ -221,7 +225,9 @@
     var list = ctx.published; // All seven in one grid; no format tabs.
     return '<div class="p2-shop">' + head({ eyebrow: "The Super Sevens", title: title || "Shop the seven.", lede: "Seven supplements, each made to one uncompromising standard.", art: scene("home-hero-lineup", { eager: true, alt: "The seven Body Café Co. bottles in a row" }) }) +
       '<div class="p2-wrap">' +
-      '<h2 class="sr-only">All products</h2><ul class="p2-tiles p2-tiles-shop">' + list.map(function (p) { return tile(ctx, p); }).join("") + "</ul>" +
+      '<h2 class="sr-only">All products</h2><ul class="p2-tiles p2-tiles-shop">' + list.map(function (p) { return tile(ctx, p); }).join("") +
+      (document.body.dataset.variantEPart === "2" ? '<li class="p2-tile-ask"><p class="p2-eyebrow">Not sure where to start?</p><h3>Ask about any of the seven.</h3><p>Barista answers from our labels and help pages. For your own health, ask your doctor.</p>' +
+        '<div class="p2-tile-ask-actions"><a class="p2-btn" href="/help" data-p2c-open>Ask Barista</a><a class="p2-link" href="/standards">Our standard</a></div></li>' : "") + "</ul>" +
       '<p class="p2-shop-note">All prices are MRP, inclusive of all taxes. Delivery is free on orders of ₹1,499 or more.</p></div></div>';
   }
   part2("shop", function (ctx) { return shopPage(ctx); });
@@ -282,25 +288,25 @@
     var avg = rv.length ? rv.reduce(function (t, r) { return t + r[1]; }, 0) / rv.length : 0;
     var pair = (Array.isArray(p.related_product_ids) ? p.related_product_ids.map(function (id) { return others.filter(function (x) { return x.id === id; })[0]; }).filter(Boolean) : m.related || others).slice(0, 2);
     var fbtItem = function (x, current) {
-      return '<div class="p2-fbt-i' + (current ? " is-current" : "") + '" style="--cap:' + esc(x.color) + '">' + (current ? "" : '<label class="p2-fbt-check"><input type="checkbox" checked data-p2-fbt="' + esc(x.id) + '" data-price="' + (+x.price || 0) + '"' + (L.avail(x) ? "" : " disabled") + '><span class="sr-only">Add ' + esc(x.name) + "</span></label>") +
+      return '<div class="p2-fbt-i' + (current ? " is-current" : "") + '" style="--cap:' + esc(x.color) + '">' + (current ? "" : '<label class="p2-fbt-check"><input type="checkbox" data-p2-fbt="' + esc(x.id) + '" data-price="' + (+x.price || 0) + '"' + (L.avail(x) ? "" : " disabled") + '><span class="sr-only">Add ' + esc(x.name) + "</span></label>") +
         '<a class="p2-fbt-img" href="' + href(x) + '" tabindex="-1" aria-hidden="true">' + bottle(x, { alt: "" }) + '</a><div class="p2-fbt-t"><a href="' + href(x) + '">' + esc(x.name) + " · " + esc(formatOf(ctx, x)) + "</a><b>" + ctx.money(x.price) + "</b><small>Inclusive of all taxes</small></div></div>";
     };
-    var fbt = pair.length ? '<section class="p2-section p2-fbt" data-p2-fbt-box data-self="' + esc(p.id) + '" data-self-price="' + (+p.price || 0) + '"><div class="p2-wrap"><div class="p2-fbt-card"><header><h2>Frequently bought with</h2><p>Complete your routine with products that sit well together</p></header>' +
+    var fbt = pair.length ? '<section class="p2-section p2-fbt" data-p2-fbt-box data-self="' + esc(p.id) + '" data-self-price="' + (+p.price || 0) + '"><div class="p2-wrap"><div class="p2-fbt-card"><header><h2>Frequently bought with</h2><p>Nothing is ticked. Add one only if you need it.</p></header>' +
       '<div class="p2-fbt-grid"><div class="p2-fbt-cur"><p class="p2-fbt-k">Current item selected</p>' + fbtItem(p, true) + '</div><span class="p2-fbt-plus" aria-hidden="true">+</span><div class="p2-fbt-list">' + pair.map(function (x) { return fbtItem(x); }).join("") + "</div></div>" +
-      '<div class="p2-fbt-foot"><p>Your total: <b data-p2-fbt-total>' + ctx.money([p].concat(pair).reduce(function (n, x) { return n + (+x.price || 0); }, 0)) + '</b></p><button type="button" class="p2-btn" data-p2-fbt-add>Add these to your bag</button></div></div></div></section>' : "";
+      '<div class="p2-fbt-foot"><p>Your total: <b data-p2-fbt-total>' + ctx.money(+p.price || 0) + '</b></p><button type="button" class="p2-btn" data-p2-fbt-add>Add to your bag</button></div></div></div></section>' : "";
 
     var pc = PDP[p.id] || {}, lasts = serves ? "One bottle lasts " + serves + " days" : "";
     var points = (pc.points || []).concat(lasts ? [lasts] : []);
     var sections = [
       ["Description", '<h3 class="p2-acc-h">' + esc(c.headline || p.name) + "</h3>" + para(pc.desc || clean(c.intro || p.description)), only2],
-      ["Key Benefits", (front.claim ? '<p class="p2-claim">' + esc(front.claim) + "</p>" : "") +
+      ["Key benefits", (front.claim ? '<p class="p2-claim">' + esc(front.claim) + "</p>" : "") +
         (points.length ? '<ul class="p2-ticks">' + points.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "")],
-      ["Direction for Use", '<ol class="p2-slots">' + slots.map(function (s) { var t = String(timing[s[0]] || ""), best = /^best/i.test(t); return '<li class="' + (best ? "is-best" : "") + '"><span>' + s[1] + "</span><b>" + (best ? "Best" : t ? "Also fine" : "—") + "</b></li>"; }).join("") + "</ol>" +
+      ["Directions for use", '<ol class="p2-slots">' + slots.map(function (s) { var t = String(timing[s[0]] || ""), best = /^best/i.test(t); return '<li class="' + (best ? "is-best" : "") + '"><span>' + s[1] + "</span><b>" + (best ? "Best" : t ? "Also fine" : "—") + "</b></li>"; }).join("") + "</ol>" +
         (p.directions ? '<p class="p2-use">' + esc(p.directions) + "</p>" : "") +
         (cautions.length || p.allergens ? '<p class="p2-small p2-cautions">' + esc(cautions.concat(p.allergens ? [String(p.allergens).trim()] : []).join(" ")) + "</p>" : "")],
-      ["Supplement Facts", rows.length ? '<table class="p2-table p2-table-sm"><caption>Per ' + esc((p.supplement_facts && p.supplement_facts.serving) || p.serving_size || "serving") + " (approximate values)</caption><thead><tr><th scope=\"col\">Nutrient</th><th scope=\"col\">Amount</th><th scope=\"col\">% RDA</th></tr></thead><tbody>" +
+      ["Supplement facts", rows.length ? '<table class="p2-table p2-table-sm"><caption>Per ' + esc((p.supplement_facts && p.supplement_facts.serving) || p.serving_size || "serving") + " (approximate values)</caption><thead><tr><th scope=\"col\">Nutrient</th><th scope=\"col\">Amount</th><th scope=\"col\">% RDA</th></tr></thead><tbody>" +
         rows.map(function (r) { return '<tr class="lvl-' + (r.level || 0) + (r.active ? " is-active" : "") + '"><th scope="row">' + esc(r.name) + "</th><td>" + esc(r.amount) + "</td><td>" + esc(r.rda) + "</td></tr>"; }).join("") + '</tbody></table><p class="p2-small">%RDA as per ICMR 2020. # %RDA not established.</p>' : para(p.nutrition_information)],
-      ["Other Ingredients", (p.other_ingredients ? '<p class="p2-others-p">' + esc(String(p.other_ingredients).trim()) + "</p>" : "")],
+      ["Other ingredients", (p.other_ingredients ? '<p class="p2-others-p">' + esc(String(p.other_ingredients).trim()) + "</p>" : "")],
     ];
 
     return '<article class="p2-pdp p2-pdp3" style="--cap:' + esc(p.color) + '">' +
@@ -777,7 +783,9 @@
   // Part 2's stage: one circle that stays put; the bottles change inside it. Part 1 passes its own (web/hero-caps-e.js).
   function heroBottle(a, b) {
     var img = new Image();
-    img.alt = ""; img.decoding = "async"; img.src = "/web/media/premium/front-" + b.dataset.id + ".webp";
+    img.alt = ""; img.decoding = "async";
+    if (!a.parentNode && b.closest("li") === b.closest("ul").firstElementChild) { img.fetchPriority = "high"; img.loading = "eager"; }
+    img.src = "/web/media/premium/front-" + b.dataset.id + ".webp";
     a.appendChild(img);
   }
   heroBottle.gap = 120; // one bottle leaves as the next arrives
@@ -905,12 +913,19 @@
     });
     main.querySelectorAll("[data-p2-fbt-box]").forEach(function (box) {
       var A = window.BCCApp || {};
-      var total = function () { var sum = +box.dataset.selfPrice; box.querySelectorAll("[data-p2-fbt]:checked").forEach(function (c) { sum += +c.dataset.price; }); box.querySelector("[data-p2-fbt-total]").textContent = "₹" + sum.toLocaleString("en-IN"); };
+      var add = box.querySelector("[data-p2-fbt-add]");
+      var total = function () {
+        var sum = +box.dataset.selfPrice, picked = box.querySelectorAll("[data-p2-fbt]:checked");
+        picked.forEach(function (c) { sum += +c.dataset.price; });
+        box.querySelector("[data-p2-fbt-total]").textContent = "₹" + sum.toLocaleString("en-IN");
+        add.textContent = picked.length ? "Add these to your bag" : "Add to your bag";
+      };
+      total();
       box.addEventListener("change", function (e) { if (e.target.matches("[data-p2-fbt]")) total(); }, { signal: signal });
       box.querySelector("[data-p2-fbt-add]").addEventListener("click", function () {
         var ids = [box.dataset.self]; box.querySelectorAll("[data-p2-fbt]:checked").forEach(function (c) { ids.push(c.dataset.p2Fbt); });
         var bad = ids.map(function (id) { return A.addToBag ? A.addToBag(id, 1) : { ok: false }; }).filter(function (r) { return !r || !r.ok; });
-        if (A.toast) A.toast(bad.length ? (bad[0] && bad[0].message) || "Some items couldn't be added." : ids.length + " items added to your bag.");
+        if (A.toast) A.toast(bad.length ? (bad[0] && bad[0].message) || "Some items couldn't be added." : ids.length > 1 ? ids.length + " items added to your bag." : "Added to your bag.");
       }, { signal: signal });
     });
     var filters = main.querySelectorAll("[data-p2-filter]");

@@ -14,7 +14,7 @@ body[data-variant-e-part="4"] {
 body[data-variant-e-part="4"][data-p4-service="noon"] { --bg: #ffffff; }
 body[data-variant-e-part="4"][data-p4-service="night"] { --bg: #141311; --fg: #f1ece3; }
 body[data-variant-e-part="4"] .p4 { background: var(--bg); color: var(--fg); font-family: var(--text); -webkit-font-smoothing: antialiased; transition: background .6s var(--ease), color .6s var(--ease); }
-body[data-variant-e-part="4"] .p4 a { color: inherit; }
+body[data-variant-e-part="4"] :where(.p4) a:not(.p4-btn) { color: inherit; }
 body[data-variant-e-part="4"] .p4-wrap { width: 100%; max-width: calc(var(--max) + var(--side) * 2); margin: 0 auto; padding: 0 var(--side); box-sizing: border-box; }
 body[data-variant-e-part="4"] .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -380,3 +380,27 @@ body[data-variant-e-part="4"] .p4-others .p2-dash { columns: 2; column-gap: 32px
 body[data-variant-e-part="4"] .p4-others .p2-dash li { break-inside: avoid; position: relative; padding: 8px 0 8px 18px; border-bottom: 1px solid currentColor; font-size: 15px; }
 body[data-variant-e-part="4"] .p4-others .p2-dash li::before { content: "—"; position: absolute; left: 0; opacity: .6; }
 @media (max-width: 640px) { body[data-variant-e-part="4"] .p4-others .p2-dash { columns: 1; } }
+
+/* ---------- Design review (14 Nov 2026) ---------- */
+/* House rules strip: one line on wide screens (smaller type), sliding sideways if it still does not fit. */
+@media (min-width: 861px) {
+  body[data-variant-e-part="4"] .p4-rules { flex-wrap: nowrap; justify-content: safe center; gap: 0 28px; overflow-x: auto; scrollbar-width: none; font-size: clamp(14px, 1.45vw, 22px); white-space: nowrap; }
+  body[data-variant-e-part="4"] .p4-rules::-webkit-scrollbar { display: none; }
+  body[data-variant-e-part="4"] .p4-rules span { flex: none; gap: 10px; }
+}
+/* Menu lines, wide screens: NAME ······ PRICE on the first line, the fact and when it is best beneath,
+   so a long name never squeezes the fact or cuts the leaders short. */
+@media (min-width: 861px) {
+  body[data-variant-e-part="4"] .p4-menu .p4-line:not(.p4-line-fbt) { grid-template-columns: 20px auto minmax(40px, 1fr) auto auto; grid-template-areas: "dot name lead price add" ". fact fact fact ."; row-gap: 10px; }
+  body[data-variant-e-part="4"] .p4-menu .p4-line:not(.p4-line-fbt) .p4-dot { grid-area: dot; }
+  body[data-variant-e-part="4"] .p4-menu .p4-line:not(.p4-line-fbt) .p4-line-name { grid-area: name; }
+  body[data-variant-e-part="4"] .p4-menu .p4-line:not(.p4-line-fbt) .p4-lead { grid-area: lead; }
+  body[data-variant-e-part="4"] .p4-menu .p4-line:not(.p4-line-fbt) .p4-line-price { grid-area: price; }
+  body[data-variant-e-part="4"] .p4-menu .p4-line:not(.p4-line-fbt) .p4-add { grid-area: add; }
+  body[data-variant-e-part="4"] .p4-menu .p4-line:not(.p4-line-fbt) .p4-line-fact { grid-area: fact; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; font-size: 15px; }
+}
+/* The notes are readable: "Also fine now · best in the morning", and the menu's own note. At Noon nothing is best, so it reads "Fine now". */
+body[data-variant-e-part="4"] .p4-line-also { font-size: 11px; letter-spacing: .12em; }
+body[data-variant-e-part="4"][data-p4-service="noon"] .p4-also-a { display: none; }
+body[data-variant-e-part="4"][data-p4-service="noon"] .p4-line-also { opacity: .8; }
+body[data-variant-e-part="4"] .p4-sec-head .p4-k { font-size: 12px; letter-spacing: .14em; line-height: 1.5; }

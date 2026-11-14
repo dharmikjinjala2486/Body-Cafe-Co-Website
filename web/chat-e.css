@@ -81,3 +81,10 @@ body[data-variant-e-part="2"] .p2c:not(.is-open) { transition: bottom .25s; }
 /* On a phone the button sat over the checkout and payment forms (13 Nov 2026). It steps away on those two steps only;
    a conversation that is already open stays open. */
 @media (max-width: 760px) { body[data-variant-e-part="2"]:has(.p2-co, [data-p2-pay]) .p2c:not(.is-open) { display: none; } }
+
+/* Design review (14 Nov 2026): on wide screens Barista is a little smaller and sits in the page margin,
+   so it stays clear of the buttons and the FAQ "+" at the right edge of the content. */
+@media (min-width: 1101px) {
+  body[data-variant-e-part="2"] .p2c:not(.is-open) { right: clamp(10px, calc((100vw - 1280px) / 2 - 84px), 28px); }
+  body[data-variant-e-part="2"] .p2c-launch { width: 72px; }
+}

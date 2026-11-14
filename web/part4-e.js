@@ -49,12 +49,12 @@
     o = o || {}; var ok = L.avail(p), best = bestOf(p);
     return '<li class="p4-line" data-best="' + best + '" data-p2-format="' + P.formatGroup(ctx, p) + '" data-p4-line="' + esc(p.id) + '" style="' + ctx.capStyle(p) + '">' +
       '<i class="p4-dot" aria-hidden="true"></i><a class="p4-line-name" href="' + P.href(p) + '">' + esc(p.name) + "</a>" +
-      '<span class="p4-line-fact">' + P.fact(ctx, p) + (o.format ? " · " + P.formatGroup(ctx, p) : "") + '<small class="p4-line-also">Also fine now · best ' + WHEN[best] + "</small></span>" +
+      '<span class="p4-line-fact">' + P.fact(ctx, p) + (o.format ? " · " + P.formatGroup(ctx, p) : "") + '<small class="p4-line-also"><span class="p4-also-a">Also </span>fine now · best ' + WHEN[best] + "</small></span>" +
       lead() + '<span class="p4-line-price">' + ctx.money(p.price) + "</span>" +
       (o.noAdd ? "" : '<button type="button" class="p4-add" data-add="' + esc(p.id) + '" aria-label="Add ' + esc(p.name) + ' to bag"' + (ok ? "" : " disabled") + ">" + (ok ? "Add" : "Unavailable") + "</button>") + "</li>";
   }
   function menu(ctx, list, o) { return '<ol class="p4-menu' + (o && o.cls ? " " + o.cls : "") + '" data-p4-menu>' + list.map(function (p) { return line(ctx, p, o); }).join("") + "</ol>"; }
-  function ticket(form, title) { return '<div class="p4-ticket"><p class="p4-ticket-k">' + (title || "Order number") + "</p>" + form + "</div>"; }
+  function ticket(form, title) { return '<div class="p4-ticket"><p class="p4-ticket-k">' + (title || "Batch No.") + "</p>" + form + "</div>"; }
   function lotBlock(ctx, p, o) {
     return '<section class="p4-lotsec" id="' + (o.id || "p4-lot") + '" aria-labelledby="' + (o.id || "p4-lot") + '-t"><div class="p4-lot-block" data-p4-lotblock style="' + ctx.capStyle(p) + '">' + k("Lot record") + '<h2 id="' + (o.id || "p4-lot") + '-t">' + o.title + "</h2><p>" + o.text + '</p></div><div class="p4-lot-paper">' + ticket(o.form) + "</div></section>";
   }
@@ -120,7 +120,7 @@
 
       /* 3 · The menu */
       '<section class="p4-menusec" data-p4-menusec aria-labelledby="p4-menu-t"><div class="p4-menu-bg" aria-hidden="true">' + list.map(function (p) { return photo(p, "still", { cls: "p4-menu-still" }); }).join("") + "</div>" +
-      '<div class="p4-wrap">' + sechead("The menu", '<p class="p4-k">Seven. No more. · Dimmed items are also fine now; the label says when they are best.</p>', "p4-menu-t") + menu(ctx, list) +
+      '<div class="p4-wrap">' + sechead("The menu", '<p class="p4-k">Seven. No more. · Every line shows when its label says it is best.</p>', "p4-menu-t") + menu(ctx, list) +
       '<p class="p4-fine">MRP, inclusive of all taxes. Delivery is free on orders of ₹1,499 or more.</p></div></section>' +
 
       /* 4 · The standard */
@@ -128,7 +128,7 @@
       '<ol class="p4-std-lines">' + P.PROOF.map(function (r, i) { return '<li style="--cap:' + esc((cs[(i * 2) % cs.length] || {}).color || "#999") + '"><strong>' + r[0] + "</strong><span>" + r[1] + "</span>" + tag(r[2]) + "</li>"; }).join("") + "</ol>" +
       '<a class="p4-btn p4-btn-paper" href="/standards">Read our standard</a></div></section>' +
 
-      /* 5 · Order number */
+      /* 5 · Batch lookup */
       lotBlock(ctx, first, { title: "Every bottle has a number.", text: "Choose your product by its cap, type the number from the pack, and see the record for that batch.", form: P.lotForm(ctx) }) +
 
       /* 6 · Regulars */
@@ -171,7 +171,7 @@
     var rows = (p.supplement_facts && p.supplement_facts.rows) || [];
     var dl = function (items) { items = items.filter(function (x) { return x[1]; }); return items.length ? '<dl class="p4-dl">' + items.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : ""; };
     var fbtLine = function (x, self) {
-      return '<li class="p4-line p4-line-fbt' + (self ? " is-self" : "") + '" style="' + ctx.capStyle(x) + '">' + (self ? '<span class="p4-tick is-fixed" aria-hidden="true">✓</span>' : '<label class="p4-tick"><input type="checkbox" checked data-p2-fbt="' + esc(x.id) + '" data-price="' + (+x.price || 0) + '"' + (L.avail(x) ? "" : " disabled") + '><i aria-hidden="true"></i><span class="sr-only">Add ' + esc(x.name) + "</span></label>") +
+      return '<li class="p4-line p4-line-fbt' + (self ? " is-self" : "") + '" style="' + ctx.capStyle(x) + '">' + (self ? '<span class="p4-tick is-fixed" aria-hidden="true">✓</span>' : '<label class="p4-tick"><input type="checkbox" data-p2-fbt="' + esc(x.id) + '" data-price="' + (+x.price || 0) + '"' + (L.avail(x) ? "" : " disabled") + '><i aria-hidden="true"></i><span class="sr-only">Add ' + esc(x.name) + "</span></label>") +
         '<a class="p4-line-name" href="' + P.href(x) + '">' + esc(x.name) + (self ? ' <small>this item</small>' : "") + '</a><span class="p4-line-fact">' + P.fact(ctx, x) + "</span>" + lead() + '<span class="p4-line-price">' + ctx.money(x.price) + "</span></li>";
     };
     return '<article class="p4-item-page" style="' + ctx.capStyle(p) + '">' +
@@ -212,7 +212,7 @@
 
       /* Often on the same bill (frequently bought with; the shared Part 2 behaviour totals and adds) */
       (pair.length ? '<section class="p4-fbt" data-p2-fbt-box data-self="' + esc(p.id) + '" data-self-price="' + (+p.price || 0) + '"><div class="p4-wrap">' + sechead("Often on the same bill") + '<ol class="p4-menu p4-menu-fbt">' + fbtLine(p, true) + pair.map(function (x) { return fbtLine(x); }).join("") + "</ol>" +
-        '<div class="p4-fbt-foot"><p>Your total <b data-p2-fbt-total>' + ctx.money([p].concat(pair).reduce(function (t, x) { return t + (+x.price || 0); }, 0)) + '</b></p><button type="button" class="p4-btn" data-p2-fbt-add>Add these to your bag</button></div></div></section>' : "") +
+        '<div class="p4-fbt-foot"><p>Your total <b data-p2-fbt-total>' + ctx.money(+p.price || 0) + '</b></p><button type="button" class="p4-btn" data-p2-fbt-add>Add to your bag</button></div></div></section>' : "") +
 
       /* Regulars */
       '<section class="p4-regs" id="p4-reviews" aria-labelledby="p4-reviews-t"><div class="p4-wrap">' + sechead(rv.length ? "Regulars" : "Reviews open with the first deliveries.", P.reviewSummary(rv), "p4-reviews-t") + "</div>" + regulars(ctx, rv.slice(0, 3), { noLink: true }) + '<p class="p4-wrap p4-fine">' + P.REVIEW_RULE + "</p></section>" +
