@@ -121,6 +121,20 @@
     }
   };
 
+  /* What each product is for (16 Nov 2026, owner-approved). Only the front-label Key Benefit, which the Version E workbook keeps
+     as the permitted claim (Claims sheet, C20, FSSAI consultant to verify), then the label amounts behind it. No condition,
+     outcome or timing promise. [shop card, one line · range, at most two lines · product page claim · product page facts] */
+  var USE = {
+    "omega-3-fish-oil": ["Heart · Brain · Joints", "Supports heart, brain & joint health", "Supports heart, brain and joint health.", "Each softgel gives 800 mg omega-3 as triglycerides: 400 mg EPA and 300 mg DHA."],
+    "vitamin-d3-k2": ["Bones · Muscles · Heart", "Supports bone, muscle & heart health", "Supports bone, muscle and heart health.", "One softgel gives 600 IU vitamin D3, 55 mcg vitamin K2 as MK-7 and 200 mg omega-3."],
+    "creatine-chews": ["Strength · Performance", "Supports strength & performance", "Supports strength and performance.", "Two orange chewable tablets give 3,000 mg creatine monohydrate, with no powder to mix."],
+    "iron-bisglycinate": ["Hemoglobin · Energy", "Supports hemoglobin formation & energy metabolism", "Supports hemoglobin formation and energy metabolism.", "Each capsule gives 29 mg iron as Ferrochel® ferrous bisglycinate chelate."],
+    "l-theanine": ["Calm · Focus", "Supports a calm mind & clear focus", "Supports a calm mind and clear focus.", "Each capsule gives 200 mg L-Theanine, the amino acid naturally found in green tea."],
+    "myo-d-chiro-inositol": ["Hormones · Metabolism", "Supports hormonal & metabolic balance", "Supports hormonal and metabolic balance.", "Three capsules give 2,000 mg Myo-Inositol and 50 mg D-Chiro Inositol, a 40:1 ratio."],
+    "psyllium-husk": ["Digestion · Regularity", "Supports digestive health & regularity", "Supports digestive health and regularity.", "Five capsules give 2,000 mg psyllium husk (isabgol), with 1,578 mg dietary fibre."]
+  };
+  function idOf(a) { var m = a && /\/products\/([^/?#]+)/.exec(a.getAttribute("href") || ""); return m ? m[1] : ""; }
+
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function swap(root, pairs) {
     var map = {}, n, tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -156,8 +170,18 @@
     }
     var link = root.querySelector(".p2-hc-copy .p2-link"); if (link) link.textContent = HERO.link;
     swap(root, TEXT.home);
+    // The range: what each product is for, under its name, open or closed.
+    [].forEach.call(root.querySelectorAll(".p2-col h3"), function (h) {
+      // Shown in the open column and in the list rows; a closed column on wide screens shows only its name (content-focus-e.css).
+      var u = USE[idOf(h.querySelector("a"))]; if (u) h.insertAdjacentHTML("afterend", '<p class="cf-use cf-use-range">' + esc(u[1]) + "</p>");
+    });
   });
-  page("shop", function (root) { swap(root, TEXT.shop); });
+  page("shop", function (root) {
+    swap(root, TEXT.shop);
+    [].forEach.call(root.querySelectorAll(".p2-tile h3"), function (h) {
+      var u = USE[idOf(h.querySelector("a"))]; if (u) h.insertAdjacentHTML("afterend", '<p class="cf-use cf-use-card" title="' + esc(u[1]) + '">' + esc(u[0]) + "</p>");
+    });
+  });
   page("standards", function (root) {
     swap(root, TEXT.standards);
     [].forEach.call(root.querySelectorAll(".p2-std-status li"), function (li) {
@@ -175,6 +199,9 @@
   page("learn", function (root) { swap(root, TEXT.learn); });
   page("product", function (root, args) {
     swap(root, TEXT.product);
+    // What it's for, straight under the product name: the first thing read in the buy box.
+    var u = USE[args[1] && args[1].id], h1 = root.querySelector(".p2-buy h1");
+    if (u && h1) h1.insertAdjacentHTML("afterend", '<div class="cf-for"><p class="cf-for-k">What it’s for</p><p class="cf-for-claim">' + esc(u[2]) + '</p><p class="cf-for-how">' + esc(u[3]) + "</p></div>");
     var c = PRODUCTS[args[1] && args[1].id], h = root.querySelector(".p2-acc-h");
     if (c && h) {
       var q = function (t, x) { return '<h4 class="cf-q">' + t + "</h4><p>" + esc(x) + "</p>"; };
