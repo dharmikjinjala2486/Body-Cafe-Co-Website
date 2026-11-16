@@ -1329,3 +1329,10 @@ body[data-variant-e-part="2"] .p2-hero2c.is-show:not(.is-swap) .p2-hc-caps a.is-
   body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-actions .p2-btn { padding-inline: 20px; white-space: nowrap; }
   body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-actions .p2-link { white-space: nowrap; }
 }
+
+/* Product galleries in Parts 2 and 3 (16 Nov 2026): the listing set (web/gallery-e.js) or admin uploads. The panels carry
+   text, so each is shown whole, never cropped, in a square frame on white; the thumbnails scroll sideways instead of squeezing. */
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-pdp3 .p2-gallery-main:has(.p2-shot-upload) { aspect-ratio: 1 / 1; background: #fff; }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-shot-upload img { object-fit: contain; }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-thumbs:has(.p2-thumb-upload) { overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; padding-bottom: 4px; }
+body:is([data-variant-e-part="2"], [data-variant-e-part="3"]) .p2-thumbs .p2-thumb-upload { flex: 0 0 auto; scroll-snap-align: start; background: #fff; }

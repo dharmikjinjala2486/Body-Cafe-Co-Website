@@ -158,6 +158,7 @@
      lot record, often on the same bill, regulars, the rest of the menu. Opens in the service its label says is best. */
   part4("product", function (ctx, p) {
     var m = window.BCCEH.h.pdp(ctx, p), h = window.BCCEH.h, c = P.copy(p.id), sd = P.std(p.id) || {}, front = p.label_front || {}, best = bestOf(p);
+    var gal = window.BCCGalleryE ? window.BCCGalleryE.list(p.id) : [];
     document.body.dataset.p4Service = best; document.body.dataset.p4Pin = "1";
     var serves = parseInt(p.servings_per_pack, 10), perServe = serves ? "₹" + (p.price / serves).toFixed(2) + " per serving" : "";
     var sentences = function (t) { return String(t || "").split(/(?<=[.!?])\s+/).map(function (x) { return x.trim(); }).filter(Boolean); };
@@ -187,7 +188,10 @@
       '<div class="p4-buyrow" data-pd-buy><div class="sr-only" aria-hidden="true" inert>' + h.qtySelect(m, "p4-qty") + "</div>" + h.addMain(m, "p4-btn p4-item-add") + "</div>" +
       (window.BCCPacks ? window.BCCPacks.pincode("pc-p4") : "") +
       '<ul class="p4-item-notes"><li>' + esc(m.stockLine || "In stock") + '</li><li>Ships in 3–4 days</li><li>Free delivery on orders of ₹1,499 or more</li><li><a href="#p4-lot">Look up your lot</a></li>' + (rv.length ? '<li><a href="#p4-reviews">' + rv.length + " sample review" + (rv.length === 1 ? "" : "s") + "</a></li>" : "") + "</ul></div></div>" +
-      '<div class="p4-item-photo">' + P.spin(p, { eager: true, cls: "p4-item-spin" }) + '<p class="p4-hint" aria-hidden="true">Drag to turn</p></div></section>' +
+      // The listing set (web/gallery-e.js, 16 Nov 2026) on the cap-colour block; the turning bottle only when a product has none.
+      (gal.length ? '<div class="p4-item-photo p4-gal"><div class="p4-gal-main">' + gal.map(function (g, i) { return '<figure class="p4-gal-shot" data-p2-shot="' + i + '"' + (i ? " hidden" : "") + '><img src="' + esc(g.src) + '" alt="' + esc(g.alt) + '" width="' + g.w + '" height="' + g.h + '"' + (i ? ' loading="lazy"' : ' fetchpriority="high"') + ' decoding="async"></figure>'; }).join("") + "</div>" +
+        '<div class="p4-gal-thumbs" role="group" aria-label="Product images">' + gal.map(function (g, i) { return '<button type="button" data-p2-thumb="' + i + '" aria-pressed="' + (i === 0) + '" aria-label="' + esc(g.label) + '"><img src="' + esc(g.src) + '" alt="" width="' + g.w + '" height="' + g.h + '" loading="lazy" decoding="async"></button>'; }).join("") + "</div></div></section>"
+        : '<div class="p4-item-photo">' + P.spin(p, { eager: true, cls: "p4-item-spin" }) + '<p class="p4-hint" aria-hidden="true">Drag to turn</p></div></section>') +
 
       /* What's in it */
       '<section class="p4-paper" id="p4-facts"><div class="p4-wrap p4-two"><div>' + k("What’s in it") + "<h2>Supplement facts</h2><p class=\"p4-sub\">Per " + esc((p.supplement_facts && p.supplement_facts.serving) || p.serving_size || "serving") + (p.servings_per_pack ? " · " + esc(p.servings_per_pack) + " servings per pack" : "") + "</p></div><div>" +

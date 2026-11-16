@@ -46,6 +46,8 @@
     var name = p.name;
     // B: the first image is the intentional static studio artwork; later admin images follow in order.
     if (ctx && ctx.design === "b" && window.BCCBMedia) return window.BCCBMedia.gallery(p);
+    // E (16 Nov 2026): the owner's seven-image listing set (web/gallery-e.js) comes before any admin upload.
+    if (ctx && ctx.design === "e" && window.BCCGalleryE && window.BCCGalleryE.has(p.id)) return window.BCCGalleryE.list(p.id).map(function(g){return {kind:"front",src:attr(g.src),w:g.w,h:g.h,alt:attr(g.alt),label:attr(g.label),caption:""};});
     if (p.gallery && p.gallery.length) return p.gallery.map(function(g,i){return {kind:"front",src:attr(g.src),w:g.w||1000,h:g.h||1000,alt:attr(g.alt||p.name),label:attr(g.label||"Product image "+(i+1)),caption:attr(g.caption||g.alt||p.name)};});
     if (!Object.prototype.hasOwnProperty.call(IMG_W,p.id)) return [{kind:"front",src:"/web/media/product-placeholder.svg",w:800,h:1000,alt:attr(name),label:"Product image",caption:"Product image awaiting upload"}];
     var list = [

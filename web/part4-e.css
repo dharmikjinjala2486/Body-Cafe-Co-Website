@@ -404,3 +404,19 @@ body[data-variant-e-part="4"] .p4-line-also { font-size: 11px; letter-spacing: .
 body[data-variant-e-part="4"][data-p4-service="noon"] .p4-also-a { display: none; }
 body[data-variant-e-part="4"][data-p4-service="noon"] .p4-line-also { opacity: .8; }
 body[data-variant-e-part="4"] .p4-sec-head .p4-k { font-size: 12px; letter-spacing: .14em; line-height: 1.5; }
+
+/* Product gallery (16 Nov 2026): the listing set (web/gallery-e.js) as a square on the cap-colour block, thumbnails beneath.
+   The panels carry text, so they are shown whole, never cropped. */
+body[data-variant-e-part="4"] .p4-gal { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; padding: clamp(24px, 4vw, 56px); box-sizing: border-box; }
+body[data-variant-e-part="4"] .p4-gal-main { width: min(100%, 640px); aspect-ratio: 1 / 1; background: #fff; box-shadow: 0 24px 60px rgb(0 0 0 / .14); }
+body[data-variant-e-part="4"] .p4-gal-shot { margin: 0; width: 100%; height: 100%; }
+body[data-variant-e-part="4"] .p4-gal-shot[hidden] { display: none; }
+body[data-variant-e-part="4"] .p4-gal-shot img { display: block; width: 100%; height: 100%; object-fit: contain; }
+body[data-variant-e-part="4"] .p4-gal-thumbs { display: flex; gap: 8px; max-width: min(100%, 640px); overflow-x: auto; scrollbar-width: thin; padding-bottom: 4px; }
+body[data-variant-e-part="4"] .p4-gal-thumbs button { flex: 0 0 auto; width: 64px; height: 64px; padding: 0; border: 2px solid transparent; background: #fff; cursor: pointer; }
+body[data-variant-e-part="4"] .p4-gal-thumbs button[aria-pressed="true"] { border-color: var(--ink); }
+body[data-variant-e-part="4"] .p4-gal-thumbs img { display: block; width: 100%; height: 100%; object-fit: contain; }
+@media (max-width: 860px) {
+  body[data-variant-e-part="4"] .p4-item-photo.p4-gal { height: auto; padding: 20px 16px; }
+  body[data-variant-e-part="4"] .p4-gal-thumbs button { width: 52px; height: 52px; }
+}
