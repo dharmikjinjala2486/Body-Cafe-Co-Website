@@ -334,6 +334,7 @@ class ShippingMixin:
             self._ship_save(c, oid, 'shipped', p)
             self._ship_stock(c, s, oid, -1, 'ship', f"{oid} · {sn['courier']} {booked['awb']}")
             self.operation_log(c, s['user_id'], 'order_shipped', oid, before, {'state': 'shipped', 'provider': sn['courier'], 'tracking': booked['awb']}, 'Booked with Shipneer')
+            self.notice(c, oid, 'order_shipped')
             return {'ok': True, 'awb': booked['awb'], 'courier': sn['courier']}
         if action == 'ship_track':
             if not sn.get('ordref'): raise Error('This order has no Shipneer booking.', 409)
@@ -387,6 +388,7 @@ class ShippingMixin:
             at = next((e['at'] for e in t['events'] if e['note'].lower() == 'delivered' and e['at']), now)
             p['history'].append({'state': 'delivered', 'at': at})
             self.operation_log(c, 'shipneer', 'order_delivered', r['id'], {'state': 'shipped'}, {'state': 'delivered'}, 'Courier reported delivery')
+            self.notice(c, r['id'], 'order_delivered')
         elif t['outcome'] == 'returned' and not sn.get('returned'):
             sn['returned'] = now
             p.setdefault('internal_notes', []).append({'text': 'Courier reports a return to origin (' + t['status'] + '). When the parcel arrives, use Restock returned parcel.', 'at': now, 'actor': 'shipneer'})
@@ -416,6 +418,8 @@ class ShippingMixin:
         def loop():
             while True:
                 try: self.shipping_tick()
+                except Exception: pass
+                try: self.notices_flush()  # deliveries the courier reported (app/msg91.py)
                 except Exception: pass
                 time.sleep(TICK)
         threading.Thread(target=loop, daemon=True, name='shipneer-tracking').start()

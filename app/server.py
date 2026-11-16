@@ -15,11 +15,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
 
 try:
-    from app import media, lots, account, support, operations, commerce, shipping, chat, razorpay
+    from app import media, lots, account, support, operations, commerce, shipping, chat, razorpay, msg91
     from app.shipping import state_name as shipping_state_name
     from app.errors import Error
 except ImportError:  # run as a script: python3 app/server.py
-    import media, lots, account, support, operations, commerce, shipping, chat, razorpay
+    import media, lots, account, support, operations, commerce, shipping, chat, razorpay, msg91
     from shipping import state_name as shipping_state_name
     from errors import Error
 
@@ -41,7 +41,7 @@ BUNDLES = [
 LEARN_TOPIC=re.compile(r'/learn(/[a-z0-9-]{1,60})?(#[a-z0-9-]{1,40})?')
 CASE_TOPIC=re.compile(r'/(learn(/[a-z0-9-]{1,60})?|story|about|help/[a-z]{2,20}/[a-z0-9-]{2,60}|policies/(shipping|returns|cancellation|privacy|terms)|products/[a-z0-9-]{1,60})(#[a-z0-9-]{1,40})?')
 
-class Store(razorpay.RazorpayMixin, shipping.ShippingMixin, commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, account.AccountMixin, support.SupportMixin):
+class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, commerce.CommerceMixin, operations.OperationsMixin, lots.LotsMixin, account.AccountMixin, support.SupportMixin):
     def __init__(self, path):
         self.path = str(path)
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -94,6 +94,7 @@ class Store(razorpay.RazorpayMixin, shipping.ShippingMixin, commerce.CommerceMix
                 c.execute('INSERT INTO settings VALUES(?,?)', (price_version, 'true'))
             c.execute('INSERT OR IGNORE INTO settings VALUES(?,?)',('flags',json.dumps({'ingredient_library':True,'referrals':False,'amazon_sync':False})))
             self.operations_init(c)
+            self.msg91_init(c)
 
 
     @contextlib.contextmanager
@@ -233,6 +234,7 @@ class Store(razorpay.RazorpayMixin, shipping.ShippingMixin, commerce.CommerceMix
                 c.execute("UPDATE reservations SET state='released' WHERE id=?",(held['id'],))
             if r['state']=='paid':
                 p['refund']='pending_refund'
+                self.notice(c,oid,'order_cancelled')
             p['history'].append({'state':'cancelled','at':int(time.time())})
             c.execute("UPDATE orders SET state='cancelled',data=? WHERE id=?",(json.dumps(p),oid));self.log(c,s['user_id'],'order_cancelled',oid)
         return {'ok':True}
@@ -953,6 +955,7 @@ class Handler(BaseHTTPRequestHandler):
                     result={'ok':True}
                 else:raise Error('Endpoint not found.',404)
             self.json(200,result,cookie)
+            self.store.notices_flush_later()  # order messages queued by this request (app/msg91.py)
         except (Error,lots.LotError) as e:self.json(e.status,{'error':str(e),**getattr(e,'extra',{})},cookie)
         except (ValueError,TypeError,KeyError):self.json(400,{'error':'Invalid request data.'},cookie)
         except Exception as e:
@@ -979,6 +982,10 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=4174);parser.add_argument('--db',default=str(ROOT/'.local/preview.sqlite3'));args=parser.parse_args()
+    # Switches in the git-ignored .env (BCC_OTP_PROVIDER, BCC_ORDER_MESSAGES) apply to the running server only, so the
+    # tests, which build a Store directly, never pick up a developer's settings. A real environment variable wins.
+    for k,v in shipping._env_file().items():
+        if k in ('BCC_OTP_PROVIDER','BCC_ORDER_MESSAGES'):os.environ.setdefault(k,v)
     if os.getenv('BCC_MODE','preview')!='preview':raise SystemExit('Live mode is not implemented. Configure real authentication, payment and provider adapters before production.')
     Handler.store=Store(args.db)
     Handler.store.shipping_scheduler()  # hourly Shipneer tracking checks for booked parcels

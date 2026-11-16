@@ -314,6 +314,8 @@ class OperationsMixin:
             state = r['state'] if target == 'note' else target
             c.execute('UPDATE orders SET state=?,data=? WHERE id=?', (state, json.dumps(p), r['id']))
             self.operation_log(c, s['user_id'], 'order_' + target, r['id'], old, {'state': state, 'provider': p.get('provider'), 'tracking': p.get('tracking')}, reason)
+            if target in ('shipped', 'delivered') or target == 'cancelled' and p.get('refund') == 'pending_refund':
+                self.notice(c, r['id'], 'order_' + target)
             return {'ok': True}
         if action == 'flags_update':
             key, value = data.get('key'), data.get('value')

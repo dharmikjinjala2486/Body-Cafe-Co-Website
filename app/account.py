@@ -25,9 +25,11 @@ import time
 try:
     from app.errors import Error
     from app.shipping import state_name
+    from app import msg91
 except ImportError:
     from errors import Error
     from shipping import state_name
+    import msg91
 
 OTP_TTL = 300
 OTP_RESEND = 20
@@ -112,8 +114,23 @@ class UnconfiguredOtpSender:
         raise Error('Sign-in codes can’t be sent right now. Try again later.', 503, reason='unavailable')
 
 
+class Msg91OtpSender:
+    """MSG91 (app/msg91.py) delivers our code: by SendOTP to a mobile, by an email template to an address."""
+    mode = 'live'
+
+    def send(self, mobile, code):
+        try:
+            msg91.send_code(mobile, code, OTP_TTL // 60)
+        except msg91.Msg91Error as e:
+            print('MSG91 code not sent:', e, flush=True)
+            raise Error('We couldn’t send your code just now. Try again in a minute.', 503, reason='unavailable')
+        return {'mode': 'live'}
+
+
 def otp_sender():
-    name = os.getenv('BCC_OTP_PROVIDER', 'preview')
+    name = (os.getenv('BCC_OTP_PROVIDER') or 'preview').strip()  # app/server.py copies it from .env at start-up
+    if name == 'msg91':
+        return Msg91OtpSender()
     return PreviewOtpSender() if name == 'preview' else UnconfiguredOtpSender(name)
 
 
@@ -341,7 +358,7 @@ class AccountMixin:
         return {'ok': True, 'created': created, 'claimed_orders': claimed, 'email_pending': pending_email}
 
     def signup(self, s, data):
-        """Create an account: name and mobile (required), email and password (optional). Confirmed by a code to the mobile."""
+        """Create an account: name, mobile and password (required), email (optional). Confirmed by a code to the mobile."""
         errors = {}
         name = str(data.get('name', '')).strip()
         mobile = str(data.get('mobile', '')).strip()
@@ -353,7 +370,9 @@ class AccountMixin:
             errors['mobile'] = 'Enter a 10-digit Indian mobile number starting with 6, 7, 8 or 9.'
         if email and not EMAIL.fullmatch(email):
             errors['email'] = 'Enter a valid email address, or leave it blank.'
-        if pw:
+        if not pw:
+            errors['password'] = 'Choose a password.'
+        else:
             try:
                 clean_password(pw)
             except Error as e:
@@ -365,7 +384,7 @@ class AccountMixin:
                 raise Error('This number already has an account. Sign in instead.', 409, reason='exists', fields={'mobile': 'This number already has an account.'})
             if email and self._email_owner(c, email)[0]:
                 raise Error('Check the highlighted fields.', 409, fields={'email': 'Another account already uses this email.'})
-            c.execute('INSERT OR REPLACE INTO signups VALUES(?,?,?)', (mobile, json.dumps({'name': name, 'email': email, 'pw_hash': hash_password(pw) if pw else None}), int(time.time())))
+            c.execute('INSERT OR REPLACE INTO signups VALUES(?,?,?)', (mobile, json.dumps({'name': name, 'email': email, 'pw_hash': hash_password(pw)}), int(time.time())))
         out = self.otp(s, {'mobile': mobile})
         out['signup'] = True
         return out

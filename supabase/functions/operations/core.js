@@ -1,6 +1,7 @@
 import {sanitiseImage} from './media.js';
 import {chatMessages,chatStream,CHAT_LIMITS} from './chat.js';
 import {razorpay,RZP_ID} from './razorpay.js';
+import {msg91} from './msg91.js';
 import {shipneer,SHIP_ACTIONS,cleanParcel,orderPayload,deliveryDays,stateName,SMALL_BOX,BASE_GRAMS,GRAMS_PER_UNIT,CHECK_TTL,CHECK_LIMIT,TRACK_EVERY} from './shipping.js';
 /* Hosted API migration. Service credentials stay in the function environment. */
 export class ApiError extends Error { constructor(message,status=400,extra){super(message);this.status=status;this.extra=extra||null;} }
@@ -84,11 +85,25 @@ export function createHandler(config){
  const fail=(m,status,extra)=>new ApiError(m,status,extra),ship=shipneer({key:config.shipneerKey,pickupId:config.shipneerPickupId||undefined,pickupPin:config.shipneerPickupPin||undefined,fetcher,fail,wait:config.wait});
  // Razorpay (razorpay.js): online payment. Only settle() marks an order paid, and only for a payment Razorpay confirms.
  const pay=razorpay({key:config.razorpayKey,secret:config.razorpaySecret,fetcher,fail});
+ // MSG91 (msg91.js): order messages, and Supabase Auth's text-message codes through the Send SMS hook (/hooks/send-sms).
+ // Each order gets each event once: a claim is recorded on the order (data.notices) before anything is sent.
+ const msg=msg91({...(config.msg91||{}),origin:config.publicOrigin||origins[0]},{fetcher});
+ async function notifyOrder(id,event){
+  if(!msg.configured)return;
+  const find=async()=>(await db('orders','id=eq.'+encodeURIComponent(id)))[0],mark=async(o,v)=>db('orders','id=eq.'+encodeURIComponent(id),'PATCH',{data:{...o.data,notices:{...(o.data?.notices||{}),[event]:v}}});
+  let o=await find();if(!o||o.data?.notices?.[event])return;
+  if(event==='order_cancelled'&&o.data?.refund!=='pending_refund')return; // a cancelled order that was never paid gets no message
+  await mark(o,{at:now(),sending:true});
+  const result=await msg.deliver(event,id,o.data);
+  o=await find();if(o)await mark(o,{at:now(),...result});
+ }
+ // Order messages never hold up or fail the request that caused them.
+ async function later(p){p=p.catch(()=>{});if(globalThis.EdgeRuntime?.waitUntil)globalThis.EdgeRuntime.waitUntil(p);else await p;}
  async function payOrder(id,user){const o=(await db('orders','id=eq.'+id+'&user_id=eq.'+encodeURIComponent(user.id)))[0];if(!o)throw new ApiError('Order not found.',404);return o;}
  async function settle(id,user,ro,paymentId){
   const o=await payOrder(id,user);if(o.state!=='pending'&&o.state!=='expired'&&o.state!=='cancelled')return {id,state:'paid',payment:'captured',idempotent:true};
   const record={razorpay:{order:ro.id,payment:paymentId,at:now()}};
-  try{await rpc('order_transition',{p_id:id,p_target:'paid',p_actor:user.id,p_note:'Razorpay payment '+(paymentId||ro.id),p_public_note:'Payment received.',p_tracking:record});}
+  try{await rpc('order_transition',{p_id:id,p_target:'paid',p_actor:user.id,p_note:'Razorpay payment '+(paymentId||ro.id),p_public_note:'Payment received.',p_tracking:record});await later(notifyOrder(id,'order_paid'));}
   catch(e){
    // Paid after the 15-minute hold ended: the money is with us but the stock went back. A person decides.
    await rpc('order_transition',{p_id:id,p_target:'note',p_actor:user.id,p_note:'Razorpay payment '+(paymentId||ro.id)+' arrived after the hold ended: ship or refund',p_public_note:'Payment received after the hold ended. We’ll be in touch.',p_tracking:{...record,payment_after_hold:true}}).catch(()=>{});
@@ -124,7 +139,7 @@ export function createHandler(config){
  }
  const shipAct=(actor,action,id,d={})=>rpc('ship_action',{p_actor:actor,p_action:action,p_id:id,p_data:d});
  // Booked parcels not checked in the last hour are checked when staff open the portal (the hosted API has no background clock).
- async function shipTick(){if(!ship.configured)return 0;let done=0;for(const x of await shipAct('shipneer','due','',{every:TRACK_EVERY,limit:5})||[]){let t;try{t=await ship.track(x.ordref,20000);}catch{break;}await shipAct('shipneer','track',x.id,{ordref:x.ordref,...t});done++;}return done;}
+ async function shipTick(){if(!ship.configured)return 0;let done=0;for(const x of await shipAct('shipneer','due','',{every:TRACK_EVERY,limit:5})||[]){let t;try{t=await ship.track(x.ordref,20000);}catch{break;}const r=await shipAct('shipneer','track',x.id,{ordref:x.ordref,...t});if(r?.state==='delivered')await notifyOrder(x.id,'order_delivered').catch(()=>{});done++;}return done;}
  const signingKey=crypto.subtle.importKey('raw',new TextEncoder().encode(config.serviceKey),{name:'HMAC',hash:'SHA-256'},false,['sign','verify']);
  const encode=x=>btoa(JSON.stringify(x)).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');
  async function seal(value){const part=encode(value);return part+'.'+hex(await crypto.subtle.sign('HMAC',await signingKey,new TextEncoder().encode(part)));}
@@ -155,7 +170,7 @@ export function createHandler(config){
   if(data.adult!==true)throw new ApiError('Confirm that the purchaser is 18 or older.');
   if((data.method||'prepaid')!=='prepaid')throw new ApiError('Cash on delivery isn’t offered. Choose online payment.',409);
   const c=data.contact&&typeof data.contact==='object'?data.contact:{};
-  const contact={name:text(c.name,2,120,'Enter your full name.'),mobile:String(c.mobile||'').replace(/\D/g,''),email:typeof c.email==='string'?c.email.trim():'',
+  const contact={name:text(c.name,2,120,'Enter your full name.'),mobile:String(c.mobile||'').replace(/\D/g,''),email:typeof c.email==='string'?c.email.trim():'',whatsapp_updates:c.whatsapp_updates===true,
    address:text(c.address,5,300,'Enter your full delivery address.'),city:text(c.city,2,80,'Enter your city.'),state:stateName(text(c.state,2,80,'Enter your state.'),(m,st,extra)=>new ApiError(m,st,extra)),pincode:String(c.pincode||'').trim()};
   if(!/^[6-9][0-9]{9}$/.test(contact.mobile))throw new ApiError('Enter a valid 10-digit mobile number.');
   if(!/^[1-9][0-9]{5}$/.test(contact.pincode))throw new ApiError('Enter a valid 6-digit pincode.');
@@ -200,7 +215,9 @@ export function createHandler(config){
   try{await db('media','','POST',meta);}catch(e){await fetcher(base+'/storage/v1/object/bcc-private',{method:'DELETE',headers:serviceHeaders,body:JSON.stringify({prefixes:[objectKey]})});throw e;}
   return kind==='catalog'?{src:'/api/catalog-media/'+id,alt:'Product image',w:file.width,h:file.height}:{id,mime:file.mime,bytes:file.bytes.length,width:file.width,height:file.height};
  }
- return async function handler(req){let headers=new Headers({'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});const cookie=(name,value,age=28800)=>headers.append('Set-Cookie',`${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`),json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers});
+ return async function handler(req){
+  if(req.method==='POST'&&/\/hooks\/send-sms\/?$/.test(new URL(req.url).pathname))return msg.smsHook(req); // signed by Supabase Auth (msg91.js)
+ let headers=new Headers({'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});const cookie=(name,value,age=28800)=>headers.append('Set-Cookie',`${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`),json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers});
   try{let u=new URL(req.url),start=u.pathname.indexOf('/api/'),path=start<0?u.pathname:u.pathname.slice(start+4),cookies=Object.fromEntries((req.headers.get('Cookie')||'').split(';').map(p=>p.trim().split('=')).filter(p=>p.length===2)),adminRoute=path.startsWith('/admin')||!!cookies.bcc_admin&&/^\/(catalog-media|lots\/documents|review-media)\//.test(path),s=await current(cookies,adminRoute),user=s.user;if(s.refreshed)cookie('bcc_customer',s.refreshed,2592000);
    if(cookies.bcc_guest!==s.guest.token)cookie('bcc_guest',s.guest.token,86400*30);if(!cookies.bcc_csrf)cookie('bcc_csrf',s.csrf);
    const mustAdmin=()=>{if(user.role!=='admin')throw new ApiError('An administrator session is required.',403);};
@@ -297,13 +314,14 @@ export function createHandler(config){
     if(name.length<2||name.length>80)throw new ApiError('Enter your name.',400,{reason:'invalid',fields:{name:'Enter your name.'}});
     if(!emailOk(email))throw new ApiError('Enter your email address. Your sign-in code is sent there.',400,{reason:'invalid',fields:{email:'Enter your email address. Your sign-in code is sent there.'}});
     if(mobile&&!/^[6-9][0-9]{9}$/.test(mobile))throw new ApiError('Enter a 10-digit Indian mobile number, or leave it blank.',400,{reason:'invalid',fields:{mobile:'Enter a 10-digit Indian mobile number.'}});
-    if(password&&!passwordOk(password))throw new ApiError('Use at least 8 characters, with a letter and a number.',400,{reason:'invalid',fields:{password:'Use at least 8 characters, with a letter and a number.'}});
-    const meta={name,...(mobile?{mobile}:{}),...(password?{has_password:true}:{})};
+    if(!password)throw new ApiError('Choose a password.',400,{reason:'invalid',fields:{password:'Choose a password.'}});
+    if(!passwordOk(password))throw new ApiError('Use at least 8 characters, with a letter and a number.',400,{reason:'invalid',fields:{password:'Use at least 8 characters, with a letter and a number.'}});
+    const meta={name,...(mobile?{mobile}:{}),has_password:true};
     try{
-     if(password){const r=await remote('/auth/v1/signup',{method:'POST',body:{email,password,data:meta}});
-      // Supabase answers an email that already has an account with an empty identities list rather than an error.
-      if(r&&r.identities&&!r.identities.length||r&&r.user&&r.user.identities&&!r.user.identities.length)throw new ApiError('An account already uses this email.',409,{reason:'exists',fields:{email:'An account already uses this email.'}});}
-     else await remote('/auth/v1/otp',{method:'POST',body:{email,create_user:true,data:meta}});
+     // A password is required (16 Nov 2026); Supabase emails the code that confirms the address.
+     const r=await remote('/auth/v1/signup',{method:'POST',body:{email,password,data:meta}});
+     // Supabase answers an email that already has an account with an empty identities list rather than an error.
+     if(r&&r.identities&&!r.identities.length||r&&r.user&&r.user.identities&&!r.user.identities.length)throw new ApiError('An account already uses this email.',409,{reason:'exists',fields:{email:'An account already uses this email.'}});
     }catch(e){if(e instanceof ApiError&&e.extra)throw e;if(/already|registered|exists/i.test(String(e.message)))throw new ApiError('An account already uses this email.',409,{reason:'exists',fields:{email:'An account already uses this email.'}});throw authFail(e);}
     return json({...sent(email),created:true});
    }
@@ -395,15 +413,18 @@ export function createHandler(config){
       try{booked=await ship.book(b.ship_id,b.courier.code);}catch(e){await act('book_fail').catch(()=>{});throw e;}
       const done={ordref:booked.ordref,awb:booked.awb,courier:booked.courier||b.courier.name,charge:booked.charge,rate:b.courier.rate};
       try{await act('book_done',done);}catch{try{await act('book_done',done);}catch{throw new ApiError(`Booked with ${done.courier} (tracking ${done.awb}, Shipneer reference ${done.ordref}), but the order could not be updated. Do not book again: note these details and contact support.`,502);}}
+      await later(notifyOrder(id,'order_shipped'));
       return json({ok:true,awb:done.awb,courier:done.courier});
      }
-     if(action==='ship_track'){const o=(await db('orders','id=eq.'+id))[0],ref=o?.data?.shipneer?.ordref;if(!o)throw new ApiError('Order not found.',404);if(!ref)throw new ApiError('This order has no Shipneer booking.',409);return json(await act('track',{ordref:ref,...await ship.track(ref)}));}
+     if(action==='ship_track'){const o=(await db('orders','id=eq.'+id))[0],ref=o?.data?.shipneer?.ordref;if(!o)throw new ApiError('Order not found.',404);if(!ref)throw new ApiError('This order has no Shipneer booking.',409);const t=await act('track',{ordref:ref,...await ship.track(ref)});if(t?.state==='delivered')await later(notifyOrder(id,'order_delivered'));return json(t);}
      if(action==='ship_cancel'){const remarks=String(data.remarks||''),b=await act('cancel_begin',{remarks});await ship.cancel(b.ordref);await act('cancel_done',{remarks,ordref:b.ordref});return json({ok:true});}
      await act('restock',{remarks:String(data.remarks||'')});return json({ok:true});
     }
     if(action==='order_update'&&['cancelled','shipped','packing'].includes(data.state)&&(await db('orders','id=eq.'+encodeURIComponent(String(data.id||''))))[0]?.data?.shipneer?.ordref)throw new ApiError('This order has a Shipneer booking. Cancel the booking first.',409);
     if(action==='batch_adjust')return json(await rpc('adjust_stock',{p_batch:data.id,p_quantity:data.quantity,p_kind:data.kind||'count_correction',p_reason:data.remarks,p_actor:user.id,p_request:data.request_id}));
-    return json(await rpc('admin_action',{p_actor:user.id,p_action:action,p_data:data}));
+    const done=await rpc('admin_action',{p_actor:user.id,p_action:action,p_data:data});
+    if(action==='order_update'&&['shipped','delivered','cancelled'].includes(data.state))await later(notifyOrder(String(data.id||''),'order_'+data.state));
+    return json(done);
    }
    throw new ApiError('This hosted workflow is still being migrated.',503);
   }catch(e){return json({...(e instanceof ApiError&&e.extra?e.extra:{}),error:e instanceof ApiError?e.message:e instanceof SyntaxError?'Invalid request data.':'The store could not complete that action. Please retry.'},e instanceof ApiError?e.status:e instanceof SyntaxError?400:500);}

@@ -111,6 +111,7 @@ class RazorpayMixin:
             else:
                 self.capture(c, s, oid, p)
                 self.log(c, s['user_id'], 'razorpay_payment_captured', oid)
+                self.notice(c, oid, 'order_paid')  # app/msg91.py; a simulated preview payment never sends one
                 late = False
         if late:
             raise Error('Your payment went through, but the hold on your items had already ended. Contact us with order ' + oid + ' and we’ll ship it or refund you in full.', 409, reason='paid_after_hold')

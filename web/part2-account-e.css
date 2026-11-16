@@ -68,10 +68,6 @@ body[data-variant-e-part="2"] .p2 .p2a-alt, body[data-variant-e-part="2"] .p2 .p
 body[data-variant-e-part="2"] .p2 .p2a-alt a { color: var(--p2-ink); }
 body[data-variant-e-part="2"] .p2 .p2a-timers { font-size: 13px; color: var(--p2-mute); }
 body[data-variant-e-part="2"] .p2 .p2a-dest { margin: 0; font-size: 15px; color: var(--p2-text); }
-body[data-variant-e-part="2"] .p2 .p2a-preview { padding: 14px 16px; border-radius: 14px; background: color-mix(in srgb, var(--cap, var(--p2-ink)) 10%, var(--p2-paper)); font-size: 13px; color: var(--p2-text); }
-body[data-variant-e-part="2"] .p2 .p2a-preview p { margin: 0; }
-body[data-variant-e-part="2"] .p2 .p2a-preview-code { margin-top: 6px !important; color: var(--p2-ink); }
-body[data-variant-e-part="2"] .p2 .p2a-preview-code strong { margin-left: 8px; font-size: 24px; font-weight: 600; letter-spacing: .18em; font-variant-numeric: tabular-nums; }
 body[data-variant-e-part="2"] .p2 .p2a-meter { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: -10px; }
 body[data-variant-e-part="2"] .p2 .p2a-meter i { height: 4px; border-radius: 2px; background: var(--p2-line); transition: background .2s; }
 body[data-variant-e-part="2"] .p2 .p2a-meter[data-level="1"] i:first-child { background: var(--bad); }
@@ -190,6 +186,8 @@ body[data-variant-e-part="2"] .p2 .p2a-order-main small { font-size: 13px; color
 body[data-variant-e-part="2"] .p2 .p2a-order-st { display: flex; flex-wrap: wrap; gap: 6px; justify-content: end; }
 body[data-variant-e-part="2"] .p2 .p2a-order-total { min-width: 76px; text-align: right; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
 body[data-variant-e-part="2"] .p2 .p2a-order .p2a-go { margin-left: 0; }
+/* A fixed slot for up to three bottles, so every order's title starts on the same line. */
+body[data-variant-e-part="2"] .p2 .p2a-order .p2a-thumbs { flex: none; width: 108px; }
 
 /* Addresses */
 body[data-variant-e-part="2"] .p2 .p2a-addrs { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
@@ -329,15 +327,7 @@ body[data-variant-e-part="2"] .p2 .p2a-center-head h1 { margin: 0 0 10px; font-s
 body[data-variant-e-part="2"] .p2 .p2a-center-sub { margin: 0 auto; max-width: 36ch; font-size: 16px; line-height: 1.5; color: var(--p2-text); }
 body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-authcard { position: static; }
 body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-grid { grid-template-columns: 1fr; }
-body[data-variant-e-part="2"] .p2 .p2a-previewacct { display: grid; gap: 10px; padding: 14px 16px; border: 1.5px dashed color-mix(in srgb, var(--p2-ink) 22%, var(--p2-line)); border-radius: 14px; font-size: 13px; line-height: 1.45; color: var(--p2-text); }
-body[data-variant-e-part="2"] .p2 .p2a-previewacct p { margin: 0; }
-body[data-variant-e-part="2"] .p2 .p2a-previewacct p b { display: block; margin-bottom: 2px; color: var(--p2-ink); font-size: 14px; }
-body[data-variant-e-part="2"] .p2 .p2a-previewacct dl { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 4px 22px; margin: 0; }
-body[data-variant-e-part="2"] .p2 .p2a-previewacct dt { font-size: 11px; color: var(--p2-mute); }
-body[data-variant-e-part="2"] .p2 .p2a-previewacct dd { margin: 0; color: var(--p2-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
-body[data-variant-e-part="2"] .p2 .p2a-previewacct .p2a-textbtn { justify-self: start; font-size: 13px; }
 @media (max-width: 520px) {
-  body[data-variant-e-part="2"] .p2 .p2a-previewacct dl { grid-template-columns: auto 1fr; }
   body[data-variant-e-part="2"] .p2 .p2a-auth .p2a-card { padding: 20px 18px; }
 }
 

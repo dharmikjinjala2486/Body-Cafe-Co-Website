@@ -36,8 +36,13 @@ class AuthTests(unittest.TestCase):
         v = self.store.account_view(s)['profile']
         self.assertTrue(v['has_password']); self.assertFalse(v['email_verified'])
         with self.assertRaises(Error) as e:
-            self.store.signup(self.fresh(), {'name': 'X', 'mobile': '9876543210'})
+            self.store.signup(self.fresh(), {'name': 'X', 'mobile': '9876543210', 'password': 'chai2026x'})
         self.assertEqual(e.exception.extra['reason'], 'exists')
+
+    def test_signup_requires_a_password(self):
+        with self.assertRaises(Error) as e:
+            self.store.signup(self.fresh(), {'name': 'Asha Patel', 'mobile': '9876543211'})
+        self.assertEqual(e.exception.extra['fields'], {'password': 'Choose a password.'})
 
     def test_signup_validates_fields(self):
         with self.assertRaises(Error) as e:
@@ -76,13 +81,14 @@ class AuthTests(unittest.TestCase):
             self.store.password_signin(self.fresh(), {'identifier': 'asha@example.com', 'password': 'chai2026x'})
 
     def test_set_and_change_password(self):
-        s, _ = self.signup(self.fresh(), password='')
+        # Sign-up now needs a password; an account first made by a code sign-in has none.
+        s = self.fresh(); self.store.verify(s, {'mobile': '9876543212', 'code': self.store.otp(s, {'mobile': '9876543212'})['preview_code']}); s = self.store.session(s['id'])[0]
         self.assertFalse(self.store.account_view(s)['profile']['has_password'])
         self.store.set_password(s, {'password': 'first1234'})
         with self.assertRaises(Error):
             self.store.set_password(s, {'password': 'second1234', 'current': 'nope'})
         self.store.set_password(s, {'password': 'second1234', 'current': 'first1234'})
-        self.store.password_signin(self.fresh(), {'identifier': '9876543210', 'password': 'second1234'})
+        self.store.password_signin(self.fresh(), {'identifier': '9876543212', 'password': 'second1234'})
 
     def test_addresses_have_labels_and_a_cap_of_five(self):
         s, _ = self.signup(self.fresh())
