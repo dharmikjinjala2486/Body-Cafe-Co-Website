@@ -107,3 +107,111 @@ body[data-content-focus="1"] .cf-for { margin: 4px 0 18px; padding: 14px 18px 16
 body[data-content-focus="1"] .cf-for-k { margin: 0 0 4px; font: 600 11px/1.3 "Aileron", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--p2-text); }
 body[data-content-focus="1"] .cf-for-claim { margin: 0; font: 600 clamp(18px, 1.5vw, 21px)/1.3 "Aileron", sans-serif; color: var(--p2-ink); }
 body[data-content-focus="1"] .cf-for-how { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: var(--p2-text); }
+
+/* ---------- Home refinements (16 Nov 2026) ---------- */
+/* A supporting line under a section heading (the range; our standard). */
+body[data-content-focus="1"] .cf-sec-lede { max-width: 62ch; margin: 14px 0 0; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.5; color: var(--p2-text); }
+body[data-content-focus="1"] .cf-sec-link { margin-top: 14px; }
+/* Our standard: the four decisions; the label names the decision, coloured by the product in its example. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-decisions .p2-std4-tag { border-color: color-mix(in srgb, var(--cap) 70%, var(--p2-ink)); color: color-mix(in srgb, var(--cap) 55%, var(--p2-ink)); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-decisions p { font-size: 16px; color: var(--p2-ink); }
+/* Batch band: where testing stands. */
+body[data-content-focus="1"] .p2-lotband .cf-testing { margin: 12px 0 0; padding-left: 12px; border-left: 3px solid currentColor; font-size: 14px; line-height: 1.5; opacity: .85; }
+
+/* ---------- Shop refinements (16 Nov 2026) ---------- */
+/* The veg / non-veg mark in the top corner of the product image, drawn like the label's: a green square with a dot, or a brown square with a triangle. */
+body[data-content-focus="1"] .cf-diet { display: inline-grid; place-items: center; width: 13px; height: 13px; border: 1.5px solid var(--cf-diet); border-radius: 2px; }
+body[data-content-focus="1"] .p2-tile { position: relative; }
+/* Inset by the image's corner radius, so it sits square inside the rounded corner rather than in its curve. */
+body[data-content-focus="1"] .p2-tile > .cf-diet { position: absolute; z-index: 1; top: 18px; left: 18px; width: 18px; height: 18px; background: #fff; pointer-events: none; }
+body[data-content-focus="1"] .p2-tile > .cf-diet.is-veg i { width: 8px; height: 8px; }
+body[data-content-focus="1"] .p2-tile > .cf-diet.is-nonveg i { border-left-width: 4.5px; border-right-width: 4.5px; border-bottom-width: 8px; }
+@media (max-width: 620px) { body[data-content-focus="1"] .p2-tile > .cf-diet { top: 14px; left: 14px; width: 16px; height: 16px; } }
+/* Shop lede: one line across the page on wide screens. */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2-shop .p2-page-head .p2-lede { max-width: none; }
+body[data-content-focus="1"] .cf-diet.is-veg { --cf-diet: #1f8a3b; }
+body[data-content-focus="1"] .cf-diet.is-nonveg { --cf-diet: #8a4a1c; }
+body[data-content-focus="1"] .cf-diet i { display: block; }
+body[data-content-focus="1"] .cf-diet.is-veg i { width: 6px; height: 6px; border-radius: 50%; background: var(--cf-diet); }
+body[data-content-focus="1"] .cf-diet.is-nonveg i { width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-bottom: 6px solid var(--cf-diet); }
+/* Barista card: the safety line stays on phones too. */
+@media (max-width: 720px) { body[data-variant-e-part="2"][data-content-focus="1"] .p2-tile-ask > p:not(.p2-eyebrow) { display: block; font-size: 13px; } }
+
+/* ---------- One top space under the header on every inner page (16 Nov 2026, owner) ----------
+   Pages used between 72px and 211px from the header's colour stripe to their first line. Now one value everywhere,
+   52px on wide screens down to 28px on phones. The home hero and product pages (breadcrumbs first) keep their own. */
+body[data-variant-e-part="2"][data-content-focus="1"] { --cf-top: clamp(28px, 3.6vw, 52px); }
+body[data-variant-e-part="2"][data-content-focus="1"] #main :is(.p2-page-head, .p2p-hero, .p2p-rep, .su-head, .bg-head, .x-page) { padding-top: var(--cf-top); }
+/* Standards and Learn (owner, 16 Nov 2026): the text sits vertically centred beside its picture. The picture starts at the
+   shared top space, so the header-to-content gap still matches the other pages. Pages without a picture start at the top. */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-hero .p2p-hero-in { align-items: start; }
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-hero-split .p2p-hero-in { align-items: center; }
+/* Sign-in: the form starts under the header instead of floating in the middle of a tall box. */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2a-auth { min-height: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] #main .p2a-auth .p2a-top { padding-top: var(--cf-top); }
+
+/* ---------- Product page refinements (16 Nov 2026) ---------- */
+/* The label's food tag, above its directions sentence. */
+body[data-variant-e-part="2"][data-content-focus="1"] #main .p2-acc-body .cf-food { display: inline-block; margin: 14px 0 6px; padding: 7px 12px 6px; border-radius: 999px; background: color-mix(in srgb, var(--cap) 16%, var(--p2-paper, #f6f3ee)); font: 400 11px/1 "Lemon Milk", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--p2-ink); }
+body[data-content-focus="1"] .cf-food + .p2-use { margin-top: 0; }
+/* Allergens, caution and storage: three labelled lines instead of one small paragraph. */
+body[data-content-focus="1"] .cf-care { display: grid; gap: 10px; margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--p2-line); }
+body[data-content-focus="1"] .cf-care > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; }
+body[data-content-focus="1"] .cf-care dt { font: 600 13px/1.5 "Aileron", sans-serif; color: var(--p2-ink); }
+body[data-content-focus="1"] .cf-care dd { margin: 0; font-size: 13px; line-height: 1.5; color: var(--p2-text); }
+body[data-content-focus="1"] .cf-care > div:first-child dd { font-weight: 600; color: var(--p2-ink); }
+@media (max-width: 520px) { body[data-content-focus="1"] .cf-care > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+
+/* ---------- Our standard: four decisions, then the proof (16 Nov 2026) ---------- */
+body[data-content-focus="1"] .cf-anchor { display: block; height: 0; scroll-margin-top: 72px; }
+/* Cap picker: why the ingredient, then the form and why. The form name stays the large line. */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-pick-panel .cf-pick-k { margin: 0 0 6px; font: 600 13px/1.4 "Aileron", sans-serif; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-pick-panel .cf-pick-why { max-width: 52ch; margin: 0 0 22px; font-size: 16px; line-height: 1.55; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-pick-panel .p2p-pick-val { margin-bottom: 12px; font-size: clamp(22px, 2.2vw, 32px); }
+/* Amount cards: the reference under the serving. */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-doses .cf-dose-why { display: block; max-width: 68%; margin-top: 10px; font-size: 14px; line-height: 1.4; font-weight: 600; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-doses a { min-height: clamp(240px, 21vw, 300px); }
+/* Combination: three cards. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-combos { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-combos h3 a { color: inherit; text-decoration: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-combos h3 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 900px) { body[data-variant-e-part="2"][data-content-focus="1"] .cf-combos { grid-template-columns: minmax(0, 1fr); } }
+/* Proof sections: a plain label where the decision dots were. */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-rule .cf-proof { margin: 0 0 22px; color: inherit; opacity: .75; }
+
+/* ---------- Learn (16 Nov 2026) ---------- */
+/* The hero picture is a circle, like the bottle discs on the other pages (owner). */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-learn .p2p-hero-art .p2p-photo { aspect-ratio: 1 / 1; border-radius: 50%; }
+/* The three added guide cards: two lines of words in the card's tint, in place of a drawing. */
+body[data-content-focus="1"] .p2p-art .cf-art { display: grid; gap: 4px; text-align: center; color: var(--p2-ink); }
+body[data-content-focus="1"] .p2p-art .cf-art em { font: 400 11px/1.2 "Lemon Milk", sans-serif; font-style: normal; letter-spacing: .16em; text-transform: uppercase; color: var(--p2-text); }
+body[data-content-focus="1"] .p2p-art .cf-art b { font: 300 clamp(22px, 2vw, 30px)/1.1 "Aileron", sans-serif; letter-spacing: -.02em; color: color-mix(in srgb, var(--cap) 60%, var(--p2-ink)); }
+
+/* ---------- Story (16 Nov 2026) ---------- */
+/* Both pictures are circles, like the bottle discs on the other pages (owner). */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-story .p2p-photo { aspect-ratio: 1 / 1; border-radius: 50%; }
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-story .p2p-chap-sky { width: min(100%, 460px); justify-self: center; }
+/* A bottle photo inside a circle is fitted whole, on the photo's own backdrop colour, so the circle never clips the bottle. */
+body[data-variant-e-part="2"][data-content-focus="1"] :is(.p2p-story .p2p-chap-photo, .p2p-learn .p2p-hero-art .p2p-photo) { background: #efe7da; }
+body[data-variant-e-part="2"][data-content-focus="1"] :is(.p2p-story .p2p-chap-photo, .p2p-learn .p2p-hero-art .p2p-photo) img { object-fit: contain; }
+/* Story hero: the line under the heading runs the full width, as on the shop page (owner). */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-hero-wide .p2-lede { max-width: none; }
+
+/* ---------- Help (16 Nov 2026) ---------- */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-contact .cf-hours { margin: 12px 0 0; font-size: 15px; line-height: 1.5; color: inherit; opacity: .8; }
+
+/* ---------- Bag (16 Nov 2026) ---------- */
+/* Dispatch time and the returns rule, above the Checkout button. */
+body[data-content-focus="1"] .bg-summary .cf-bag-notes { display: grid; gap: 8px; margin: 16px 0; padding: 14px 0 0; border-top: 1px solid var(--p2-line, #e3ded5); list-style: none; font-size: 13px; line-height: 1.5; color: var(--p2-text, #5b574f); }
+body[data-content-focus="1"] .bg-summary .cf-bag-notes li:first-child { font-weight: 600; color: var(--p2-ink, #1c1b1a); }
+/* More than one product in the bag: follow each label. */
+body[data-content-focus="1"] .cf-bag-labels { margin: 14px 4px 0; font-size: 14px; line-height: 1.5; color: var(--p2-text, #5b574f); }
+/* The veg / non-veg mark after each name. */
+body[data-content-focus="1"] .bg-line-main h3 .cf-diet { margin-left: 6px; vertical-align: 1px; background: #fff; }
+
+/* ---------- Look up a batch (16 Nov 2026) ---------- */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-rep-main .cf-rep-status { max-width: 52ch; margin: 14px 0 0; padding-left: 14px; border-left: 3px solid var(--cap, var(--p2-ink)); font-size: 15px; line-height: 1.55; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .p2p-rep-what .cf-rep-guide { margin-right: 24px; }
+
+/* ---------- Footer (16 Nov 2026): opening hours under the contact details ---------- */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2-foot-grid .cf-foot-hours { display: block; padding: 5px 0; font-size: 13px; line-height: 1.45; color: var(--p2-text); }

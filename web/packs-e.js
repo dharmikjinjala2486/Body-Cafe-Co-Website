@@ -11,7 +11,8 @@
   function packPrice(price, q) { return (+price || 0) * q - saving(price, q); }
   // Every label is one serving a day, so a bottle lasts servings_per_pack days.
   function days(p) { var n = parseInt(p && p.servings_per_pack, 10); return n > 0 ? n : 0; }
-  function money(n) { return "₹" + Number(n).toLocaleString("en-IN", { maximumFractionDigits: 2 }); }
+  // Whole rupees stay whole; anything with paise shows both digits (₹53.80, not ₹53.8).
+  function money(n) { n = Math.round(Number(n) * 100) / 100; return "₹" + n.toLocaleString("en-IN", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   /* Three cards. max: how many bottles can be added (stock, from h.pdp); cards above it are disabled.

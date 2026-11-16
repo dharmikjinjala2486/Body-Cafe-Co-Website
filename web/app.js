@@ -1158,6 +1158,16 @@ async function render(scroll = true) {
     const call = (name, ...args) => (t && typeof t[name] === "function" ? t[name](siteCtx(), ...args) : undefined);
     const seg = path.split("/")[2];
     const sampleOrder = () => (fx && /^SAMPLE-/.test(seg || "") ? Object.assign(window.BCCSite.fixtures.order(fx, state.catalog), { id: seg }) : null);
+    // An order of the preview account (kept in this browser tab, web/part2-account-e.js): the sample order's full shape,
+    // with the items, dates, total and address the account lists for it.
+    const previewOrder = () => {
+      const held = window.BCCPreviewAccount?.order(seg);
+      if (!held) return null;
+      const o = window.BCCSite.fixtures.order(held.state, state.catalog);
+      const subtotal = held.items.reduce((n, i) => n + i.unit_price * i.quantity, 0);
+      return Object.assign(o, { id: held.id, items: held.items, created: held.created, subtotal, shipping: Math.max(0, held.total - subtotal), total: held.total,
+        history: o.history.map((h, i) => ({ state: h.state, at: held.created + i * 86400 })), ...(held.contact ? { contact: held.contact } : {}) });
+    };
     if (window.BCCStaticPreview && path.startsWith("/ops"))
       content = `<section class="section article">${heading("Shared design preview", "Operations aren't available here", "The operations preview needs the local application. Browse the customer designs instead.")}${link("Continue shopping", "/shop")}</section>`;
     else if (window.BCCStaticPreview && !fx && /^\/(checkout|account|orders|payment|sign-in)(\/|$)/.test(path))
@@ -1183,7 +1193,7 @@ async function render(scroll = true) {
     else if (path === "/checkout") content = call("checkout", fx) ?? checkout();
     else if (path.startsWith("/account")) content = call("account", seg || "overview", fx) ?? account(seg || "orders");
     else if (path.startsWith("/orders/")) {
-      const o = sampleOrder() || state.account?.orders.find((x) => x.id === seg);
+      const o = sampleOrder() || state.account?.orders.find((x) => x.id === seg) || previewOrder();
       content = call("order", o, fx) ?? orderDetail(o);
     } else if (path.startsWith("/payment/")) {
       const o = sampleOrder() || state.account?.orders.find((x) => x.id === seg);
@@ -1226,17 +1236,19 @@ async function render(scroll = true) {
     } else paint();
     booted = true;
     const shown = path.startsWith("/products/") ? product(path.split("/")[2]) : null;
-    const pageTitle = $("#main h1")?.textContent.trim();
+    const pageTitle = document.body.dataset.contentFocus === "1" && path === "/shop" ? "Shop the Super Sevens" : $("#main h1")?.textContent.trim();
     document.title = shown
       ? `${shown.seo_title || shown.name} — Body Café Co.`
       : path !== "/" && pageTitle ? `${pageTitle} — Body Café Co.` : (path === "/"
-        ? (document.body.dataset.contentFocus === "1" ? "It’s not the list. It’s the logic." : "Seven everyday essentials")
+        ? (document.body.dataset.contentFocus === "1" ? "The Super Sevens" : "Seven everyday essentials")
         : path
             .split("/")
             .filter(Boolean)
             .map((x) => x.replaceAll("-", " "))
             .join(" · ")) + " — Body Café Co.";
     if (shown) document.querySelector('meta[name="description"]')?.setAttribute("content", shown.seo_description || shown.subtitle || shown.name);
+    // Content Focus, every page without its own description (Version E workbook, row 43).
+    else if (document.body.dataset.contentFocus === "1" && !path.startsWith("/ops")) document.querySelector('meta[name="description"]')?.setAttribute("content", "Seven supplements from Body Café Co., each formulated for its purpose: the right ingredient, the right form, a justified amount and a reason for every combination.");
     if (scroll) {
       const anchor = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
       if (anchor) anchor.scrollIntoView();
@@ -1541,7 +1553,7 @@ document.addEventListener("submit", async (e) => {
         keepDesignOnLinks();
       } catch (error) {
         const u = window.BCCSite?.copy.reports.unavailable || ["Lookup unavailable", ""];
-        result.innerHTML = `<div class="report-result rr warning rr-unavailable"><p class="rr-kicker">Lookup status</p><h2>${u[0]}</h2><p>${escape(error.message)} ${u[1]}</p><button type="submit" class="small-button rr-retry">Try again</button></div>`;
+        result.innerHTML = `<div class="report-result rr warning rr-unavailable"><p class="rr-kicker">Lookup status</p><h2>${u[0]}</h2><p>${u[1] || escape(error.message)}</p><button type="submit" class="small-button rr-retry">Try again</button></div>`;
       }
     } else if (form.id === "otp-form") {
       state.otp = { mobile: data.mobile, ...(await api("/auth/otp", data)) };

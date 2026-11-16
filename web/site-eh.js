@@ -205,7 +205,13 @@
 
     function search(ctx) {
       var c = S.copy.search, q = ctx.query.get("q") || "", ql = q.toLowerCase().trim();
-      var prods = ctx.catalog.filter(function (p) { return ql && (p.name + " " + p.ingredients + " " + ctx.format[p.id] + " " + p.subtitle).toLowerCase().indexOf(ql) >= 0; });
+      // Also by what the label says a product is for ("heart", "bone", "calm") and by its veg / non-veg mark (16 Nov 2026).
+      // The mark is matched from the start of a word, so "vegetarian" does not also find "non-vegetarian".
+      var diet = function (p) { var d = String(p.dietary_suitability || ""); return !d ? "" : /^non/i.test(d) ? "non-vegetarian non-veg nonveg" : "vegetarian veg"; };
+      var wordStart = function (text, word) { return (" " + text).indexOf(" " + word) >= 0; };
+      var prods = ctx.catalog.filter(function (p) {
+        return ql && ((p.name + " " + p.ingredients + " " + ctx.format[p.id] + " " + p.subtitle + " " + ((p.label_front && p.label_front.claim) || "")).toLowerCase().indexOf(ql) >= 0 || wordStart(diet(p), ql));
+      });
       var gs = S.guideMatches(q);
       var notesHit = ctx.catalog.filter(function (p) { return ql && S.notes[p.id] && (p.name + " " + S.notes[p.id].lead).toLowerCase().indexOf(ql) >= 0; });
       var report = /report|lot|test|proof|batch/i.test(q);

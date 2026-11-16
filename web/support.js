@@ -240,7 +240,7 @@
     if (!p) return null;
     var D = C.DOCS;
     return '<div class="su su-' + v.key + ' su-policy" data-su data-su-page="policy">' +
-      head(v, "Policies", h(p.title), "", '<p class="su-meta"><span>' + h(D.version) + "</span><span>Last updated " + h(new Date(D.updated).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })) + '</span>' + (D.status ? '<span class="su-chip is-open">' + h(D.status) + "</span>" : "") + "</p>") +
+      head(v, "Policies", h(p.title), "", '<p class="su-meta"><span>' + h(p.version || D.version) + "</span><span>Last updated " + h(new Date(p.updated || D.updated).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })) + '</span>' + (D.status ? '<span class="su-chip is-open">' + h(D.status) + "</span>" : "") + "</p>") +
       '<div class="su-wrap su-policy-grid"><nav class="su-toc" aria-label="On this page"><h2 class="su-h3">On this page</h2><ol><li><a href="#summary">In short</a></li>' + p.sections.map(function (s) { return '<li><a href="#' + s.id + '">' + h(s.h) + "</a></li>"; }).join("") + "</ol>" +
       '<h2 class="su-h3">Other policies</h2><ul>' + Object.keys(C.POLICIES).filter(function (k) { return k !== kind; }).map(function (k) { return '<li><a href="' + C.POLICIES[k].path + '">' + h(C.POLICIES[k].title) + "</a></li>"; }).join("") + '<li><a href="/settings">Preferences</a></li></ul><button type="button" class="su-link su-print" data-su-print>Print this page</button></nav>' +
       '<div class="su-policy-body"><section class="su-summary" id="summary" aria-labelledby="summary-h"><h2 class="su-h2" id="summary-h">In short</h2><ul>' + p.summary.map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul>" + actions(p.actions) + "</section>" +

@@ -1,7 +1,7 @@
 /* Body Café Co. — "lot" is called "batch" on the storefront (owner, 4 Nov 2026): "lot number" → "Batch No.", "lot" → "batch".
    Variant E only (all four parts); the archived variants and the operations portal keep their wording. The copy lives in many
    files that the archived variants share, so the wording is swapped as pages render: every text node and the readable attributes
-   (placeholder, aria-label, title, alt) under <body>, plus the document title. Idioms ("a lot of care", "a lot more") are left
+   (placeholder, aria-label, title, alt) under <body>, plus the document title. Idioms ("a lot of care", "a lot more", "a lot to say") are left
    alone. Links, ids, form names and API fields are not text, so nothing functional changes. */
 (function () {
   "use strict";
@@ -16,7 +16,7 @@
     if (!text || !/lot/i.test(text)) return text;
     return text.replace(WORD, function (m, word, dot, at, all) {
       var w = word.toLowerCase(), before = all.slice(Math.max(0, at - 2), at).toLowerCase(), after = all.slice(at + word.length, at + word.length + 6).toLowerCase();
-      if ((w === "lot" || w === "lots") && /\ba $/.test(" " + before) && /^ (of|more)\b/.test(after)) return m; // "a lot of", "a lot more"
+      if ((w === "lot" || w === "lots") && /\ba $/.test(" " + before) && /^ (of|more|to)\b/.test(after)) return m; // "a lot of", "a lot more", "a lot to say"
       if (w === "lot (or batch)") return cased(word, "batch") + dot;
       // The abbreviation's own full stop also ends a sentence, so a following "." is dropped.
       if (w === "lot number" || w === "lot no.") return word === word.toUpperCase() ? "BATCH NO." : "Batch No.";
@@ -36,8 +36,12 @@
     els.forEach(function (el) { ATTRS.forEach(function (a) { var v = el.getAttribute && el.getAttribute(a); if (v && /lot/i.test(v)) { var s = swap(v); if (s !== v) el.setAttribute(a, s); } }); });
   }
   function title() { var t = swap(document.title); if (t !== document.title) document.title = t; }
+  // The page's fixed parts (the search box and its quick links) are built before the design is known, so the first
+  // time Variant E is on, everything already on the page is gone over once (16 Nov 2026: "Lot reports" in the search box).
+  var swept = false;
   var mo = new MutationObserver(function (records) {
     if (!on()) return;
+    if (!swept) { swept = true; walk(document.body); }
     records.forEach(function (r) {
       if (r.type === "characterData") walk(r.target);
       else if (r.type === "attributes") walk(r.target);
@@ -48,7 +52,7 @@
   function start() {
     mo.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTRS });
     new MutationObserver(function () { if (on()) title(); }).observe(document.head, { subtree: true, childList: true, characterData: true });
-    if (on()) { walk(document.body); title(); }
+    if (on()) { swept = true; walk(document.body); title(); }
   }
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
   window.BCCBatchTerms = { swap: swap };

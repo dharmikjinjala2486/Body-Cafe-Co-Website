@@ -33,7 +33,7 @@ export function buildKnowledge() {
   }
   out.push('', `# Policies (${S.DOCS.version}, updated ${S.DOCS.updated})`);
   for (const p of Object.values(S.POLICIES)) {
-    out.push('', `## ${p.title} (${p.path})`, 'In short: ' + flat(p.summary));
+    out.push('', `## ${p.title} (${p.path})${p.version ? ` · ${p.version}, updated ${p.updated}` : ''}`, 'In short: ' + flat(p.summary));
     for (const s of p.sections || []) out.push(`### ${s.h} (${p.path}#${s.id})`, flat(Object.entries(s).filter(([k]) => !['id', 'h'].includes(k)).map(([, v]) => v)));
   }
   return out.join('\n');

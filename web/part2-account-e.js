@@ -434,6 +434,16 @@
      refreshes in the background. After a save, refresh() makes the next draw wait for the new record. */
   var forceNext = false, heldFor = "", waitingFor = "";
   function refresh() { forceNext = true; return A().rerender(); }
+  /* The preview account's orders live in this browser tab only, so the order page (web/app.js) asks here for one of them
+     (16 Nov 2026). It gets the order as listed, with the account's default address as its delivery address. */
+  window.BCCPreviewAccount = {
+    order: function (id) {
+      var dc = demoCurrent(), acct = dc && dc.account, o = acct && (acct.orders || []).filter(function (x) { return x.id === id; })[0];
+      if (!o) return null;
+      var a = (acct.addresses || [])[0], p = acct.profile || {};
+      return Object.assign({}, o, a ? { contact: { name: a.name, mobile: a.mobile || p.mobile || "", email: p.email || "", pincode: a.pincode, address: a.address, city: a.city, state: a.state } } : {});
+    }
+  };
   window.BCCAccountFast = function (path, user, acct) {
     if (!on2() || !/^\/account(\/|$)/.test(path)) return "";
     if (forceNext) { forceNext = false; heldFor = user && user.id; waitingFor = ""; return ""; }
