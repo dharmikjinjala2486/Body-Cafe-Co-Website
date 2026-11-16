@@ -8,7 +8,9 @@
       var label = labels[product.id];
       if (!label) return product;
       var defaults = window.BCCPdpE?.defaults?.(product.id) || {};
-      var result = Object.assign({}, defaults, label, product);
+      // 16 Nov 2026: the Content Focus product page copy (web/content-focus-e.js) is the default for its admin fields.
+      var focusCopy = window.BCCContentFocusCopy?.defaults?.(product.id) || {};
+      var result = Object.assign({}, defaults, focusCopy, label, product);
       if (product.draft) {
         var draft = Object.assign({}, product, product.draft); delete draft.draft;
         result.draft = merge([draft], labels)[0];

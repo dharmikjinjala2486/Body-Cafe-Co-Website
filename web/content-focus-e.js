@@ -138,6 +138,25 @@
     "myo-d-chiro-inositol": ["Hormones · Metabolism", "Supports hormonal & metabolic balance", "Supports hormonal and metabolic balance.", "Three capsules give 2,000 mg Myo-Inositol and 50 mg D-Chiro Inositol, a 40:1 ratio."],
     "psyllium-husk": ["Digestion · Regularity", "Supports digestive health & regularity", "Supports digestive health and regularity.", "Five capsules give 2,000 mg psyllium husk (isabgol), with 1,578 mg dietary fibre."]
   };
+  /* The admin portal decides this copy (16 Nov 2026): a product's "Content Focus copy" fields (cf_…), when the catalogue
+     carries them, replace the lines in PRODUCTS and USE above before each page renders. The lines above stay as the
+     defaults: web/label-content.js offers them to the admin form through BCCContentFocusCopy.defaults(). */
+  var COPY = { cf_headline: "headline", cf_support: "support", cf_ingredient: "ingredient", cf_form: "form", cf_amount: "amount", cf_decision: "decision" };
+  var BASE = JSON.parse(JSON.stringify({ P: PRODUCTS, U: USE }));
+  function has(o, k) { return !!o && Object.prototype.hasOwnProperty.call(o, k) && typeof o[k] === "string"; }
+  function fromAdmin(list) {
+    (list || []).forEach(function (p) {
+      var c = p && BASE.P[p.id], u = p && BASE.U[p.id]; if (!c || !u) return;
+      Object.keys(COPY).forEach(function (k) { PRODUCTS[p.id][COPY[k]] = has(p, k) ? p[k].trim() : c[COPY[k]]; });
+      USE[p.id][2] = has(p, "cf_claim") ? p.cf_claim.trim() : u[2];
+      USE[p.id][3] = has(p, "cf_facts") ? p.cf_facts.trim() : u[3];
+    });
+  }
+  window.BCCContentFocusCopy = { defaults: function (id) {
+    var c = BASE.P[id], u = BASE.U[id], pts = ((window.BCCPart2E || {}).PDP || {})[id]; if (!c || !u) return {};
+    return { cf_claim: u[2], cf_facts: u[3], cf_headline: c.headline, cf_support: c.support, cf_ingredient: c.ingredient, cf_form: c.form,
+      cf_amount: c.amount, cf_decision: c.decision, cf_points: ((pts && pts.points) || []).join("\n") };
+  } };
   /* Home refinements (16 Nov 2026, owner-approved). Sources: the Version E workbook (addition D1, row 43, claims C4–C6) and
      the product presentation ("Take what you need. Skip what you don't."). */
   var HOME = {
@@ -177,6 +196,7 @@
     var next = Object.assign({}, S.themes.e);
     next[name] = function () {
       if (!focus()) return base.apply(this, arguments);
+      var ctx0 = arguments[0] || {}; fromAdmin(ctx0.catalog || ctx0.published);
       headlines();
       var html = base.apply(this, arguments);
       if (typeof html !== "string") return html;
@@ -395,11 +415,11 @@
     swap(root, TEXT.product);
     // What it's for, straight under the product name: the first thing read in the buy box.
     var u = USE[args[1] && args[1].id], h1 = root.querySelector(".p2-buy h1");
-    if (u && h1) h1.insertAdjacentHTML("afterend", '<div class="cf-for"><p class="cf-for-k">What it’s for</p><p class="cf-for-claim">' + esc(u[2]) + '</p><p class="cf-for-how">' + esc(u[3]) + "</p></div>");
+    if (u && h1 && (u[2] || u[3])) h1.insertAdjacentHTML("afterend", '<div class="cf-for"><p class="cf-for-k">What it’s for</p>' + (u[2] ? '<p class="cf-for-claim">' + esc(u[2]) + "</p>" : "") + (u[3] ? '<p class="cf-for-how">' + esc(u[3]) + "</p>" : "") + "</div>");
     var c = PRODUCTS[args[1] && args[1].id], h = root.querySelector(".p2-acc-h");
     if (c && h) {
-      var q = function (t, x) { return '<h4 class="cf-q">' + t + "</h4><p>" + esc(x) + "</p>"; };
-      h.parentNode.innerHTML = '<h3 class="p2-acc-h">' + esc(c.headline) + '</h3><p class="cf-support">' + esc(c.support) + "</p>" +
+      var q = function (t, x) { return x ? '<h4 class="cf-q">' + t + "</h4><p>" + esc(x) + "</p>" : ""; };
+      h.parentNode.innerHTML = '<h3 class="p2-acc-h">' + esc(c.headline || (args[1] && args[1].name) || "") + "</h3>" + (c.support ? '<p class="cf-support">' + esc(c.support) + "</p>" : "") +
         q("Why this ingredient?", c.ingredient) + q("Why this form?", c.form) + q("Why this amount?", c.amount) + q("The decision", c.decision);
     }
     /* Product page refinements (16 Nov 2026, owner-approved). Everything below is the label's own text, from the catalogue. */
@@ -409,7 +429,12 @@
     // "Key benefits" repeated the claim that now leads the page: the facts stay, as "At a glance".
     [].forEach.call(root.querySelectorAll(".p2-pdp-accs > details"), function (d) {
       var s = d.querySelector("summary span");
-      if (s && s.textContent.trim() === "Key benefits") { s.textContent = "At a glance"; var claim = d.querySelector(".p2-claim"); if (claim) claim.remove(); }
+      if (!s || s.textContent.trim() !== "Key benefits") return;
+      s.textContent = "At a glance"; var claim = d.querySelector(".p2-claim"); if (claim) claim.remove();
+      // The points are the admin's "At a glance" lines; how long a bottle lasts stays worked out from the servings.
+      var ul = d.querySelector(".p2-ticks"), last = ul && ul.lastElementChild;
+      if (ul && has(p, "cf_points")) ul.innerHTML = p.cf_points.split(/\n+/).map(line).filter(Boolean).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") +
+        (last && /^One bottle lasts/.test(last.textContent) ? last.outerHTML : "");
     });
     // Directions: the label's food tag above its sentence, then allergens, cautions and storage as three labelled lines.
     var use = root.querySelector(".p2-use");

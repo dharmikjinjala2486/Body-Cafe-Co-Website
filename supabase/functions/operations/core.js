@@ -24,7 +24,9 @@ export function salesReport(orders,payments,query){
 const limits={name:160,subtitle:300,description:6000,ingredients:4000,directions:3000,warnings:3000,storage:1500,allergens:1500,pack_size:160,format:100,category:100,sku:80,color:7,seo_title:160,seo_description:320,purpose:1500,ingredient_note:4000};
 for(const key of ['amount_per_serving','serving_size','servings_per_pack','other_ingredients','flavour_sweeteners','nutrition_information','dietary_suitability','manufacturer_details','ingredient_sourcing','manufacturer','testing_performed','supporting_documents','certifications','preparation','age_guidance','suitability','rear_label_note','label_checklist','ingredient_checks'])limits[key]=3000;
 
-const eLimits={headline:300,detail_title:300,segment_name:160,segment_description:3000,product_intro:6000,form_description:3000,why_this_form:6000,product_story:10000,quality_summary:6000,quality_note:3000,keep_in_mind:3000,home_highlight:100,directions_tag:3000,customer_care:3000,pack_printed:3000};
+const eLimits={headline:300,detail_title:300,segment_name:160,segment_description:3000,product_intro:6000,form_description:3000,why_this_form:6000,product_story:10000,quality_summary:6000,quality_note:3000,keep_in_mind:3000,home_highlight:100,directions_tag:3000,customer_care:3000,pack_printed:3000,
+ // Part 2 · Content Focus product page copy (16 Nov 2026); keep in step with app/product_content.py.
+ cf_claim:300,cf_facts:600,cf_headline:300,cf_support:3000,cf_ingredient:3000,cf_form:3000,cf_amount:3000,cf_decision:3000,cf_points:3000};
 export function validateProductContent(p){
  for(const [k,n] of Object.entries(eLimits)) if(k in p)p[k]=clean(p[k],n);
  if((p.home_highlight||'').split(/\s+/).filter(Boolean).length>4)throw new ApiError('Use at most four words for the homepage highlight.');

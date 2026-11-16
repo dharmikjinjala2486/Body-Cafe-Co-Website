@@ -162,8 +162,17 @@
       F('form_description', 'Ingredient form', {max:3000}), F('why_this_form', 'Why this form', {max:6000}),
       F('product_story', 'Product story', {max:10000,rows:8}), F('quality_summary', 'How we check it', {max:6000}),
       F('quality_note', 'Quality document note', {max:3000}), F('keep_in_mind', 'Keep in mind', {max:3000}), F('detail_title', 'Defining detail heading', {max:300}), F('segment_name', 'Super Sevens name', {max:160}), F('segment_description', 'Super Sevens description', {max:3000}), F('home_highlight', 'Homepage highlight', {max:100,help:'At most four words.'}) ] },
+    // 16 Nov 2026: the copy the Part 2 · Content Focus product page shows (web/content-focus-e.js reads these fields).
+    { id: 'focus', label: 'Content Focus copy', intro: 'Copy on the Part 2 · Content Focus product page: “What it’s for”, the Description and “At a glance”. A blank field hides that piece.', fields: [
+      F('cf_claim', 'What it’s for', {max:300,type:'text',help:'The front-label key benefit only, as one sentence.'}),
+      F('cf_facts', 'Amount line', {max:600,rows:2,help:'Under “What it’s for”: the label amounts behind it.'}),
+      F('cf_headline', 'Description headline', {max:300,type:'text',help:'Also the product’s line on the range, Learn and Our standard pages.'}),
+      F('cf_support', 'Description opening line'), F('cf_ingredient', 'Why this ingredient?'), F('cf_form', 'Why this form?'),
+      F('cf_amount', 'Why this amount?'), F('cf_decision', 'The decision'),
+      F('cf_points', 'At a glance', {help:'One point per line. “One bottle lasts … days” is added from Servings per pack.'}) ] },
     { id: 'label', label: 'Pack & supplement facts', intro: 'Edit the printed pack details, timing and supplement facts displayed on Variant E.' },
-    { id: 'images', label: 'Images', intro: 'Website order is the order below. Image 1 is the product card; the product page gallery follows the same order.' },
+    // 16 Nov 2026: Variant E product pages follow this list (web/gallery-e.js); the listing set is only its fallback.
+    { id: 'images', label: 'Images', intro: 'Website order is the order below. The product page gallery shows the images marked “Show on website”, in this order. Image 1 is also the product card picture on Part 1’s shop page and the archived designs. Changes go live when you publish.' },
     { id: 'overview', label: 'Overview', intro: 'Product page section 2 · Overview.', fields: [
       F('description', 'Product description', { max: 6000, rows: 6, help: 'Opening paragraph of the Overview.' }),
       F('purpose', 'Purpose statement', { max: 1500, help: 'Approved purpose wording. Leave blank to keep the “no purpose supplied” note.' }) ] },

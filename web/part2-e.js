@@ -279,10 +279,9 @@
     // Part 2 only (12 Nov 2026): a third view, the front of the bottle on its own cap tint, and Description starts open.
     var only2 = document.body.dataset.variantEPart === "2";
     if (only2) shots.push({ cls: "plate", main: bottle(p, { alt: p.name + ", front of the bottle" }), thumb: bottle(p, { alt: "" }), label: "Front of the bottle" });
-    // Parts 2 and 3 and Content Focus (16 Nov 2026): the owner's seven-image listing set (web/gallery-e.js) replaces the
-    // studio set. Without one, Part 2 shows the images uploaded in the admin portal (only those marked "Show on website"),
-    // in the admin's order; with neither, the studio set above stays.
-    var G = window.BCCGalleryE, uploads = G && G.has(p.id) ? G.list(p.id) : only2 && Array.isArray(p.gallery) ? p.gallery.filter(function (g) { return g && g.src && g.visible !== false; }) : [];
+    // Parts 2 and 3 and Content Focus (16 Nov 2026): the images marked "Show on website" in the admin portal, in the
+    // admin's order; the listing set when the admin list is empty (web/gallery-e.js); with neither, the studio set above.
+    var uploads = window.BCCGalleryE ? window.BCCGalleryE.images(p) : [];
     if (uploads.length) shots = uploads.map(function (g, i) {
       var img = function (alt, eager) { return '<img src="' + esc(g.src) + '" alt="' + esc(alt) + '" width="' + (+g.w || 1000) + '" height="' + (+g.h || 1000) + '"' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + ' decoding="async">'; };
       return { cls: "upload", main: img(g.alt || p.name, !i), thumb: img(""), label: esc(g.label || "Image " + (i + 1) + " of " + uploads.length) };
@@ -958,7 +957,7 @@
   window.BCCPart2E = {
     on: on, part2: part2, bottle: bottle, caps: caps, capImg: capImg, spin: spin, scene: scene, world: world, tile: tile, fact: fact, href: href,
     head: head, sec: sec, acc: acc, FILM: FILM, otherIngredients: otherIngredients, para: para, clean: clean, std: std, copy: copy, dietMark: dietMark, formatOf: formatOf, formatGroup: formatGroup,
-    STANDARD: STANDARD, BOTTLE: BOTTLE, MAKER: MAKER,
+    STANDARD: STANDARD, BOTTLE: BOTTLE, MAKER: MAKER, PDP: PDP,
     CLAIMS: CLAIMS, PROOF: PROOF, homeFaqs: homeFaqs, reviewsFor: reviewsFor, reviewCard: reviewCard, reviewSummary: reviewSummary, stars: stars, REVIEW_RULE: REVIEW_RULE, lotForm: lotForm,
     // The sprite engine, for layers that drive a bottle themselves (Part 4 turns it with the scroll).
     FRAMES: FRAMES, atlas: atlas, frame: frame, arm: arm, turnTo: turnTo,

@@ -1,8 +1,9 @@
 /* Body Café Co. — Variant E product galleries (16 Nov 2026).
-   The owner's seven-image listing set for each product (web/media/gallery/<id>-01 … -07.webp, 1254 × 1254, converted
-   from the "Amazon Listing images" folders). Product pages in Parts 1–4 and Content Focus show these, in this order,
-   ahead of any images uploaded in the admin portal. To change a picture, replace its file under the same name.
-   Image 1 is the bottle; image 7 is the selected label facts, drawn as a panel (no rear-label photograph). */
+   The admin portal decides a product's images: product pages in Parts 1–4 and Content Focus show the images marked
+   "Show on website" there, in the admin's order (images(p) below). The owner's seven-image listing set
+   (web/media/gallery/<id>-01 … -07.webp, 1254 × 1254, converted from the "Amazon Listing images" folders) was put into
+   each product's admin list the same day, pointing at these files, and stays here as the fallback for a product whose
+   admin list is empty. Image 1 is the bottle; image 7 is the selected label facts, drawn as a panel (no rear-label photograph). */
 (function () {
   "use strict";
   var SIZE = 1254;
@@ -79,5 +80,11 @@
       return { src: "/web/media/gallery/" + id + "-" + n + ".webp", w: SIZE, h: SIZE, label: x[0], alt: x[1] };
     });
   }
-  window.BCCGalleryE = { list: list, has: function (id) { return !!SETS[id]; } };
+  // What a product page shows: the admin's visible images, or the listing set when the admin list is empty.
+  function images(p) {
+    var admin = p && Array.isArray(p.gallery) ? p.gallery.filter(function (g) { return g && g.src && g.visible !== false; }) : [];
+    if (!admin.length) return p ? list(p.id) : [];
+    return admin.map(function (g, i) { return { src: g.src, w: +g.w || 1000, h: +g.h || 1000, label: g.label || "Image " + (i + 1) + " of " + admin.length, alt: g.alt || p.name, caption: g.caption || "" }; });
+  }
+  window.BCCGalleryE = { list: list, images: images, has: function (id) { return !!SETS[id]; } };
 })();

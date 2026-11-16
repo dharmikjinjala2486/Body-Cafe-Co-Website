@@ -6,7 +6,10 @@ except ImportError:
 
 TEXT_FIELDS = {'headline':300,'detail_title':300,'segment_name':160,'segment_description':3000,'product_intro':6000,'form_description':3000,'why_this_form':6000,
     'product_story':10000,'quality_summary':6000,'quality_note':3000,'keep_in_mind':3000,'home_highlight':100,
-    'directions_tag':3000,'customer_care':3000,'pack_printed':3000}
+    'directions_tag':3000,'customer_care':3000,'pack_printed':3000,
+    # Part 2 · Content Focus product page copy (16 Nov 2026): "What it's for", the Description and "At a glance".
+    'cf_claim':300,'cf_facts':600,'cf_headline':300,'cf_support':3000,'cf_ingredient':3000,'cf_form':3000,
+    'cf_amount':3000,'cf_decision':3000,'cf_points':3000}
 
 def validate_content(raw):
     out = {}
