@@ -639,14 +639,14 @@ body[data-variant-e-part="2"] { --p2-mute: #656a73; }
 body[data-variant-e-part="2"] .p2-hero2c.is-show .p2-hc-now { transition: opacity .45s var(--p2-ease) .45s; }
 body[data-variant-e-part="2"] .p2-hero2c.is-show.is-swap .p2-hc-now { transition-duration: .15s; transition-delay: 0s; }
 
-/* Home range, wide screens: a closed column reads level, with its price, instead of sideways. */
+/* Home range, wide screens: a closed column shows only its name, set vertically and reading upwards, in its cap
+   colour; its fact and price appear when it opens (owner, 17 Nov 2026, matching Content Focus). */
 @media (min-width: 1101px) {
-  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-art { padding-top: clamp(32px, 6svh, 56px); }
-  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-body { flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 8px; padding: 0 14px 22px; }
-  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) h3 { writing-mode: horizontal-tb; transform: none; white-space: normal; overflow-wrap: break-word; hyphens: auto; font: 600 clamp(14px, 1.15vw, 17px)/1.22 "Aileron", sans-serif; letter-spacing: 0; }
-  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-foot { display: block; }
-  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-add { display: none; }
-  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-price { font-size: 14px; color: var(--p2-text); }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-art { place-items: start center; padding-top: clamp(40px, 8svh, 72px); }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) .p2-col-body { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: row; justify-content: center; align-items: flex-end; gap: 0; padding: 0 0 28px; }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) h3 { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; overflow: visible; text-overflow: clip; hyphens: manual; font: 400 clamp(20px, 1.7vw, 26px)/1 "Aileron", sans-serif; letter-spacing: -.01em; }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) h3 a { color: color-mix(in srgb, var(--cap) 55%, var(--p2-ink)); }
+  body[data-variant-e-part="2"] .p2-col:not([data-open="true"]) :is(.p2-col-line, .p2-col-fact, .p2-col-foot) { display: none; }
 }
 
 /* Home: the four rules, between the range and the batch lookup. */

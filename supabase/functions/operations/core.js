@@ -81,6 +81,20 @@ export function createHandler(config){
  async function remote(path,{method='GET',body,headers={}}={}){const r=await fetcher(base+path,{method,headers:{...serviceHeaders,...headers},body:body===undefined?undefined:JSON.stringify(body)});if(!r.ok){let e;try{e=await r.json();}catch{e={};}if(r.status>=500)throw new ApiError('The store service is temporarily unavailable.',503);throw new ApiError(e.message||e.msg||e.error_description||'That action could not be completed.',r.status===401||r.status===403?403:400);}return r.status===204?null:r.json();}
  const db=(table,query='',method='GET',body)=>remote('/rest/v1/bcc_'+table+'?'+query,{method,body,headers:method==='POST'?{Prefer:'return=representation'}:{}});
  const rpc=(name,body)=>remote('/rest/v1/rpc/bcc_'+name,{method:'POST',body});
+ /* Reviews (17 Nov 2026), in step with app/server.py: a signed-in customer whose own order with this product was delivered may
+    review it once. Every review waits for moderation (the admin's review action, bcc_admin_action), and a low rating is never a
+    reason to reject. Photos are not taken here yet (review-media uploads are refused on the hosted site). */
+ const reviewText=(x,n)=>String(x==null?'':x).replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g,'').trim().replace(/[ \t]+/g,' ').slice(0,n+1);
+ const hasItem=(o,product)=>(o.data?.items||[]).some(i=>i.id===product);
+ async function reviewEligibility(user,product){
+  if(!(await catalog()).products.some(p=>p.id===product))throw new ApiError('Choose a product.');
+  if(!String(user.id).startsWith('customer-'))return {state:'sign_in'};
+  const own=(await db('reviews','user_id=eq.'+encodeURIComponent(user.id)+'&product=eq.'+encodeURIComponent(product)))[0];
+  if(own)return {state:'already_reviewed',review_state:own.data.state,review_id:own.id};
+  const orders=(await db('orders','user_id=eq.'+encodeURIComponent(user.id)+'&order=created.desc')).filter(o=>hasItem(o,product));
+  const delivered=orders.find(o=>o.state==='delivered');if(delivered)return {state:'eligible',order_id:delivered.id};
+  return {state:orders.some(o=>['pending','paid','packing','shipped'].includes(o.state))?'not_delivered':'no_purchase'};
+ }
  // Shipneer (shipping.js): courier prices, booking, labels and tracking for staff; a pincode check for shoppers.
  const fail=(m,status,extra)=>new ApiError(m,status,extra),ship=shipneer({key:config.shipneerKey,pickupId:config.shipneerPickupId||undefined,pickupPin:config.shipneerPickupPin||undefined,fetcher,fail,wait:config.wait});
  // Razorpay (razorpay.js): online payment. Only settle() marks an order paid, and only for a payment Razorpay confirms.
@@ -254,8 +268,8 @@ export function createHandler(config){
     if(/^\/orders\/BCC-[A-F0-9]{8}\/(status|cancel-check)$/.test(path)){let id=path.split('/')[2],o=(await db('orders','id=eq.'+id+'&user_id=eq.'+encodeURIComponent(user.id)))[0];if(!o)throw new ApiError('Order not found.',404);let pay=(await db('payments','order_id=eq.'+id))[0];if(path.endsWith('cancel-check'))return json({id,state:o.state,payment:pay?.status,total:o.data.total,eligible:['pending','paid'].includes(o.state),message:'Cancellation releases reserved stock. Refunds require a connected payment provider.'});return json({...publicRecord(o.data),id,state:o.state,payment:pay?.status,created:o.created});}
     if(path==='/bag'){let row=(await db('bags','user_id=eq.'+encodeURIComponent(user.id)))[0];return json({items:row?.data||[],account:!user.id.startsWith('guest-')});}
     if(path==='/account'){let[orders,cases,addresses,reviews,profiles]=await Promise.all(['orders','cases','addresses','reviews','profiles'].map(t=>db(t,'user_id=eq.'+encodeURIComponent(user.id))));const saved=profiles[0]?.data||{};return json({orders:orders.map(o=>({...publicRecord(o.data),id:o.id,state:o.state,created:o.created})),cases:cases.map(c=>({...publicRecord(c.data),id:c.id,created:c.created})),addresses:addresses.map(a=>({...a.data,id:a.id})),reviews:reviews.map(r=>({...r.data,id:r.id,product:r.product})),profile:{name:saved.name||user.name,mobile:user.mobile,email:user.email||'',contact_email:saved.email||'',has_password:!!user.has_password,preferences:saved.preferences||null},preview:true});}
-    if(path==='/reviews'){let product=u.searchParams.get('product');let rows=await db('reviews','product=eq.'+encodeURIComponent(product||''));let reviews=rows.filter(r=>r.data.state==='published').map(r=>({...publicRecord(r.data),id:r.id})),breakdown=Object.fromEntries([1,2,3,4,5].map(n=>[n,reviews.filter(r=>r.rating===n).length]));return json({product,reviews,summary:{count:reviews.length,average:reviews.length?reviews.reduce((a,r)=>a+r.rating,0)/reviews.length:null,breakdown},page:1,pages:1,total:reviews.length});}
-    if(path==='/reviews/eligibility')return json({state:user.id.startsWith('guest-')?'sign_in':'no_purchase'});
+    if(path==='/reviews'){let product=u.searchParams.get('product');let rows=await db('reviews','product=eq.'+encodeURIComponent(product||''));let reviews=rows.filter(r=>r.data.state==='published').map(r=>{const{request_id,...d}=publicRecord(r.data);return {...d,display_name:d.display_name||'Verified customer',verified:true,id:r.id};}),breakdown=Object.fromEntries([1,2,3,4,5].map(n=>[n,reviews.filter(r=>r.rating===n).length]));return json({product,reviews,summary:{count:reviews.length,average:reviews.length?reviews.reduce((a,r)=>a+r.rating,0)/reviews.length:null,breakdown},page:1,pages:1,total:reviews.length});}
+    if(path==='/reviews/eligibility')return json(await reviewEligibility(user,u.searchParams.get('product')||''));
     if(path==='/questions'){let product=u.searchParams.get('product'),cases=await db('cases'),questions=cases.filter(c=>c.data.kind==='product_question'&&c.data.product===product&&c.data.public?.state==='published').map(c=>({id:c.id,question:c.data.public.question||c.data.message,answer:c.data.public.answer,answered:c.data.public.answered,asked:c.created}));return json({product,questions});}
     throw new ApiError('Endpoint not found.',404);
    }
@@ -382,6 +396,27 @@ export function createHandler(config){
    if(/\/orders\/[^/]+\/(pay|reconcile)$/.test(path))throw new ApiError('That payment action isn’t available.',404);
    if(path==='/bag'){
     await quote(data);await remote('/rest/v1/bcc_bags?on_conflict=user_id',{method:'POST',body:{user_id:user.id,data:data.items,updated:now()},headers:{Prefer:'resolution=merge-duplicates'}});return json({ok:true,account:!user.id.startsWith('guest-')});
+   }
+   if(path==='/reviews'){
+    const product=String(data.product||''),cat=await catalog();
+    if(cat.flags.reviews===false)throw new ApiError('Review submissions are temporarily paused.',409);
+    if(!cat.products.some(p=>p.id===product))throw new ApiError('Choose a product.');
+    if(!String(user.id).startsWith('customer-'))throw new ApiError('Sign in to write a review.',401);
+    const rating=data.rating,text=reviewText(data.text,2000),title=reviewText(data.title,120),name=reviewText(data.display_name,40),incentive=data.incentive||'none',requestId=String(data.request_id||'').slice(0,64);
+    if(!Number.isInteger(rating)||rating<1||rating>5)throw new ApiError('Choose a rating from 1 to 5 stars.');
+    if(text.length<10||text.length>2000)throw new ApiError('Write your review in 10–2000 characters.');
+    if(title&&(title.length<3||title.length>120))throw new ApiError('Give your review a title of 3–120 characters.');
+    if(name&&(name.length<2||name.length>40))throw new ApiError('Use a display name of 2–40 characters.');
+    if(!['none','free_product','other'].includes(incentive))throw new ApiError('Tell us whether you received this product free or with another incentive.');
+    if(data.media!==undefined&&(!Array.isArray(data.media)||data.media.length))throw new ApiError('Photos can’t be added to reviews yet.');
+    const own=(await db('reviews','user_id=eq.'+encodeURIComponent(user.id)+'&product=eq.'+encodeURIComponent(product)))[0];
+    if(own){if(requestId&&own.data.request_id===requestId)return json({ok:true,id:own.id,state:own.data.state,idempotent:true});throw new ApiError('You’ve already reviewed this product. Each customer can review a product once.',409);}
+    const orders=(await db('orders','user_id=eq.'+encodeURIComponent(user.id)+'&state=eq.delivered&order=created.desc')).filter(o=>hasItem(o,product));
+    const order=data.order_id?orders.find(o=>o.id===data.order_id):orders[0];
+    if(!order)throw new ApiError('Reviews require your own delivered order for this product.',403);
+    const id='REV-'+random().slice(0,10),payload={rating,text,title,display_name:name||'Verified customer',incentive,media:[],state:'pending_moderation',created:now(),request_id:requestId,preview:true,reply:null};
+    await db('reviews','','POST',{id,user_id:user.id,product,order_id:order.id,data:payload});
+    return json({ok:true,id,state:'pending_moderation'});
    }
    if(path==='/cases'||path==='/questions'){
     const cat=await catalog(),isQuestion=path==='/questions',kind=isQuestion?'product_question':clean(data.kind||'general',40),message=clean(isQuestion?data.question:data.message,isQuestion?600:6000);

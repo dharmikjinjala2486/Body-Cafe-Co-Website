@@ -16,7 +16,7 @@ assert.throws(()=>salesReport([],[],new URLSearchParams('from=2026-02-30')));che
 const normalReport=validateReport({title:'Laboratory report',presentation:{show_documents:true,show_summary:false,show_results:false,show_lab:false,show_dates:false},results:[]});assert.equal(normalReport.presentation.show_summary,false);checks++;
 for(const r of [{lab:{accreditation:{verify_url:'javascript:alert(1)'}}},{dates:{issued:'2026-02-30'}},{results:[{parameter:'Lead',result:'ND',assessment:'meets'}]},{sample:{type:'made_up'}}]){assert.throws(()=>validateReport(r));checks++;}
 const uid='00000000-0000-4000-8000-000000000001',admin={auth_user_id:uid,username:'bodycafe.com'};
-let testerRows=[];let calls=[],fixtureReports=[],checkoutCalls=[],authCalls=[],orderPatches=[],transitions=[];
+let testerRows=[],reviewRows=[],custOrders=[];let calls=[],fixtureReports=[],checkoutCalls=[],authCalls=[],orderPatches=[],transitions=[];
 const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-secret',origin:'https://body-cafe-co-website.netlify.app,https://body-cafe-co-website.vercel.app',previewOrigin:/^https:\/\/body-cafe-co-website-[a-z0-9-]+-dharmik123\.vercel\.app$/,fetch:async(url,opts)=>{
  calls.push({url,opts});const u=new URL(url),name=u.pathname.split('/').pop();let result=[];
  if(u.pathname.startsWith('/auth/v1/admin/users/'))result={id:uid,email:'admin@example.test'};
@@ -29,6 +29,8 @@ const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-
  else if(name==='bcc_orders'&&opts.method==='PATCH'){orderPatches.push([u.searchParams.get('user_id'),JSON.parse(opts.body)]);result=null;}
  else if(name==='bcc_orders'&&(u.searchParams.get('user_id')||'').startsWith('eq.guest-'))result=[{id:'BCC-AAAA0001'}];
  else if(name==='bcc_orders'&&u.searchParams.get('id')==='eq.BCC-AAAA0001'&&u.searchParams.get('user_id')==='eq.customer-cust-1')result=[{id:'BCC-AAAA0001',state:'pending',data:{}}];
+ else if(name==='bcc_orders'&&u.searchParams.get('user_id')==='eq.customer-cust-1'&&!u.searchParams.has('id'))result=custOrders.filter(o=>!u.searchParams.has('state')||u.searchParams.get('state')==='eq.'+o.state);
+ else if(name==='bcc_reviews'){if(opts.method==='POST'){const b=JSON.parse(opts.body);reviewRows.push(b);result=[b];}else{const q=k=>(u.searchParams.get(k)||'').slice(3);result=reviewRows.filter(r=>(!u.searchParams.has('user_id')||r.user_id===q('user_id'))&&(!u.searchParams.has('product')||r.product===q('product')));}}
  else if(name==='bcc_profiles'&&u.searchParams.get('user_id')==='eq.customer-cust-1')result=[{user_id:'customer-cust-1',data:{name:'Saved Name',email:'contact@example.com'}}];
  else if(name==='bcc_order_transition'){transitions.push(JSON.parse(opts.body));result={ok:true};}
  else if(u.pathname==='/auth/v1/token'){let input=JSON.parse(opts.body);if(input.password!=='qa-current-password')return new Response(JSON.stringify({msg:'Invalid credentials'}),{status:403});result={access_token:'good-admin',expires_in:3600,user:{id:uid}};}
@@ -121,6 +123,23 @@ response=await cpost('/auth/password',{identifier:'buyer@example.com',password:'
 response=await cpost('/profile/password',{password:'new-pass12'});assert.equal(response.status,403);checks++; // a guest can't
 response=await cpost('/profile/password',{password:'short'},custCookies,custSession.csrf);assert.equal(response.status,400);
 response=await cpost('/profile/password',{password:'new-pass12'},custCookies,custSession.csrf);assert.equal(response.status,200);assert.deepEqual(authCalls.at(-1),['user-put',{password:'new-pass12',data:{has_password:true}}]);checks++;
+// Reviews: only a signed-in customer with a delivered order for the product, once; held for moderation; never shown until published.
+const elig=async(ck)=>(await (await request('/reviews/eligibility?product=test-product',{headers:{Cookie:ck}})).json()).state;
+assert.equal(await elig(guestCookies),'sign_in');assert.equal(await elig(custCookies),'no_purchase');checks++;
+custOrders=[{id:'BCC-REV00001',state:'shipped',created:1,data:{items:[{id:'test-product',quantity:1}]}}];assert.equal(await elig(custCookies),'not_delivered');checks++;
+const goodReview={product:'test-product',rating:2,title:'Fine',text:'Easy to take each morning.',request_id:'rq-1'};
+response=await cpost('/reviews',goodReview,custCookies,custSession.csrf);assert.equal(response.status,403);checks++; // not delivered yet
+response=await cpost('/reviews',goodReview);assert.equal(response.status,401);checks++; // a guest can't
+custOrders[0].state='delivered';assert.equal(await elig(custCookies),'eligible');checks++;
+for(const bad of[{rating:0},{rating:4.5},{text:'short'},{title:'ab'},{display_name:'x'},{incentive:'paid'},{media:['IMG-1']},{product:'nope'}]){response=await cpost('/reviews',{...goodReview,...bad},custCookies,custSession.csrf);assert.equal(response.status,400,JSON.stringify(bad));}checks++;
+response=await cpost('/reviews',{...goodReview,state:'published'},custCookies,custSession.csrf);assert.equal(response.status,200);let rv=await response.json();assert.equal(rv.state,'pending_moderation');
+assert.equal(reviewRows.length,1);assert.equal(reviewRows[0].user_id,'customer-cust-1');assert.equal(reviewRows[0].order_id,'BCC-REV00001');assert.equal(reviewRows[0].data.state,'pending_moderation');assert.equal(reviewRows[0].data.display_name,'Verified customer');checks++;
+response=await cpost('/reviews',goodReview,custCookies,custSession.csrf);assert.equal((await response.json()).idempotent,true);checks++; // the same submission again
+response=await cpost('/reviews',{...goodReview,request_id:'rq-2'},custCookies,custSession.csrf);assert.equal(response.status,409);assert.equal(reviewRows.length,1);checks++;
+assert.equal(await elig(custCookies),'already_reviewed');checks++;
+response=await request('/reviews?product=test-product');assert.equal((await response.json()).reviews.length,0);checks++; // waiting for moderation
+reviewRows[0].data.state='published';response=await request('/reviews?product=test-product');let pub=(await response.json()).reviews;assert.equal(pub.length,1);assert.equal(pub[0].verified,true);assert.ok(!('request_id'in pub[0]));checks++;
+custOrders=[];reviewRows=[];
 response=await request('/account',{headers:{Cookie:custCookies}});let acct=await response.json();assert.equal(acct.profile.name,'Saved Name');assert.equal(acct.profile.email,'buyer@example.com');assert.equal(acct.profile.has_password,true);checks++;
 response=await cpost('/orders/BCC-AAAA0001/cancel',{},custCookies,custSession.csrf);assert.equal(response.status,200);assert.equal(transitions.at(-1).p_target,'cancelled');assert.equal(transitions.at(-1).p_id,'BCC-AAAA0001');checks++;
 response=await cpost('/orders/BCC-BBBB0002/cancel',{},custCookies,custSession.csrf);assert.equal(response.status,404);checks++;

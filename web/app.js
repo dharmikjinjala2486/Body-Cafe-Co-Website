@@ -1237,8 +1237,10 @@ async function render(scroll = true) {
     booted = true;
     const shown = path.startsWith("/products/") ? product(path.split("/")[2]) : null;
     const pageTitle = document.body.dataset.contentFocus === "1" && path === "/shop" ? "Shop the Super Sevens" : $("#main h1")?.textContent.trim();
+    // Content Focus product pages have their own title and description (web/content-focus-e.js); other designs keep the admin's.
+    const focusSeo = shown ? window.BCCContentFocusCopy?.seo?.(shown) : null;
     document.title = shown
-      ? `${shown.seo_title || shown.name} — Body Café Co.`
+      ? `${focusSeo?.title || shown.seo_title || shown.name} — Body Café Co.`
       : path !== "/" && pageTitle ? `${pageTitle} — Body Café Co.` : (path === "/"
         ? (document.body.dataset.contentFocus === "1" ? "The Super Sevens" : "Seven everyday essentials")
         : path
@@ -1246,7 +1248,7 @@ async function render(scroll = true) {
             .filter(Boolean)
             .map((x) => x.replaceAll("-", " "))
             .join(" · ")) + " — Body Café Co.";
-    if (shown) document.querySelector('meta[name="description"]')?.setAttribute("content", shown.seo_description || shown.subtitle || shown.name);
+    if (shown) document.querySelector('meta[name="description"]')?.setAttribute("content", focusSeo?.description || shown.seo_description || shown.subtitle || shown.name);
     // Content Focus, every page without its own description (Version E workbook, row 43).
     else if (document.body.dataset.contentFocus === "1" && !path.startsWith("/ops")) document.querySelector('meta[name="description"]')?.setAttribute("content", "Seven supplements from Body Café Co., each formulated for its purpose: the right ingredient, the right form, a justified amount and a reason for every combination.");
     if (scroll) {

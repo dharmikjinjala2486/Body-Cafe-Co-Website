@@ -483,7 +483,7 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
             delivered = self.delivered_orders(c, s['user_id'], product)
             if delivered:
                 return {'state': 'eligible', 'order_id': delivered[0]['id']}
-            pending = [o for o in c.execute("SELECT * FROM orders WHERE user_id=? AND state IN ('pending','paid','shipped')", (s['user_id'],)).fetchall()
+            pending = [o for o in c.execute("SELECT * FROM orders WHERE user_id=? AND state IN ('pending','paid','packing','shipped')", (s['user_id'],)).fetchall()
                        if product in [x['id'] for x in json.loads(o['data'])['items']]]
             return {'state': 'not_delivered' if pending else 'no_purchase'}
 

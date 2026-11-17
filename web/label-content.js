@@ -11,6 +11,9 @@
       // 16 Nov 2026: the Content Focus product page copy (web/content-focus-e.js) is the default for its admin fields.
       var focusCopy = window.BCCContentFocusCopy?.defaults?.(product.id) || {};
       var result = Object.assign({}, defaults, focusCopy, label, product);
+      // A stored Content Focus field that is only a saved copy of a replaced default takes the new default (17 Nov 2026).
+      var stale = window.BCCContentFocusCopy?.stale;
+      if (stale) Object.keys(focusCopy).forEach(function (k) { if (stale(product.id, k, product[k])) result[k] = focusCopy[k]; });
       if (product.draft) {
         var draft = Object.assign({}, product, product.draft); delete draft.draft;
         result.draft = merge([draft], labels)[0];
