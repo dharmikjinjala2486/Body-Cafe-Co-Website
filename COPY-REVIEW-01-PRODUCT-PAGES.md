@@ -1,6 +1,6 @@
 # Copy review 01 · The seven product pages
 
-**Status:** approved in full by the owner and applied to Content Focus, 17 Nov 2026. The Psyllium headline keeps its current line. Not yet committed or deployed.
+**Status:** superseded, 17 Nov 2026. It was approved and applied the same day, then the owner chose the Version E workbook's own wording for the product pages ("Workbook wins"). Its product lines are kept in `web/content-focus-e.js` only as replaced defaults (`PREV`, `PREV_POINTS`); the site no longer shows them. Two of its shared lines stay: "Each one, for its own reason." and "Also in the range".
 **Design:** Content Focus (`?design=e&part=5`). Part 2 keeps its own copy.
 **Written against:** `SUPER-SEVENS-COPY-GUIDE.md`. Facts are from `web/label-records.json` and the approved copy of 16 Nov 2026.
 

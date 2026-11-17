@@ -655,10 +655,11 @@
   });
 
   /* Safety net for pages still drawn by Part 1 renderers (learn guides, help articles, policies, bag): no sentence that names
-     who makes a product reaches the page. */
+     who makes a product reaches the page. Text inside [data-maker-ok] is left alone: Content Focus marks the founder's career
+     paragraph with it, which speaks of manufacturing as his work, not of who makes the products (owner, 17 Nov 2026). */
   function scrub(root) {
     var walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), hits = [], n;
-    while ((n = walk.nextNode())) if (MAKER.test(n.nodeValue) || /manufacturing lot/i.test(n.nodeValue)) hits.push(n);
+    while ((n = walk.nextNode())) if (!(n.parentElement && n.parentElement.closest("[data-maker-ok]")) && MAKER.test(n.nodeValue) || /manufacturing lot/i.test(n.nodeValue)) hits.push(n);
     hits.forEach(function (t) {
       t.nodeValue = clean(t.nodeValue);
       var el = t.parentElement;

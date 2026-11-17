@@ -1242,7 +1242,7 @@ async function render(scroll = true) {
     document.title = shown
       ? `${focusSeo?.title || shown.seo_title || shown.name} — Body Café Co.`
       : path !== "/" && pageTitle ? `${pageTitle} — Body Café Co.` : (path === "/"
-        ? (document.body.dataset.contentFocus === "1" ? "The Super Sevens" : "Seven everyday essentials")
+        ? (document.body.dataset.contentFocus === "1" ? "It’s not the list. It’s the logic." : "Seven everyday essentials")
         : path
             .split("/")
             .filter(Boolean)

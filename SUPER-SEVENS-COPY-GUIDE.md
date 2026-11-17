@@ -119,7 +119,7 @@ Each card is the single source for how that product sounds everywhere: shop card
 | How it's taken | 1 capsule in the morning, with food or on an empty stomach |
 | Alone or paired | On its own |
 | Pack · diet | 30 capsules, 30 days · Vegetarian · may contain nuts |
-| Approved headline | The green-tea amino acid. 200 mg, on its own. (copy review 01) |
+| Approved headline | One amino acid. 200 mg. Nothing else active. (Version E workbook; it avoids implying the ingredient is extracted from tea) |
 | Lines to build from | "The amino acid tea is known for. 200 mg, on its own." · "One ingredient. No blend sharing the dose." |
 | Never say | relaxes you, stress relief, anxiety, sleep, "like a cup of tea" (implies an effect) |
 
@@ -164,7 +164,7 @@ Each card is the single source for how that product sounds everywhere: shop card
 | How it's taken | 3 capsules in the morning with food |
 | Alone or paired | A deliberate combination: the ratio is the formula, so it goes on the front |
 | Pack · diet | 90 capsules, 30 days · Vegetarian · may contain nuts |
-| Approved headline | The ratio is the formula. 40:1. (copy review 01) |
+| Approved headline | Two inositols. One ratio. 40:1, on the front. (Version E workbook) |
 | Lines to build from | "The ratio is the formula: 40:1, printed on the front." · "Checked batch by batch, between 36:1 and 44:1." |
 | Never say | PCOS, PCOD, fertility, periods, weight loss, insulin, blood sugar, "for women" |
 

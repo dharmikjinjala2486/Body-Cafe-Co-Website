@@ -21,11 +21,10 @@
       ["Four rules we never bend.", "Every formula is four decisions."], ["Right form", "Form first"], ["Exact dose, stated", "Amounts that mean something"], ["Every lot tested", "Checked, not assumed"],
       ["Every bottle carries a lot number.", "Your bottle has a paper trail."],
       ["Choose your product by its cap, type the number from the pack, and see the record for that batch.", "Every pack carries a Batch No. Choose your product by its cap, type the number, and see the record for that batch."],
-      ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the label says so clearly."]
+      ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the pack says so clearly, right on the front."]
     ],
-    shop: [ // 28; the rest from the shop refinements (16 Nov 2026, owner-approved)
-      ["Seven supplements, each made to one uncompromising standard.", "Five single-ingredient formulas. Two deliberate combinations. Every amount printed. Take what you need. Skip what you don’t."],
-      ["All prices are MRP, inclusive of all taxes. Delivery is free on orders of ₹1,499 or more.", "All prices are MRP, inclusive of all taxes. Delivery is ₹75, free on orders of ₹1,499 or more."],
+    shop: [ // 28 (owner, 17 Nov 2026: every row as the workbook has it); the two Barista prompts are the shop refinements (16 Nov)
+      ["Seven supplements, each made to one uncompromising standard.", "Five single-ingredient formulas. Two deliberate combinations. Every amount printed."],
       ["Ask about any of the seven.", "Not sure which one fits? Ask about any of the seven."],
       ["Not sure where to start?", "Ask Barista"]
     ],
@@ -41,11 +40,11 @@
     ],
     story: [ // 44–49, 51
       ["You should always know what you’re being served.", "The questions come before the capsule."],
-      ["A good café shows you the menu. So do we.", "Meet Dr. Nayan Solanki (PhD, Industrial Pharmacy), the formulation scientist behind our seven, and the decisions he made for each."],
+      ["A good café shows you the menu. So do we.", "Meet Dr. Nayan Solanki, our Scientific Founder & Formulation Lead, and the decisions behind our seven."],
       ["The front of the label shouts. The back whispers.", "A longer list isn’t a better formula."],
       ["Most supplement labels lead with promises and leave the facts in small print: which form the ingredient is in, how much you actually get, and when to take it. We turned that around.", "Supplements are often judged by how many ingredients they contain. But a list can’t tell you why each ingredient was chosen, whether the amount means anything, or whether the ingredients work well together. Sometimes one ingredient is right. Sometimes a combination is justified. The reason is what matters."],
       ["Seven, and only seven.", "Trained where every milligram must be justified."],
-      ["We make seven supplements. Each one is an everyday essential, and each one is made the same way. A small range lets us hold every product to the same standard, and say exactly what is in it.", "Dr. Nayan Solanki holds a PhD in Industrial Pharmacy. His career has been in developing medicines: choosing the form of each ingredient, setting specifications, and checking compatibility and stability. In that work, every ingredient, dose and form is a decision you must be able to explain. He brought the same discipline to Body Café Co., personally selecting the ingredient, form, dose and combination in each of our seven products."],
+      ["We make seven supplements. Each one is an everyday essential, and each one is made the same way. A small range lets us hold every product to the same standard, and say exactly what is in it.", "Dr. Nayan Solanki holds a PhD in Industrial Pharmacy. His career has been in pharmaceutical development: formulating medicines, preparing the chemistry, manufacturing and controls (CMC) work that regulators review, validating processes and scaling products up for manufacture. In that work, every ingredient, dose and form is a decision you must be able to explain. He brought the same discipline to Body Café Co., personally selecting the ingredient, form, dose and combination in each of our seven products."],
       ["How we work.", "Four questions, asked of every formula."]
     ],
     learn: [ // 59, 60, 62, 64
@@ -55,107 +54,113 @@
       ["Why the full ingredient name matters when you compare products.", "Same nutrient, different form: why the full name matters."]
     ],
     product: [ // 68, 69, 70, 24
-      // Copy review 01 (17 Nov 2026, owner-approved): A8, A9, A11–A13, A15. Nothing here suggests taking more than one.
-      ["Frequently bought with", "Anything else you came for?"],
-      ["Nothing is ticked. Add one only if you need it.", "Add one only if you need it. Each has its own timing, so follow every label."],
-      ["Free delivery on orders of ₹1,499 or more", "Delivery ₹75, free on orders of ₹1,499 or more"],
+      // The workbook, rows 68–70. Row 67 keeps the buy box and the batch report as they are. Nothing suggests taking more than one.
+      ["Frequently bought with", "Build your routine"],
+      ["Nothing is ticked. Add one only if you need it.", "Each one has its own timing. Follow every label."],
       ["Recommended for you", "Also in the range"],
       ["The rest of the seven.", "Each one, for its own reason."],
-      ["Best value", "Lowest price a day"],
-      ["2 bottles save 5%, 3 save 10%. The saving is applied in your bag.", "Two bottles save 5%. Three save 10%. You’ll see the saving in your bag."],
-      ["Check the lot printed on your pack.", "Look up the batch in your hand."],
-      ["A lot report describes the sample tested from one production lot. Records appear as reports are published.", "Type the Batch No. from your pack to see that batch’s record. Reports are published batch by batch, from our first production batch."],
-      ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the label says so clearly."]
+      ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the pack says so clearly, right on the front."]
     ]
   };
   var RULES = [["Is this the right ingredient?", "Chosen for the purpose, never to lengthen a label."], ["Is this the right form?", "The form decides what you actually take."], ["Is this the right amount?", "Set against a reference, printed per serving."], ["Does it belong with anything else?", "Combined only when there’s a reason."]]; // 52–55
   var STORY_LINK = "See the reasoning"; // 57
-  // 39. The laboratories are not named until their agreements are signed and they consent to it (claim C6).
-  var TESTING = ["FROM BATCH ONE", "Independent laboratory testing of every batch"];
+  // 39. The laboratories are named as the workbook has them (owner, 17 Nov 2026; Approval Register A6 lists signed agreements and their consent).
+  var TESTING = ["FROM BATCH ONE", "Independent testing by Choksi Laboratories and Eurofins"];
   var FOOTER = "No ingredient without a reason."; // 72
-  // Product Pages sheet, the seven launched products. Magnesium Glycinate and Beetroot are not launched and stay out.
+  /* Product Pages sheet, the seven launched products, every line in the workbook's words (owner, 17 Nov 2026: "Workbook wins"
+     over copy review 01, then the three 16 Nov holdbacks dropped too). Magnesium Glycinate and Beetroot are not launched and stay out. */
   var PRODUCTS = {
     "iron-bisglycinate": {
       "headline": "Iron first. Chai later.",
-      "support": "One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.",
-      "ingredient": "Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.",
-      "form": "Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.",
-      "amount": "29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.",
+      "support": "29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.",
+      "ingredient": "Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg.",
+      "form": "Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.",
+      "amount": "29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in.",
       "decision": "Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away."
     },
     "vitamin-d3-k2": {
       "headline": "Two fat-soluble vitamins. One oil. On purpose.",
-      "support": "Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.",
-      "ingredient": "Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.",
-      "form": "D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.",
+      "support": "600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel.",
+      "ingredient": "Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.",
+      "form": "D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.",
       "amount": "600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose.",
-      "decision": "One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal."
+      "decision": "A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal."
     },
     "omega-3-fish-oil": {
       "headline": "Count the omega-3, not the oil.",
-      "support": "Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.",
-      "ingredient": "EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.",
-      "form": "Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.",
-      "amount": "800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.",
-      "decision": "Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately."
+      "support": "1,000 mg of anchovy fish oil concentrate per softgel. 800 mg of it is omega-3: 400 mg EPA and 300 mg DHA.",
+      "ingredient": "EPA and DHA: the omega-3s people look for in fish oil. Your body barely makes them, so they come mainly from fish.",
+      "form": "Triglycerides, the form found in fish. From concentrated anchovy oil.",
+      "amount": "800 mg of omega-3 per softgel. The omega-3 is the number that matters, so we print it.",
+      "decision": "Two numbers on the label: the oil and the omega-3 in it. EPA and DHA shown separately."
     },
     "l-theanine": {
-      "headline": "The green-tea amino acid. 200 mg, on its own.",
-      "support": "One capsule in the morning, with or without food. One active ingredient, with its amount printed.",
-      "ingredient": "L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.",
-      "form": "Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.",
-      "amount": "200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.",
-      "decision": "One ingredient, one number, one capsule. No blend sharing the dose."
+      "headline": "One amino acid. 200 mg. Nothing else active.",
+      "support": "200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule.",
+      "ingredient": "L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient.",
+      "form": "Free-form L-theanine, on its own, so the amount you take is the amount on the label.",
+      "amount": "200 mg, an amount used in published studies.",
+      "decision": "One ingredient, one number, one capsule. No blend to divide the dose."
     },
     "myo-d-chiro-inositol": {
-      "headline": "The ratio is the formula. 40:1.",
-      "support": "40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.",
+      "headline": "Two inositols. One ratio. 40:1, on the front.",
+      "support": "2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front.",
       "ingredient": "Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.",
-      "form": "Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.",
+      "form": "Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.",
       "amount": "2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1.",
-      "decision": "One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point."
+      "decision": "A deliberate combination where the ratio is the formula, so the ratio goes on the front."
     },
     "creatine-chews": {
       "headline": "3 grams of creatine. Two chews. Your time.",
-      "support": "Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.",
-      "ingredient": "Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.",
+      "support": "3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker.",
+      "ingredient": "Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day.",
       "form": "Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing.",
-      "amount": "3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.",
-      "decision": "Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print."
+      "amount": "3 g per serving, within the 3–5 g daily intake commonly used in research.",
+      "decision": "We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving."
     },
     "psyllium-husk": {
       "headline": "The isabgol you know, measured in capsules.",
-      "support": "Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.",
+      "support": "2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble.",
       "ingredient": "Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes.",
-      "form": "Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.",
-      "amount": "2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.",
-      "decision": "Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass."
+      "form": "Whole psyllium husk in capsules: the same ingredient, with nothing to stir.",
+      "amount": "2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers.",
+      "decision": "Isabgol, measured. Always with a full glass of water."
     }
   };
-  /* The defaults that copy review 01 replaced (17 Nov 2026, owner-approved). A stored admin field that still holds one of
-     these exactly was saved from the old default, not written on purpose, so it gives way to the new default (stale()). */
+  /* Copy review 01's lines (17 Nov 2026), replaced the same day by the Version E workbook's own text (owner: "Workbook wins").
+     A stored admin field that still holds one of these exactly was saved from that default, not written on purpose, so it
+     gives way to the workbook text above (stale()). A key may list several, the 16 Nov holdbacks with copy review 01's line. */
   var PREV = {
-    "iron-bisglycinate": {"cf_support":"29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.","cf_ingredient":"Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule.","cf_form":"Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.","cf_amount":"29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in."},
-    "l-theanine": {"cf_headline":"One amino acid. 200 mg. Nothing else active.","cf_support":"200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule.","cf_ingredient":"L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient.","cf_form":"Free-form L-theanine, on its own, so the amount you take is the amount on the label.","cf_amount":"200 mg, an amount used in published studies.","cf_decision":"One ingredient, one number, one capsule. No blend to divide the dose."},
-    "vitamin-d3-k2": {"cf_support":"600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel.","cf_ingredient":"Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.","cf_form":"D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.","cf_decision":"A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal."},
-    "omega-3-fish-oil": {"cf_support":"1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA.","cf_form":"Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","cf_decision":"One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately."},
-    "myo-d-chiro-inositol": {"cf_headline":"Two inositols. One ratio. 40:1, on the front.","cf_support":"2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front.","cf_form":"Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.","cf_decision":"A deliberate combination where the ratio is the formula, so the ratio goes on the front."},
-    "creatine-chews": {"cf_support":"3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker.","cf_ingredient":"Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day.","cf_amount":"3 g per serving, within the 3–5 g daily intake commonly used in research.","cf_decision":"We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving."},
-    "psyllium-husk": {"cf_support":"2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble.","cf_form":"Whole psyllium husk in capsules: the same ingredient, with nothing to stir.","cf_amount":"2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers.","cf_decision":"Isabgol, measured. Always with a full glass of water."}
+    "iron-bisglycinate": {"cf_support":"One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule."],"cf_form":"Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in."]},
+    "vitamin-d3-k2": {"cf_support":"Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","cf_ingredient":"Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","cf_form":"D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","cf_decision":"One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal."},
+    "omega-3-fish-oil": {"cf_support":["Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.","1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA."],"cf_ingredient":["EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.","EPA and DHA are the omega-3s people look for in fish oil. The body makes very little, so they come mainly from fish.","EPA and DHA: the omega-3s your body barely makes. They come mainly from fish."],"cf_form":["Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.","Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","Concentrated anchovy oil. The omega-3 stays as triglycerides, the form found in fish."],"cf_amount":["800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA. The omega-3 is the number that matters, so we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA."],"cf_decision":["Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it. EPA and DHA are shown separately."]},
+    "l-theanine": {"cf_headline":"The green-tea amino acid. 200 mg, on its own.","cf_support":"One capsule in the morning, with or without food. One active ingredient, with its amount printed.","cf_ingredient":"L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.","cf_form":"Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.","cf_amount":"200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.","cf_decision":"One ingredient, one number, one capsule. No blend sharing the dose."},
+    "myo-d-chiro-inositol": {"cf_headline":"The ratio is the formula. 40:1.","cf_support":"40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","cf_form":"Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","cf_decision":"One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point."},
+    "creatine-chews": {"cf_support":"Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day."],"cf_amount":"3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","cf_decision":"Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print."},
+    "psyllium-husk": {"cf_support":"Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.","cf_form":"Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.","cf_amount":"2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.","cf_decision":"Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass."}
   };
 
 
   /* What each product is for (16 Nov 2026, owner-approved). Only the front-label Key Benefit, which the Version E workbook keeps
      as the permitted claim (Claims sheet, C20, FSSAI consultant to verify), then the label amounts behind it. No condition,
      outcome or timing promise. [shop card, one line · range, at most two lines · product page claim · product page facts] */
+  /* 17 Nov 2026 (owner): all three lines are the front label's words exactly (label-records.json "claim"), in sentence case;
+     the shop card no longer shortens them to tags ("Calm · Focus"), and the product page keeps the label's "&". */
   var USE = {
-    "omega-3-fish-oil": ["Heart · Brain · Joints", "Supports heart, brain & joint health", "Supports heart, brain and joint health.", "Each softgel gives 800 mg omega-3 as triglycerides: 400 mg EPA and 300 mg DHA."],
-    "vitamin-d3-k2": ["Bones · Muscles · Heart", "Supports bone, muscle & heart health", "Supports bone, muscle and heart health.", "One softgel gives 600 IU vitamin D3, 55 mcg vitamin K2 as MK-7 and 200 mg omega-3."],
-    "creatine-chews": ["Strength · Performance", "Supports strength & performance", "Supports strength and performance.", "Two orange chewable tablets give 3,000 mg creatine monohydrate, with no powder to mix."],
-    "iron-bisglycinate": ["Hemoglobin · Energy", "Supports hemoglobin formation & energy metabolism", "Supports hemoglobin formation and energy metabolism.", "Each capsule gives 29 mg iron as Ferrochel® ferrous bisglycinate chelate."],
-    "l-theanine": ["Calm · Focus", "Supports a calm mind & clear focus", "Supports a calm mind and clear focus.", "Each capsule gives 200 mg L-Theanine, the amino acid naturally found in green tea."],
-    "myo-d-chiro-inositol": ["Hormones · Metabolism", "Supports hormonal & metabolic balance", "Supports hormonal and metabolic balance.", "Three capsules give 2,000 mg Myo-Inositol and 50 mg D-Chiro Inositol, a 40:1 ratio."],
-    "psyllium-husk": ["Digestion · Regularity", "Supports digestive health & regularity", "Supports digestive health and regularity.", "Five capsules give 2,000 mg psyllium husk (isabgol), with 1,578 mg dietary fibre."]
+    "omega-3-fish-oil": ["Supports heart, brain & joint health", "Supports heart, brain & joint health", "Supports heart, brain & joint health.", "Each softgel gives 800 mg omega-3 as triglycerides: 400 mg EPA and 300 mg DHA."],
+    "vitamin-d3-k2": ["Supports bone, muscle & heart health", "Supports bone, muscle & heart health", "Supports bone, muscle & heart health.", "One softgel gives 600 IU vitamin D3, 55 mcg vitamin K2 as MK-7 and 200 mg omega-3."],
+    "creatine-chews": ["Supports strength & performance", "Supports strength & performance", "Supports strength & performance.", "Two orange chewable tablets give 3,000 mg creatine monohydrate, with no powder to mix."],
+    "iron-bisglycinate": ["Supports hemoglobin formation & energy metabolism", "Supports hemoglobin formation & energy metabolism", "Supports hemoglobin formation & energy metabolism.", "Each capsule gives 29 mg iron as Ferrochel® ferrous bisglycinate chelate."],
+    "l-theanine": ["Supports calm mind & clear focus", "Supports calm mind & clear focus", "Supports calm mind & clear focus.", "Each capsule gives 200 mg L-Theanine, the amino acid naturally found in green tea."],
+    "myo-d-chiro-inositol": ["Supports hormonal & metabolic balance", "Supports hormonal & metabolic balance", "Supports hormonal & metabolic balance.", "Three capsules give 2,000 mg Myo-Inositol and 50 mg D-Chiro Inositol, a 40:1 ratio."],
+    "psyllium-husk": ["Supports digestive health & regularity", "Supports digestive health & regularity", "Supports digestive health & regularity.", "Five capsules give 2,000 mg psyllium husk (isabgol), with 1,578 mg dietary fibre."]
+  };
+  // The product page claims these replaced (saved in the admin as defaults); a stored copy of one gives way to the line above.
+  var PREV_CLAIM = {
+    "omega-3-fish-oil": "Supports heart, brain and joint health.", "vitamin-d3-k2": "Supports bone, muscle and heart health.",
+    "creatine-chews": "Supports strength and performance.", "iron-bisglycinate": "Supports hemoglobin formation and energy metabolism.",
+    "l-theanine": "Supports a calm mind and clear focus.", "myo-d-chiro-inositol": "Supports hormonal and metabolic balance.",
+    "psyllium-husk": "Supports digestive health and regularity."
   };
   /* The admin portal decides this copy (16 Nov 2026): a product's "Content Focus copy" fields (cf_…), when the catalogue
      carries them, replace the lines in PRODUCTS and USE above before each page renders. The lines above stay as the
@@ -171,9 +176,9 @@
       USE[p.id][3] = has(p, "cf_facts") ? p.cf_facts.trim() : u[3];
     });
   }
-  /* "At a glance" (copy review 01, 17 Nov 2026): four lines on every product, the signature number, the form, how to take it
-     and the veg / non-veg mark. They used to default to Part 2's points (BCCPart2E.PDP), which Part 2 still shows. */
-  var POINTS = {
+  /* "Key benefits" defaults to Part 2's points (BCCPart2E.PDP): the workbook keeps the label content as it is (row 67). These
+     are copy review 01's four lines (17 Nov 2026), kept so an admin field saved from them shows Part 2's points again. */
+  var PREV_POINTS = {
     "iron-bisglycinate": ["29 mg elemental iron per capsule", "Ferrochel® bisglycinate, named on the front", "One capsule, morning, empty stomach", "Vegetarian capsule"],
     "l-theanine": ["200 mg L-Theanine per capsule", "Naturally found in green tea", "One capsule, morning, with or without food", "Vegetarian capsule"],
     "vitamin-d3-k2": ["600 IU vitamin D3 and 55 mcg K2 as MK-7", "200 mg omega-3 (100 mg EPA, 75 mg DHA)", "One softgel, morning, with food", "Non-vegetarian: fish oil and gelatin"],
@@ -182,8 +187,6 @@
     "creatine-chews": ["3,000 mg creatine monohydrate per serving", "Two orange chews, at one time you choose", "Not sugar-free: 3.6 g sugar per serving", "Vegetarian"],
     "psyllium-husk": ["2,000 mg psyllium husk per serving", "1,578 mg dietary fibre, 1,362 mg soluble", "Five capsules, at night, with a full glass of water", "Vegetarian capsules"]
   };
-  // The fourth question names what the Super Sevens are made of: five single ingredients and two deliberate pairs.
-  var PAIRS = { "vitamin-d3-k2": 1, "myo-d-chiro-inositol": 1 };
   /* Page title and search description, Content Focus only (web/app.js asks for them). The admin's SEO title wins when it is
      filled in; its SEO description wins when it says something other than the label description it was copied from. */
   var SEO = {
@@ -200,14 +203,16 @@
     defaults: function (id) {
       var c = BASE.P[id], u = BASE.U[id]; if (!c || !u) return {};
       return { cf_claim: u[2], cf_facts: u[3], cf_headline: c.headline, cf_support: c.support, cf_ingredient: c.ingredient, cf_form: c.form,
-        cf_amount: c.amount, cf_decision: c.decision, cf_points: (POINTS[id] || []).join("\n") };
+        cf_amount: c.amount, cf_decision: c.decision, cf_points: oldPoints(id) };
     },
     // True when a stored admin field is a copy of a replaced default (web/label-content.js then shows the new default).
     stale: function (id, key, value) {
       if (typeof value !== "string" || !value.trim()) return false;
       var v = value.trim();
-      if (key === "cf_points") return !!POINTS[id] && v === oldPoints(id) && v !== POINTS[id].join("\n");
-      return !!(PREV[id] && PREV[id][key] === v);
+      if (key === "cf_points") return !!PREV_POINTS[id] && v === PREV_POINTS[id].join("\n");
+      if (key === "cf_claim" && PREV_CLAIM[id] === v) return true;
+      var old = PREV[id] && PREV[id][key];
+      return Array.isArray(old) ? old.indexOf(v) > -1 : old === v;
     },
     seo: function (p) {
       var s = p && focus() && SEO[p.id]; if (!s) return null;
@@ -227,13 +232,12 @@
       ["iron-bisglycinate", "Amount", "The right amount", "29 mg of iron you actually get, not the compound’s weight."],
       ["vitamin-d3-k2", "Combination", "A reason to combine", "D3 and K2 share one oil, because both dissolve in fat."]
     ],
-    scientist: "Meet the scientist behind them",
+    /* The founder band (workbook, Founder sheet, home founder intro; owner, 17 Nov 2026), word for word. */
+    founder: ["Formulated by a pharmaceutical scientist", "The questions come before the capsule.",
+      "Dr. Nayan Solanki, our Scientific Founder & Formulation Lead, holds a PhD in Industrial Pharmacy and has spent his career developing medicines. He personally chose the ingredient, form, dose and combination in each of our seven products, with the same questions he asks of a medicine.",
+      "Meet the scientist"],
     // Testing moves here from the standard band: it starts with the first production batch (claim C6).
-    testing: "From our first production batch, independent laboratories test each batch, and its record appears here.",
-    faqs: [
-      ["Should I take all seven?", "No. Each of the seven is made for its own purpose. Choose only what you need and follow its label. If you’re pregnant, breastfeeding, under medical care or unsure, ask a healthcare professional first."],
-      ["Are they vegetarian?", "Five are vegetarian. Omega-3 Fish Oil and Vitamin D3 + K2 are softgels made with fish oil and gelatin, so they are non-vegetarian."]
-    ]
+    testing: "From our first production batch, independent laboratories test each batch, and its record appears here."
   };
   function idOf(a) { var m = a && /\/products\/([^/?#]+)/.exec(a.getAttribute("href") || ""); return m ? m[1] : ""; }
 
@@ -283,7 +287,12 @@
     if (rangeH) rangeH.insertAdjacentHTML("afterend", '<p class="cf-sec-lede">' + esc(HOME.range) + "</p>");
     // Our standard: the four decisions the heading names, each with an example, instead of the status list.
     var std = root.querySelector(".p2-stdband"), stdH = std && std.querySelector("#p2-std-t"), list = std && std.querySelector(".p2-std4");
-    if (stdH) stdH.insertAdjacentHTML("afterend", '<p class="cf-sec-lede">' + esc(HOME.intro) + '</p><a class="p2-link cf-sec-link" href="/story">' + esc(HOME.scientist) + "</a>");
+    if (stdH) stdH.insertAdjacentHTML("afterend", '<p class="cf-sec-lede">' + esc(HOME.intro) + "</p>");
+    // The scientist behind the four decisions, straight after them.
+    var F = HOME.founder;
+    if (std) std.insertAdjacentHTML("afterend", '<section class="p2-section cf-founder-band" aria-labelledby="cf-founder-t"><div class="p2-wrap cf-fb-in">' +
+      '<div><p class="p2-eyebrow">' + esc(F[0]) + '</p><h2 id="cf-founder-t">' + esc(F[1]) + "</h2></div>" +
+      '<div><p class="cf-fb-p">' + esc(F[2]) + '</p><a class="p2-link" href="/story">' + esc(F[3]) + "</a></div></div></section>");
     if (list) {
       list.classList.add("cf-decisions");
       list.innerHTML = HOME.decisions.map(function (d) { return '<li style="--cap:' + esc(colour(d[0])) + '"><b class="p2-std4-tag">' + esc(d[1]) + "</b><h3>" + esc(d[2]) + "</h3><p>" + esc(d[3]) + "</p></li>"; }).join("");
@@ -291,15 +300,7 @@
     // Batch band: where testing now stands.
     var lot = root.querySelector(".p2-lotband-in > div > p:not(.p2-eyebrow)");
     if (lot) lot.insertAdjacentHTML("afterend", '<p class="cf-testing">' + esc(HOME.testing) + "</p>");
-    // FAQ: the two questions the Super Sevens raise first.
-    var accs = root.querySelector(".p2-faq .p2-accs");
-    if (accs) accs.insertAdjacentHTML("afterbegin", HOME.faqs.map(function (f) { return '<details class="p2-acc"><summary><span>' + esc(f[0]) + '</span><i aria-hidden="true"></i></summary><div class="p2-acc-body"><p>' + esc(f[1]) + "</p></div></details>"; }).join(""));
   });
-  // Shop card facts: the amount per serving, then how many days a bottle lasts (its servings per pack, from the catalogue).
-  var CARD = {
-    "omega-3-fish-oil": "800 mg omega-3 per softgel", "vitamin-d3-k2": "600 IU D3 + 55 mcg K2 per softgel", "creatine-chews": "3,000 mg per 2 orange chews",
-    "iron-bisglycinate": "29 mg iron per capsule", "l-theanine": "200 mg per capsule", "myo-d-chiro-inositol": "40:1 ratio per 3 capsules", "psyllium-husk": "2,000 mg husk per 5 capsules"
-  };
   page("shop", function (root, args) {
     var ctx = args[0] || {}, find = function (id) { return (ctx.catalog || ctx.published || []).filter(function (x) { return x.id === id; })[0] || {}; };
     swap(root, TEXT.shop);
@@ -314,7 +315,6 @@
         media.insertAdjacentHTML("afterend", '<span class="cf-diet ' + (veg ? "is-veg" : "is-nonveg") + '" role="img" aria-label="' + label + '" title="' + label + '"><i></i></span>');
       }
       if (u) h.insertAdjacentHTML("afterend", '<p class="cf-use cf-use-card" title="' + esc(u[1]) + '">' + esc(u[0]) + "</p>");
-      if (fact && CARD[id] && days) fact.textContent = CARD[id] + " · " + days + " days";
     });
   });
   /* Our standard (16 Nov 2026, owner-approved): the page delivers the four decisions its heading names, in the home page's
@@ -322,8 +322,9 @@
   var STD = {
     decisions: [["ingredient", "The right ingredient"], ["form", "The right form"], ["dose", "The right amount"], ["combine", "A reason to combine"]],
     // The intro is the Version E workbook's own sentence (Text Replacements, row 15). The amount section keeps its paragraph.
-    pick: ["The right ingredient, in the right form", "We start with the purpose, choose the ingredient that serves it, then choose its form. Both are named on the label, because form decides what you are actually taking."],
-    amount: ["The right amount", ""],
+    // Rows 33–35 (owner, 17 Nov 2026: the workbook's headings and paragraph, not the 16 Nov ones).
+    pick: ["Form first", "The same nutrient comes in different forms, and the form decides what you are actually taking. We choose it first, then name it on the label: iron as Ferrochel® bisglycinate, K2 as MK-7, omega-3 as triglycerides."],
+    amount: ["Amounts that mean something", ""],
     amounts: {
       "omega-3-fish-oil": ["800 mg omega-3", "400 mg EPA + 300 mg DHA, from 1,000 mg of oil"],
       "vitamin-d3-k2": ["600 IU D3 · 55 mcg K2", "Each 100% of the ICMR RDA"],
@@ -388,12 +389,14 @@
     var end = root.querySelector(".p2p-end .p2-actions");
     if (end) end.insertAdjacentHTML("beforeend", '<a class="p2-link" href="/story">' + esc(STD.scientist) + "</a>");
   });
-  /* Story (16 Nov 2026, owner-approved). The founder line avoids the title "Scientific Founder" until it is approved (claim
-     C5), and his career sentence is the Text Replacements workbook's (row 30): the earlier one said "manufacturing", which
-     the site's manufacturer-name filter removes. The seven bottles get their own chapter back, as the Super Sevens. */
+  /* Story (16 Nov 2026, owner-approved). Since 17 Nov (owner) the founder's title and his career paragraph are the Version E
+     workbook's exactly (rows 45 and 49); the paragraph is marked data-maker-ok so the manufacturer-name filter keeps it. The
+     seven bottles get their own chapter back, as the Super Sevens. */
   var SEVENS = ["The Super Sevens.", "We launch with seven. Five single-ingredient formulas and two deliberate combinations. A small range lets us ask the same four questions of every product, and say exactly what is in it. Take what you need. Skip what you don’t."];
   function story(root) {
     swap(root, TEXT.story);
+    // Row 49 speaks of manufacturing as his career, so the manufacturer-name filter (scrub in web/part2-e.js) leaves it whole.
+    [].forEach.call(root.querySelectorAll("p"), function (p) { if (p.textContent.trim() === "Dr. Nayan Solanki holds a PhD in Industrial Pharmacy. His career has been in pharmaceutical development: formulating medicines, preparing the chemistry, manufacturing and controls (CMC) work that regulators review, validating processes and scaling products up for manufacture. In that work, every ingredient, dose and form is a decision you must be able to explain. He brought the same discipline to Body Café Co., personally selecting the ingredient, form, dose and combination in each of our seven products.") p.setAttribute("data-maker-ok", ""); });
     var seven = root.querySelector(".p2p-chap-seven"), founder = seven && seven.querySelector(".p2p-chap-copy"), lineup = seven && seven.querySelector(".p2p-lineup");
     if (founder && lineup) {
       var sec = document.createElement("section"); sec.className = "p2p-chap cf-founder";
@@ -478,21 +481,17 @@
     if (c && h) {
       var q = function (t, x) { return x ? '<h4 class="cf-q">' + t + "</h4><p>" + esc(x) + "</p>" : ""; };
       h.parentNode.innerHTML = '<h3 class="p2-acc-h">' + esc(c.headline || (args[1] && args[1].name) || "") + "</h3>" + (c.support ? '<p class="cf-support">' + esc(c.support) + "</p>" : "") +
-        q("Why this ingredient?", c.ingredient) + q("Why this form?", c.form) + q("Why this amount?", c.amount) + q(PAIRS[args[1] && args[1].id] ? "Why together?" : "Why on its own?", c.decision);
+        q("Why this ingredient?", c.ingredient) + q("Why this form?", c.form) + q("Why this amount?", c.amount) + q("The decision", c.decision);
     }
     /* Product page refinements (16 Nov 2026, owner-approved). Everything below is the label's own text, from the catalogue. */
     var p = args[1] || {}, line = function (t) { return String(t || "").trim(); };
     // The amount is already in "What it's for", so the old sub-line under the name goes.
     var sub = root.querySelector(".p2-buy-sub"); if (sub) sub.remove();
-    // "Key benefits" repeated the claim that now leads the page: the facts stay, as "At a glance".
+    // Row 67: "Key benefits" stays as it is, claim included; the admin's points (cf_points) fill its list.
     [].forEach.call(root.querySelectorAll(".p2-pdp-accs > details"), function (d) {
       var s = d.querySelector("summary span"), title = s && s.textContent.trim();
-      // Copy review 01 (A1, A6): the sections say what is in them.
-      if (title === "Description") s.textContent = "Why it’s made this way";
-      if (title === "Directions for use") s.textContent = "How to take it";
       if (title !== "Key benefits") return;
-      s.textContent = "At a glance"; var claim = d.querySelector(".p2-claim"); if (claim) claim.remove();
-      // The points are the admin's "At a glance" lines; how long a bottle lasts stays worked out from the servings.
+      // The points are the admin's lines; how long a bottle lasts stays worked out from the servings.
       var ul = d.querySelector(".p2-ticks"), last = ul && ul.lastElementChild;
       if (ul && has(p, "cf_points")) ul.innerHTML = p.cf_points.split(/\n+/).map(line).filter(Boolean).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") +
         (last && /^One bottle lasts/.test(last.textContent) ? last.outerHTML : "");
@@ -761,7 +760,14 @@
         var list = box.querySelector("[data-cf-rv-list]"), items = (r && r.reviews) || [];
         if (!list || !items.length) return;
         list.innerHTML = items.map(realCard).join(""); list.hidden = false;
-        var h2 = box.closest("#p2-reviews").querySelector(".p2-sec-head h2"); if (h2 && /^Reviews open/.test(h2.textContent)) h2.textContent = "What people say.";
+        var sec = box.closest("#p2-reviews"), head = sec.querySelector(".p2-sec-head"), h2 = head && head.querySelector("h2");
+        if (h2) h2.textContent = "What people say.";
+        // The rating, from published customer reviews only: in the section head and under the product name.
+        var s = (r && r.summary) || {}, n = s.count || items.length, avg = s.average || items.reduce(function (t, x) { return t + x.rating; }, 0) / items.length;
+        var count = n + " review" + (n === 1 ? "" : "s");
+        if (head && !head.querySelector(".p2-rsum")) head.insertAdjacentHTML("beforeend", '<div class="p2-rsum"><b>' + (+avg).toFixed(1) + "</b>" + starsOf(Math.round(avg)) + "<span>" + count + "</span></div>");
+        var h1 = document.querySelector("#main .p2-buy h1");
+        if (h1 && !document.querySelector("#main .p2-buy-rating")) h1.insertAdjacentHTML("beforebegin", '<a class="p2-buy-rating" href="#p2-reviews">' + starsOf(Math.round(avg)) + "<span>" + count + "</span></a>");
       }).catch(function () {});
     });
   }
@@ -812,6 +818,93 @@
       .then(function () { var panel = f.closest("[data-cf-rv-panel]"); rvMessage(panel, RV.pending_moderation); var m = panel.querySelector(".cf-rv-msg"); if (m) { m.tabIndex = -1; m.focus(); } })
       .catch(function (x) { btn.disabled = false; btn.textContent = "Submit review"; say((x && x.message) || RV.failed); });
   });
+
+
+  /* The visual product page (17 Nov 2026, owner's note). Content Focus only, and only for the products listed in VIS:
+     Omega-3 Fish Oil for now. Same content and positions as before, shown as graphics where a graphic says it faster:
+     the buy card's amounts as three figures, the owner's "3 regular softgels vs 1" comparison and what is inside one softgel
+     in the description, the four questions as cards, the label claim as three tiles, the directions as a dose strip, and the
+     cautions as lists. The word "MRP" is not shown. A product with no entry here keeps the page it had. */
+  var ICON = {
+    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+    brain: '<path d="M12 6.5A2.5 2.5 0 0 0 7 6.6 3 3 0 0 0 5 9.5c0 .9.4 1.7 1 2.2A3 3 0 0 0 7 16.8v.7a2.5 2.5 0 0 0 5 0v-11zM12 6.5a2.5 2.5 0 0 1 5 .1 3 3 0 0 1 2 2.9c0 .9-.4 1.7-1 2.2a3 3 0 0 1-1 5.1v.7a2.5 2.5 0 0 1-5 0"/>',
+    joint: '<path d="M17 10c.7-.7 1.7 0 2.5 0a2.5 2.5 0 1 0 0-5 .5.5 0 0 1-.5-.5 2.5 2.5 0 1 0-5 0c0 .8.7 1.8 0 2.5l-7 7c-.7.7-1.7 0-2.5 0a2.5 2.5 0 0 0 0 5c.3 0 .5.2.5.5a2.5 2.5 0 1 0 5 0c0-.8-.7-1.8 0-2.5z"/>',
+    softgel: '<rect x="8" y="3" width="8" height="18" rx="4"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    food: '<path d="M3 2v7a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6a2 2 0 0 0 2 2h3zm0 0v7"/>'
+  };
+  function icon(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (ICON[k] || "") + "</svg>"; }
+  var VIS = {
+    "omega-3-fish-oil": {
+      stats: [["800 mg", "omega-3"], ["400 mg", "EPA"], ["300 mg", "DHA"]], statsNote: "Per softgel, as triglycerides",
+      // The owner's graphic (17 Nov 2026): three regular softgels against one of ours.
+      versus: [[3, "266.7 × 3 mg*", "3 regular softgels"], [1, "800 mg*", "1 Body Café Co. softgel"], "* mg of omega-3"],
+      // The label's numbers: 1,000 mg of oil, 800 mg omega-3, 400 mg EPA, 300 mg DHA. [name, mg], then the omega-3 total.
+      inside: ["Inside one softgel", 1000, [["EPA", 400], ["DHA", 300], ["Other omega-3", 100]], "800 mg omega-3", "1,000 mg anchovy fish oil concentrate", "Rest of the oil"],
+      claim: "Supports heart, brain & joint health", supports: [["heart", "Heart health"], ["brain", "Brain health"], ["joint", "Joint health"]],
+      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]],
+      swap: [["2 bottles save 5%, 3 save 10%. The saving is applied in your bag.", "60 softgels a bottle. Savings are applied in your bag."],
+        ["A lot report describes the sample tested from one production lot. Records appear as reports are published.", "One report per production batch, for the sample tested. Reports appear as they are published."],
+        ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Every rating is published, low ones too. Sample reviews show until real ones arrive."],
+        ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "We deliver across India. If we can’t reach you, we say so before you pay. Dates are estimates."]]
+    }
+  };
+  function tiles(list, label) {
+    return '<ul class="cf-tiles"' + (label ? ' aria-label="' + esc(label) + '"' : "") + ">" + list.map(function (t) { return "<li><i>" + icon(t[0]) + "</i><span>" + esc(t[1]) + "</span></li>"; }).join("") + "</ul>";
+  }
+  page("product", function (root, args) {
+    var id = args[1] && args[1].id, v = VIS[id], grid = root.querySelector(".p2-pdp-grid");
+    if (!v || !grid) return;
+    grid.classList.add("cf-vis");
+    swap(root, v.swap);
+    // "MRP" goes; the space it held stays, so the three pack cards keep their lines level.
+    [].forEach.call(root.querySelectorAll(".pk-save.is-mrp"), function (n) { n.innerHTML = "&nbsp;"; n.setAttribute("aria-hidden", "true"); });
+    // Owner, 17 Nov 2026 (this page only): the rating sits at the right end of the pack-size and diet line; "Best value" goes
+    // (the Save chip takes its place on the card's top edge, in the style sheet); and there is no − n + stepper: the pack
+    // cards choose 1, 2 or 3 bottles.
+    var chips = root.querySelector(".p2-buy-chips"), rating = root.querySelector(".p2-buy > .p2-buy-rating");
+    if (chips && rating) chips.appendChild(rating);
+    [].forEach.call(root.querySelectorAll(".pk-flag, .p2-buy .cf-qty, .p2-buy-chips .p2-chip"), function (n) { n.remove(); });
+    // Buy card: the amounts as three figures. A line the admin rewrote stays as the admin wrote it.
+    var forK = root.querySelector(".p2-buy .cf-for-k"); if (forK) forK.remove();
+    var how = root.querySelector(".p2-buy .cf-for-how");
+    if (how && how.textContent.trim() === BASE.U[id][3]) how.outerHTML = '<dl class="cf-stats">' + v.stats.map(function (x) { return "<div><dd>" + esc(x[0]) + "</dd><dt>" + esc(x[1]) + "</dt></div>"; }).join("") + '</dl><p class="cf-stats-note">' + esc(v.statsNote) + "</p>";
+    // Description: the comparison and the softgel's contents under the headline, then the four questions as cards.
+    var h = root.querySelector(".p2-pdp-accs .p2-acc-h"), body = h && h.parentNode;
+    if (body) {
+      var pills = function (n) { return '<span class="cf-vs-pills" aria-hidden="true">' + new Array(n + 1).join("<i></i>") + "</span>"; };
+      var side = function (x, us) { return '<div class="cf-vs-side' + (us ? " is-us" : "") + '">' + pills(x[0]) + "<b>" + esc(x[1]) + "</b><span>" + esc(x[2]) + "</span></div>"; };
+      var a = v.versus, ins = v.inside, used = ins[2].reduce(function (t, x) { return t + x[1]; }, 0);
+      var vs = '<figure class="cf-vs">' + side(a[0]) + '<div class="cf-vs-mid" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36M30 4l10 8-10 8"/></svg><em>vs</em></div>' + side(a[1], true) + "<figcaption>" + esc(a[2]) + "</figcaption></figure>";
+      var bar = '<div class="cf-in"><p class="cf-in-k">' + esc(ins[0]) + '</p><div class="cf-in-bar" role="img" aria-label="' + esc(ins[2].map(function (x) { return x[0] + " " + x[1] + " mg"; }).join(", ") + ", in " + ins[4]) + '">' +
+        ins[2].map(function (x, i) { return '<span class="s' + i + '" style="flex-basis:' + (x[1] / ins[1] * 100) + '%">' + (x[1] / ins[1] >= .2 ? "<b>" + x[1] + " mg</b><small>" + esc(x[0]) + "</small>" : "") + "</span>"; }).join("") + '<span class="rest"></span></div>' +
+        '<div class="cf-in-scale" aria-hidden="true"><span style="flex-basis:' + (used / ins[1] * 100) + '%">' + esc(ins[3]) + "</span></div>" +
+        '<p class="cf-in-total" aria-hidden="true">' + esc(ins[4]) + "</p>" +
+        '<ul class="cf-in-key">' + ins[2].concat([[ins[5], ins[1] - used]]).map(function (x, i) { return '<li><i class="' + (i < ins[2].length ? "s" + i : "rest") + '"></i>' + esc(x[0]) + " <b>" + x[1] + " mg</b></li>"; }).join("") + "</ul></div>";
+      var sup = body.querySelector(".cf-support");
+      // The bar says the support line in full (oil, omega-3, EPA, DHA), so the sentence is kept for screen readers only, unless the admin rewrote it.
+      if (sup && sup.textContent.trim() === BASE.P[id].support) { sup.classList.add("sr-only"); bar = bar.replace(/ role="img" aria-label="[^"]*"/, ' aria-hidden="true"'); }
+      h.insertAdjacentHTML("afterend", vs);
+      if (sup) sup.insertAdjacentHTML("beforebegin", bar); else body.querySelector(".cf-vs").insertAdjacentHTML("afterend", bar);
+      var qs = [].slice.call(body.querySelectorAll(".cf-q"));
+      if (qs.length) {
+        var wrap = document.createElement("div"); wrap.className = "cf-why"; body.insertBefore(wrap, qs[0]);
+        qs.forEach(function (q) { var c = document.createElement("div"), p = q.nextElementSibling; wrap.appendChild(c); c.appendChild(q); if (p && p.tagName === "P") c.appendChild(p); });
+      }
+    }
+    // Key benefits: the label claim as three tiles (only while the claim is the label's own line).
+    var claim = root.querySelector(".p2-pdp-accs .p2-claim");
+    if (claim && claim.textContent.trim().toLowerCase() === v.claim.toLowerCase()) claim.outerHTML = '<p class="cf-tiles-k">Supports</p>' + tiles(v.supports, claim.textContent.trim());
+    // Directions: the dose as a strip in place of the food tag; the label's sentence stays under it.
+    var use = root.querySelector(".p2-use"), food = root.querySelector(".cf-food");
+    if (use) { if (food) food.remove(); use.insertAdjacentHTML("beforebegin", tiles(v.dose, "How to take it")); }
+    // Allergens, cautions and storage: one sentence to a line.
+    [].forEach.call(root.querySelectorAll(".cf-care dd"), function (dd) {
+      var parts = dd.textContent.trim().split(/\.\s+/).filter(Boolean).map(function (x) { return /\.$/.test(x) ? x : x + "."; });
+      if (parts.length > 1) dd.innerHTML = "<ul>" + parts.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>";
+    });
+  });
+
 
   var app = document.getElementById("app");
   if (app && "MutationObserver" in window) new MutationObserver(function () { dressBag(); dressReport(); dressSearch(); mountReviews(); }).observe(app, { childList: true, subtree: true });

@@ -95,8 +95,8 @@ body[data-content-focus="1"] .p2-col[data-open="true"] .p2-col-line { margin-top
   body[data-variant-e-part="2"] .p2-col .p2-price, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-price { grid-row: 4; }
   body[data-variant-e-part="2"] .p2-col .p2-add, body[data-variant-e-part="2"] .p2-col[data-open="true"] .p2-add { grid-row: 1 / span 4; }
 }
-/* Shop cards: one line, always. */
-body[data-variant-e-part="2"] .p2-tile .cf-use-card { margin: 2px 0 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; line-height: 1.4; font-weight: 600; color: var(--p2-ink); }
+/* Shop cards: the front label's words in full (17 Nov 2026), on up to two lines, which keeps the cards level. */
+body[data-variant-e-part="2"] .p2-tile .cf-use-card { margin: 2px 0 4px; min-height: calc(2em * 1.35); line-height: 1.35; text-wrap: pretty; font-size: 14px; font-weight: 600; color: var(--p2-ink); }
 @media (max-width: 520px) { body[data-variant-e-part="2"] .p2-tile .cf-use-card { font-size: 13px; } }
 /* Product page: the first thing read under the name. */
 body[data-variant-e-part="2"] .cf-for { margin: 4px 0 18px; padding: 14px 18px 16px; border-left: 4px solid var(--cap); border-radius: 4px 14px 14px 4px; background: color-mix(in srgb, var(--cap) 14%, var(--p2-paper, #f6f3ee)); }
@@ -288,3 +288,84 @@ body[data-content-focus="1"] .cf-rv-verified { display: inline-block; padding: 3
 body[data-content-focus="1"] .cf-rv-note { margin: 0; font-size: 13px; color: var(--p2-text); }
 body[data-content-focus="1"] .cf-rv-reply { padding: 12px 14px; border-radius: 12px; background: rgb(255 255 255 / .6); font-size: 14px; }
 body[data-content-focus="1"] .cf-rv-reply p { margin: 4px 0 0; color: var(--p2-text); }
+
+/* Home founder band (workbook, Founder sheet; 17 Nov 2026): the scientist behind the four decisions. */
+body[data-content-focus="1"] .cf-founder-band { border-top: 1px solid var(--p2-line, rgba(0,0,0,.12)); }
+body[data-content-focus="1"] .cf-fb-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 5vw, 72px); align-items: end; }
+body[data-content-focus="1"] .cf-founder-band h2 { margin: 0; font-size: clamp(32px, 3.8vw, 52px); line-height: 1.05; }
+body[data-content-focus="1"] .cf-fb-p { max-width: 56ch; margin: 0 0 14px; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.55; color: var(--p2-text); }
+@media (max-width: 760px) { body[data-content-focus="1"] .cf-fb-in { grid-template-columns: 1fr; gap: 14px; } }
+
+/* ---------- The visual product page (17 Nov 2026, owner's note). Only products listed in VIS (content-focus-e.js): Omega-3 for now. ---------- */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-stats > div { display: flex; flex-direction: column; gap: 3px; padding: 10px 6px 9px; border-radius: 12px; background: #fff; text-align: center; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-stats dd { margin: 0; font: 600 clamp(17px, 1.5vw, 20px)/1.1 "Aileron", sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-stats dt { font: 400 10px/1.2 "Lemon Milk", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-stats-note { margin: 8px 0 0; font-size: 13px; line-height: 1.4; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-save.is-mrp { display: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-save { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); margin: 0; white-space: nowrap; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-cards { margin-top: 14px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-price { margin-bottom: 4px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-chips .p2-buy-rating { margin: 0 0 0 auto; }
+
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 6px clamp(8px, 2vw, 22px); margin: 16px 0 0; padding: clamp(16px, 2.4vw, 26px) clamp(12px, 2vw, 24px) 12px; border-radius: 18px; background: #fff; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-side { display: grid; justify-items: center; gap: 6px; min-width: 0; text-align: center; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-pills { display: flex; gap: 6px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-pills i { width: 16px; height: 34px; border: 1.5px solid var(--p2-ink); border-radius: 999px; background: #fff; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-side.is-us .cf-vs-pills i { background: var(--cap); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-side b { font: 700 clamp(17px, 2.3vw, 28px)/1.1 "Aileron", sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-side span:last-child { font: 400 clamp(9px, .85vw, 11px)/1.35 "Lemon Milk", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-mid { display: grid; justify-items: center; gap: 2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-mid svg { width: clamp(26px, 4vw, 44px); height: auto; fill: none; stroke: var(--p2-ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs-mid em { font: 700 13px/1 "Aileron", sans-serif; font-style: normal; color: #c45a12; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs figcaption { grid-column: 1 / -1; margin-top: 6px; font-size: 12px; line-height: 1.4; text-align: center; color: var(--p2-text); }
+
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in { margin: 22px 0 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-k,
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles-k { margin: 0 0 8px; font: 400 11px/1.3 "Lemon Milk", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar { display: flex; height: 58px; overflow: hidden; border-radius: 14px; background: var(--p2-plate, #f1ede6); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar span { flex: 0 0 auto; display: grid; align-content: center; gap: 2px; min-width: 0; padding: 0 10px; border-right: 2px solid #fff; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar .s0 { background: color-mix(in srgb, var(--cap) 70%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar .s1 { background: color-mix(in srgb, var(--cap) 45%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar .s2 { background: color-mix(in srgb, var(--cap) 24%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar .rest { flex: 1 1 0; border: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar b { font: 700 15px/1 "Aileron", sans-serif; white-space: nowrap; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar small { font: 400 10px/1 "Lemon Milk", sans-serif; letter-spacing: .12em; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-scale { display: flex; margin-top: 6px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-scale span { flex: 0 0 auto; padding-top: 6px; border-top: 2px solid var(--p2-ink); font: 600 13px/1.2 "Aileron", sans-serif; text-align: center; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-total { margin: 6px 0 0; padding-top: 6px; border-top: 2px solid var(--p2-line); font-size: 13px; line-height: 1.2; text-align: center; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in + .cf-support { margin-top: 14px; }
+
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why > div { padding: 14px 16px 15px; border: 1px solid var(--p2-line); border-top: 3px solid var(--cap); border-radius: 4px 4px 14px 14px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why .cf-q { margin: 0 0 6px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why p { margin: 0; font-size: 14.5px; line-height: 1.5; }
+
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 16px; padding: 0; list-style: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles li { display: grid; justify-items: center; gap: 8px; padding: 14px 6px 12px; border: 1px solid var(--p2-line); border-radius: 14px; font: 600 14px/1.25 "Aileron", sans-serif; text-align: center; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles i { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: color-mix(in srgb, var(--cap) 22%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles svg { width: 22px; height: 22px; fill: none; stroke: var(--p2-ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-slots + .cf-tiles { margin: 10px 0 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body .p2-ticks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-care ul { display: grid; gap: 4px; margin: 0; padding: 0 0 0 16px; }
+@media (max-width: 560px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why,
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body .p2-ticks { grid-template-columns: minmax(0, 1fr); }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles li { font-size: 13px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar span { padding: 0 8px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar b { font-size: 14px; }
+}
+/* Shorter pack cards on this page (owner, 17 Nov 2026). */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-card { gap: 0; padding: 15px 6px 9px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-was { margin-top: 3px; min-height: 0; line-height: 1.2; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-price { margin: 1px 0 2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-per { margin-top: 0; }
+/* The bar's key: every part named, with its amount. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 13px; line-height: 1.3; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key li { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key b { font-weight: 600; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key i { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgb(0 0 0 / .12); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .s0 { background: color-mix(in srgb, var(--cap) 70%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .s1 { background: color-mix(in srgb, var(--cap) 45%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .s2 { background: color-mix(in srgb, var(--cap) 24%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .rest { background: var(--p2-plate, #f1ede6); }
