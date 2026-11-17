@@ -72,6 +72,7 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
             CREATE TABLE IF NOT EXISTS review_votes(review_id TEXT, user_id TEXT, created INTEGER, PRIMARY KEY(review_id,user_id));
             CREATE TABLE IF NOT EXISTS learn_feedback(id INTEGER PRIMARY KEY, page TEXT, section TEXT, clear INTEGER, session TEXT, created INTEGER);
             CREATE TABLE IF NOT EXISTS theme_feedback(id TEXT PRIMARY KEY, data TEXT NOT NULL, created INTEGER NOT NULL);
+            CREATE TABLE IF NOT EXISTS tester_notes(id TEXT PRIMARY KEY, session TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL);
             CREATE TABLE IF NOT EXISTS review_reports(id INTEGER PRIMARY KEY, review_id TEXT, user_id TEXT, reason TEXT, note TEXT, state TEXT, created INTEGER, UNIQUE(review_id,user_id));
             ''')
             self.lots_init(c)
@@ -339,6 +340,7 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
                 result.update(self.lot_snapshot(c))
                 result['help_feedback']=self.help_feedback_summary(c)
                 result['learn_feedback']=[dict(r) for r in c.execute('SELECT page,SUM(clear) AS clear,SUM(1-clear) AS unclear,COUNT(*) AS total FROM learn_feedback GROUP BY page ORDER BY page')]
+                result['tester_notes']=[{'status':'open',**json.loads(r['data']),'id':r['id'],'created':r['created']} for r in c.execute('SELECT id,data,created FROM tester_notes ORDER BY created DESC LIMIT 500')]
                 self.operations_snapshot(c,result)
             return result
 
@@ -386,6 +388,41 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
             # Stable IDs make network retries safe without dropping another person's response.
             c.execute('INSERT OR IGNORE INTO theme_feedback VALUES(?,?,?)', (response_id, json.dumps(payload), int(time.time())))
         return {'ok': True, 'id': response_id}
+
+    def tester_note(self, s, data):
+        """A tester's note about the page they are on (17 Nov 2026). Shown to the admin under Tester feedback."""
+        note = str(data.get('note', '') or '').strip(); name = str(data.get('name', '') or '').strip()
+        page = str(data.get('page', '') or '').strip(); design = str(data.get('design', '') or '').strip(); screen = str(data.get('screen', '') or '').strip()
+        if not 3 <= len(note) <= 2000: raise Error('Write a note of 3 to 2000 characters.')
+        if len(name) > 60: raise Error('Keep the name under 60 characters.')
+        if not re.fullmatch(r'/(?!/)[A-Za-z0-9/_.~%?&=+-]{0,200}', page): raise Error('That page reference is not valid.')
+        section, page_name = (re.sub(r'[\x00-\x1f<>]', ' ', str(data.get(k, '') or '')).strip() for k in ('section', 'page_name'))
+        if len(section) > 80 or len(page_name) > 80: raise Error('That note could not be saved.')
+        if not re.fullmatch(r'[A-Za-z0-9 ·-]{0,30}', design) or not re.fullmatch(r'(\d{2,5}×\d{2,5})?', screen): raise Error('That note could not be saved.')
+        with self.db() as c:
+            if c.execute('SELECT COUNT(*) FROM tester_notes WHERE session=? AND created>?', (s['id'], int(time.time()) - 3600)).fetchone()[0] >= 30:
+                raise Error('That is a lot of notes in one hour. Please try again a little later.', 429)
+            c.execute('INSERT INTO tester_notes VALUES(?,?,?,?)', (secrets.token_hex(8), s['id'], json.dumps({'note': note, 'name': name, 'page': page, 'page_name': page_name, 'section': section, 'design': design, 'screen': screen}), int(time.time())))
+        return {'ok': True}
+
+    def tester_notes(self, page=''):
+        """Tester notes, newest first, for testers to read each other's: one page's (its path, whatever the query), or all."""
+        path = str(page or '').split('?')[0]
+        if path and not re.fullmatch(r'/(?!/)[A-Za-z0-9/_.~%+-]{0,200}', path): raise Error('That page reference is not valid.')
+        with self.db() as c:
+            rows = [(r['id'], json.loads(r['data']), r['created']) for r in c.execute('SELECT id,data,created FROM tester_notes ORDER BY created DESC LIMIT 500')]
+        return {'notes': [{'id': i, 'note': d['note'], 'name': d.get('name', ''), 'section': d.get('section', ''), 'page': d['page'], 'page_name': d.get('page_name', ''),
+                           'status': d.get('status', 'open'), 'created': t} for i, d, t in rows if not path or d['page'].split('?')[0] == path]}
+
+    def tester_status(self, data):
+        """Open, in progress or resolved, like a bug list. Anyone testing can move a note along."""
+        nid, status = str(data.get('id', '') or ''), str(data.get('status', '') or '')
+        if status not in ('open', 'in_progress', 'resolved'): raise Error('Choose open, in progress or resolved.')
+        with self.db() as c:
+            r = c.execute('SELECT data FROM tester_notes WHERE id=?', (nid,)).fetchone() if re.fullmatch(r'[a-f0-9]{16}', nid) else None
+            if not r: raise Error('That note was not found.', 404)
+            c.execute('UPDATE tester_notes SET data=? WHERE id=?', (json.dumps({**json.loads(r['data']), 'status': status}), nid))
+        return {'ok': True, 'id': nid, 'status': status}
 
     def learn_feedback(self,s,data):
         """Anonymous 'Was this clear?' answer for a Learn page. Stores the page, section and answer only; one answer per
@@ -858,6 +895,7 @@ class Handler(BaseHTTPRequestHandler):
                 elif re.fullmatch(r'/api/catalog-media/CM-[0-9a-f]{16}',path):
                     mime,body=self.store.catalog_file(s,path.rsplit('/',1)[1])
                     self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(body)));self.send_header('X-Content-Type-Options','nosniff');self.send_header('Cache-Control','private, no-store');self.end_headers();self.wfile.write(body);return
+                elif path=='/api/tester-feedback':result=self.store.tester_notes(parse_qs(urlparse(self.path).query).get('page',[''])[0])
                 elif path=='/api/delivery':
                     pin=parse_qs(urlparse(self.path).query).get('pincode',[''])[0]
                     result={**shipping.delivery_check(s['id'],pin),'fee':account.SHIPPING_RULE['fee'],'free_from':account.SHIPPING_RULE['free_from']}
@@ -936,6 +974,8 @@ class Handler(BaseHTTPRequestHandler):
                 elif path=='/api/help/feedback':result=self.store.help_feedback(s,data)
                 elif path=='/api/learn/feedback':result=self.store.learn_feedback(s,data)
                 elif path=='/api/theme-feedback':result=self.store.theme_feedback(data)
+                elif path=='/api/tester-feedback':result=self.store.tester_note(s,data)
+                elif path=='/api/tester-feedback/status':result=self.store.tester_status(data)
                 elif path=='/api/addresses':result=self.store.address_save(s,data)
                 elif re.fullmatch(r'/api/addresses/ADDR-[0-9a-f]{10}/(delete|default)',path):result=self.store.address_action(s,path.split('/')[3],path.split('/')[4])
                 elif path=='/api/bag':result=self.store.bag_save(s,data)

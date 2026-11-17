@@ -16,7 +16,7 @@ assert.throws(()=>salesReport([],[],new URLSearchParams('from=2026-02-30')));che
 const normalReport=validateReport({title:'Laboratory report',presentation:{show_documents:true,show_summary:false,show_results:false,show_lab:false,show_dates:false},results:[]});assert.equal(normalReport.presentation.show_summary,false);checks++;
 for(const r of [{lab:{accreditation:{verify_url:'javascript:alert(1)'}}},{dates:{issued:'2026-02-30'}},{results:[{parameter:'Lead',result:'ND',assessment:'meets'}]},{sample:{type:'made_up'}}]){assert.throws(()=>validateReport(r));checks++;}
 const uid='00000000-0000-4000-8000-000000000001',admin={auth_user_id:uid,username:'bodycafe.com'};
-let calls=[],fixtureReports=[],checkoutCalls=[],authCalls=[],orderPatches=[],transitions=[];
+let testerRows=[];let calls=[],fixtureReports=[],checkoutCalls=[],authCalls=[],orderPatches=[],transitions=[];
 const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-secret',origin:'https://body-cafe-co-website.netlify.app,https://body-cafe-co-website.vercel.app',previewOrigin:/^https:\/\/body-cafe-co-website-[a-z0-9-]+-dharmik123\.vercel\.app$/,fetch:async(url,opts)=>{
  calls.push({url,opts});const u=new URL(url),name=u.pathname.split('/').pop();let result=[];
  if(u.pathname.startsWith('/auth/v1/admin/users/'))result={id:uid,email:'admin@example.test'};
@@ -38,6 +38,7 @@ const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-
  else if(name==='bcc_lot_reports')result=fixtureReports;
  else if(name==='bcc_products')result=u.searchParams.has('id')&&u.searchParams.get('id')!=='eq.test-product'?[]:[{id:'test-product',data:product,draft:null,version:1}];
  else if(name==='bcc_batches')result=[{id:'LOT',product:'test-product',available:3,expiry:Math.floor(Date.now()/1000)+86400,state:'released',proof:true,meta:{damaged:1}}];
+ else if(name==='bcc_feedback'){const tg=(u.searchParams.get('target')||'').slice(3);if(opts.method==='POST')testerRows.unshift(JSON.parse(opts.body));if(opts.method==='PATCH'){Object.assign(testerRows.find(r=>r.target===tg),JSON.parse(opts.body));result=null;}else result=tg?testerRows.filter(r=>r.target===tg):testerRows;}
  else if(name==='bcc_reservations')result=[];
  else if(name==='bcc_settings')result=[{id:'flags',data:{checkout_enabled:false}}];
  else if(name==='bcc_expire_holds')result=null;
@@ -51,6 +52,7 @@ const request=(path,opts={})=>fn(new Request('https://test.supabase.co/functions
 let response=await request('/admin');assert.equal(response.status,403);checks++;
 response=await request('/admin',{headers:{Cookie:'bcc_admin=pretend-admin'}});assert.equal(response.status,403);checks++;
 response=await request('/admin',{headers:{Cookie:adminCookie}});assert.equal(response.status,200);let snap=await response.json();assert.equal(snap.inventory_summary.on_hand,4);assert.equal(snap.inventory_summary.available,3);assert.ok(!('approvals'in snap));assert.ok(!('audit'in snap));checks++;
+testerRows=[{user_id:'guest-x',kind:'tester',target:'abcd',data:{note:'Seen by the admin',name:'Asha',page:'/shop'},created:5}];response=await request('/admin',{headers:{Cookie:adminCookie}});snap=await response.json();assert.deepEqual(snap.tester_notes,[{status:'open',note:'Seen by the admin',name:'Asha',page:'/shop',id:'abcd',created:5}]);testerRows=[];checks++;
 response=await request('/catalog');let catalog=await response.json();assert.equal(catalog.products[0].stock,3);assert.equal(catalog.flags.checkout_enabled,false);checks++;
 response=await request('/admin/session');let session=await response.json();assert.equal(session.user.role,'customer');assert.equal(session.configured,true);assert.equal(session.csrf.length,32);checks++;
 const cookies=response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
@@ -122,5 +124,16 @@ response=await cpost('/profile/password',{password:'new-pass12'},custCookies,cus
 response=await request('/account',{headers:{Cookie:custCookies}});let acct=await response.json();assert.equal(acct.profile.name,'Saved Name');assert.equal(acct.profile.email,'buyer@example.com');assert.equal(acct.profile.has_password,true);checks++;
 response=await cpost('/orders/BCC-AAAA0001/cancel',{},custCookies,custSession.csrf);assert.equal(response.status,200);assert.equal(transitions.at(-1).p_target,'cancelled');assert.equal(transitions.at(-1).p_id,'BCC-AAAA0001');checks++;
 response=await cpost('/orders/BCC-BBBB0002/cancel',{},custCookies,custSession.csrf);assert.equal(response.status,404);checks++;
+// Tester feedback (17 Nov 2026): a note is saved with its page and shown to the admin; bad input and off-site pages are refused.
+response=await cpost('/tester-feedback',{note:'The pack cards are clear.',name:'Asha',page:'/omega3-fishoil?design=e',page_name:'Omega-3 Fish Oil',section:'Frequently <b>bought with',design:'Part 2',screen:'375×812'});assert.equal(response.status,200);assert.equal(testerRows[0].data.section,'Frequently  b bought with');assert.equal(testerRows[0].data.page_name,'Omega-3 Fish Oil');
+assert.equal(testerRows[0].kind,'tester');assert.equal(testerRows[0].data.page,'/omega3-fishoil?design=e');assert.match(testerRows[0].target,/^[a-f0-9]{16}$/);checks++;
+for(const bad of [{note:'ok',page:'/'},{note:'x'.repeat(2001),page:'/'},{note:'Fine note',page:'//evil.example/x'},{note:'Fine note',page:'https://evil.example'},{note:'Fine note',page:'/',name:'n'.repeat(61)},{note:'Fine note',page:'/',screen:'<b>'},{note:'Fine note',page:'/',section:'s'.repeat(81)}]){response=await cpost('/tester-feedback',bad);assert.equal(response.status,400);checks++;}
+assert.equal(testerRows.length,1);
+response=await request('/tester-feedback?page='+encodeURIComponent('/omega3-fishoil?part=5'),{headers:{Cookie:guestCookies}});assert.equal(response.status,200);assert.deepEqual((await response.json()).notes.map(n=>[n.note,n.name,n.status,Object.keys(n).length]),[['The pack cards are clear.','Asha','open',8]]);checks++;
+response=await request('/tester-feedback',{headers:{Cookie:guestCookies}});const allNotes=(await response.json()).notes;assert.equal(allNotes.length,1);
+response=await cpost('/tester-feedback/status',{id:allNotes[0].id,status:'resolved'});assert.equal(response.status,200);assert.equal(testerRows[0].data.status,'resolved');assert.equal(testerRows[0].data.note,'The pack cards are clear.');checks++;
+response=await cpost('/tester-feedback/status',{id:allNotes[0].id,status:'done'});assert.equal(response.status,400);response=await cpost('/tester-feedback/status',{id:'0'.repeat(16),status:'open'});assert.equal(response.status,404);checks++;
+response=await request('/tester-feedback?page=/shop',{headers:{Cookie:guestCookies}});assert.deepEqual((await response.json()).notes,[]);response=await request('/tester-feedback?page=//evil.example',{headers:{Cookie:guestCookies}});assert.equal(response.status,400);checks++;
+for(let i=0;i<29;i++)testerRows.push({...testerRows[0]});response=await cpost('/tester-feedback',{note:'One too many',page:'/'});assert.equal(response.status,429);checks++;
 assert.ok(calls.every(c=>!JSON.stringify(c.opts.body||'').includes('test-service-secret')));checks++;
 console.log(`${checks} hosted API, authorization, sales and image checks passed.`);

@@ -26,7 +26,7 @@
     ['', [['overview', 'Overview', '◉']]],
     ['Sell', [['orders', 'Orders', '▤'], ['sales', 'Sales', '↗']]],
     ['Catalogue', [['products', 'Products', '◇'], ['inventory', 'Inventory', '▦'], ['lots', 'Lot reports', '▧']]],
-    ['Customers', [['cases', 'Support & safety', '♡'], ['reviews', 'Reviews & questions', '☆']]],
+    ['Customers', [['cases', 'Support & safety', '♡'], ['reviews', 'Reviews & questions', '☆'], ['testers', 'Tester feedback', '✎']]],
     ['Settings', [['channels', 'Channels', '⇄'], ['flags', 'Feature flags', '⚑']]],
   ];
   const TABS = NAV.flatMap(g => g[1]);
@@ -460,6 +460,19 @@
   }
 
   /* ---------------------------------------------------------------- support, channels, flags */
+  /* Notes testers leave from the Feedback button on the storefront (web/tester-feedback-e.js): one list per page,
+     the page with the newest note first. */
+  function testers(o) {
+    const when = t => new Date(t * 1000).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+    const notes = o.tester_notes || [], pages = [...new Set(notes.map(n => n.page.split('?')[0]))];
+    if (!notes.length) return empty('No tester notes yet', 'Share the store link with ?test=1 on the end. Testers then see a Feedback button on every page.');
+    return pages.map((p, i) => {
+      const mine = notes.filter(n => n.page.split('?')[0] === p);
+      return `<section class="op-card"><h2>${h(mine[0].page_name || p)} <small>· ${mine.length} ${mine.length === 1 ? 'note' : 'notes'}, ${mine.filter(n => n.status !== 'resolved').length} not resolved · <a href="${h(mine[0].page)}" target="_blank" rel="noopener">${h(p)}</a></small></h2>` +
+        table(['When', 'Status', 'Section', 'Note', 'From'], mine.map(n => [h(when(n.created)), h({ open: 'Open', in_progress: 'In progress', resolved: 'Resolved' }[n.status] || 'Open'), h(n.section || 'Whole page'), h(n.note).replace(/\n/g, '<br>'),
+          h(n.name || 'No name') + `<br><small>${h([n.design, n.screen].filter(Boolean).join(' · '))}</small>`]), { pageKey: 'p' + i }) + '</section>';
+    }).join('');
+  }
   function cases(o) {
     return tools({ statuses: ['open', 'investigating', 'escalated', 'resolved'], placeholder: 'Search case, customer or order' }) + (filtered(o.cases).map(c => `<details class="op-card op-case"><summary><span class="op-case-title"><strong>${h(c.subject || c.kind)}</strong><small>${h(c.id)} · ${when(c.created)}</small></span><span>${tag(c.state)}${c.kind === 'safety' ? tag('Safety priority', 'danger') : ''}</span></summary><p class="op-case-message">${lines(c.message)}</p><dl class="op-dl"><div><dt>Queue</dt><dd>${h(c.queue || 'General')}</dd></div><div><dt>Order / lot</dt><dd>${c.order_id ? `<a href="/ops/orders?order=${encodeURIComponent(c.order_id)}">${h(c.order_id)}</a>` : '—'} ${h(c.lot || '')}</dd></div><div><dt>Contact</dt><dd>${h([c.contact?.name, c.contact?.email, c.contact?.mobile].filter(Boolean).join(' · ') || '—')}</dd></div></dl>${(c.history || []).length ? `<ol class="op-timeline">${c.history.map(x => `<li>${tag(x.state)}<span>${when(x.at)}</span>${x.note || x.message ? `<p>${h(x.note || x.message)}</p>` : ''}</li>`).join('')}</ol>` : ''}${(c.internal || []).map(n => `<p class="op-note"><strong>Internal:</strong> ${h(n.text)}<small>${when(n.at)}</small></p>`).join('')}${(c.media || []).map((m, i) => link('Attachment ' + (i + 1) + ' ↗', '/api/review-media/' + m, 'op-small', 'target="_blank" rel="noopener"')).join('')}<form data-op-form="case" data-id="${h(c.id)}"><div class="op-form-grid">${select({ name: 'state', label: 'Status', items: ['open', 'investigating', 'escalated', 'resolved'].map(s => [s, s[0].toUpperCase() + s.slice(1)]), value: c.state })}<span></span>${area({ name: 'internal_note', label: 'Internal note (admins only)', rows: 2, attrs: 'maxlength="2000"' })}${area({ name: 'note', label: 'Reply to the customer', rows: 3, attrs: 'maxlength="2000"' })}</div>${formEnd('Save & reply')}</form></details>`).join('') || empty('No cases', 'Support and safety submissions will appear here.'));
   }
@@ -479,7 +492,7 @@
     const titles = { products: pid ? 'Edit product' : 'Products', orders: q().get('order') || 'Orders', account: 'Account', analytics: 'Sales' };
     let content;
     try {
-      content = ({ overview, products, inventory, orders, sales, cases, channels, flags, account })[tab]?.(o)
+      content = ({ overview, products, inventory, orders, sales, cases, testers, channels, flags, account })[tab]?.(o)
         ?? (tab === 'reviews' ? reviewsRenderer(o, false)
           : tab === 'lots' ? window.BCCLotsOps.render(o, false)
           : tab === 'analytics' ? empty('Analytics has moved', 'Sales now shows period totals, products and refunds.', link('Open Sales', '/ops/sales', 'op-primary'))
