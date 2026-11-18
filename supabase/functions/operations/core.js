@@ -98,7 +98,10 @@ export function createHandler(config){
  // Shipneer (shipping.js): courier prices, booking, labels and tracking for staff; a pincode check for shoppers.
  const fail=(m,status,extra)=>new ApiError(m,status,extra),ship=shipneer({key:config.shipneerKey,pickupId:config.shipneerPickupId||undefined,pickupPin:config.shipneerPickupPin||undefined,fetcher,fail,wait:config.wait});
  // Razorpay (razorpay.js): online payment. Only settle() marks an order paid, and only for a payment Razorpay confirms.
- const pay=razorpay({key:config.razorpayKey,secret:config.razorpaySecret,fetcher,fail});
+ // RAZORPAY_MODE "live" uses the live pair; anything else, the test pair. The webhook secret serves both.
+ const payLive=String(config.razorpayMode||'').trim().toLowerCase()==='live';
+ const pay=razorpay({key:payLive?config.razorpayLiveKey:config.razorpayKey,secret:payLive?config.razorpayLiveSecret:config.razorpaySecret,live:payLive,webhookSecret:config.razorpayWebhookSecret,fetcher,fail});
+ const WEBHOOK={id:'razorpay-webhook',system:true}; // the webhook acts as the system, not as a customer
  // MSG91 (msg91.js): order messages, and Supabase Auth's text-message codes through the Send SMS hook (/hooks/send-sms).
  // Each order gets each event once: a claim is recorded on the order (data.notices) before anything is sent.
  const msg=msg91({...(config.msg91||{}),origin:config.publicOrigin||origins[0]},{fetcher});
@@ -115,13 +118,16 @@ export function createHandler(config){
  async function later(p){p=p.catch(()=>{});if(globalThis.EdgeRuntime?.waitUntil)globalThis.EdgeRuntime.waitUntil(p);else await p;}
  async function payOrder(id,user){const o=(await db('orders','id=eq.'+id+'&user_id=eq.'+encodeURIComponent(user.id)))[0];if(!o)throw new ApiError('Order not found.',404);return o;}
  async function settle(id,user,ro,paymentId){
-  const o=await payOrder(id,user);if(o.state!=='pending'&&o.state!=='expired'&&o.state!=='cancelled')return {id,state:'paid',payment:'captured',idempotent:true};
-  const record={razorpay:{order:ro.id,payment:paymentId,at:now()}};
+  const o=user.system?(await db('orders','id=eq.'+encodeURIComponent(id)))[0]:await payOrder(id,user);if(!o)throw new ApiError('Order not found.',404);
+  if(o.state!=='pending'&&o.state!=='expired'&&o.state!=='cancelled')return {id,state:'paid',payment:'captured',idempotent:true};
+  const record={razorpay:{order:ro.id,payment:paymentId,at:now()}},late=()=>new ApiError('Your payment went through, but the hold on your items had already ended. Contact us with order '+id+' and we’ll ship it or refund you in full.',409,{reason:'paid_after_hold'});
+  // Already recorded for a person (by the page or the webhook): nothing new to write.
+  if(o.state!=='pending'&&o.data?.payment_after_hold&&o.data?.razorpay?.payment===paymentId)throw late();
   try{await rpc('order_transition',{p_id:id,p_target:'paid',p_actor:user.id,p_note:'Razorpay payment '+(paymentId||ro.id),p_public_note:'Payment received.',p_tracking:record});await later(notifyOrder(id,'order_paid'));}
   catch(e){
    // Paid after the 15-minute hold ended: the money is with us but the stock went back. A person decides.
    await rpc('order_transition',{p_id:id,p_target:'note',p_actor:user.id,p_note:'Razorpay payment '+(paymentId||ro.id)+' arrived after the hold ended: ship or refund',p_public_note:'Payment received after the hold ended. We’ll be in touch.',p_tracking:{...record,payment_after_hold:true}}).catch(()=>{});
-   throw new ApiError('Your payment went through, but the hold on your items had already ended. Contact us with order '+id+' and we’ll ship it or refund you in full.',409,{reason:'paid_after_hold'});}
+   throw late();}
   return {id,state:'paid',payment:'captured',message:'Payment received. Thank you.'};
  }
  async function payStart(id,user){
@@ -150,6 +156,34 @@ export function createHandler(config){
    if(p.order_id!==roId||p.amount!==total*100||!['authorized','captured'].includes(p.status))throw new ApiError('That payment didn’t complete. Nothing was confirmed; you can try again.',409,{reason:'not_paid'});
   }
   return settle(id,user,ro,payId);
+ }
+ /* Webhook (18 Nov 2026), in step with razorpay_webhook in app/razorpay.py: Razorpay's own server reports the payment, so
+    a customer who pays and closes the page still gets a paid order. Signed with RAZORPAY_WEBHOOK_SECRET; the event's own
+    figures are never trusted (the Razorpay order is read back, and must carry one of our order numbers and our total).
+    Anything that is not a payment of ours answers 200, so Razorpay doesn't retry it; a failure answers 5xx and it does. */
+ async function payWebhook(req){
+  const out=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}}),ignore=why=>out({ok:true,ignored:why});
+  try{
+   if(!pay.webhookConfigured)return out({error:'The payment webhook isn’t set up. Add RAZORPAY_WEBHOOK_SECRET.'},503);
+   const raw=await req.text();if(raw.length>1000000)return out({error:'Request too large.'},413);
+   if(!await pay.webhookOk(raw,req.headers.get('X-Razorpay-Signature')))return out({error:'Signature not accepted.',reason:'signature'},400);
+   let ev;try{ev=JSON.parse(raw);}catch{return out({error:'Invalid request.'},400);}
+   if(!ev||typeof ev!=='object')return out({error:'Invalid request.'},400);
+   const kind=String(ev.event||'');if(!['payment.captured','payment.authorized','order.paid'].includes(kind))return ignore(kind||'unknown');
+   const entity=n=>{const e=ev.payload?.[n]?.entity;return e&&typeof e==='object'?e:{};},pe=entity('payment'),roId=String(pe.order_id||entity('order').id||'');let payId=String(pe.id||'');
+   if(!RZP_ID.test(roId))return ignore('no_order');
+   const ro=await pay.call('GET','orders/'+roId),id=String(ro.receipt||'');
+   if(!/^BCC-[A-F0-9]{8}$/.test(id))return ignore('not_ours');
+   const o=(await db('orders','id=eq.'+encodeURIComponent(id)))[0];if(!o)return ignore('unknown_order');
+   const total=o.data.total;if(ro.amount!==total*100||ro.currency!=='INR')return ignore('mismatch');
+   if(ro.status!=='paid'){
+    if(!RZP_ID.test(payId))return ignore('not_paid');
+    const p=await pay.call('GET','payments/'+payId);
+    if(p.order_id!==roId||p.amount!==total*100||!['authorized','captured'].includes(p.status))return ignore('not_paid');
+   }else if(!RZP_ID.test(payId))payId=await pay.paidPayment(roId);
+   try{return out({ok:true,...await settle(id,WEBHOOK,ro,payId)});}
+   catch(e){if(e instanceof ApiError&&e.extra?.reason==='paid_after_hold')return out({ok:true,id,state:'paid_after_hold'});throw e;}
+  }catch(e){return out({error:e instanceof ApiError?e.message:'The webhook could not be processed.'},e instanceof ApiError&&e.status>=500?e.status:500);}
  }
  const shipAct=(actor,action,id,d={})=>rpc('ship_action',{p_actor:actor,p_action:action,p_id:id,p_data:d});
  // Booked parcels not checked in the last hour are checked when staff open the portal (the hosted API has no background clock).
@@ -230,6 +264,7 @@ export function createHandler(config){
   return kind==='catalog'?{src:'/api/catalog-media/'+id,alt:'Product image',w:file.width,h:file.height}:{id,mime:file.mime,bytes:file.bytes.length,width:file.width,height:file.height};
  }
  return async function handler(req){
+  if(req.method==='POST'&&/\/razorpay\/webhook\/?$/.test(new URL(req.url).pathname))return payWebhook(req); // signed by Razorpay (razorpay.js)
   if(req.method==='POST'&&/\/hooks\/send-sms\/?$/.test(new URL(req.url).pathname))return msg.smsHook(req); // signed by Supabase Auth (msg91.js)
  let headers=new Headers({'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});const cookie=(name,value,age=28800)=>headers.append('Set-Cookie',`${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`),json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers});
   try{let u=new URL(req.url),start=u.pathname.indexOf('/api/'),path=start<0?u.pathname:u.pathname.slice(start+4),cookies=Object.fromEntries((req.headers.get('Cookie')||'').split(';').map(p=>p.trim().split('=')).filter(p=>p.length===2)),adminRoute=path.startsWith('/admin')||!!cookies.bcc_admin&&/^\/(catalog-media|lots\/documents|review-media)\//.test(path),s=await current(cookies,adminRoute),user=s.user;if(s.refreshed)cookie('bcc_customer',s.refreshed,2592000);

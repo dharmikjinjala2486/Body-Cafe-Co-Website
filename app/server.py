@@ -1010,8 +1010,21 @@ class Handler(BaseHTTPRequestHandler):
             print('API error:',type(e).__name__,flush=True);self.json(500,{'error':'The preview could not complete that action. Please retry.'},cookie)
     def do_POST(self):
         if not self.valid_host():return self.json(403,{'error':'Local preview host required.'})
+        if urlparse(self.path).path=='/api/razorpay/webhook':return self.razorpay_webhook()
         if self.path.startswith('/api/'):self.api()
         else:self.json(404,{'error':'Not found.'})
+    def razorpay_webhook(self):
+        # Razorpay's server calls this, not a browser: no session, cookie or CSRF token; its signature is the check (app/razorpay.py).
+        self.cookie_name='razorpay'
+        try:
+            length=int(self.headers.get('Content-Length','0') or 0)
+            if not 0<length<=1_000_000:raise Error('Request too large or invalid.',413)
+            self.json(200,self.store.razorpay_webhook(self.rfile.read(length),self.headers.get('X-Razorpay-Signature','')))
+            self.store.notices_flush_later()
+        except Error as e:self.json(e.status,{'error':str(e),**e.extra})
+        except (ValueError,TypeError,KeyError):self.json(400,{'error':'Invalid request data.'})
+        except Exception as e:
+            print('Webhook error:',type(e).__name__,flush=True);self.json(500,{'error':'The webhook could not be processed.'})
     def do_GET(self):
         if not self.valid_host():return self.json(403,{'error':'Local preview host required.'})
         path=unquote(urlparse(self.path).path)

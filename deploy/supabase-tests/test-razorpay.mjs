@@ -18,7 +18,8 @@ await db.query("insert into bcc_batches(id,product,expiry,available,state,proof)
 await db.query("update bcc_settings set data=jsonb_set(data,'{checkout_enabled}','true') where id='flags'");
 
 // PostgREST and Razorpay stand-ins.
-const KEY = 'rzp_test_STANDIN0000001', SECRET = 'stand-in-secret-000000';
+const KEY = 'rzp_test_STANDIN0000001', SECRET = 'stand-in-secret-000000', HOOK = 'stand-in-webhook-secret-0000';
+const LIVE_KEY = 'rzp_live_STANDIN0000001', LIVE_SECRET = 'live-stand-in-secret-0000';
 const rzp = {orders: [], payments: [], calls: [], down: false, lag: false, n: 0};
 const sign = (order, payment, secret = SECRET) => createHmac('sha256', secret).update(order + '|' + payment).digest('hex');
 const payAt = (order, status = 'captured') => { const o = rzp.orders.find(x => x.id === order), p = {id: 'pay_STANDIN' + String(++rzp.n).padStart(6, '0'), order_id: order, amount: o.amount, status}; rzp.payments.push(p); o.status = status === 'captured' ? 'paid' : 'attempted'; return p.id; };
@@ -26,7 +27,7 @@ const fetchStub = async (url, opts = {}) => {
   const u = new URL(url), name = u.pathname.split('/').pop(), reply = (x, status = 200) => new Response(JSON.stringify(x), {status, headers: {'Content-Type': 'application/json'}});
   if (u.hostname === 'api.razorpay.com') {
     if (rzp.down) throw new TypeError('network down');
-    if (opts.headers.Authorization !== 'Basic ' + btoa(KEY + ':' + SECRET)) return reply({error: {description: 'Authentication failed'}}, 401);
+    if (![KEY + ':' + SECRET, LIVE_KEY + ':' + LIVE_SECRET].some(k => opts.headers.Authorization === 'Basic ' + btoa(k))) return reply({error: {description: 'Authentication failed'}}, 401);
     const path = u.pathname.replace('/v1/', ''), body = opts.body ? JSON.parse(opts.body) : null; rzp.calls.push([opts.method, path]);
     if (opts.method === 'POST' && path === 'orders') { const o = {id: 'order_STANDIN' + String(++rzp.n).padStart(6, '0'), ...body, status: 'created'}; rzp.orders.push(o); return reply(o); }
     if (path === 'orders') return reply({items: rzp.lag ? [] : rzp.orders.filter(o => o.receipt === u.searchParams.get('receipt'))}); // the real search trails new orders by ~30 s
@@ -47,7 +48,7 @@ const fetchStub = async (url, opts = {}) => {
   }
   return reply([]);
 };
-const make = (razorpayKey, razorpaySecret) => createHandler({url: 'https://test.supabase.co', serviceKey: 'test-service-secret', origin: 'https://body-cafe-co-website.vercel.app', razorpayKey, razorpaySecret, fetch: fetchStub, wait: async () => {}});
+const make = (razorpayKey, razorpaySecret, more = {razorpayWebhookSecret: HOOK}) => createHandler({url: 'https://test.supabase.co', serviceKey: 'test-service-secret', origin: 'https://body-cafe-co-website.vercel.app', razorpayKey, razorpaySecret, ...more, fetch: fetchStub, wait: async () => {}});
 const fn = make(KEY, SECRET), off = make('', '');
 const call = (handler, path, opts = {}) => handler(new Request('https://test.supabase.co/functions/v1/operations/api' + path, opts));
 const session = async () => { const r = await call(fn, '/session'); return {csrf: (await r.json()).csrf, cookies: r.headers.getSetCookie().map(c => c.split(';')[0]).join('; ')}; };
@@ -108,5 +109,61 @@ r = await row(d.id); assert.equal(r.state, 'expired'); assert.equal(r.status, 'p
 // Razorpay unreachable: a clear answer, nothing changed.
 const e = await place(); rzp.down = true; [s, j] = await post('/orders/' + e.id + '/pay', {}); assert.equal(s, 503); assert.equal(j.reason, 'unavailable'); rzp.down = false; assert.equal((await row(e.id)).state, 'pending'); checks++;
 
-assert.ok(!seen.includes(SECRET)); checks++; // the secret never appears in anything the API returned
+// Webhook (18 Nov 2026): Razorpay's own server reports the payment. No cookie, no CSRF token: its signature is the check.
+const hookBody = (kind, ro, pay) => JSON.stringify({event: kind, payload: {payment: {entity: rzp.payments.find(p => p.id === pay) || {id: pay, order_id: ro}}, order: {entity: {id: ro}}}});
+const hook = async (body, secret = HOOK, handler = fn) => { const r = await call(handler, '/razorpay/webhook', {method: 'POST', headers: {'Content-Type': 'application/json', 'X-Razorpay-Signature': createHmac('sha256', secret).update(body).digest('hex')}, body}), t = await r.text(); seen += t; return [r.status, JSON.parse(t)]; };
+const notes = async id => (await row(id)).data.internal_notes?.length || 0;
+
+// Paid, and the page was closed before verify: the webhook marks it paid, once, however often Razorpay sends it.
+const f = await place(); [s, j] = await post('/orders/' + f.id + '/pay', {}); const fifth = j.rzp_order, fPay = payAt(fifth);
+[s, j] = await hook(hookBody('payment.captured', fifth, fPay)); assert.equal(s, 200, JSON.stringify(j)); assert.equal(j.state, 'paid');
+r = await row(f.id); assert.equal(r.state, 'paid'); assert.equal(r.status, 'captured'); assert.deepEqual([r.data.razorpay.order, r.data.razorpay.payment], [fifth, fPay]);
+assert.equal(r.data.internal_notes.at(-1).actor, 'razorpay-webhook'); checks++;
+const fNotes = await notes(f.id);
+[s, j] = await hook(hookBody('order.paid', fifth, fPay)); assert.equal(s, 200); assert.equal(j.idempotent, true);
+[s, j] = await post('/orders/' + f.id + '/pay/verify', {razorpay_order_id: fifth, razorpay_payment_id: fPay, razorpay_signature: sign(fifth, fPay)}); assert.equal(j.idempotent, true);
+assert.equal(await notes(f.id), fNotes); checks++;
+const g = await place(); [s, j] = await post('/orders/' + g.id + '/pay', {}); const sixth = j.rzp_order, gPay = payAt(sixth, 'authorized');
+[s, j] = await hook(hookBody('payment.authorized', sixth, gPay)); assert.equal(j.state, 'paid'); assert.equal((await row(g.id)).state, 'paid'); checks++;
+
+// Refused: unsigned, signed with another secret or with the API secret, and not JSON.
+const h = await place(); [s, j] = await post('/orders/' + h.id + '/pay', {}); const seventh = j.rzp_order, hPay = payAt(seventh);
+for (const secret of ['wrong-secret', SECRET]) { [s, j] = await hook(hookBody('payment.captured', seventh, hPay), secret); assert.equal(s, 400); assert.equal(j.reason, 'signature'); }
+{ const r = await call(fn, '/razorpay/webhook', {method: 'POST', body: hookBody('payment.captured', seventh, hPay)}); assert.equal(r.status, 400); }
+[s, j] = await hook('not json'); assert.equal(s, 400);
+assert.equal((await row(h.id)).state, 'pending'); checks++;
+
+// Ignored (200, so Razorpay doesn't retry): other events, other Razorpay orders, a wrong total, and a payment Razorpay says failed.
+[s, j] = await hook(hookBody('refund.processed', seventh, hPay)); assert.equal(j.ignored, 'refund.processed');
+[s, j] = await hook(JSON.stringify({event: 'payment.captured', payload: {payment: {entity: {id: hPay, order_id: 'not-an-id'}}}})); assert.equal(j.ignored, 'no_order');
+[s, j] = await hook(JSON.stringify({event: 'order.paid', payload: {order: 'x', payment: []}})); assert.equal(j.ignored, 'no_order');
+rzp.orders.push({id: 'order_ELSEWHERE01', amount: 100, currency: 'INR', receipt: 'payment-link-7', status: 'paid'}); [s, j] = await hook(hookBody('order.paid', 'order_ELSEWHERE01')); assert.equal(j.ignored, 'not_ours');
+rzp.orders.push({id: 'order_NOSUCHORDER', amount: 100, currency: 'INR', receipt: 'BCC-00000000', status: 'paid'}); [s, j] = await hook(hookBody('order.paid', 'order_NOSUCHORDER')); assert.equal(j.ignored, 'unknown_order');
+rzp.orders.push({id: 'order_WRONGTOTAL1', amount: 100, currency: 'INR', receipt: h.id, status: 'paid'}); [s, j] = await hook(hookBody('order.paid', 'order_WRONGTOTAL1')); assert.equal(j.ignored, 'mismatch');
+const k = await place(); [s, j] = await post('/orders/' + k.id + '/pay', {}); const eighth = j.rzp_order, kFail = payAt(eighth, 'failed');
+[s, j] = await hook(hookBody('payment.captured', eighth, kFail)); assert.equal(j.ignored, 'not_paid'); assert.equal((await row(k.id)).state, 'pending');
+assert.equal((await row(h.id)).state, 'pending'); checks++;
+
+// Not set up, or Razorpay unreachable: 5xx, so Razorpay tries again later.
+[s, j] = await hook(hookBody('payment.captured', seventh, hPay), HOOK, make(KEY, SECRET, {})); assert.equal(s, 503);
+rzp.down = true; [s, j] = await hook(hookBody('payment.captured', seventh, hPay)); assert.equal(s, 503); rzp.down = false; checks++;
+
+// After the hold: recorded for a person once, however many events arrive, and never marked paid.
+const m = await place(); [s, j] = await post('/orders/' + m.id + '/pay', {}); const ninth = j.rzp_order;
+await db.query("update bcc_reservations set expires=1 where order_id=$1", [m.id]); await db.query("update bcc_orders set created=created-1000 where id=$1", [m.id]);
+await post('/orders/' + m.id + '/pay', {}); const mPay = payAt(ninth);
+[s, j] = await hook(hookBody('payment.captured', ninth, mPay)); assert.equal(s, 200); assert.equal(j.state, 'paid_after_hold');
+const mNotes = await notes(m.id);
+[s, j] = await hook(hookBody('order.paid', ninth, mPay)); assert.equal(j.state, 'paid_after_hold');
+[s, j] = await post('/orders/' + m.id + '/pay/verify', {razorpay_order_id: ninth, razorpay_payment_id: mPay, razorpay_signature: sign(ninth, mPay)}); assert.equal(j.reason, 'paid_after_hold');
+r = await row(m.id); assert.equal(r.state, 'expired'); assert.equal(r.data.payment_after_hold, true); assert.equal(await notes(m.id), mNotes); checks++;
+
+// RAZORPAY_MODE: live uses the live pair; neither mode runs on the other kind of key; live never borrows the test pair.
+const live = make(KEY, SECRET, {razorpayMode: 'live', razorpayLiveKey: LIVE_KEY, razorpayLiveSecret: LIVE_SECRET});
+const n = await place(); [s, j] = await post('/orders/' + n.id + '/pay', {}, guest, live); assert.equal(s, 200, JSON.stringify(j)); assert.equal(j.key, LIVE_KEY); assert.equal(j.test, false); checks++;
+[s, j] = await post('/orders/' + n.id + '/pay', {}, guest, make(KEY, SECRET, {razorpayMode: 'live', razorpayLiveKey: KEY, razorpayLiveSecret: SECRET})); assert.equal(s, 503); assert.match(j.error, /RAZORPAY_MODE/);
+[s, j] = await post('/orders/' + n.id + '/pay', {}, guest, make(LIVE_KEY, LIVE_SECRET)); assert.equal(s, 503); assert.match(j.error, /RAZORPAY_MODE/);
+[s, j] = await post('/orders/' + n.id + '/pay', {}, guest, make(KEY, SECRET, {razorpayMode: 'live'})); assert.equal(s, 503); assert.match(j.error, /isn’t connected/); checks++;
+
+assert.ok(!seen.includes(SECRET) && !seen.includes(HOOK) && !seen.includes(LIVE_SECRET)); checks++; // no secret appears in anything the API returned
 console.log(checks + ' hosted Razorpay checks passed.');

@@ -2,7 +2,7 @@ import { createHandler } from './core.js';
 // Public catalogue reads and cookie-authenticated admin requests share this API.
 // The platform service key is never sent to the browser or checked into source.
 const handler = createHandler({
-  release: '20261117-tester-feedback-1',
+  release: '20261118-razorpay-webhook-1',
   url: Deno.env.get('SUPABASE_URL'),
   serviceKey: Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
   // Store assistant (chat.js): the Anthropic API key is a function secret. Without it /api/chat answers 503.
@@ -12,10 +12,15 @@ const handler = createHandler({
   shipneerKey: Deno.env.get('SHIPNEER_API_KEY'),
   shipneerPickupId: Deno.env.get('SHIPNEER_PICKUP_ID'),
   shipneerPickupPin: Deno.env.get('SHIPNEER_PICKUP_PIN'),
-  // Online payment (razorpay.js): the Razorpay key id and secret are function secrets. Test keys (rzp_test_…) take no
-  // money. Without them the payment step answers 503 and nothing is charged.
+  // Online payment (razorpay.js): function secrets. RAZORPAY_MODE "live" uses the live pair (real money); anything else
+  // the test pair (rzp_test_…, no money). Without the chosen pair the payment step answers 503 and nothing is charged.
+  // The webhook (…/api/razorpay/webhook) checks RAZORPAY_WEBHOOK_SECRET, the secret entered in Razorpay's dashboard.
+  razorpayMode: Deno.env.get('RAZORPAY_MODE'),
   razorpayKey: Deno.env.get('RAZORPAY_KEY_ID'),
   razorpaySecret: Deno.env.get('RAZORPAY_KEY_SECRET'),
+  razorpayLiveKey: Deno.env.get('RAZORPAY_LIVE_KEY_ID'),
+  razorpayLiveSecret: Deno.env.get('RAZORPAY_LIVE_KEY_SECRET'),
+  razorpayWebhookSecret: Deno.env.get('RAZORPAY_WEBHOOK_SECRET'),
   // Messages (msg91.js): order messages by SMS, WhatsApp and email, and Supabase Auth's text-message codes through the
   // Send SMS hook. All function secrets; see MSG91-TEMPLATES.md. A message whose template is not set is not sent.
   msg91: {
