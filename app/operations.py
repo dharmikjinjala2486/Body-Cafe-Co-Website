@@ -164,7 +164,7 @@ class OperationsMixin:
         if type(raw.get('price')) != int or not 0 <= raw['price'] <= 1000000: raise Error('Enter a price in whole rupees between 0 and 1,000,000.')
         p['price'] = raw['price']
         gallery = raw.get('gallery', p.get('gallery', []))
-        if not isinstance(gallery, list) or len(gallery) > 12: raise Error('Use up to 12 gallery images.')
+        if not isinstance(gallery, list) or len(gallery) > 30: raise Error('Use up to 30 gallery images.')
         p['gallery'] = []
         for item in gallery:
             if not isinstance(item, dict): raise Error('Check the product gallery.')

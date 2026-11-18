@@ -220,7 +220,7 @@
       const visible = g.visible !== false, n = visible ? ++pos : 0, id = nid('img');
       return `<li class="op-media-row${visible ? '' : ' is-hidden'}" data-gallery-row data-meta="${h(JSON.stringify(g))}"><div class="op-media-pos" aria-hidden="true">${visible ? n : '–'}</div><img src="${h(g.src)}" alt="" loading="lazy"><div class="op-media-fields"><p class="op-media-role"><strong>${visible ? 'Website image ' + n : 'Hidden'}</strong> · ${visible ? galleryRole(n) : 'kept in admin, not shown on the website'}</p><div class="op-form-grid">${field({ name: '', label: 'Alt text', value: g.alt, attrs: 'data-g="alt" maxlength="300"', required: true, id: id + '-alt', help: 'Describe the image for screen readers.' })}${field({ name: '', label: 'Label', value: g.label, attrs: 'data-g="label" maxlength="120"', id: id + '-label', help: 'Short name, e.g. “Front of the bottle”.' })}${field({ name: '', label: 'Caption', value: g.caption, attrs: 'data-g="caption" maxlength="300"', wide: true, id: id + '-cap', help: 'Shown under the image on the product page.' })}</div></div><div class="op-media-controls" role="group" aria-label="Image ${i + 1} controls"><label class="op-switch"><input type="checkbox" data-g="visible" data-gallery-visible ${visible ? 'checked' : ''}><span>Show on website</span></label>${button('Move up', 'image-up', i, 'op-small', `aria-label="Move image ${i + 1} up" ${i === 0 ? 'disabled' : ''}`)}${button('Move down', 'image-down', i, 'op-small', `aria-label="Move image ${i + 1} down" ${i === gallery.length - 1 ? 'disabled' : ''}`)}${button('Make image 1', 'image-first', i, 'op-small', `${visible && n === 1 ? 'disabled' : ''}`)}${button('Remove', 'image-remove', i, 'op-small op-danger', `aria-label="Remove image ${i + 1}"`)}</div></li>`;
     }).join('');
-    return `<p class="op-gallery-summary" role="status">${shown} shown on the website · ${gallery.length - shown} hidden · ${gallery.length} of 12</p>${shown ? '' : notice('<strong>No visible image.</strong> Publishing needs at least one image shown on the website.', 'warning')}<ol class="op-media-list">${rows}</ol>`;
+    return `<p class="op-gallery-summary" role="status">${shown} shown on the website · ${gallery.length - shown} hidden · ${gallery.length} of 30</p>${shown ? '' : notice('<strong>No visible image.</strong> Publishing needs at least one image shown on the website.', 'warning')}<ol class="op-media-list">${rows}</ol>`;
   }
   function galleryFromForm(form) {
     return [...form.querySelectorAll('[data-gallery-row]')].map(row => {
@@ -614,7 +614,7 @@
     const bad = [...f.elements].find(el => el.willValidate && !el.checkValidity());
     if (bad) return invalid(f, bad);
     if (p.home_highlight.split(/\s+/).filter(Boolean).length > 4) return invalid(f, f.elements.namedItem('home_highlight'), 'Use at most four words.');
-    if (p.gallery.length > 12) throw Error('Use up to 12 images, including hidden ones.');
+    if (p.gallery.length > 30) throw Error('Use up to 30 images, including hidden ones.');
     const faq = [...f.querySelectorAll('[data-faq-row]')].find(r => { const a = r.querySelector('[data-k=question]').value.trim(), b = r.querySelector('[data-k=answer]').value.trim(); return !!a !== !!b; });
     if (faq) { const el = faq.querySelector('[data-k=question]').value.trim() ? faq.querySelector('[data-k=answer]') : faq.querySelector('[data-k=question]'); return invalid(f, el, 'Each question needs an answer.'); }
     const src = [...f.querySelectorAll('[data-source-row]')].find(r => { const t = r.querySelector('[data-k=title]').value.trim(), u = r.querySelector('[data-k=url]').value.trim(); return (t || u) && (!t || !/^https:\/\/\S+$/.test(u)); });
@@ -777,7 +777,7 @@
     const form = t.closest('form'), status = document.getElementById('op-upload-status'); const gallery = galleryFromForm(form);
     try {
       for (const file of t.files) {
-        if (gallery.length >= 12) throw Error('A product can have up to 12 images, including hidden ones.');
+        if (gallery.length >= 30) throw Error('A product can have up to 30 images, including hidden ones.');
         if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) throw Error(file.name + ': use JPEG, PNG or WebP.');
         if (file.size > 5 * 1024 * 1024) throw Error(file.name + ' is larger than 5 MB.');
         status.textContent = 'Uploading ' + file.name + '…';
