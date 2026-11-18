@@ -162,3 +162,6 @@ body[data-variant-e-part="2"] .tf-done { flex: none; height: 38px; padding: 0 18
 @media (prefers-reduced-motion: reduce) { body[data-variant-e-part="2"] .tf-pin { transition: none; } body[data-variant-e-part="2"] .tf-pop { animation: none; } }
 body[data-variant-e-part="2"] .tf-see { display: inline-block; margin: 8px 0 0; padding: 0; border: 0; background: none; color: var(--tf-accent); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 body[data-variant-e-part="2"] .tf-chip-pin { margin-left: 6px; background: var(--tf-open-bg); color: var(--tf-accent); }
+/* A pin whose spot has changed since (18 Nov 2026): it sits on the nearest part of the page still there, with a dashed ring. */
+body[data-variant-e-part="2"] .tf-pin.is-moved { border-style: dashed; }
+body[data-variant-e-part="2"] .tf-pop-where { margin: -4px 0 12px; font-size: 12.5px; line-height: 1.45; color: var(--tf-mute); }

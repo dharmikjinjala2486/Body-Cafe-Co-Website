@@ -86,7 +86,7 @@
       }
       others.appendChild(item);
     });
-    if (lost) others.appendChild(el("p", "tf-lost", lost + (lost === 1 ? " pinned comment has" : " pinned comments have") + " lost its place because the page changed. Find " + (lost === 1 ? "it" : "them") + " in the list below."));
+    if (moved) others.appendChild(el("p", "tf-lost", moved === 1 ? "1 comment’s spot has changed, so its pin sits on the nearest part of the page still there." : moved + " comments’ spots have changed, so their pins sit on the nearest part of the page still there."));
     all.firstChild.textContent = here.length ? "See all feedback on this page (" + here.length + ")" : "See all feedback on this page";
   }
 
@@ -116,7 +116,7 @@
       pick.value = n.status;
       pick.addEventListener("change", function () {
         var to = pick.value; pick.disabled = true;
-        window.BCCApp.api("/tester-feedback/status", { id: n.id, status: to }).then(function () { n.status = to; drawPanel(); drawBoard(); })
+        window.BCCApp.api("/tester-feedback/status", { id: n.id, status: to }).then(function () { n.status = to; draw(false); drawPanel(); drawBoard(); })
           .catch(function () { pick.value = n.status; pick.disabled = false; });
       });
       var noteCell = el("div"); noteCell.appendChild(el("span", "tf-chip", n.section || "Whole page"));
@@ -185,11 +185,15 @@
   /* ---- Comments pinned to the page (18 Nov 2026), like comments on a PDF or a design file. ----
      "Comment on the page" turns on comment mode: click any part of the page, or highlight some text first, and a pin
      drops there with a box for the note. A pin remembers the element it sits on (a selector), where inside it (0 to 1)
-     and the words it quotes, never a screen position, so it lands in the same place on a phone and a desktop. Every
-     tester sees the pins of notes that are not resolved, for the design they are looking at; highlighted words are
-     marked with the CSS Custom Highlight API, which changes nothing in the page. If the element is gone the note
-     stays in the list with its quote. */
-  var mode = false, draft = null, pins = {}, lost = 0, frame = 0, later = 0;
+     and the words it quotes, never a screen position, so it lands in the same place on a phone and a desktop.
+     Every tester sees the pin of every note on this page that is not resolved, whichever of Part 2 and Content Focus
+     it was left on (they are the same page; the comment says where it was left when that differs). An unresolved pin
+     is never hidden: if its element is gone it goes where its words went, else to the nearest part of the page still
+     there (its selector, shortened a step at a time), else to the top of the page, marked "moved"; if its element is
+     hidden at this screen width it sits on the nearest visible part around it. Resolving a note takes its pin off the
+     page; the note stays in the table and the admin list. Highlighted words are marked with the CSS Custom Highlight
+     API, which changes nothing in the page. */
+  var mode = false, draft = null, pins = {}, moved = 0, frame = 0, later = 0;
   var layer = el("div", "tf-pins"), hover = el("div", "tf-hover"), pop = el("div", "tf-pop"), bar = el("div", "tf-bar");
   hover.hidden = pop.hidden = bar.hidden = true;
   bar.innerHTML = '<p><b>Comment mode</b><span>Click any part of the page, or highlight text first.</span></p><button type="button" class="tf-done">Done</button>';
@@ -200,8 +204,10 @@
   function norm(s) { return String(s || "").replace(/\s+/g, " ").trim(); }
   function clamp(v) { return Math.round(Math.max(0, Math.min(1, v)) * 1000) / 1000; }
   function inside(t) { return !!(t && t.closest && t.closest(".tf, .tf-pins")); }
-  function pinned() { return notes.filter(function (n) { return n.pin && pathOf(n.page) === location.pathname && (n.design || "") === design(); }); }
+  function pinned() { return notes.filter(function (n) { return n.pin && pathOf(n.page) === location.pathname; }); }
   function number() { pinned().slice().reverse().forEach(function (n, i) { n.no = i + 1; }); }
+  /* The pins drawn on the page: every note on it that is not resolved, from either design. */
+  function unresolved() { return pinned().filter(function (n) { return n.status !== "resolved"; }); }
 
   /* The element's address: from the nearest ancestor with an id of its own, then tag and position at each step. */
   function path(e) {
@@ -225,13 +231,40 @@
       cur = next;
     }
   }
-  /* Where a pin belongs now: its element if it is still there holding the same words, else wherever the words went. */
-  function locate(pin) {
+  function find(sel) {
     var e = null;
-    if (pin.sel) try { e = document.querySelector(pin.sel); } catch (x) {}
-    if (e && inside(e)) e = null;
-    if (pin.text && !(e && norm(e.textContent).indexOf(pin.text) > -1)) e = byText(pin.text) || e;
-    return e;
+    try { e = document.querySelector(sel); } catch (x) {}
+    return e && !inside(e) ? e : null;
+  }
+  function holds(e, t) { return norm(e.textContent).indexOf(t) > -1; }
+  /* Where a pin belongs now, and how it was found:
+     "here"   its element is still there, holding the same words (or it quoted none);
+     "words"  its element changed, but the words it quotes are elsewhere on the page;
+     "spot"   the words were reworded, but its element is still there;
+     "moved"  neither is left: the nearest part of the page that is (its selector shortened a step at a time), or the top. */
+  function locate(pin) {
+    var text = norm(pin.text), e = pin.sel ? find(pin.sel) : null;
+    if (e && (!text || holds(e, text))) return { el: e, how: "here" };
+    var w = text ? byText(text) : null;
+    if (w) return { el: w, how: "words" };
+    if (e) return { el: e, how: "spot" };
+    var parts = (pin.sel || "").split(" > ");
+    while (parts.length > 1) {
+      parts.pop();
+      var up = parts.join(" > ");
+      if (up === "body") break;
+      if ((e = find(up))) return { el: e, how: "moved" };
+    }
+    e = document.querySelector("#main") || document.querySelector("#app") || document.body;
+    return { el: e, how: "moved" };
+  }
+  /* An element hidden at this width (a menu, a closed panel): the nearest part around it that can be seen. */
+  function seen(e) {
+    for (; e && e !== document.body; e = e.parentElement) {
+      var r = e.getBoundingClientRect();
+      if ((r.width >= 1 || r.height >= 1) && !(e.checkVisibility && !e.checkVisibility({ visibilityProperty: true }))) return e;
+    }
+    return document.querySelector("#main") || document.body;
   }
   /* The highlighted words inside an element, as a range, whatever the spacing between its pieces. */
   function rangeFor(root, text) {
@@ -265,28 +298,40 @@
   }
   /* Put every pin where its element is now. "fresh" looks the elements up again (after the page redraws). */
   function draw(fresh) {
-    var on = mode || get(SHOW) !== "0", ranges = [], live = {};
-    lost = 0;
+    var on = mode || get(SHOW) !== "0", ranges = [], live = {}, crowd = [];
+    moved = 0;
     if (fresh) number();
-    pinned().forEach(function (n) {
-      if (n.status === "resolved" || !on) return;
+    var shown = on ? unresolved() : [];
+    shown.forEach(function (n) {
       if (fresh || !n._el || !n._el.isConnected) {
-        n._el = locate(n.pin); n._fixed = !!n._el && stuck(n._el);
-        n._range = n._el && n.pin.hl && n.pin.text ? rangeFor(n._el, n.pin.text) : null;
+        var found = locate(n.pin);
+        n._el = found.el; n._how = found.how; n._fixed = stuck(n._el);
+        /* The quoted words, when they are where the pin is: highlighted if they were highlighted, and where the pin
+           sits when its element changed. */
+        n._range = (found.how === "here" || found.how === "words") && n.pin.text ? rangeFor(n._el, norm(n.pin.text)) : null;
       }
-      if (!n._el) { lost++; return; }
-      if (n._range) ranges.push(n._range);
-      var r = n._el.getBoundingClientRect(), q = n._range && n._range.getClientRects()[0];
-      if ((r.width < 1 && r.height < 1) || (n._el.checkVisibility && !n._el.checkVisibility({ visibilityProperty: true }))) return;
+    });
+    /* Pins in their own place first, so a moved pin is the one that steps aside. */
+    shown.sort(function (a, b) { return (a._how === "moved") - (b._how === "moved"); }).forEach(function (n) {
+      if (n._how === "moved") moved++;
+      if (n._range && n.pin.hl) ranges.push(n._range);
+      var at = seen(n._el), hidden = at !== n._el, r = at.getBoundingClientRect(), q = !hidden && n._range && n._range.getClientRects()[0], x, y;
+      if (q && (n.pin.hl || n._how === "words")) { x = q.left; y = q.top; }
+      else if (hidden || n._how === "moved") { x = r.left + 8; y = r.top + 36; }
+      else { x = r.left + r.width * n.pin.x; y = r.top + r.height * n.pin.y; }
+      /* Pins that would land on top of each other sit side by side instead. */
+      for (var k = 0; k < crowd.length; k++) if (crowd[k][2] === n._fixed && Math.abs(crowd[k][0] - x) < 30 && Math.abs(crowd[k][1] - y) < 30) { x = crowd[k][0] + 34; k = -1; }
+      crowd.push([x, y, n._fixed]);
       var b = pins[n.id];
       if (!b) {
         b = pins[n.id] = el("button", "tf-pin"); b.type = "button";
         b.addEventListener("click", function () { view(n.id); });
         layer.appendChild(b);
       }
-      b.className = "tf-pin is-" + n.status; b.textContent = n.no;
-      b.setAttribute("aria-label", "Comment " + n.no + " from " + (n.name || "a tester"));
-      seatPin(b, q ? q.left : r.left + r.width * n.pin.x, q ? q.top : r.top + r.height * n.pin.y, n._fixed);
+      b.className = "tf-pin is-" + n.status + (n._how === "moved" ? " is-moved" : "");
+      b.textContent = n.no;
+      b.setAttribute("aria-label", "Comment " + n.no + " from " + (n.name || "a tester") + (n._how === "moved" ? ", moved because the page changed" : ""));
+      seatPin(b, x, y, n._fixed);
       live[n.id] = 1;
     });
     Object.keys(pins).forEach(function (id) { if (!live[id]) { pins[id].remove(); delete pins[id]; } });
@@ -329,7 +374,7 @@
     var mark = el("button", "tf-pin is-draft", "+"); mark.type = "button"; mark.tabIndex = -1; mark.setAttribute("aria-hidden", "true");
     layer.appendChild(mark); seatPin(mark, cx, cy, false);
     draft = { pin: mark, range: range || null };
-    hover.hidden = true; paint(pinned().map(function (n) { return n._range; }).filter(Boolean));
+    hover.hidden = true; paint(unresolved().filter(function (n) { return n.pin.hl && pins[n.id]; }).map(function (n) { return n._range; }).filter(Boolean));
 
     pop.setAttribute("data-kind", "new");
     pop.appendChild(el("p", "tf-eyebrow", "New comment"));
@@ -366,6 +411,12 @@
     head.appendChild(who); head.appendChild(x); pop.appendChild(head);
     var q = quoteOf(n.pin); if (q) pop.appendChild(q);
     pop.appendChild(el("p", "tf-pop-note", n.note));
+    /* Where it was left, when the page has changed since or it was left on the other design. */
+    var said = [];
+    if (n._how === "moved") said.push("This part of the page has changed since, so the pin sits on the nearest part still there." + (n.pin.text && !n.pin.hl ? " It was on “" + n.pin.text + "”." : ""));
+    else if (n._how === "spot" && n.pin.text) said.push(n.pin.hl ? "The highlighted words have changed since." : "The words here have changed since. It was on “" + n.pin.text + "”.");
+    if (n.design && n.design !== design()) said.push("Left on " + n.design + ".");
+    if (said.length) pop.appendChild(el("p", "tf-pop-where", said.join(" ")));
     pick.setAttribute("aria-label", "Status of this comment");
     STATUS.forEach(function (s) { var o = el("option", "", s[1]); o.value = s[0]; pick.appendChild(o); });
     pick.value = n.status; pop.classList.remove("is-open", "is-in_progress", "is-resolved"); pop.classList.add("is-" + n.status);

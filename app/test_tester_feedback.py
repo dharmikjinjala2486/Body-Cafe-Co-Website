@@ -62,6 +62,23 @@ class TesterFeedbackTests(unittest.TestCase):
             with self.assertRaises(Error): self.note(pin=bad)
         self.assertEqual(len(self.store.tester_notes()['notes']), 2)
 
+    def test_notes_and_pins_are_kept_for_good_whatever_their_status(self):
+        # Pins from Part 2 and Content Focus on the same page all come back; the page decides which to draw (18 Nov 2026).
+        pin = {'sel': '#p2-hero-t > b:nth-of-type(1)', 'x': 0.131, 'y': 0.593, 'text': 'Seven supplements.', 'hl': False}
+        self.note(page='/?design=e', design='Part 2', pin=pin); self.note(page='/?design=e&part=5', design='Content Focus', pin={**pin, 'text': 'Th', 'hl': True})
+        got = self.store.tester_notes('/?design=e&part=5')['notes']
+        self.assertEqual(sorted(n['design'] for n in got), ['Content Focus', 'Part 2'])
+        # Resolving a note keeps it, with its pin, for testers and the admin.
+        self.store.tester_status({'id': got[0]['id'], 'status': 'resolved'})
+        # A restart (every deploy of the local preview) opens the same file and keeps every note as it was.
+        reopened = Store(Path(self.tmp.name) / 'test.db')
+        after = {n['id']: n for n in reopened.tester_notes('/')['notes']}
+        self.assertEqual(set(after), {n['id'] for n in got})
+        self.assertEqual((after[got[0]['id']]['status'], after[got[0]['id']]['pin']), ('resolved', got[0]['pin']))
+        self.assertEqual(after[got[1]['id']]['status'], 'open')
+        self.assertEqual(sorted(n['status'] for n in reopened.snapshot(self.admin)['tester_notes']), ['open', 'resolved'])
+        self.assertTrue(all(n['pin'] for n in reopened.snapshot(self.admin)['tester_notes']))
+
     def test_bad_input_and_off_site_pages_are_refused(self):
         for bad in ({'note': 'ok'}, {'note': 'x' * 2001}, {'page': '//evil.example/x'}, {'page': 'https://evil.example'}, {'name': 'n' * 61}, {'screen': '<b>'}, {'design': '<i>'}, {'section': 's' * 81}):
             with self.assertRaises(Error): self.note(**bad)
