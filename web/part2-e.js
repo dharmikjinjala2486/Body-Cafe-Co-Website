@@ -122,9 +122,29 @@
       a("change-of-mind", "Can I return a product?", "We only take back items that arrived damaged, wrong, missing, faulty or expired."),
     ].filter(function (f) { return !MAKER.test(f[1]); });
   }
-  // Owner, 18 Nov 2026: the placeholder reviews (window.BCCVoicesE.samples) are no longer shown in Parts 2, 3, 4 or Content
-  // Focus. Each review section falls back to its empty state; Content Focus lists published customer reviews (/api/reviews).
-  function reviewsFor() { return []; }
+  /* Owner, 18 Nov 2026: every product page shows three sample reviews. These add to window.BCCVoicesE.samples (web/voices-v2-e.js)
+     on product pages only, so the home page lists stay as they were. Same rules as that file: written by us, every one tagged
+     "Sample", none says "Verified", none claims a health effect or result (label, format, taste, packaging, ordering), and the
+     facts are the labels' own. Preview releases only. Remove them with the others before launch.
+     [product id, rating, title, words, first name, city, month] */
+  var MORE_SAMPLES = [
+    ["iron-bisglycinate", 5, "One capsule, one line of directions", "The directions fit in one line: one capsule each morning. The bottle has 60, so I reorder every two months.", "Priya", "Surat", "Oct 2026"],
+    ["iron-bisglycinate", 4, "Arrived well packed", "Sealed bottle in a snug box. The capsule is an ordinary size and easy to swallow.", "Vikram", "Indore", "Sep 2026"],
+    ["l-theanine", 5, "Thirty capsules, thirty days", "One a day, so one bottle is exactly a month. The amount per capsule is stated, with no blend to decode.", "Ishaan", "Chennai", "Oct 2026"],
+    ["l-theanine", 4, "Easy to order", "Checkout took a couple of minutes and the bottle came sealed. I would like a 60-capsule size.", "Sneha", "Nagpur", "Sep 2026"],
+    ["vitamin-d3-k2", 5, "Both amounts, both units", "D3 in IU and K2 in mcg, each written out. The softgel goes down easily with breakfast.", "Aditya", "Lucknow", "Oct 2026"],
+    ["vitamin-d3-k2", 4, "Two months in one bottle", "Sixty softgels at one a day. The pack options made it easy to buy for both of us.", "Kavya", "Mysuru", "Sep 2026"],
+    ["creatine-chews", 5, "No shaker needed", "I keep the bottle in my gym bag. Two chews and done, no powder to mix.", "Dev", "Gurugram", "Oct 2026"],
+    ["creatine-chews", 4, "Clear about what is in it", "The label gives the creatine amount per serving, not per pack. The orange flavour is mild.", "Tanvi", "Vadodara", "Sep 2026"],
+    ["omega-3-fish-oil", 5, "One softgel a day", "I was taking three of another brand. This is one softgel with breakfast, and the label breaks down EPA and DHA.", "Neha", "Kolkata", "Oct 2026"],
+    ["omega-3-fish-oil", 4, "No surprises on the label", "It says non-vegetarian and names the fish oil it uses. The bottle arrived sealed.", "Imran", "Bhopal", "Sep 2026"],
+    ["myo-d-chiro-inositol", 5, "A label I could read in a minute", "Two ingredients, two amounts and the directions. That is the whole label, and it is enough.", "Shruti", "Coimbatore", "Oct 2026"],
+    ["myo-d-chiro-inositol", 4, "Good packaging", "The bottle came sealed and well packed. I would like a subscription option.", "Pooja", "Chandigarh", "Sep 2026"],
+    ["psyllium-husk", 4, "Capsules instead of a spoon", "I prefer capsules to stirring powder into water. The label is clear that it is five at night.", "Manish", "Nashik", "Oct 2026"],
+    ["psyllium-husk", 5, "Says exactly what it is", "Psyllium husk, the amount, and when to take it. Ordering and delivery were straightforward.", "Lakshmi", "Visakhapatnam", "Sep 2026"]
+  ];
+  function reviewsFor(id) { var V = window.BCCVoicesE, base = (V && V.samples) || []; // Samples that say the dose is printed on the pack front are left out: the real fronts do not print it.
+    return (id && base.length ? base.concat(MORE_SAMPLES) : base).filter(function (r) { return (!id || r[0] === id) && !/on the front|right on the front/i.test(r[2] + " " + r[3]); }); }
   function stars(n) { var s = ""; for (var i = 1; i <= 5; i++) s += '<i class="' + (i <= n ? "is-on" : "") + '"></i>'; return '<span class="p2-stars" role="img" aria-label="' + n + ' out of 5">' + s + "</span>"; }
   function reviewSummary(list) {
     if (!list.length) return "";
@@ -136,7 +156,7 @@
     return '<li class="p2-review" style="--cap:' + esc(p.color) + '"><div class="p2-review-top">' + stars(r[1]) + '<span class="p2-sample">Sample</span></div><p class="p2-review-title">' + esc(r[2]) + "</p><blockquote><p>" + esc(r[3]) + "</p></blockquote>" +
       '<p class="p2-review-who"><b>' + esc(r[4]) + "</b> · " + esc(r[5]) + ' · <a href="' + href(p) + '"><i class="p2-dot"></i>' + esc(p.name) + "</a></p></li>";
   }
-  var REVIEW_RULE = "Only customers whose order was delivered can review. Every rating is published, low ones too.";
+  var REVIEW_RULE = "Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.";
   // Inline lot lookup: pick by cap, type the number. Submits as #home-lot (app.js opens /reports with the result).
   function lotForm(ctx, o) {
     o = o || {}; var list = ctx.catalog, first = list[0];
