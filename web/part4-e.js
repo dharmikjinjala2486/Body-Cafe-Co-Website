@@ -212,7 +212,7 @@
       ((cautions.length || p.storage) ? '<section class="p4-paper p4-caut"><div class="p4-wrap p4-two"><div>' + k("Cautions and storage") + "</div><div>" + (cautions.length ? '<ul class="p4-dash">' + cautions.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") + P.para(p.storage) + "</div></div></section>" : "") +
 
       /* Lot record */
-      lotBlock(ctx, p, { id: "p4-lot", title: "Check the lot printed on your pack.", text: "A lot report describes the sample tested from one production lot. Records appear as reports are published.", form: h.pdpLotForm(m, "p4-lotform") }) +
+      lotBlock(ctx, p, { id: "p4-lot", title: "Check the lot printed on your pack.", text: "A lot report describes what was tested from one production lot. Records appear as reports are published.", form: h.pdpLotForm(m, "p4-lotform") }) +
 
       /* Often on the same bill (frequently bought with; the shared Part 2 behaviour totals and adds) */
       (pair.length ? '<section class="p4-fbt" data-p2-fbt-box data-self="' + esc(p.id) + '" data-self-price="' + (+p.price || 0) + '"><div class="p4-wrap">' + sechead("Often on the same bill") + '<ol class="p4-menu p4-menu-fbt">' + fbtLine(p, true) + pair.map(function (x) { return fbtLine(x); }).join("") + "</ol>" +
@@ -261,7 +261,7 @@
   var LEARN_BASE = S.themes.e.learn;
   part4("learn", function (ctx, seg) {
     if (seg) return LEARN_BASE.apply(this, arguments);
-    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a tested sample."]];
+    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a test result."]];
     var row = function (href, t, text, style) { return '<li class="p4-row"' + (style ? ' style="' + style + '"' : "") + '><a href="' + href + '"><span class="p4-row-t">' + t + "</span>" + lead() + '<span class="p4-row-go">Read</span></a><span class="p4-row-text">' + text + "</span></li>"; };
     return '<div class="p4-learn">' + head({ k: "Learn", title: "Read the label. Know the form." }) + '<div class="p4-wrap p4-two"><div>' + k("One guide for each") + '</div><ul class="p4-rows">' + ctx.published.map(function (p) { return row("/learn/" + p.id, esc(p.name), esc(P.copy(p.id).headline || p.subtitle || ""), ctx.capStyle(p)); }).join("") + "</ul></div>" +
       '<div class="p4-wrap p4-two"><div>' + k("Reading any label") + '</div><ul class="p4-rows">' + guides.map(function (g) { return row(g[0], g[1], g[2]); }).join("") + "</ul></div></div>";
@@ -288,7 +288,7 @@
     }).join("") + "</div>";
     return '<div class="p4-reports report-page" style="' + ctx.capStyle(cur) + '">' + head({ k: "Lot record", title: "Look up your lot." }) +
       lotBlock(ctx, cur, { id: "p4-rep", title: "Every bottle has a number.", text: "Pick your product, then type the lot number printed on the pack. It is not your order number or the barcode.", form: picker + ctx.forms.reportForm(pid, ctx.query.get("lot")) }) +
-      '<div class="p4-wrap p4-two"><div>' + k("What a record shows") + '</div><ul class="p4-dash"><li>The product and the lot it belongs to.</li><li>What was tested on a sample from that lot, and how.</li><li>The result, with its units and limits.</li><li>A record describes a tested sample from one lot. It does not promise a health outcome.</li></ul></div></div>';
+      '<div class="p4-wrap p4-two"><div>' + k("What a record shows") + '</div><ul class="p4-dash"><li>The product and the lot it belongs to.</li><li>What was tested from that lot, and how.</li><li>The result, with its units and limits.</li><li>A record describes what was tested from one lot. It does not promise a health outcome.</li></ul></div></div>';
   });
 
   /* ---------- 404 ---------- */

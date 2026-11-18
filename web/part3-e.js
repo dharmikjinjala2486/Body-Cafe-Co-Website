@@ -201,7 +201,7 @@
   /* ---------- Learn (index): two quiet lists ---------- */
   part3("learn", function (ctx, seg) {
     if (seg) return LEARN_BASE.apply(this, arguments);
-    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a tested sample."]];
+    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a test result."]];
     return '<div class="p3-learn">' + head({ eyebrow: "Learn", title: "Read the label.<br> Know the form.", lede: "Short, plain guides to the seven, and to reading any supplement label." }) +
       block({ eyebrow: "The seven", title: "One guide for each." }, '<ul class="p3-lines">' + ctx.published.map(function (p) { return arrowRow("/learn/" + p.id, esc(p.name), esc(P.copy(p.id).headline || p.subtitle || ""), P.capImg(p, "p3-line-cap")); }).join("") + "</ul>") +
       block({ eyebrow: "Guides", title: "Reading any label." }, '<ul class="p3-lines">' + guides.map(function (g) { return arrowRow(g[0], g[1], g[2]); }).join("") + "</ul>") + "</div>";
@@ -229,7 +229,7 @@
     }).join("") + "</div>";
     return '<div class="p3-reports report-page" style="' + (cur ? ctx.capStyle(cur) : "") + '">' + head({ eyebrow: "Lot record", title: "Look up your lot.", lede: "Pick your product by its cap, then type the lot number printed on the pack." }) +
       '<div class="p2-wrap p3-rep"><p class="p2-step">Your product</p>' + picker + '<p class="p2-step">Lot number</p><div class="p3-rep-form">' + ctx.forms.reportForm(pid, ctx.query.get("lot")) + "</div>" +
-      '<div class="p2-accs p3-rep-more">' + P.acc("What a lot record shows", "<p>The product and the lot it belongs to, what was tested on a sample from that lot and how, and the result with its units and limits.</p><p>A record describes a tested sample from one lot. It does not promise a health outcome.</p>") +
+      '<div class="p2-accs p3-rep-more">' + P.acc("What a lot record shows", "<p>The product and the lot it belongs to, what was tested from that lot and how, and the result with its units and limits.</p><p>A record describes what was tested from one lot. It does not promise a health outcome.</p>") +
       P.acc("Where is the lot number?", "<p>It is printed on the pack, separate from the barcode. It is not your order number.</p>") + "</div></div></div>";
   });
 

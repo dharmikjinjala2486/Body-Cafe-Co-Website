@@ -127,7 +127,7 @@
     if (seg) return base.apply(this, [].slice.call(arguments, 1));
     var list = ctx.published, lead = ctx.product("vitamin-d3-k2") || list[0];
     if (!lead) return base.apply(this, [].slice.call(arguments, 1));
-    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a tested sample."]];
+    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a test result."]];
     var art = '<figure class="p2p-photo" style="--cap:' + esc(lead.color) + '">' + still(lead, { eager: true, alt: lead.name + " bottle" }) + "</figure>" +
       '<ul class="p2p-tags" aria-hidden="true"><li class="p2p-tag-1"><i></i>Which form</li><li class="p2p-tag-2"><i></i>How much</li><li class="p2p-tag-3"><i></i>Which lot</li></ul>';
     return '<div class="p2p p2p-learn p2-learn">' +
@@ -207,8 +207,8 @@
       '<div class="p2p-rep-main" data-p2p-rise><p class="p2-eyebrow">Lot record</p><h1>Look up your lot.</h1><p class="p2-lede">Choose your product, then type the lot number printed on the pack.</p>' +
       '<div class="p2-rep-form p2p-rep-form"><p class="p2-step">Your product</p>' + picker + '<p class="p2-step">Lot number</p>' + ctx.forms.reportForm(pid, ctx.query.get("lot")) + "</div></div></div>" +
       '<section class="p2p-sec p2p-rep-what" aria-labelledby="p2p-rep-what-t"><div class="p2-wrap">' + secHead({ eyebrow: "The record", title: "What a lot record shows", id: "p2p-rep-what-t", link: '<a class="p2-link" href="/contact">Ask about a lot</a>' }) +
-      '<ul class="p2p-rep-shows">' + [["bottle", "The product and the lot it belongs to."], ["search", "What was tested on a sample from that lot, and how."], ["check", "The result, with its units and limits."]].map(function (x) { return "<li data-p2p-reveal>" + ic(x[0]) + "<p>" + x[1] + "</p></li>"; }).join("") + "</ul>" +
-      '<p class="p2-small" data-p2p-reveal>A record describes a tested sample from one lot. It does not promise a health outcome.</p></div></section></div>';
+      '<ul class="p2p-rep-shows">' + [["bottle", "The product and the lot it belongs to."], ["search", "What was tested from that lot, and how."], ["check", "The result, with its units and limits."]].map(function (x) { return "<li data-p2p-reveal>" + ic(x[0]) + "<p>" + x[1] + "</p></li>"; }).join("") + "</ul>" +
+      '<p class="p2-small" data-p2p-reveal>A record describes what was tested from one lot. It does not promise a health outcome.</p></div></section></div>';
   });
 
   /* ---------- Contact, the policies and Preferences ----------

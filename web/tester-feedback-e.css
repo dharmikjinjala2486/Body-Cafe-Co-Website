@@ -63,8 +63,6 @@ body[data-variant-e-part="2"] .tf-seg-b { display: flex; align-items: center; ga
 body[data-variant-e-part="2"] .tf-seg-b b { min-width: 22px; height: 22px; padding: 0 6px; box-sizing: border-box; border-radius: 999px; background: var(--tf-plate); font-size: 12px; line-height: 22px; text-align: center; font-variant-numeric: tabular-nums; }
 body[data-variant-e-part="2"] .tf-seg-b[aria-pressed="true"] { border-color: var(--tf-ink); background: var(--tf-ink); color: #f8f7f3; }
 body[data-variant-e-part="2"] .tf-seg-b[aria-pressed="true"] b { background: rgb(255 255 255 / .18); }
-body[data-variant-e-part="2"] .tf-f-pagewrap { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--tf-text); }
-body[data-variant-e-part="2"] .tf-f-page { height: 38px; max-width: 240px; padding: 0 12px; border: 1px solid var(--tf-line); border-radius: 999px; background: #fff; font-size: 16px; }
 body[data-variant-e-part="2"] .tf-board-body { flex: 1; overflow: auto; margin: 0 12px 12px; border-radius: 16px; background: #fff; }
 body[data-variant-e-part="2"] .tf-empty { margin: 56px 24px; text-align: center; color: var(--tf-text); }
 body[data-variant-e-part="2"] .tf-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -93,16 +91,74 @@ body[data-variant-e-part="2"] .tf-from small { display: block; font-size: 12px; 
   body[data-variant-e-part="2"] .tf-filters { padding: 0 16px 12px; }
   body[data-variant-e-part="2"] .tf-seg { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 2px; scrollbar-width: none; }
   body[data-variant-e-part="2"] .tf-seg-b { flex: none; }
-  body[data-variant-e-part="2"] .tf-f-pagewrap, body[data-variant-e-part="2"] .tf-f-page { width: 100%; max-width: none; }
-  body[data-variant-e-part="2"] .tf-f-pagewrap span { flex: none; }
   body[data-variant-e-part="2"] .tf-board-body { margin: 0 8px 8px; background: none; }
   body[data-variant-e-part="2"] .tf-table thead { display: none; }
   body[data-variant-e-part="2"] .tf-table, body[data-variant-e-part="2"] .tf-table tbody, body[data-variant-e-part="2"] .tf-table td { display: block; }
   body[data-variant-e-part="2"] .tf-table tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 12px; margin-bottom: 8px; padding: 14px; border-radius: 16px; background: #fff; }
   body[data-variant-e-part="2"] .tf-table td, body[data-variant-e-part="2"] .tf-table tbody tr:hover td { padding: 0; border: 0; background: none; }
   body[data-variant-e-part="2"] .tf-td-1 { grid-column: 1 / -1; min-width: 0; }
-  body[data-variant-e-part="2"] .tf-td-2 { grid-column: 1 / -1; font-size: 13px; color: var(--tf-text); }
   body[data-variant-e-part="2"] .tf-td-0 { grid-row: 1; grid-column: 2; }
-  body[data-variant-e-part="2"] .tf-td-3 { grid-row: 1; grid-column: 1; }
+  body[data-variant-e-part="2"] .tf-td-2 { grid-row: 1; grid-column: 1; }
 }
 @media (prefers-reduced-motion: reduce) { body[data-variant-e-part="2"] .tf, body[data-variant-e-part="2"] .tf-open, body[data-variant-e-part="2"] .tf-all i { transition: none; } body[data-variant-e-part="2"] .tf-panel, body[data-variant-e-part="2"] .tf-board[open] { animation: none; } }
+
+/* ---- Comments pinned to the page (18 Nov 2026): comment mode, pins, the box beside a pin, highlighted words. ---- */
+.tf-pins { display: none; }
+::highlight(tf-hl) { background-color: #ffe58a; color: #1c1b1a; }
+body[data-variant-e-part="2"].tf-commenting, body[data-variant-e-part="2"].tf-commenting :not(.tf, .tf *, .tf-pins, .tf-pins *) { cursor: crosshair !important; }
+body[data-variant-e-part="2"] .tf [hidden], body[data-variant-e-part="2"] .tf-pins [hidden] { display: none !important; }
+body[data-variant-e-part="2"] .tf-pins {
+  --tf-ink: #1c1b1a; --tf-text: #4a5563; --tf-mute: #656a73; --tf-line: #e4dfd5; --tf-paper: #f7f4ee; --tf-plate: #efeae1; --tf-accent: #35306f;
+  --tf-open: #35306f; --tf-open-bg: #eeedf6; --tf-prog: #9a6412; --tf-prog-bg: #fbf1dc; --tf-done: #1d6b3a; --tf-done-bg: #e6f2ea;
+  display: block; position: absolute; top: 0; left: 0; width: 0; height: 0; z-index: 39; font: 400 15px/1.45 "Aileron", system-ui, sans-serif; color: var(--tf-ink);
+}
+body[data-variant-e-part="2"] .tf-pins :where(button, select, input, textarea) { font: inherit; color: inherit; }
+body[data-variant-e-part="2"] .tf-pins :focus-visible { outline: 2px solid var(--tf-accent); outline-offset: 2px; }
+body[data-variant-e-part="2"] .tf-pins svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* A pin: its lower-left corner is the point it marks. */
+body[data-variant-e-part="2"] .tf-pin { position: absolute; display: grid; place-items: center; width: 30px; height: 30px; margin: -30px 0 0; padding: 0; border: 2px solid #fff; border-radius: 50% 50% 50% 4px; background: var(--tf-open); color: #fff; font-size: 13px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; cursor: pointer; box-shadow: 0 6px 16px -6px rgb(0 0 0 / .55); transition: transform .15s; transform-origin: 0 100%; }
+body[data-variant-e-part="2"] .tf-pin:hover { transform: scale(1.12); }
+body[data-variant-e-part="2"] .tf-pin.is-fixed { position: fixed; }
+body[data-variant-e-part="2"] .tf-pin.is-in_progress { background: var(--tf-prog); }
+body[data-variant-e-part="2"] .tf-pin.is-draft { background: var(--tf-ink); font-size: 17px; pointer-events: none; }
+body[data-variant-e-part="2"] .tf-hover { position: fixed; box-sizing: border-box; border: 2px solid var(--tf-accent); border-radius: 4px; background: rgb(53 48 111 / .06); pointer-events: none; }
+/* The box beside a pin */
+body[data-variant-e-part="2"] .tf-pop { position: absolute; width: min(320px, calc(100vw - 24px)); box-sizing: border-box; padding: 14px; border: 1px solid var(--tf-line); border-radius: 18px; background: #fff; box-shadow: 0 24px 60px -20px rgb(28 27 26 / .45); animation: tf-rise .18s cubic-bezier(.2, .7, .2, 1); }
+body[data-variant-e-part="2"] .tf-pop textarea, body[data-variant-e-part="2"] .tf-pop input { display: block; width: 100%; box-sizing: border-box; margin: 8px 0 0; padding: 10px 12px; border: 1.5px solid var(--tf-line); border-radius: 12px; background: #fff; font-size: 16px; }
+body[data-variant-e-part="2"] .tf-pop textarea { resize: vertical; min-height: 76px; }
+body[data-variant-e-part="2"] .tf-pop textarea:focus, body[data-variant-e-part="2"] .tf-pop input:focus { border-color: var(--tf-ink); outline: 0; }
+body[data-variant-e-part="2"] .tf-pop ::placeholder { color: #8a8f98; }
+body[data-variant-e-part="2"] .tf-pop .tf-msg { min-height: 0; margin: 8px 0 0; }
+body[data-variant-e-part="2"] .tf-pop .tf-msg:empty { display: none; }
+body[data-variant-e-part="2"] .tf-pop-row { display: flex; gap: 8px; margin-top: 10px; }
+body[data-variant-e-part="2"] .tf-pop-row .tf-send { flex: 1; height: 44px; color: #f8f7f3; }
+body[data-variant-e-part="2"] .tf-pop-no { height: 44px; padding: 0 16px; border: 1px solid var(--tf-line); border-radius: 999px; background: #fff; font-weight: 600; cursor: pointer; }
+body[data-variant-e-part="2"] .tf-pop-no:hover { background: var(--tf-paper); }
+body[data-variant-e-part="2"] .tf-pop-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+body[data-variant-e-part="2"] .tf-pop-note { margin: 10px 0 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+body[data-variant-e-part="2"] .tf-quote { margin: 8px 0 0; padding: 6px 10px; border-left: 3px solid #e9c53c; border-radius: 4px; background: #fff6cf; font-size: 13px; color: var(--tf-ink); overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+body[data-variant-e-part="2"] .tf-note .tf-quote { margin: 4px 0 6px; -webkit-line-clamp: 1; }
+body[data-variant-e-part="2"] .tf-td-1 .tf-quote { margin: 0 0 8px; }
+/* In the panel */
+body[data-variant-e-part="2"] .tf-pinmode { display: flex; align-items: center; gap: 12px; width: 100%; margin: 14px 0 0; padding: 12px 14px; border: 0; border-radius: 16px; background: var(--tf-open-bg); color: var(--tf-accent); text-align: left; cursor: pointer; }
+body[data-variant-e-part="2"] .tf-pinmode:hover { background: #e4e2f1; }
+body[data-variant-e-part="2"] .tf-pinmode svg { flex: none; width: 22px; height: 22px; }
+body[data-variant-e-part="2"] .tf-pinmode b { display: block; font-weight: 600; }
+body[data-variant-e-part="2"] .tf-pinmode small { display: block; font-size: 12.5px; color: var(--tf-text); }
+body[data-variant-e-part="2"] .tf-panel .tf-toggle { display: flex; align-items: center; gap: 9px; margin: 10px 2px 0; cursor: pointer; }
+body[data-variant-e-part="2"] .tf-panel .tf-toggle input { flex: none; display: inline-block; width: 18px; height: 18px; margin: 0; padding: 0; border-radius: 4px; accent-color: var(--tf-accent); }
+body[data-variant-e-part="2"] .tf-no { flex: none; display: grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; box-sizing: border-box; border-radius: 50% 50% 50% 3px; background: var(--tf-open); color: #fff; font-size: 11px; font-weight: 700; }
+body[data-variant-e-part="2"] .is-in_progress > small .tf-no { background: var(--tf-prog); }
+body[data-variant-e-part="2"] .tf-note.is-pinned { cursor: pointer; }
+body[data-variant-e-part="2"] .tf-note.is-pinned:hover { background: var(--tf-plate); }
+body[data-variant-e-part="2"] .tf-note.is-pinned .tf-dot { display: none; }
+body[data-variant-e-part="2"] .tf-lost { margin: 8px 2px 0; font-size: 13px; color: var(--tf-prog); }
+/* Comment mode's bar, where the Feedback button was */
+body[data-variant-e-part="2"] .tf-bar { display: flex; align-items: center; gap: 14px; max-width: calc(100vw - 32px); box-sizing: border-box; padding: 8px 8px 8px 18px; border-radius: 999px; background: var(--tf-ink); color: #f8f7f3; box-shadow: 0 10px 24px -10px rgb(0 0 0 / .5); }
+body[data-variant-e-part="2"] .tf-bar p { margin: 0; font-size: 13px; line-height: 1.3; }
+body[data-variant-e-part="2"] .tf-bar b { display: block; font-size: 14px; font-weight: 600; }
+body[data-variant-e-part="2"] .tf-bar span { color: #cfccc4; }
+body[data-variant-e-part="2"] .tf-done { flex: none; height: 38px; padding: 0 18px; border: 0; border-radius: 999px; background: #f8f7f3; color: var(--tf-ink); font-weight: 600; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { body[data-variant-e-part="2"] .tf-pin { transition: none; } body[data-variant-e-part="2"] .tf-pop { animation: none; } }
+body[data-variant-e-part="2"] .tf-see { display: inline-block; margin: 8px 0 0; padding: 0; border: 0; background: none; color: var(--tf-accent); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+body[data-variant-e-part="2"] .tf-chip-pin { margin-left: 6px; background: var(--tf-open-bg); color: var(--tf-accent); }

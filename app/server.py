@@ -399,10 +399,18 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
         section, page_name = (re.sub(r'[\x00-\x1f<>]', ' ', str(data.get(k, '') or '')).strip() for k in ('section', 'page_name'))
         if len(section) > 80 or len(page_name) > 80: raise Error('That note could not be saved.')
         if not re.fullmatch(r'[A-Za-z0-9 ·-]{0,30}', design) or not re.fullmatch(r'(\d{2,5}×\d{2,5})?', screen): raise Error('That note could not be saved.')
+        # A comment pinned to a spot on the page (18 Nov 2026): the element it sits on, where inside it (0 to 1), and the words it quotes.
+        pin = data.get('pin')
+        if pin is not None:
+            if not isinstance(pin, dict): raise Error('That comment could not be pinned.')
+            sel = str(pin.get('sel', '') or ''); text = re.sub(r'[\x00-\x1f<>]', ' ', str(pin.get('text', '') or '')).strip(); at = (pin.get('x'), pin.get('y'))
+            if not all(isinstance(v, (int, float)) and not isinstance(v, bool) and 0 <= v <= 1 for v in at) or not re.fullmatch(r'[A-Za-z0-9 #>:()_-]{0,400}', sel) or len(text) > 200 or not (sel or text):
+                raise Error('That comment could not be pinned.')
+            pin = {'sel': sel, 'x': round(float(at[0]), 3), 'y': round(float(at[1]), 3), 'text': text, 'hl': bool(pin.get('hl'))}
         with self.db() as c:
             if c.execute('SELECT COUNT(*) FROM tester_notes WHERE session=? AND created>?', (s['id'], int(time.time()) - 3600)).fetchone()[0] >= 30:
                 raise Error('That is a lot of notes in one hour. Please try again a little later.', 429)
-            c.execute('INSERT INTO tester_notes VALUES(?,?,?,?)', (secrets.token_hex(8), s['id'], json.dumps({'note': note, 'name': name, 'page': page, 'page_name': page_name, 'section': section, 'design': design, 'screen': screen}), int(time.time())))
+            c.execute('INSERT INTO tester_notes VALUES(?,?,?,?)', (secrets.token_hex(8), s['id'], json.dumps({'note': note, 'name': name, 'page': page, 'page_name': page_name, 'section': section, 'design': design, 'screen': screen, **({'pin': pin} if pin else {})}), int(time.time())))
         return {'ok': True}
 
     def tester_notes(self, page=''):
@@ -412,7 +420,7 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
         with self.db() as c:
             rows = [(r['id'], json.loads(r['data']), r['created']) for r in c.execute('SELECT id,data,created FROM tester_notes ORDER BY created DESC LIMIT 500')]
         return {'notes': [{'id': i, 'note': d['note'], 'name': d.get('name', ''), 'section': d.get('section', ''), 'page': d['page'], 'page_name': d.get('page_name', ''),
-                           'status': d.get('status', 'open'), 'created': t} for i, d, t in rows if not path or d['page'].split('?')[0] == path]}
+                           'status': d.get('status', 'open'), 'design': d.get('design', ''), 'pin': d.get('pin'), 'created': t} for i, d, t in rows if not path or d['page'].split('?')[0] == path]}
 
     def tester_status(self, data):
         """Open, in progress or resolved, like a bug list. Anyone testing can move a note along."""

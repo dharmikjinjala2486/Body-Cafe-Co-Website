@@ -469,7 +469,7 @@
     return pages.map((p, i) => {
       const mine = notes.filter(n => n.page.split('?')[0] === p);
       return `<section class="op-card"><h2>${h(mine[0].page_name || p)} <small>· ${mine.length} ${mine.length === 1 ? 'note' : 'notes'}, ${mine.filter(n => n.status !== 'resolved').length} not resolved · <a href="${h(mine[0].page)}" target="_blank" rel="noopener">${h(p)}</a></small></h2>` +
-        table(['When', 'Status', 'Section', 'Note', 'From'], mine.map(n => [h(when(n.created)), h({ open: 'Open', in_progress: 'In progress', resolved: 'Resolved' }[n.status] || 'Open'), h(n.section || 'Whole page'), h(n.note).replace(/\n/g, '<br>'),
+        table(['When', 'Status', 'Section', 'Note', 'From'], mine.map(n => [h(when(n.created)), h({ open: 'Open', in_progress: 'In progress', resolved: 'Resolved' }[n.status] || 'Open'), h(n.section || 'Whole page'), (n.pin ? `<small>Pinned${n.pin.text ? ' on “' + h(n.pin.text) + '”' : ' to the page'}</small><br>` : '') + h(n.note).replace(/\n/g, '<br>'),
           h(n.name || 'No name') + `<br><small>${h([n.design, n.screen].filter(Boolean).join(' · '))}</small>`]), { pageKey: 'p' + i }) + '</section>';
     }).join('');
   }

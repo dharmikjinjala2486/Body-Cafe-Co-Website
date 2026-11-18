@@ -189,7 +189,7 @@
         ["Source document", "The publishable version of the laboratory document, with its version."],
       ],
       states: {
-        sample_match: ["Lot found", "This sample lot belongs to the product you chose. In the live experience, the report summary and source document would appear below.", "match"],
+        sample_match: ["Lot found", "This demo lot belongs to the product you chose. In the live experience, the report summary and source document would appear below.", "match"],
         not_found: ["No matching lot", "We couldn't match that lot number to this product. Check the number and the product, then try again. If it still doesn't match, contact support and include a photo of the pack.", ""],
         unpublished: ["Report not published yet", "A record exists for this lot, but its report isn't ready to view. That doesn't mean a test passed or failed. Check back, or contact support.", ""],
         withdrawn: ["This lot has been withdrawn", "In the live experience, reviewed safety instructions and a direct support route would appear here. If you have this product, contact support and choose Product safety.", "warning"],

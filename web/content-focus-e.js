@@ -843,8 +843,8 @@
       inside: ["Inside one softgel", 1000, [["EPA", 400], ["DHA", 300], ["Other omega-3", 100]], "800 mg omega-3", "1,000 mg anchovy fish oil concentrate", "Rest of the oil"],
       claim: "Supports heart, brain & joint health", supports: [["heart", "Heart health"], ["brain", "Brain health"], ["joint", "Joint health"]],
       dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]],
-      swap: [["2 bottles save 5%, 3 save 10%. The saving is applied in your bag.", "60 softgels a bottle. Savings are applied in your bag."],
-        ["A lot report describes the sample tested from one production lot. Records appear as reports are published.", "One report per production batch, for the sample tested. Reports appear as they are published."],
+      swap: [["2 bottles save 5%, 3 save 10%. The saving is applied in your bag.", "60 softgels a bottle."],
+        ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "One report per production batch. Reports appear as they are published."],
         ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Every rating is published, low ones too. Sample reviews show until real ones arrive."],
         ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "We deliver across India. If we can’t reach you, we say so before you pay. Dates are estimates."]]
     }
@@ -859,6 +859,12 @@
     swap(root, v.swap);
     // "MRP" goes; the space it held stays, so the three pack cards keep their lines level.
     [].forEach.call(root.querySelectorAll(".pk-save.is-mrp"), function (n) { n.innerHTML = "&nbsp;"; n.setAttribute("aria-hidden", "true"); });
+    // Owner, 18 Nov 2026 (this page only): each pack card gives its servings (60, 120, 180) where it said 1, 2 or 3 bottles.
+    var serv = parseInt(args[1].servings_per_pack, 10);
+    if (serv > 0) [].forEach.call(root.querySelectorAll(".pk-card"), function (c) {
+      var n = [].filter.call(c.querySelectorAll(".pk-n, .pk-days"), function (x) { return /\bbottles?$/.test(x.textContent); })[0];
+      if (n) n.textContent = serv * +c.dataset.pkQ + " servings";
+    });
     // Owner, 17 Nov 2026 (this page only): the rating sits at the right end of the pack-size and diet line; "Best value" goes
     // (the Save chip takes its place on the card's top edge, in the style sheet); and there is no − n + stepper: the pack
     // cards choose 1, 2 or 3 bottles.

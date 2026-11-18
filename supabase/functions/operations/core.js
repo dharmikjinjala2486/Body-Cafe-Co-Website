@@ -242,7 +242,7 @@ export function createHandler(config){
      // Tester notes, newest first, for testers to read each other's: one page's (its path, whatever the query), or all.
      const p=(u.searchParams.get('page')||'').split('?')[0];if(p&&!/^\/(?!\/)[A-Za-z0-9/_.~%+-]{0,200}$/.test(p))throw new ApiError('That page reference is not valid.');
      const rows=await db('feedback','kind=eq.tester&order=created.desc&limit=500');
-     return json({notes:rows.filter(r=>!p||String(r.data.page||'').split('?')[0]===p).map(r=>({id:r.target,note:r.data.note,name:r.data.name||'',section:r.data.section||'',page:r.data.page,page_name:r.data.page_name||'',status:r.data.status||'open',created:r.created}))});
+     return json({notes:rows.filter(r=>!p||String(r.data.page||'').split('?')[0]===p).map(r=>({id:r.target,note:r.data.note,name:r.data.name||'',section:r.data.section||'',page:r.data.page,page_name:r.data.page_name||'',status:r.data.status||'open',design:r.data.design||'',pin:r.data.pin||null,created:r.created}))});
     }
     if(path==='/catalog')return json(await catalog());
     if(path==='/admin'){mustAdmin();const tick=shipTick().catch(()=>0);if(globalThis.EdgeRuntime?.waitUntil)globalThis.EdgeRuntime.waitUntil(tick);return json(await snapshot());}
@@ -456,9 +456,17 @@ export function createHandler(config){
     const section=t('section').replace(/[\x00-\x1f<>]/g,' ').trim(),page_name=t('page_name').replace(/[\x00-\x1f<>]/g,' ').trim();
     if(section.length>80||page_name.length>80)throw new ApiError('That note could not be saved.');
     if(!/^[A-Za-z0-9 ·-]{0,30}$/.test(design)||!/^(\d{2,5}×\d{2,5})?$/.test(screen))throw new ApiError('That note could not be saved.');
+    // A comment pinned to a spot on the page (18 Nov 2026): the element it sits on, where inside it (0 to 1), and the words it quotes.
+    let pin=data.pin??null;
+    if(pin!==null){
+     if(typeof pin!=='object'||Array.isArray(pin))throw new ApiError('That comment could not be pinned.');
+     const sel=String(pin.sel??''),text=String(pin.text??'').replace(/[\x00-\x1f<>]/g,' ').trim(),ok=v=>typeof v==='number'&&v>=0&&v<=1;
+     if(!ok(pin.x)||!ok(pin.y)||!/^[A-Za-z0-9 #>:()_-]{0,400}$/.test(sel)||text.length>200||!(sel||text))throw new ApiError('That comment could not be pinned.');
+     pin={sel,x:Math.round(pin.x*1000)/1000,y:Math.round(pin.y*1000)/1000,text,hl:!!pin.hl};
+    }
     const recent=await db('feedback','user_id=eq.'+encodeURIComponent(user.id)+'&kind=eq.tester&created=gt.'+(now()-3600)+'&select=target');
     if(recent.length>=30)throw new ApiError('That is a lot of notes in one hour. Please try again a little later.',429);
-    await db('feedback','','POST',{user_id:user.id,kind:'tester',target:random().slice(0,16),data:{note,name,page,page_name,section,design,screen},created:now()});
+    await db('feedback','','POST',{user_id:user.id,kind:'tester',target:random().slice(0,16),data:{note,name,page,page_name,section,design,screen,...(pin?{pin}:{})},created:now()});
     return json({ok:true});
    }
    if(['/profile','/preferences','/addresses','/help/feedback','/learn/feedback'].includes(path)){let action={'/profile':'profile','/preferences':'preferences','/addresses':'address_save','/help/feedback':'help_feedback','/learn/feedback':'learn_feedback'}[path];return json(await rpc('customer_action',{p_user:user.id,p_action:action,p_data:data}));}

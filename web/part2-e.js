@@ -145,7 +145,7 @@
       // Name of the chosen cap. Shown in Part 2 only; Parts 3 and 4 label their caps their own way.
       '<p class="p2-lot-now" data-p2-lot-now aria-hidden="true"' + (first ? ' style="--cap:' + esc(first.color) + '"' : "") + ">" + (first ? esc(first.name) : "") + '</p><select id="home-lot-product" name="product" hidden>' + list.map(function (p, i) { return '<option value="' + esc(p.id) + '" data-sample="' + esc(p.sample_lot || "DEMO-" + (i < 9 ? "0" : "") + (i + 1) + "-01") + '">' + esc(p.name) + "</option>"; }).join("") + "</select>" +
       '<label class="p2-lot-label" for="home-lot-number">Lot number on your pack</label><div class="p2-lot-row"><input id="home-lot-number" name="lot" placeholder="e.g. ' + esc((first && first.sample_lot) || "DEMO-01-01") + '" maxlength="60" required autocomplete="off"><button class="p2-btn' + (o.light ? " p2-btn-light" : "") + '" type="submit">Look up</button></div>' +
-      '<p class="p2-lot-note">Not your order number or barcode. Preview records only: try <button type="button" class="p2-linkbtn" data-fill-lot>the sample lot</button>.</p>' + (first ? "" : "") + "</form>";
+      '<p class="p2-lot-note">Not your order number or barcode. Preview records only: try <button type="button" class="p2-linkbtn" data-fill-lot>the demo lot</button>.</p>' + (first ? "" : "") + "</form>";
   }
 
   /* ---------- Part 2 home: hero → claims → products → transparency → lot record → reviews → FAQ ---------- */
@@ -338,7 +338,7 @@
       "</aside></div></div></div>" +
 
       /* Lot report */
-      '<section class="p2-section p2-pdp-lot" id="p2-lot"><div class="p2-wrap p2-lot-band"><div><p class="p2-eyebrow">Lot report</p><h2>Check the lot printed on your pack.</h2><p>A lot report describes the sample tested from one production lot. Records appear as reports are published.</p></div>' + h.pdpLotForm(m, "p2-lotform") + "</div></section>" +
+      '<section class="p2-section p2-pdp-lot" id="p2-lot"><div class="p2-wrap p2-lot-band"><div><p class="p2-eyebrow">Lot report</p><h2>Check the lot printed on your pack.</h2><p>A lot report describes what was tested from one production lot. Records appear as reports are published.</p></div>' + h.pdpLotForm(m, "p2-lotform") + "</div></section>" +
 
       /* Frequently bought with (Part 1's position: after the lot report) */
       fbt +
@@ -603,7 +603,7 @@
     }).join("") + "</div>";
     return '<div class="p2-reports report-page" style="--cap:' + esc(cur ? cur.color : "") + '">' + head({ eyebrow: "Lot record", title: "Look up your lot.", lede: "Choose your product, then type the lot number printed on the pack." }) +
       '<div class="p2-wrap p2-rep-grid"><div class="p2-rep-form"><p class="p2-step">Your product</p>' + picker + '<p class="p2-step">Lot number</p>' + ctx.forms.reportForm(pid, ctx.query.get("lot")) + "</div>" +
-      '<aside class="p2-rep-aside"><figure>' + scene("blogs/blog_reports") + '</figure><h2>What a lot record shows</h2><ul><li>The product and the lot it belongs to.</li><li>What was tested on a sample from that lot, and how.</li><li>The result, with its units and limits.</li></ul><p class="p2-small">A record describes a tested sample from one lot. It does not promise a health outcome.</p>' +
+      '<aside class="p2-rep-aside"><figure>' + scene("blogs/blog_reports") + '</figure><h2>What a lot record shows</h2><ul><li>The product and the lot it belongs to.</li><li>What was tested from that lot, and how.</li><li>The result, with its units and limits.</li></ul><p class="p2-small">A record describes what was tested from one lot. It does not promise a health outcome.</p>' +
       '<p class="p2-small"><strong>Not the order number.</strong> The lot number is printed on the pack, separate from the barcode.</p><a class="p2-link" href="/contact">Ask about a lot</a></aside></div></div>';
   });
 
@@ -628,7 +628,7 @@
   /* ---------- Learn (index only; guides keep their own pages) ---------- */
   part2("learn", function (ctx, seg) {
     if (seg) return LEARN_BASE.apply(this, arguments);
-    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a tested sample."]];
+    var guides = [["/learn/reading-a-label", "Read a label with confidence", "Serving sizes, ingredient names and the other details on a pack."], ["/learn/ingredient-forms", "Why ingredient forms matter", "Why the full ingredient name matters when you compare products."], ["/learn/understanding-reports", "What a lot record shows", "The difference between a product, a lot and a test result."]];
     var gArt = ["blogs/blog_label", "blogs/blog_forms", "blogs/blog_reports"];
     return '<div class="p2-learn">' + head({ eyebrow: "Learn", title: "Read the label. Know the form.", lede: "Short, plain guides to the seven and to reading any supplement label.", art: scene("learn/learn_hub", { eager: true }) }) +
       sec({ eyebrow: "The seven", title: "One guide for each." }, '<ul class="p2-guides">' + ctx.published.map(function (p) { return '<li style="--cap:' + esc(p.color) + '"><a href="/learn/' + p.id + '"><span class="p2-guide-media">' + world(p) + '<span class="p2-guide-bottle">' + bottle(p, { alt: "" }) + '</span></span><span class="p2-guide-copy"><strong>' + esc(p.name) + "</strong><span>" + esc(copy(p.id).headline || p.subtitle || "") + "</span></span></a></li>"; }).join("") + "</ul>") +

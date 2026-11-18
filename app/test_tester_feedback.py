@@ -30,7 +30,8 @@ class TesterFeedbackTests(unittest.TestCase):
         self.note(); self.note(page='/omega3-fishoil', note='Same page, no query', name=''); self.note(page='/shop', note='Another page')
         got = self.store.tester_notes('/omega3-fishoil?design=e&part=5')['notes']
         self.assertEqual(sorted(n['note'] for n in got), ['Same page, no query', 'The pack cards are clear.'])
-        self.assertEqual(set(got[0]), {'id', 'note', 'name', 'section', 'page', 'page_name', 'status', 'created'})
+        self.assertEqual(set(got[0]), {'id', 'note', 'name', 'section', 'page', 'page_name', 'status', 'design', 'pin', 'created'})
+        self.assertEqual((got[0]['design'], got[0]['pin']), ('Part 2', None))
         self.assertEqual(self.store.tester_notes('/')['notes'], [])
         self.assertEqual(len(self.store.tester_notes()['notes']), 3)
         for bad in ('//evil.example', 'https://evil.example'):
@@ -46,6 +47,20 @@ class TesterFeedbackTests(unittest.TestCase):
         self.assertEqual(self.store.tester_notes()['notes'][0]['note'], 'The pack cards are clear.')
         for bad in ({'id': n['id'], 'status': 'done'}, {'id': 'nope', 'status': 'open'}, {'id': '0' * 16, 'status': 'open'}):
             with self.assertRaises(Error): self.store.tester_status(bad)
+
+    def test_a_comment_can_be_pinned_to_a_spot_on_the_page(self):
+        pin = {'sel': '#main > section:nth-of-type(2) > h2:nth-of-type(1)', 'x': 0.25, 'y': 0.5, 'text': 'Pick your <b>pack', 'hl': 1, 'extra': 'dropped'}
+        self.note(pin=pin); self.note(pin={'sel': '', 'x': 0, 'y': 1, 'text': 'Found by its words only'})
+        got = {bool(n['pin']['sel']): n for n in self.store.tester_notes()['notes']}; words, placed = got[False], got[True]
+        self.assertEqual(placed['pin'], {'sel': pin['sel'], 'x': 0.25, 'y': 0.5, 'text': 'Pick your  b pack', 'hl': True})
+        self.assertEqual(words['pin'], {'sel': '', 'x': 0.0, 'y': 1.0, 'text': 'Found by its words only', 'hl': False})
+        self.assertIn('Pick your  b pack', [n['pin']['text'] for n in self.store.snapshot(self.admin)['tester_notes']])
+        self.store.tester_status({'id': placed['id'], 'status': 'resolved'})
+        self.assertEqual([n['pin'] for n in self.store.tester_notes()['notes'] if n['id'] == placed['id']], [placed['pin']])
+        for bad in ('top left', [], {'sel': 'h2', 'x': 2, 'y': 0}, {'sel': 'h2', 'x': '0.5', 'y': 0}, {'sel': 'h2', 'x': True, 'y': 0}, {'sel': 'h2', 'y': 0}, {'sel': 'a[href="x"]', 'x': 0, 'y': 0},
+                    {'sel': 'h2,script', 'x': 0, 'y': 0}, {'sel': 'h' * 401, 'x': 0, 'y': 0}, {'sel': 'h2', 'x': 0, 'y': 0, 'text': 't' * 201}, {'sel': '', 'x': 0, 'y': 0, 'text': ''}, {'sel': 'h2', 'x': float('nan'), 'y': 0}):
+            with self.assertRaises(Error): self.note(pin=bad)
+        self.assertEqual(len(self.store.tester_notes()['notes']), 2)
 
     def test_bad_input_and_off_site_pages_are_refused(self):
         for bad in ({'note': 'ok'}, {'note': 'x' * 2001}, {'page': '//evil.example/x'}, {'page': 'https://evil.example'}, {'name': 'n' * 61}, {'screen': '<b>'}, {'design': '<i>'}, {'section': 's' * 81}):
