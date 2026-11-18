@@ -821,19 +821,46 @@
 
 
   /* The visual product page (17 Nov 2026, owner's note). Content Focus only, and only for the products listed in VIS:
-     Omega-3 Fish Oil for now. Same content and positions as before, shown as graphics where a graphic says it faster:
-     the buy card's amounts as three figures, the owner's "3 regular softgels vs 1" comparison and what is inside one softgel
-     in the description, the four questions as cards, the label claim as three tiles, the directions as a dose strip, and the
-     cautions as lists. The word "MRP" is not shown. A product with no entry here keeps the page it had. */
+     Omega-3 Fish Oil first, then the other six (18 Nov 2026). Same content and positions as before, shown as graphics where a
+     graphic says it faster: the buy card's amounts as three figures, the product's own figures under the description headline,
+     the four questions as cards, the label claim as tiles, the directions as a dose strip, and the cautions as lists. The word
+     "MRP" is not shown. A product with no entry here keeps the page it had.
+     Every number is the label's (web/label-records.json) or the Version E workbook's (PRODUCTS / USE above). The description
+     figures, each optional: versus (the owner's Omega-3 comparison; no other product has one), ratio (two amounts as pills),
+     win (the time around a dose), rda (amounts against the ICMR RDA the label prints) and inside (a stacked bar of one serving). */
   var ICON = {
     heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
     brain: '<path d="M12 6.5A2.5 2.5 0 0 0 7 6.6 3 3 0 0 0 5 9.5c0 .9.4 1.7 1 2.2A3 3 0 0 0 7 16.8v.7a2.5 2.5 0 0 0 5 0v-11zM12 6.5a2.5 2.5 0 0 1 5 .1 3 3 0 0 1 2 2.9c0 .9-.4 1.7-1 2.2a3 3 0 0 1-1 5.1v.7a2.5 2.5 0 0 1-5 0"/>',
     joint: '<path d="M17 10c.7-.7 1.7 0 2.5 0a2.5 2.5 0 1 0 0-5 .5.5 0 0 1-.5-.5 2.5 2.5 0 1 0-5 0c0 .8.7 1.8 0 2.5l-7 7c-.7.7-1.7 0-2.5 0a2.5 2.5 0 0 0 0 5c.3 0 .5.2.5.5a2.5 2.5 0 1 0 5 0c0-.8-.7-1.8 0-2.5z"/>',
+    muscle: '<path d="M6 7v10M18 7v10M3 9.5v5M21 9.5v5M6 12h12"/>',
+    gauge: '<path d="M12 14l4-4M3.3 19a10 10 0 1 1 17.4 0"/>',
+    drop: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    bolt: '<path d="M13 2 4 14h8l-1 8 9-12h-8z"/>',
+    leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    scale: '<path d="M12 3v18M7 21h10M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2M2 16l3-8 3 8a5 5 0 0 1-6 0zM16 16l3-8 3 8a5 5 0 0 1-6 0z"/>',
+    cycle: '<path d="M3 12a9 9 0 0 1 15.7-6L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.7 6L3 16M8 16H3v5"/>',
+    gut: '<path d="M9 3v3.5c0 1.8-3 2.6-3 6.5a7 7 0 0 0 7 7h1a5 5 0 0 0 5-5c0-3.3-3.3-4.1-5.3-2.8-1.4.9-2.7.2-2.7-1.5V3"/>',
+    calendar: '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 15.5l2 2 4-4"/>',
     softgel: '<rect x="8" y="3" width="8" height="18" rx="4"/>',
+    capsule: '<path d="M10.5 20.5l-7-7a5 5 0 1 1 7-7l7 7a5 5 0 1 1-7 7zM7 7l3.5 3.5"/><path d="M8.5 8.5l7 7"/>',
+    chew: '<circle cx="12" cy="12" r="8"/><path d="M8 12h8"/>',
+    plate: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>',
+    glass: '<path d="M5 3h14l-2 18H7zM6 8h12"/>',
     food: '<path d="M3 2v7a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6a2 2 0 0 0 2 2h3zm0 0v7"/>'
   };
   function icon(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (ICON[k] || "") + "</svg>"; }
+  // Shorter notes, the same on every visual page. The pack note becomes the pack size (from the catalogue).
+  var VIS_SWAP = [
+    ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "One report per production batch. Reports appear as they are published."],
+    ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Every rating is published, low ones too. Sample reviews show until real ones arrive."],
+    ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "We deliver across India. If we can’t reach you, we say so before you pay. Dates are estimates."]
+  ];
+  var PACK_NOTE = "2 bottles save 5%, 3 save 10%. The saving is applied in your bag.";
+  /* says: the figures say the support sentence in full, so it is kept for screen readers only (unless the admin rewrote it). */
   var VIS = {
     "omega-3-fish-oil": {
       stats: [["800 mg", "omega-3"], ["400 mg", "EPA"], ["300 mg", "DHA"]], statsNote: "Per softgel, as triglycerides",
@@ -841,31 +868,106 @@
       versus: [[3, "266.7 × 3 mg*", "3 regular softgels"], [1, "800 mg*", "1 Body Café Co. softgel"], "* mg of omega-3"],
       // The label's numbers: 1,000 mg of oil, 800 mg omega-3, 400 mg EPA, 300 mg DHA. [name, mg], then the omega-3 total.
       inside: ["Inside one softgel", 1000, [["EPA", 400], ["DHA", 300], ["Other omega-3", 100]], "800 mg omega-3", "1,000 mg anchovy fish oil concentrate", "Rest of the oil"],
-      claim: "Supports heart, brain & joint health", supports: [["heart", "Heart health"], ["brain", "Brain health"], ["joint", "Joint health"]],
-      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]],
-      swap: [["2 bottles save 5%, 3 save 10%. The saving is applied in your bag.", "60 softgels a bottle."],
-        ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "One report per production batch. Reports appear as they are published."],
-        ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Every rating is published, low ones too. Sample reviews show until real ones arrive."],
-        ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "We deliver across India. If we can’t reach you, we say so before you pay. Dates are estimates."]]
+      says: true,
+      supports: [["heart", "Heart health"], ["brain", "Brain health"], ["joint", "Joint health"]],
+      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]]
+    },
+    "vitamin-d3-k2": {
+      stats: [["600 IU", "vitamin D3"], ["55 mcg", "K2 as MK-7"], ["200 mg", "omega-3"]], statsNote: "Per softgel, in anchovy fish oil",
+      // Label: D3 600 IU and K2 55 mcg, each 100% RDA (ICMR 2020, men moderate work); 250 mg oil with 200 mg omega-3, EPA 100 mg, DHA 75 mg.
+      rda: ["Inside one softgel", [["Vitamin D3", "600 IU", 100], ["Vitamin K2 as MK-7", "55 mcg", 100]], "RDA as per ICMR guidelines 2020 (men, moderate work)."],
+      inside: ["Dissolved in anchovy fish oil", 250, [["EPA", 100], ["DHA", 75], ["Other omega-3", 25]], "200 mg omega-3", "250 mg anchovy fish oil concentrate", "Rest of the oil"],
+      says: true,
+      supports: [["joint", "Bone health"], ["muscle", "Muscle health"], ["heart", "Heart health"]],
+      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]]
+    },
+    "creatine-chews": {
+      stats: [["3,000 mg", "creatine"], ["2", "chews"], ["3.6 g", "sugar"]], statsNote: "Per serving, as creatine monohydrate. No powder to mix.",
+      supports: [["muscle", "Strength"], ["gauge", "Performance"]],
+      dose: [["chew", "Chew 2 tablets"], ["clock", "Once a day, same time"], ["food", "With or without food"]]
+    },
+    "iron-bisglycinate": {
+      stats: [["29 mg", "iron"], ["100%", "ICMR RDA"], ["1", "capsule"]], statsNote: "Per capsule, as Ferrochel® ferrous bisglycinate chelate",
+      // Label directions: on an empty stomach; no milk for 2 hours before or after (the workbook's decision adds chai).
+      win: ["Around your capsule", "2 hours before", "2 hours after", "No milk or chai", "1 capsule, empty stomach"],
+      rda: ["Against the ICMR RDA", [["Elemental iron", "29 mg", 100]], "RDA as per ICMR guidelines 2020 (women, moderate work)."],
+      supports: [["drop", "Hemoglobin formation"], ["bolt", "Energy metabolism"]],
+      dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["plate", "On an empty stomach"]]
+    },
+    "l-theanine": {
+      stats: [["200 mg", "L-theanine"], ["1", "capsule"], ["1", "active ingredient"]], statsNote: "Per capsule. The amino acid naturally found in green tea.",
+      supports: [["leaf", "Calm mind"], ["target", "Clear focus"]],
+      dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["food", "With or without food"]]
+    },
+    "myo-d-chiro-inositol": {
+      stats: [["2,000 mg", "myo-inositol"], ["50 mg", "D-chiro-inositol"], ["40:1", "ratio"]], statsNote: "Per serving of three capsules",
+      ratio: [[40, "2,000 mg", "Myo-inositol"], [1, "50 mg", "D-chiro-inositol"], "40 : 1, in every serving of three capsules"],
+      supports: [["scale", "Hormonal balance"], ["cycle", "Metabolic balance"]],
+      dose: [["capsule", "3 capsules"], ["sun", "In the morning"], ["food", "With food"]]
+    },
+    "psyllium-husk": {
+      stats: [["2,000 mg", "psyllium husk"], ["1,578 mg", "dietary fibre"], ["1,362 mg", "soluble fibre"]], statsNote: "Per serving of five capsules",
+      // Label: 2,000 mg husk giving 1,578 mg dietary fibre, 1,362 mg of it soluble. The other two parts are the differences.
+      inside: ["Inside one serving: five capsules", 2000, [["Soluble fibre", 1362], ["Other fibre", 216]], "1,578 mg dietary fibre", "2,000 mg psyllium husk (isabgol)", "Rest of the husk"],
+      says: true,
+      supports: [["gut", "Digestive health"], ["calendar", "Regularity"]],
+      dose: [["capsule", "5 capsules"], ["moon", "Once a day, at night"], ["glass", "With food and a full glass of water"]]
     }
   };
+  function num(n) { return Number(n).toLocaleString("en-IN"); }
   function tiles(list, label) {
-    return '<ul class="cf-tiles"' + (label ? ' aria-label="' + esc(label) + '"' : "") + ">" + list.map(function (t) { return "<li><i>" + icon(t[0]) + "</i><span>" + esc(t[1]) + "</span></li>"; }).join("") + "</ul>";
+    return '<ul class="cf-tiles" style="--n:' + list.length + '"' + (label ? ' aria-label="' + esc(label) + '"' : "") + ">" + list.map(function (t) { return "<li><i>" + icon(t[0]) + "</i><span>" + esc(t[1]) + "</span></li>"; }).join("") + "</ul>";
+  }
+  // The description figures, in order; each is a picture of facts the page also gives in words, hidden from screen readers when `says`.
+  function figures(v, hide) {
+    var out = [], img = function (label) { return hide ? ' aria-hidden="true"' : ' role="img" aria-label="' + esc(label) + '"'; };
+    var pills = function (n) { return '<span class="cf-vs-pills" aria-hidden="true">' + new Array(n + 1).join("<i></i>") + "</span>"; };
+    var side = function (x, cls) { return '<div class="cf-vs-side' + cls + '">' + pills(x[0]) + "<b>" + esc(x[1]) + "</b><span>" + esc(x[2]) + "</span></div>"; };
+    if (v.versus) {
+      var a = v.versus;
+      out.push('<figure class="cf-vs">' + side(a[0], "") + '<div class="cf-vs-mid" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36M30 4l10 8-10 8"/></svg><em>vs</em></div>' + side(a[1], " is-us") + "<figcaption>" + esc(a[2]) + "</figcaption></figure>");
+    }
+    if (v.ratio) {
+      var r = v.ratio;
+      out.push('<figure class="cf-vs is-ratio"' + img(r[0][0] + " parts " + r[0][2] + " to " + r[1][0] + " part " + r[1][2] + ": " + r[0][1] + " and " + r[1][1]) + ">" + side(r[0], " is-us") + '<div class="cf-vs-mid" aria-hidden="true"><em>:</em></div>' + side(r[1], " is-two") + "<figcaption>" + esc(r[2]) + "</figcaption></figure>");
+    }
+    if (v.win) {
+      var w = v.win;
+      out.push('<figure class="cf-win"' + img(w[4] + ". " + w[3] + ", " + w[1] + " and " + w[2] + ".") + '><p class="cf-in-k">' + esc(w[0]) + "</p>" +
+        '<div class="cf-win-track"><span class="cf-win-zone"><b>' + esc(w[3]) + "</b><small>" + esc(w[1]) + '</small></span><span class="cf-win-dose"><i>' + icon("capsule") + "</i></span>" +
+        '<span class="cf-win-zone"><b>' + esc(w[3]) + "</b><small>" + esc(w[2]) + '</small></span></div><p class="cf-win-mid">' + esc(w[4]) + "</p></figure>");
+    }
+    if (v.rda) {
+      var d = v.rda;
+      out.push('<div class="cf-rda"' + img(d[1].map(function (x) { return x[0] + " " + x[1] + ", " + x[2] + "% of the RDA"; }).join("; ") + ". " + d[2]) + '><p class="cf-in-k">' + esc(d[0]) + "</p><ul>" +
+        d[1].map(function (x) { return '<li><span class="cf-rda-n">' + esc(x[0]) + "</span><b>" + esc(x[1]) + '</b><span class="cf-rda-m"><i style="width:' + Math.min(100, x[2]) + '%"></i></span><small>' + x[2] + "% RDA</small></li>"; }).join("") +
+        '</ul><p class="cf-rda-note">' + esc(d[2]) + "</p></div>");
+    }
+    if (v.inside) {
+      var ins = v.inside, used = ins[2].reduce(function (t, x) { return t + x[1]; }, 0);
+      out.push('<div class="cf-in"><p class="cf-in-k">' + esc(ins[0]) + '</p><div class="cf-in-bar"' + img(ins[2].map(function (x) { return x[0] + " " + num(x[1]) + " mg"; }).join(", ") + ", in " + ins[4]) + ">" +
+        ins[2].map(function (x, i) { return '<span class="s' + i + '" style="flex-basis:' + (x[1] / ins[1] * 100) + '%">' + (x[1] / ins[1] >= .2 ? "<b>" + num(x[1]) + " mg</b><small>" + esc(x[0]) + "</small>" : "") + "</span>"; }).join("") + '<span class="rest"></span></div>' +
+        '<div class="cf-in-scale" aria-hidden="true"><span style="flex-basis:' + (used / ins[1] * 100) + '%">' + esc(ins[3]) + "</span></div>" +
+        '<p class="cf-in-total" aria-hidden="true">' + esc(ins[4]) + "</p>" +
+        '<ul class="cf-in-key">' + ins[2].concat([[ins[5], ins[1] - used]]).map(function (x, i) { return '<li><i class="' + (i < ins[2].length ? "s" + i : "rest") + '"></i>' + esc(x[0]) + " <b>" + num(x[1]) + " mg</b></li>"; }).join("") + "</ul></div>");
+    }
+    return out.join("");
   }
   page("product", function (root, args) {
     var id = args[1] && args[1].id, v = VIS[id], grid = root.querySelector(".p2-pdp-grid");
     if (!v || !grid) return;
     grid.classList.add("cf-vis");
-    swap(root, v.swap);
+    var pack = String(args[1].pack_size || "").trim();
+    swap(root, VIS_SWAP.concat(pack ? [[PACK_NOTE, pack + " a bottle."]] : []));
     // "MRP" goes; the space it held stays, so the three pack cards keep their lines level.
     [].forEach.call(root.querySelectorAll(".pk-save.is-mrp"), function (n) { n.innerHTML = "&nbsp;"; n.setAttribute("aria-hidden", "true"); });
-    // Owner, 18 Nov 2026 (this page only): each pack card gives its servings (60, 120, 180) where it said 1, 2 or 3 bottles.
+    // Owner, 18 Nov 2026: each pack card gives its servings (60, 120, 180 for a 60-serving bottle) where it said 1, 2 or 3 bottles.
     var serv = parseInt(args[1].servings_per_pack, 10);
     if (serv > 0) [].forEach.call(root.querySelectorAll(".pk-card"), function (c) {
       var n = [].filter.call(c.querySelectorAll(".pk-n, .pk-days"), function (x) { return /\bbottles?$/.test(x.textContent); })[0];
       if (n) n.textContent = serv * +c.dataset.pkQ + " servings";
     });
-    // Owner, 17 Nov 2026 (this page only): the rating sits at the right end of the pack-size and diet line; "Best value" goes
+    // Owner, 17 Nov 2026: the rating sits at the right end of the pack-size and diet line; "Best value" goes
     // (the Save chip takes its place on the card's top edge, in the style sheet); and there is no − n + stepper: the pack
     // cards choose 1, 2 or 3 bottles.
     var chips = root.querySelector(".p2-buy-chips"), rating = root.querySelector(".p2-buy > .p2-buy-rating");
@@ -875,32 +977,23 @@
     var forK = root.querySelector(".p2-buy .cf-for-k"); if (forK) forK.remove();
     var how = root.querySelector(".p2-buy .cf-for-how");
     if (how && how.textContent.trim() === BASE.U[id][3]) how.outerHTML = '<dl class="cf-stats">' + v.stats.map(function (x) { return "<div><dd>" + esc(x[0]) + "</dd><dt>" + esc(x[1]) + "</dt></div>"; }).join("") + '</dl><p class="cf-stats-note">' + esc(v.statsNote) + "</p>";
-    // Description: the comparison and the softgel's contents under the headline, then the four questions as cards.
+    // Description: the product's figures under the headline, then the four questions as cards.
     var h = root.querySelector(".p2-pdp-accs .p2-acc-h"), body = h && h.parentNode;
     if (body) {
-      var pills = function (n) { return '<span class="cf-vs-pills" aria-hidden="true">' + new Array(n + 1).join("<i></i>") + "</span>"; };
-      var side = function (x, us) { return '<div class="cf-vs-side' + (us ? " is-us" : "") + '">' + pills(x[0]) + "<b>" + esc(x[1]) + "</b><span>" + esc(x[2]) + "</span></div>"; };
-      var a = v.versus, ins = v.inside, used = ins[2].reduce(function (t, x) { return t + x[1]; }, 0);
-      var vs = '<figure class="cf-vs">' + side(a[0]) + '<div class="cf-vs-mid" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36M30 4l10 8-10 8"/></svg><em>vs</em></div>' + side(a[1], true) + "<figcaption>" + esc(a[2]) + "</figcaption></figure>";
-      var bar = '<div class="cf-in"><p class="cf-in-k">' + esc(ins[0]) + '</p><div class="cf-in-bar" role="img" aria-label="' + esc(ins[2].map(function (x) { return x[0] + " " + x[1] + " mg"; }).join(", ") + ", in " + ins[4]) + '">' +
-        ins[2].map(function (x, i) { return '<span class="s' + i + '" style="flex-basis:' + (x[1] / ins[1] * 100) + '%">' + (x[1] / ins[1] >= .2 ? "<b>" + x[1] + " mg</b><small>" + esc(x[0]) + "</small>" : "") + "</span>"; }).join("") + '<span class="rest"></span></div>' +
-        '<div class="cf-in-scale" aria-hidden="true"><span style="flex-basis:' + (used / ins[1] * 100) + '%">' + esc(ins[3]) + "</span></div>" +
-        '<p class="cf-in-total" aria-hidden="true">' + esc(ins[4]) + "</p>" +
-        '<ul class="cf-in-key">' + ins[2].concat([[ins[5], ins[1] - used]]).map(function (x, i) { return '<li><i class="' + (i < ins[2].length ? "s" + i : "rest") + '"></i>' + esc(x[0]) + " <b>" + x[1] + " mg</b></li>"; }).join("") + "</ul></div>";
       var sup = body.querySelector(".cf-support");
-      // The bar says the support line in full (oil, omega-3, EPA, DHA), so the sentence is kept for screen readers only, unless the admin rewrote it.
-      if (sup && sup.textContent.trim() === BASE.P[id].support) { sup.classList.add("sr-only"); bar = bar.replace(/ role="img" aria-label="[^"]*"/, ' aria-hidden="true"'); }
-      h.insertAdjacentHTML("afterend", vs);
-      if (sup) sup.insertAdjacentHTML("beforebegin", bar); else body.querySelector(".cf-vs").insertAdjacentHTML("afterend", bar);
+      // When the figures say the support line in full, the sentence is kept for screen readers only, unless the admin rewrote it.
+      var hide = !!(v.says && sup && sup.textContent.trim() === BASE.P[id].support);
+      if (hide) sup.classList.add("sr-only");
+      h.insertAdjacentHTML("afterend", figures(v, hide));
       var qs = [].slice.call(body.querySelectorAll(".cf-q"));
       if (qs.length) {
         var wrap = document.createElement("div"); wrap.className = "cf-why"; body.insertBefore(wrap, qs[0]);
         qs.forEach(function (q) { var c = document.createElement("div"), p = q.nextElementSibling; wrap.appendChild(c); c.appendChild(q); if (p && p.tagName === "P") c.appendChild(p); });
       }
     }
-    // Key benefits: the label claim as three tiles (only while the claim is the label's own line).
+    // Key benefits: the label claim as tiles (only while the claim is the label's own line).
     var claim = root.querySelector(".p2-pdp-accs .p2-claim");
-    if (claim && claim.textContent.trim().toLowerCase() === v.claim.toLowerCase()) claim.outerHTML = '<p class="cf-tiles-k">Supports</p>' + tiles(v.supports, claim.textContent.trim());
+    if (claim && claim.textContent.trim().toLowerCase() === BASE.U[id][0].toLowerCase()) claim.outerHTML = '<p class="cf-tiles-k">Supports</p>' + tiles(v.supports, claim.textContent.trim());
     // Directions: the dose as a strip in place of the food tag; the label's sentence stays under it.
     var use = root.querySelector(".p2-use"), food = root.querySelector(".cf-food");
     if (use) { if (food) food.remove(); use.insertAdjacentHTML("beforebegin", tiles(v.dose, "How to take it")); }

@@ -296,7 +296,7 @@ body[data-content-focus="1"] .cf-founder-band h2 { margin: 0; font-size: clamp(3
 body[data-content-focus="1"] .cf-fb-p { max-width: 56ch; margin: 0 0 14px; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.55; color: var(--p2-text); }
 @media (max-width: 760px) { body[data-content-focus="1"] .cf-fb-in { grid-template-columns: 1fr; gap: 14px; } }
 
-/* ---------- The visual product page (17 Nov 2026, owner's note). Only products listed in VIS (content-focus-e.js): Omega-3 for now. ---------- */
+/* ---------- The visual product page (17 Nov 2026, owner's note). Only products listed in VIS (content-focus-e.js): all seven since 18 Nov 2026. ---------- */
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-stats > div { display: flex; flex-direction: column; gap: 3px; padding: 10px 6px 9px; border-radius: 12px; background: #fff; text-align: center; }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-stats dd { margin: 0; font: 600 clamp(17px, 1.5vw, 20px)/1.1 "Aileron", sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--p2-ink); }
@@ -323,7 +323,7 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs figcaption 
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in { margin: 22px 0 0; }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-k,
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles-k { margin: 0 0 8px; font: 400 11px/1.3 "Lemon Milk", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--p2-text); }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar { display: flex; height: 58px; overflow: hidden; border-radius: 14px; background: var(--p2-plate, #f1ede6); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar { display: flex; height: 58px; overflow: hidden; border-radius: 14px; background: var(--p2-plate, #f1ede6); box-shadow: inset 0 0 0 1px var(--p2-line); }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar span { flex: 0 0 auto; display: grid; align-content: center; gap: 2px; min-width: 0; padding: 0 10px; border-right: 2px solid #fff; color: var(--p2-ink); }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar .s0 { background: color-mix(in srgb, var(--cap) 70%, #fff); }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-bar .s1 { background: color-mix(in srgb, var(--cap) 45%, #fff); }
@@ -341,7 +341,7 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why > div { pa
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why .cf-q { margin: 0 0 6px; }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why p { margin: 0; font-size: 14.5px; line-height: 1.5; }
 
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 16px; padding: 0; list-style: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 8px; margin: 0 0 16px; padding: 0; list-style: none; }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles li { display: grid; justify-items: center; gap: 8px; padding: 14px 6px 12px; border: 1px solid var(--p2-line); border-radius: 14px; font: 600 14px/1.25 "Aileron", sans-serif; text-align: center; color: var(--p2-ink); }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles i { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: color-mix(in srgb, var(--cap) 22%, #fff); }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles svg { width: 22px; height: 22px; fill: none; stroke: var(--p2-ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
@@ -368,4 +368,44 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key i { wid
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .s0 { background: color-mix(in srgb, var(--cap) 70%, #fff); }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .s1 { background: color-mix(in srgb, var(--cap) 45%, #fff); }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .s2 { background: color-mix(in srgb, var(--cap) 24%, #fff); }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .rest { background: var(--p2-plate, #f1ede6); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-in-key .rest { background: var(--p2-plate, #f1ede6); border-color: var(--p2-line); }
+/* The other products' figures (18 Nov 2026). A ratio as pills (Myo & D-Chiro: 40 to 1). */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-pills { display: grid; grid-template-columns: repeat(10, 9px); gap: 4px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-pills i { width: 9px; height: 18px; border-width: 1px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-side.is-two .cf-vs-pills { grid-template-columns: 9px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-side.is-two .cf-vs-pills i { background: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-mid em { font-size: clamp(28px, 4vw, 40px); color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-side { align-self: end; }
+/* The time around a dose (Iron: no milk or chai for 2 hours either side). */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win { margin: 16px 0 0; padding: clamp(14px, 2vw, 22px) clamp(12px, 2vw, 22px) 14px; border-radius: 18px; background: #fff; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-track { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-zone { display: grid; gap: 3px; padding: 12px 10px; text-align: center; background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--cap) 16%, #fff) 0 8px, color-mix(in srgb, var(--cap) 30%, #fff) 8px 16px); color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-zone:first-child { border-radius: 12px 0 0 12px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-zone:last-child { border-radius: 0 12px 12px 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-zone b { font: 600 14px/1.2 "Aileron", sans-serif; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-zone small { font: 400 10px/1.2 "Lemon Milk", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-dose i { display: grid; place-items: center; width: 54px; height: 54px; margin: 0 -4px; border: 2px solid var(--p2-ink); border-radius: 50%; background: var(--cap); position: relative; z-index: 1; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-dose svg { width: 26px; height: 26px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-mid { margin: 8px 0 0; font: 600 13px/1.3 "Aileron", sans-serif; text-align: center; color: var(--p2-ink); }
+/* Amounts against the ICMR RDA the label prints (Vitamin D3 + K2, Iron). */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda { margin: 18px 0 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 4px 12px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda-n { font-size: 14px; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda li > b { font: 700 18px/1.1 "Aileron", sans-serif; font-variant-numeric: tabular-nums; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda-m { height: 12px; overflow: hidden; border-radius: 999px; background: var(--p2-plate, #f1ede6); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda-m i { display: block; height: 100%; border-radius: inherit; background: color-mix(in srgb, var(--cap) 70%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda li > small { font: 400 10px/1 "Lemon Milk", sans-serif; letter-spacing: .12em; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda-note { margin: 8px 0 0; font-size: 12px; line-height: 1.4; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda + .cf-in { margin-top: 18px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs + .cf-support,
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win + .cf-support,
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda + .cf-support { margin-top: 14px; }
+@media (max-width: 560px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-pills { grid-template-columns: repeat(8, 7px); gap: 3px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-pills i { width: 7px; height: 14px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-ratio .cf-vs-side.is-two .cf-vs-pills { grid-template-columns: 7px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-zone { padding: 10px 6px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-zone b { font-size: 13px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-dose i { width: 44px; height: 44px; }
+}
