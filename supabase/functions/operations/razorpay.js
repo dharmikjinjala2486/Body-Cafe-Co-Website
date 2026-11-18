@@ -36,7 +36,12 @@ export function razorpay({key = '', secret = '', live = false, webhookSecret = '
      (read directly, which is immediate) comes first; the receipt search covers orders made before the id was recorded. */
   async function orderFor(receipt, paise, known = '') {
     const fits = o => o.receipt === receipt && o.amount === paise && o.currency === 'INR';
-    if (known && RZP_ID.test(known)) { const o = await call('GET', 'orders/' + known); if (fits(o) && ['paid', 'created', 'attempted'].includes(o.status)) return o; }
+    if (known && RZP_ID.test(known)) {
+      // Razorpay doesn't know the recorded order (a 502 from call): it was made in the other mode (test or live) before a
+      // switch. Treat it as gone; a payment of ours would still be found by the receipt search below.
+      let o = {}; try { o = await call('GET', 'orders/' + known); } catch (e) { if (e?.status !== 502) throw e; }
+      if (fits(o) && ['paid', 'created', 'attempted'].includes(o.status)) return o;
+    }
     const mine = ((await call('GET', 'orders?' + new URLSearchParams({receipt, count: '20'}))).items || []).filter(fits);
     return mine.find(o => o.status === 'paid') || mine.find(o => o.status === 'created' || o.status === 'attempted')
       || await call('POST', 'orders', {amount: paise, currency: 'INR', receipt, notes: {order: receipt}});

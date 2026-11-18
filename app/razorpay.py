@@ -88,7 +88,13 @@ def order_for(receipt, paise, known=''):
     (read directly, which is immediate) comes first; the receipt search covers orders made before the id was recorded."""
     fits = lambda o: o.get('receipt') == receipt and o.get('amount') == paise and o.get('currency') == 'INR'
     if known and RZP_ID.fullmatch(known):
-        o = call('GET', 'orders/' + known)
+        try:
+            o = call('GET', 'orders/' + known)
+        except Error as e:
+            # Razorpay doesn't know the recorded order: it was made in the other mode (test or live) before a switch.
+            # Treat it as gone; a payment of ours would still be found by the receipt search below.
+            if e.status != 502: raise
+            o = {}
         if fits(o) and o.get('status') in ('paid', 'created', 'attempted'): return o
     mine = [o for o in call('GET', 'orders', query={'receipt': receipt, 'count': 20}).get('items') or [] if fits(o)]
     for o in mine:

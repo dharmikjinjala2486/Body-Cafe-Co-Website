@@ -40,7 +40,10 @@ class FakeRazorpay:
             self.orders.append(o); return reply(o)
         if path == 'orders': return reply({'items': [] if self.lag else [o for o in self.orders if o['receipt'] == q['receipt'][0]]})
         if path.endswith('/payments'): return reply({'items': [p for p in self.payments if p['order_id'] == path.split('/')[1]]})
-        if path.startswith('orders/'): return reply(next(o for o in self.orders if o['id'] == path.split('/')[1]))
+        if path.startswith('orders/'):
+            o = next((o for o in self.orders if o['id'] == path.split('/')[1]), None)
+            if o is None: raise urllib.error.HTTPError(req.full_url, 400, 'Bad Request', {}, io.BytesIO(b'{"error":{"description":"The id provided does not exist"}}'))
+            return reply(o)
         if path.startswith('payments/'): return reply(next(p for p in self.payments if p['id'] == path.split('/')[1]))
         raise AssertionError(path)
 
@@ -222,6 +225,16 @@ class RazorpayTests(unittest.TestCase):
             self.assertFalse(razorpay.configured())  # the test keys are not borrowed for live
         self.assertEqual(razorpay.config()['mode'], 'test')
 
+
+
+    def test_an_order_started_in_the_other_mode_gets_a_new_razorpay_order(self):
+        o = self.order(); first = self.store.razorpay_start(self.guest, o['id'])['rzp_order']
+        self.fake.orders.clear()  # the recorded Razorpay order belongs to the other account (test vs live)
+        r = self.store.razorpay_start(self.guest, o['id'])
+        self.assertNotEqual(r['rzp_order'], first); self.assertEqual([x['receipt'] for x in self.fake.orders], [o['id']])
+        self.fake.down = True
+        with self.assertRaises(Error) as e: self.store.razorpay_start(self.guest, o['id'])
+        self.assertEqual(e.exception.status, 503)  # unreachable is still an error, never a new order
 
 
 if __name__ == '__main__':

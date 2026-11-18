@@ -158,6 +158,11 @@ const mNotes = await notes(m.id);
 [s, j] = await post('/orders/' + m.id + '/pay/verify', {razorpay_order_id: ninth, razorpay_payment_id: mPay, razorpay_signature: sign(ninth, mPay)}); assert.equal(j.reason, 'paid_after_hold');
 r = await row(m.id); assert.equal(r.state, 'expired'); assert.equal(r.data.payment_after_hold, true); assert.equal(await notes(m.id), mNotes); checks++;
 
+// An order whose recorded Razorpay order belongs to the other mode (made before a test/live switch) gets a new one at Pay.
+const q = await place(); [s, j] = await post('/orders/' + q.id + '/pay', {}); const before = j.rzp_order;
+rzp.orders = rzp.orders.filter(o => o.id !== before);
+[s, j] = await post('/orders/' + q.id + '/pay', {}); assert.equal(s, 200, JSON.stringify(j)); assert.notEqual(j.rzp_order, before); assert.equal((await row(q.id)).data.rzp_order, j.rzp_order); checks++;
+
 // RAZORPAY_MODE: live uses the live pair; neither mode runs on the other kind of key; live never borrows the test pair.
 const live = make(KEY, SECRET, {razorpayMode: 'live', razorpayLiveKey: LIVE_KEY, razorpayLiveSecret: LIVE_SECRET});
 const n = await place(); [s, j] = await post('/orders/' + n.id + '/pay', {}, guest, live); assert.equal(s, 200, JSON.stringify(j)); assert.equal(j.key, LIVE_KEY); assert.equal(j.test, false); checks++;
