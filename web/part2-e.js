@@ -346,7 +346,7 @@
       '<div class="p2-accs p2-pdp-accs">' + sections.map(function (s) { return acc(s[0], s[1], s[2]); }).join("") + "</div></div>" +
 
       '<aside class="p2-buy" data-pk-scope aria-label="Buy ' + esc(p.name) + '"><div class="p2-buy-chips"><span class="p2-chip">' + esc(p.pack_size || formatOf(ctx, p)) + "</span>" + dietMark(p) + "</div>" +
-      (rv.length ? '<a class="p2-buy-rating" href="#p2-reviews">' + stars(Math.round(avg)) + "<span>" + rv.length + " sample review" + (rv.length === 1 ? "" : "s") + "</span></a>" : "") +
+      (rv.length ? '<a class="p2-buy-rating" href="#p2-reviews">' + stars(Math.round(avg)) + "<span>" + rv.length + " review" + (rv.length === 1 ? "" : "s") + "</span></a>" : "") +
       "<h1>" + esc(p.name) + '</h1><p class="p2-buy-sub">' + esc(String(p.subtitle || "").split(" · ").filter(function (x) { return !p.pack_size || x.trim().toLowerCase() !== String(p.pack_size).toLowerCase(); }).join(" · ")) + "</p>" +
       // Choose your pack (owner, 4 Nov 2026): the cards drive the hidden quantity select that add-product reads (web/packs-e.js).
       (window.BCCPacks ? window.BCCPacks.picker(p, { max: m.max, off: !!m.off, cls: "pk-p2", months: true }) : "") +
