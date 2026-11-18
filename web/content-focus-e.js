@@ -718,7 +718,7 @@
   /* Write a review (17 Nov 2026, owner). Content Focus only. The product page's review section gains "Write a review": it asks
      the API who may review (/api/reviews/eligibility: a signed-in customer with a delivered order for this product, once) and
      shows the form or the reason. Submitted reviews wait for approval in the admin portal (Reviews). Published customer reviews
-     (/api/reviews) are listed above the samples. Both servers apply the same rules (app/server.py, core.js). */
+     (/api/reviews) are listed in the section. Both servers apply the same rules (app/server.py, core.js). */
   var RV = {
     write: "Write a review",
     sign_in: ["Sign in to write a review. Reviews come from customers whose order has been delivered.", "Sign in"],
@@ -845,7 +845,7 @@
       dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]],
       swap: [["2 bottles save 5%, 3 save 10%. The saving is applied in your bag.", "60 softgels a bottle."],
         ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "One report per production batch. Reports appear as they are published."],
-        ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Every rating is published, low ones too. Sample reviews show until real ones arrive."],
+        ["Only customers whose order was delivered can review. Every rating is published, low ones too.", "Only delivered orders can review. Every rating is published, low ones too."],
         ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "We deliver across India. If we can’t reach you, we say so before you pay. Dates are estimates."]]
     }
   };

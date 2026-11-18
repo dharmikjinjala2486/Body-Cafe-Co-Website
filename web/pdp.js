@@ -183,7 +183,7 @@
         '<p class="pd-lot-for">For <strong>' + m.name + "</strong></p>" +
         '<label for="pdp-lot-number">Lot number on your pack</label>' +
         '<div class="pd-inline"><input id="pdp-lot-number" name="lot" maxlength="60" required autocomplete="off" placeholder="e.g. ' + m.sample + '"><button type="submit" class="' + (btnCls || "") + '">Look up</button></div>' +
-        '<p class="pd-micro">Demonstration only. Try <button type="button" class="link-button" data-fill-pdp-lot="' + m.sample + '">the sample lot ' + m.sample + "</button>, or open <a href=\"/reports?product=" + m.id + '">all lot reports</a>.</p>' +
+        '<p class="pd-micro">Demonstration only. Try <button type="button" class="link-button" data-fill-pdp-lot="' + m.sample + '">the demo lot ' + m.sample + "</button>, or open <a href=\"/reports?product=" + m.id + '">all lot reports</a>.</p>' +
       "</form>"
     );
   }

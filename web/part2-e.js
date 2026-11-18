@@ -122,8 +122,9 @@
       a("change-of-mind", "Can I return a product?", "We only take back items that arrived damaged, wrong, missing, faulty or expired."),
     ].filter(function (f) { return !MAKER.test(f[1]); });
   }
-  function reviewsFor(id) { var V = window.BCCVoicesE; // Samples that say the dose is printed on the pack front are left out: the real fronts do not print it.
-    return ((V && V.samples) || []).filter(function (r) { return (!id || r[0] === id) && !/on the front|right on the front/i.test(r[2] + " " + r[3]); }); }
+  // Owner, 18 Nov 2026: the placeholder reviews (window.BCCVoicesE.samples) are no longer shown in Parts 2, 3, 4 or Content
+  // Focus. Each review section falls back to its empty state; Content Focus lists published customer reviews (/api/reviews).
+  function reviewsFor() { return []; }
   function stars(n) { var s = ""; for (var i = 1; i <= 5; i++) s += '<i class="' + (i <= n ? "is-on" : "") + '"></i>'; return '<span class="p2-stars" role="img" aria-label="' + n + ' out of 5">' + s + "</span>"; }
   function reviewSummary(list) {
     if (!list.length) return "";
@@ -135,7 +136,7 @@
     return '<li class="p2-review" style="--cap:' + esc(p.color) + '"><div class="p2-review-top">' + stars(r[1]) + '<span class="p2-sample">Sample</span></div><p class="p2-review-title">' + esc(r[2]) + "</p><blockquote><p>" + esc(r[3]) + "</p></blockquote>" +
       '<p class="p2-review-who"><b>' + esc(r[4]) + "</b> · " + esc(r[5]) + ' · <a href="' + href(p) + '"><i class="p2-dot"></i>' + esc(p.name) + "</a></p></li>";
   }
-  var REVIEW_RULE = "Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.";
+  var REVIEW_RULE = "Only customers whose order was delivered can review. Every rating is published, low ones too.";
   // Inline lot lookup: pick by cap, type the number. Submits as #home-lot (app.js opens /reports with the result).
   function lotForm(ctx, o) {
     o = o || {}; var list = ctx.catalog, first = list[0];
