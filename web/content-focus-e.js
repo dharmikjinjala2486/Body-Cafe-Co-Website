@@ -15,7 +15,7 @@
     link: "See the reasoning" // 5
   };
   // The review note under the home and product page reviews (fewer words, owner, 19 Nov 2026).
-  var REVIEW_NOTE = ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Low ratings are published too. Samples show until real reviews arrive."];
+  var REVIEW_NOTE = ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Low ratings are published too."];
   var TEXT = {
     home: [ // 6, 9, 20, 21, 24
       REVIEW_NOTE,
@@ -83,72 +83,72 @@
   var PRODUCTS = {
     "iron-bisglycinate": {
       "headline": "Iron first. Chai later.",
-      "support": "29 mg of elemental iron per capsule, as Ferrochel® bisglycinate. Taken alone, on an empty stomach, away from milk.",
-      "ingredient": "Many Indian women fall short of iron. The ICMR daily requirement for adult women is 29 mg.",
-      "form": "Iron bound to glycine, an amino acid. We use Ferrochel® and name it on the front.",
-      "amount": "29 mg of elemental iron: 100% of the ICMR RDA. The iron you get, not the compound’s weight.",
-      "decision": "Iron stands alone. Calcium can reduce how much iron is absorbed, so milk and chai wait two hours."
+      "support": "29 mg iron as Ferrochel®. Empty stomach, away from milk.",
+      "ingredient": "Many Indian women fall short. ICMR sets 29 mg a day for women.",
+      "form": "Iron bound to glycine. Ferrochel®, named on the front.",
+      "amount": "29 mg elemental iron: 100% of the ICMR RDA.",
+      "decision": "Iron goes alone. Calcium can lower iron uptake, so no milk or chai for 2 hours."
     },
     "vitamin-d3-k2": {
       "headline": "Two fat-soluble vitamins. One oil. On purpose.",
-      "support": "600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel.",
-      "ingredient": "Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins in bone.",
-      "form": "D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so they sit in oil, not a dry tablet.",
-      "amount": "600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA. The reference level, not a megadose.",
-      "decision": "A deliberate pair. Both dissolve in fat, so one softgel of oil carries both. Take it with a meal."
+      "support": "600 IU D3 and 55 mcg K2 (MK-7), in anchovy fish oil.",
+      "ingredient": "D helps the body absorb calcium. K is needed for proteins in bone.",
+      "form": "D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so: oil.",
+      "amount": "Each 100% of the ICMR RDA. Not a megadose.",
+      "decision": "D3 and K2 both need fat, so one softgel of oil carries both. Take it with a meal."
     },
     "omega-3-fish-oil": {
       "headline": "Count the omega-3, not the oil.",
-      "support": "1,000 mg of anchovy fish oil concentrate per softgel. 800 mg of it is omega-3: 400 mg EPA and 300 mg DHA.",
-      "ingredient": "EPA and DHA: the omega-3s people look for in fish oil. Your body barely makes them, so they come mainly from fish.",
-      "form": "Triglycerides, the form found in fish. From concentrated anchovy oil.",
-      "amount": "800 mg of omega-3 per softgel. The omega-3 is the number that matters, so we print it.",
-      "decision": "Two numbers on the label: the oil and the omega-3 in it. EPA and DHA shown separately."
+      "support": "800 mg omega-3 in every 1,000 mg softgel: 400 mg EPA, 300 mg DHA.",
+      "ingredient": "EPA and DHA. Your body makes little, so they come from fish.",
+      "form": "Triglycerides, as found in fish. From anchovy oil.",
+      "amount": "800 mg omega-3 per softgel, printed on the front.",
+      "decision": "We print the omega-3, not just the oil, so you know what you get."
     },
     "l-theanine": {
       "headline": "One amino acid. 200 mg. Nothing else active.",
-      "support": "200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule.",
-      "ingredient": "The amino acid tea is known for. A simple, well-characterised single ingredient.",
-      "form": "Free-form L-theanine, on its own. The amount on the label is the amount you take.",
-      "amount": "200 mg, an amount used in published studies.",
-      "decision": "One ingredient, one number, one capsule. No blend to divide the dose."
+      "support": "200 mg L-theanine, the green-tea amino acid, in one capsule.",
+      "ingredient": "The amino acid tea is known for. One simple ingredient.",
+      "form": "Free-form, on its own. What the label says is what you take.",
+      "amount": "200 mg, as used in published studies.",
+      "decision": "Only L-theanine, no blend, so all 200 mg is the one ingredient."
     },
     "myo-d-chiro-inositol": {
       "headline": "Two inositols. One ratio. 40:1, on the front.",
-      "support": "2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front.",
-      "ingredient": "Two forms of inositol that the body uses side by side.",
-      "form": "Research has looked at the two together, in a set ratio, not either one alone.",
-      "amount": "2,000 mg + 50 mg per three capsules: 40:1, a ratio used in research. Each batch stays within 36:1–44:1.",
-      "decision": "A deliberate pair. The ratio is the formula, so it goes on the front."
+      "support": "2,000 mg myo and 50 mg D-chiro per serving: 40:1.",
+      "ingredient": "Two forms of inositol the body uses together.",
+      "form": "Research studies them together, in a set ratio.",
+      "amount": "40:1 in three capsules. Each batch stays within 36:1–44:1.",
+      "decision": "Both inositols at 40:1, checked in every batch and printed on the front."
     },
     "creatine-chews": {
       "headline": "3 grams of creatine. Two chews. Your time.",
-      "support": "3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker.",
-      "ingredient": "One of the most researched sports-nutrition ingredients. It only helps if you take it daily.",
-      "form": "Creatine monohydrate, the most studied form. A chew, so there’s nothing to mix.",
-      "amount": "3 g per serving, within the 3–5 g daily intake commonly used in research.",
-      "decision": "A chew keeps the habit easy. We print the sugar it needs: 3.6 g per serving."
+      "support": "3,000 mg creatine monohydrate in two orange chews. No powder.",
+      "ingredient": "One of the most researched sports ingredients. Take it daily.",
+      "form": "Monohydrate, the most studied form. Nothing to mix.",
+      "amount": "3 g a day, within the 3–5 g used in research.",
+      "decision": "Chews, so you don’t skip a day. They need 3.6 g sugar, and we say so."
     },
     "psyllium-husk": {
       "headline": "The isabgol you know, measured in capsules.",
-      "support": "2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble.",
-      "ingredient": "Isabgol: a familiar source of soluble fibre in most Indian homes.",
-      "form": "Whole psyllium husk in capsules: the same ingredient, with nothing to stir.",
-      "amount": "2,000 mg of husk per serving. We print the fibre too, because husk and fibre are different numbers.",
-      "decision": "Isabgol, measured. Always with a full glass of water."
+      "support": "2,000 mg husk in five capsules: 1,578 mg fibre, 1,362 mg soluble.",
+      "ingredient": "Isabgol: the soluble fibre most Indian homes know.",
+      "form": "Whole husk in capsules. Nothing to stir.",
+      "amount": "2,000 mg husk per serving. Fibre printed too: a different number.",
+      "decision": "Isabgol without the stirring. Always take it with a full glass of water."
     }
   };
   /* Copy review 01's lines (17 Nov 2026), replaced the same day by the Version E workbook's own text (owner: "Workbook wins").
      A stored admin field that still holds one of these exactly was saved from that default, not written on purpose, so it
      gives way to the workbook text above (stale()). A key may list several, the 16 Nov holdbacks with copy review 01's line. */
   var PREV = {
-    "iron-bisglycinate": {"cf_support":["One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk."],"cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule.","Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg."],"cf_form":["Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside."],"cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in."],"cf_decision":"Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away."},
-    "vitamin-d3-k2": {"cf_support":"Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","cf_ingredient":["Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health."],"cf_form":["D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3."],"cf_decision":["One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal.","A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal."],"cf_amount":"600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose."},
-    "omega-3-fish-oil": {"cf_support":["Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.","1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA."],"cf_ingredient":["EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.","EPA and DHA are the omega-3s people look for in fish oil. The body makes very little, so they come mainly from fish.","EPA and DHA: the omega-3s your body barely makes. They come mainly from fish."],"cf_form":["Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.","Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","Concentrated anchovy oil. The omega-3 stays as triglycerides, the form found in fish."],"cf_amount":["800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA. The omega-3 is the number that matters, so we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA."],"cf_decision":["Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it. EPA and DHA are shown separately."]},
-    "l-theanine": {"cf_headline":"The green-tea amino acid. 200 mg, on its own.","cf_support":"One capsule in the morning, with or without food. One active ingredient, with its amount printed.","cf_ingredient":["L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.","L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient."],"cf_form":["Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.","Free-form L-theanine, on its own, so the amount you take is the amount on the label."],"cf_amount":"200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.","cf_decision":"One ingredient, one number, one capsule. No blend sharing the dose."},
-    "myo-d-chiro-inositol": {"cf_headline":"The ratio is the formula. 40:1.","cf_support":"40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","cf_form":["Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","Both forms are included because research has looked at them together, in a defined ratio, rather than either alone."],"cf_decision":["One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point.","A deliberate combination where the ratio is the formula, so the ratio goes on the front."],"cf_ingredient":"Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.","cf_amount":"2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1."},
-    "creatine-chews": {"cf_support":"Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day.","Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day."],"cf_amount":"3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","cf_decision":["Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print.","We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving."],"cf_form":"Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing."},
-    "psyllium-husk": {"cf_support":"Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.","cf_form":"Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.","cf_amount":["2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.","2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers."],"cf_decision":"Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass.","cf_ingredient":"Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes."}
+    "iron-bisglycinate": {"cf_support":["One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.","29 mg of elemental iron per capsule, as Ferrochel® bisglycinate. Taken alone, on an empty stomach, away from milk."],"cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule.","Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg.","Many Indian women fall short of iron. The ICMR daily requirement for adult women is 29 mg."],"cf_form":["Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.","Iron bound to glycine, an amino acid. We use Ferrochel® and name it on the front."],"cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. The iron you get, not the compound’s weight."],"cf_decision":["Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away.","Iron stands alone. Calcium can reduce how much iron is absorbed, so milk and chai wait two hours.","Calcium can cut iron absorption. Milk and chai wait 2 hours."]},
+    "vitamin-d3-k2": {"cf_support":["Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel."],"cf_ingredient":["Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.","Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins in bone."],"cf_form":["D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.","D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so they sit in oil, not a dry tablet."],"cf_decision":["One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal.","A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal.","A deliberate pair. Both dissolve in fat, so one softgel of oil carries both. Take it with a meal.","One softgel carries both. Take it with a meal."],"cf_amount":["600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose.","600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA. The reference level, not a megadose."]},
+    "omega-3-fish-oil": {"cf_support":["Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.","1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA.","1,000 mg of anchovy fish oil concentrate per softgel. 800 mg of it is omega-3: 400 mg EPA and 300 mg DHA."],"cf_ingredient":["EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.","EPA and DHA are the omega-3s people look for in fish oil. The body makes very little, so they come mainly from fish.","EPA and DHA: the omega-3s your body barely makes. They come mainly from fish.","EPA and DHA: the omega-3s people look for in fish oil. Your body barely makes them, so they come mainly from fish."],"cf_form":["Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.","Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","Concentrated anchovy oil. The omega-3 stays as triglycerides, the form found in fish.","Triglycerides, the form found in fish. From concentrated anchovy oil."],"cf_amount":["800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA. The omega-3 is the number that matters, so we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA.","800 mg of omega-3 per softgel. The omega-3 is the number that matters, so we print it."],"cf_decision":["Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it. EPA and DHA are shown separately.","Two numbers on the label: the oil and the omega-3 in it. EPA and DHA shown separately.","Oil and omega-3, both printed. EPA and DHA too."]},
+    "l-theanine": {"cf_headline":"The green-tea amino acid. 200 mg, on its own.","cf_support":["One capsule in the morning, with or without food. One active ingredient, with its amount printed.","200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule."],"cf_ingredient":["L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.","L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient.","The amino acid tea is known for. A simple, well-characterised single ingredient."],"cf_form":["Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.","Free-form L-theanine, on its own, so the amount you take is the amount on the label.","Free-form L-theanine, on its own. The amount on the label is the amount you take."],"cf_amount":["200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.","200 mg, an amount used in published studies."],"cf_decision":["One ingredient, one number, one capsule. No blend sharing the dose.","One ingredient, one number, one capsule. No blend to divide the dose.","One ingredient, one number. No blend."]},
+    "myo-d-chiro-inositol": {"cf_headline":"The ratio is the formula. 40:1.","cf_support":["40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front."],"cf_form":["Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.","Research has looked at the two together, in a set ratio, not either one alone."],"cf_decision":["One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point.","A deliberate combination where the ratio is the formula, so the ratio goes on the front.","A deliberate pair. The ratio is the formula, so it goes on the front.","The ratio is the formula, so it’s on the front."],"cf_ingredient":["Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.","Two forms of inositol that the body uses side by side."],"cf_amount":["2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1.","2,000 mg + 50 mg per three capsules: 40:1, a ratio used in research. Each batch stays within 36:1–44:1."]},
+    "creatine-chews": {"cf_support":["Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker."],"cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day.","Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day.","One of the most researched sports-nutrition ingredients. It only helps if you take it daily."],"cf_amount":["3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","3 g per serving, within the 3–5 g daily intake commonly used in research."],"cf_decision":["Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print.","We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving.","A chew keeps the habit easy. We print the sugar it needs: 3.6 g per serving.","Chews keep the habit easy. Sugar printed: 3.6 g."],"cf_form":["Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing.","Creatine monohydrate, the most studied form. A chew, so there’s nothing to mix."]},
+    "psyllium-husk": {"cf_support":["Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.","2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble."],"cf_form":["Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.","Whole psyllium husk in capsules: the same ingredient, with nothing to stir."],"cf_amount":["2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.","2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers.","2,000 mg of husk per serving. We print the fibre too, because husk and fibre are different numbers."],"cf_decision":["Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass.","Isabgol, measured. Always with a full glass of water."],"cf_ingredient":["Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes.","Isabgol: a familiar source of soluble fibre in most Indian homes."]}
   };
 
 
@@ -777,43 +777,204 @@
     nameHint: "Left blank, it shows as Verified customer.",
     verified: "Verified purchase", reply: "Reply from Body Café Co."
   };
+  /* The review section, laid out like a marketplace's (owner, 19 Nov 2026, Amazon's as the reference). Content Focus only.
+     Left: the average, the 5 → 1 star bars (each one filters the list), how reviews work, and "Write a review".
+     Right: what the reviews mention (topics found in their words, each one filters the list), customer photos (the
+     photos published with customer reviews, checked in the admin portal first), and the reviews, sortable, five at a time.
+     The rating counts published customer reviews only; until there are some, it counts the sample reviews and says so.
+     Sample reviews are always tagged "Sample". Topics are found by words, never invented: a topic shows only when a
+     review on the page uses its words, and its arrow is from those reviews' own ratings (4 or more on average: mostly
+     positive). No photos are shown that a customer didn't publish; until there are some, the strip says so. */
+  var RX = {
+    title: "What people say.", eyebrow: "Customer reviews",
+    none: "No ratings yet.", outOf: " out of 5",
+    how: ["How reviews work", "Delivered orders only, once per product. Low ratings are published too. Reviews tagged Sample are ours."],
+    reviewThis: ["Review this product", "Tell others what you think."],
+    topics: ["What reviews mention", "Select a topic to see those reviews."],
+    photos: ["Customer photos", "No customer photos yet."],
+    list: "Top reviews", more: "See more reviews", clear: "Clear filters", empty: "No reviews match these filters.",
+    sort: [["top", "Top reviews"], ["recent", "Most recent"], ["low", "Lowest rating first"]]
+  };
+  // [key, chip label, words that count]. Things a review can say about the product itself, never what it did for someone.
+  var RX_TOPICS = [
+    ["label", "Clear label", /\blabels?\b|\bstated\b|\blisted\b|written|\bamounts?\b|\bratio\b|\bIU\b|\bmcg\b|decode|breaks down/i],
+    ["easy", "Easy to take", /swallow|goes down|easy to remember|one a day|one capsule|one softgel|two chews|no powder|no shaker|instead of a spoon/i],
+    ["taste", "Taste", /\btastes?\b|flavou?r|chalk/i],
+    ["pack", "Packaging", /\bpacked\b|packaging|\bsealed\b|\bbox\b/i],
+    ["order", "Ordering & delivery", /deliver|arrived|checkout|ordering|to order\b/i],
+    ["value", "Value", /\bvalue\b|\bprice\b|worth|money|reorder|exactly a month|two months/i],
+    ["batch", "Batch lookup", /lot number|batch (number|record|lookup)/i]
+  ];
+  function rxStars(v, cls) {
+    var s = ""; for (var i = 1; i <= 5; i++) s += '<i style="--f:' + Math.max(0, Math.min(1, v - i + 1)).toFixed(2) + '"></i>';
+    return '<span class="cf-rx-stars' + (cls ? " " + cls : "") + '" role="img" aria-label="' + (+v).toFixed(1).replace(/\.0$/, "") + ' out of 5 stars">' + s + "</span>";
+  }
+  function rxWhen(t) { var d = Date.parse("1 " + t); return isNaN(d) ? 0 : d / 1000; }
+  function rxSamples(id) {
+    var P2 = window.BCCPart2E || {};
+    return (P2.reviewsFor ? P2.reviewsFor(id) : []).map(function (r, i) {
+      return { key: "s" + i, rating: r[1], title: r[2], text: r[3], name: r[4], where: r[5], when: r[6], at: rxWhen(r[6]), sample: true, media: [] };
+    });
+  }
+  function rxReal(r) {
+    var at = r.published || r.created || 0;
+    return { key: r.id, rating: r.rating, title: r.title || "", text: r.text, name: r.display_name || "Verified customer", when: at ? day(at) : "", at: at,
+      verified: r.verified !== false, incentive: r.incentive, reply: r.reply, media: r.media || [] };
+  }
+  // The rating: published customer reviews when there are any, else the samples.
+  function rxSummary(st) {
+    var base = st.real.length ? st.real : st.samples, s = st.summary || {}, br = {};
+    [1, 2, 3, 4, 5].forEach(function (n) { br[n] = 0; }); base.forEach(function (r) { br[r.rating] = (br[r.rating] || 0) + 1; });
+    if (st.real.length && s.breakdown) [1, 2, 3, 4, 5].forEach(function (n) { if (s.breakdown[n] != null) br[n] = +s.breakdown[n]; });
+    var n = st.real.length && s.count ? s.count : base.length, sum = 0; [1, 2, 3, 4, 5].forEach(function (k) { sum += k * br[k]; });
+    return { n: n, avg: n ? (st.real.length && s.average ? +s.average : sum / n) : 0, br: br, sample: !st.real.length };
+  }
+  function rxTopicsOf(r) { var t = (r.title + " " + r.text); return RX_TOPICS.filter(function (x) { return x[2].test(t); }).map(function (x) { return x[0]; }); }
+  function rxAll(st) { return st.real.concat(st.samples); }
+  function rxShown(st) {
+    var list = rxAll(st).filter(function (r) { return (!st.star || r.rating === st.star) && (!st.topic || rxTopicsOf(r).indexOf(st.topic) >= 0); });
+    var by = { top: function (a, b) { return (a.sample - b.sample) || (b.rating - a.rating) || (b.at - a.at); },
+      recent: function (a, b) { return (b.at - a.at) || (a.sample - b.sample); },
+      low: function (a, b) { return (a.rating - b.rating) || (b.at - a.at); } }[st.sort] || null;
+    return by ? list.slice().sort(by) : list;
+  }
+  function rxSide(st) {
+    var s = rxSummary(st), pct = function (k) { return s.n ? Math.round(s.br[k] / s.n * 100) : 0; };
+    return '<p class="p2-eyebrow">' + RX.eyebrow + '</p><h2 id="cf-rx-t">' + RX.title + "</h2>" +
+      (s.n ? '<div class="cf-rx-avg">' + rxStars(s.avg, "is-big") + "<b>" + s.avg.toFixed(1) + RX.outOf + "</b></div>" +
+        '<p class="cf-rx-n">' + s.n + (s.sample ? " sample" : "") + " rating" + (s.n === 1 ? "" : "s") + "</p>" : '<p class="cf-rx-n">' + RX.none + "</p>") +
+      '<ul class="cf-rx-bars">' + [5, 4, 3, 2, 1].map(function (k) {
+        var on = st.star === k, c = s.br[k] || 0;
+        return '<li><button type="button" data-cf-rx-star="' + k + '" aria-pressed="' + on + '"' + (c ? "" : " disabled") +
+          ' aria-label="' + k + " star: " + pct(k) + "% of ratings" + (c ? ". Show these reviews" : "") + '"><span class="cf-rx-k">' + k + ' star</span><span class="cf-rx-track"><i style="width:' + pct(k) + '%"></i></span><span class="cf-rx-p">' + pct(k) + "%</span></button></li>";
+      }).join("") + "</ul>" +
+      '<details class="cf-rx-how"><summary>' + RX.how[0] + "</summary><p>" + RX.how[1] + "</p></details>" +
+      '<div class="cf-rx-write"><h3>' + RX.reviewThis[0] + "</h3><p>" + RX.reviewThis[1] + "</p>" +
+      '<button type="button" class="p2-btn p2-btn-ghost cf-rv-write" data-cf-rv-write aria-expanded="false" aria-controls="cf-rv-panel">' + RV.write + "</button></div>";
+  }
+  function rxTopics(st) {
+    var all = rxAll(st), found = RX_TOPICS.map(function (t) {
+      var rs = all.filter(function (r) { return rxTopicsOf(r).indexOf(t[0]) >= 0; });
+      return { k: t[0], label: t[1], n: rs.length, up: rs.length && rs.reduce(function (a, r) { return a + r.rating; }, 0) / rs.length >= 4 };
+    }).filter(function (t) { return t.n; }).sort(function (a, b) { return b.n - a.n; });
+    if (!found.length) return "";
+    return '<section class="cf-rx-block" aria-labelledby="cf-rx-topics-t"><h3 id="cf-rx-topics-t">' + RX.topics[0] + '</h3><p class="cf-rx-sub">' + RX.topics[1] + '</p><ul class="cf-rx-topics">' +
+      found.map(function (t) {
+        return '<li><button type="button" data-cf-rx-topic="' + t.k + '" aria-pressed="' + (st.topic === t.k) + '"><svg viewBox="0 0 24 24" aria-hidden="true">' +
+          (t.up ? '<path d="M6 18L18 6M9 6h9v9"/>' : '<path d="M3 13c3-4 6-4 9 0s6 4 9 0"/>') + '</svg><span class="sr-only">' + (t.up ? "Mostly positive: " : "Mixed: ") + "</span>" +
+          esc(t.label) + " <small>(" + t.n + ")</small></button></li>";
+      }).join("") + "</ul></section>";
+  }
+  function rxPhotos(st) {
+    var ph = []; st.real.forEach(function (r) { r.media.forEach(function (m) { ph.push({ m: m, r: r }); }); });
+    return '<section class="cf-rx-block" aria-labelledby="cf-rx-photos-t"><div class="cf-rx-bh"><h3 id="cf-rx-photos-t">' + RX.photos[0] + "</h3>" +
+      (ph.length > 4 ? '<div class="cf-rx-arrows"><button type="button" data-cf-rx-scroll="-1" aria-label="Previous photos">‹</button><button type="button" data-cf-rx-scroll="1" aria-label="Next photos">›</button></div>' : "") + "</div>" +
+      (ph.length ? '<ul class="cf-rx-photos" data-cf-rx-strip>' + ph.map(function (x, i) {
+        return '<li><button type="button" data-cf-rx-photo="' + i + '"><img src="/api/review-media/' + esc(x.m.id) + '" alt="Customer photo ' + (i + 1) + " from " + esc(x.r.name) + '" width="' + (+x.m.width || 400) + '" height="' + (+x.m.height || 400) + '" loading="lazy" decoding="async">' + rxStars(x.r.rating) + "</button></li>";
+      }).join("") + "</ul>"
+        : '<div class="cf-rx-nophoto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><p>' + RX.photos[1] + "</p></div>") + "</section>";
+  }
+  function rxCard(r) {
+    var initial = (r.name || "?").trim().charAt(0).toUpperCase();
+    return '<li class="cf-rx-r"><div class="cf-rx-who"><span class="cf-rx-av" aria-hidden="true">' + esc(initial) + "</span><b>" + esc(r.name) + "</b></div>" +
+      '<p class="cf-rx-head">' + rxStars(r.rating) + (r.title ? "<b>" + esc(r.title) + "</b>" : "") + "</p>" +
+      '<p class="cf-rx-meta">' + (r.where ? esc(r.where) + " · " : "") + esc(r.when) + "</p>" +
+      (r.sample ? '<p class="cf-rx-tags"><span class="p2-sample">Sample</span></p>' : r.verified ? '<p class="cf-rx-tags"><span class="cf-rx-ver">' + RV.verified + "</span></p>" : "") +
+      '<p class="cf-rx-text">' + esc(r.text) + "</p>" +
+      (r.media.length ? '<ul class="cf-rx-thumbs">' + r.media.map(function (m, i) { return '<li><button type="button" data-cf-rx-rphoto="' + esc(r.key) + '" data-i="' + i + '"><img src="/api/review-media/' + esc(m.id) + '" alt="Customer photo ' + (i + 1) + " from " + esc(r.name) + '" loading="lazy" decoding="async"></button></li>'; }).join("") + "</ul>" : "") +
+      (r.incentive && r.incentive !== "none" ? '<p class="cf-rv-note">' + (r.incentive === "free_product" ? "Received this product free." : "Received an incentive for this review.") + "</p>" : "") +
+      (r.reply && r.reply.text ? '<div class="cf-rv-reply"><b>' + RV.reply + "</b><p>" + esc(r.reply.text) + "</p></div>" : "") + "</li>";
+  }
+  function rxList(st) {
+    var shown = rxShown(st), lim = st.limit || 5, label = RX_TOPICS.filter(function (t) { return t[0] === st.topic; })[0];
+    var bits = []; if (st.star) bits.push("rated " + st.star + " star" + (st.star > 1 ? "s" : "")); if (label) bits.push("mentioning " + label[1].toLowerCase());
+    return '<section class="cf-rx-block" aria-labelledby="cf-rx-list-t"><div class="cf-rx-bh"><h3 id="cf-rx-list-t">' + RX.list + "</h3>" +
+      '<label class="cf-rx-sort"><span class="sr-only">Sort reviews</span><select data-cf-rx-sort>' + RX.sort.map(function (o) { return '<option value="' + o[0] + '"' + (st.sort === o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select></label></div>" +
+      (bits.length ? '<p class="cf-rx-filter" role="status">' + shown.length + " review" + (shown.length === 1 ? "" : "s") + " " + bits.join(", ") + ' · <button type="button" class="p2-linkbtn" data-cf-rx-clear>' + RX.clear + "</button></p>" : "") +
+      (shown.length ? '<ul class="cf-rx-list">' + shown.slice(0, lim).map(rxCard).join("") + "</ul>" : '<p class="cf-rx-filter">' + RX.empty + "</p>") +
+      (shown.length > lim ? '<button type="button" class="p2-btn p2-btn-ghost cf-rx-more" data-cf-rx-more>' + RX.more + "</button>" : "") + "</section>";
+  }
+  function rxDraw(box, part) {
+    var st = box._rx; if (!st) return;
+    var side = box.querySelector("[data-cf-rx-side]"), main = box.querySelector("[data-cf-rx-main]");
+    if (side && (!part || part === "side")) {
+      // Keep the open "Write a review" state across a redraw.
+      var w = side.querySelector("[data-cf-rv-write]"), open = w && w.getAttribute("aria-expanded");
+      side.innerHTML = rxSide(st); if (open) side.querySelector("[data-cf-rv-write]").setAttribute("aria-expanded", open);
+    }
+    if (main) {
+      var top = main.querySelector("[data-cf-rx-top]"), rest = main.querySelector("[data-cf-rx-list]");
+      if (!part || part === "side") top.innerHTML = rxTopics(st) + rxPhotos(st);
+      else [].forEach.call(top.querySelectorAll("[data-cf-rx-topic]"), function (b) { b.setAttribute("aria-pressed", String(b.dataset.cfRxTopic === st.topic)); });
+      rest.innerHTML = rxList(st);
+    }
+    [].forEach.call(box.querySelectorAll("[data-cf-rx-star]"), function (b) { b.setAttribute("aria-pressed", String(+b.dataset.cfRxStar === st.star)); });
+  }
+  function rxState(id) { return { id: id, real: [], samples: rxSamples(id), summary: null, star: 0, topic: "", sort: "top", limit: 5 }; }
+
   page("product", function (root, args) {
-    var p = args[1] || {}, head = root.querySelector("#p2-reviews .p2-sec-head");
-    if (!p.id || !head || root.querySelector("[data-cf-rv]")) return;
-    head.insertAdjacentHTML("afterend", '<div class="cf-rv" data-cf-rv="' + esc(p.id) + '" style="--cap:' + esc(p.color || "") + '">' +
-      '<button type="button" class="p2-btn cf-rv-write" data-cf-rv-write aria-expanded="false" aria-controls="cf-rv-panel">' + RV.write + "</button>" +
-      '<div class="cf-rv-panel" id="cf-rv-panel" data-cf-rv-panel role="region" aria-label="' + RV.write + '" hidden></div>' +
-      '<ul class="p2-reviews-list cf-rv-list" data-cf-rv-list hidden></ul></div>');
+    var p = args[1] || {}, sec = root.querySelector("#p2-reviews"), wrap = sec && sec.querySelector(".p2-wrap");
+    if (!p.id || !wrap || root.querySelector("[data-cf-rv]")) return;
+    sec.classList.add("cf-rx-sec"); sec.setAttribute("aria-labelledby", "cf-rx-t");
+    var st = rxState(p.id);
+    wrap.outerHTML = '<div class="p2-wrap cf-rx" data-cf-rv="' + esc(p.id) + '" style="--cap:' + esc(p.color || "") + '">' +
+      '<div class="cf-rx-side" data-cf-rx-side>' + rxSide(st) + "</div>" +
+      '<div class="cf-rx-main" data-cf-rx-main><div class="cf-rv-panel" id="cf-rv-panel" data-cf-rv-panel role="region" aria-label="' + RV.write + '" hidden></div>' +
+      '<div data-cf-rx-top>' + rxTopics(st) + rxPhotos(st) + '</div><div data-cf-rx-list>' + rxList(st) + "</div></div></div>";
   });
   function day(t) { try { return new Date(t * 1000).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }); } catch (e) { return ""; } }
   function starsOf(n) { var S2 = window.BCCPart2E || {}; return S2.stars ? S2.stars(n) : n + " out of 5"; }
-  function realCard(r) {
-    return '<li class="p2-review cf-rv-real"><div class="p2-review-top">' + starsOf(r.rating) + '<span class="cf-rv-verified">' + RV.verified + "</span></div>" +
-      (r.title ? '<p class="p2-review-title">' + esc(r.title) + "</p>" : "") + "<blockquote><p>" + esc(r.text) + "</p></blockquote>" +
-      (r.incentive && r.incentive !== "none" ? '<p class="cf-rv-note">' + (r.incentive === "free_product" ? "Received this product free." : "Received an incentive for this review.") + "</p>" : "") +
-      (r.reply && r.reply.text ? '<div class="cf-rv-reply"><b>' + RV.reply + "</b><p>" + esc(r.reply.text) + "</p></div>" : "") +
-      '<p class="p2-review-who"><b>' + esc(r.display_name || "Verified customer") + "</b>" + (r.published || r.created ? " · " + day(r.published || r.created) : "") + "</p></li>";
-  }
-  // Published customer reviews, once per product page.
+  // Published customer reviews, once per product page; the section is drawn again with them.
   function mountReviews() {
-    if (!focus() || !A().api) return;
+    if (!focus()) return;
     [].forEach.call(document.querySelectorAll("#main [data-cf-rv]:not([data-cf-rv-ready])"), function (box) {
       box.setAttribute("data-cf-rv-ready", "");
-      A().api("/reviews?product=" + encodeURIComponent(box.dataset.cfRv) + "&sort=newest&size=6").then(function (r) {
-        var list = box.querySelector("[data-cf-rv-list]"), items = (r && r.reviews) || [];
-        if (!list || !items.length) return;
-        list.innerHTML = items.map(realCard).join(""); list.hidden = false;
-        var sec = box.closest("#p2-reviews"), head = sec.querySelector(".p2-sec-head"), h2 = head && head.querySelector("h2");
-        if (h2) h2.textContent = "What people say.";
-        // The rating, from published customer reviews only: in the section head and under the product name.
-        var s = (r && r.summary) || {}, n = s.count || items.length, avg = s.average || items.reduce(function (t, x) { return t + x.rating; }, 0) / items.length;
-        var count = n + " review" + (n === 1 ? "" : "s");
-        if (head && !head.querySelector(".p2-rsum")) head.insertAdjacentHTML("beforeend", '<div class="p2-rsum"><b>' + (+avg).toFixed(1) + "</b>" + starsOf(Math.round(avg)) + "<span>" + count + "</span></div>");
-        var h1 = document.querySelector("#main .p2-buy h1");
-        if (h1 && !document.querySelector("#main .p2-buy-rating")) h1.insertAdjacentHTML("beforebegin", '<a class="p2-buy-rating" href="#p2-reviews">' + starsOf(Math.round(avg)) + "<span>" + count + "</span></a>");
+      box._rx = rxState(box.dataset.cfRv);
+      if (!A().api) return;
+      A().api("/reviews?product=" + encodeURIComponent(box.dataset.cfRv) + "&sort=newest&size=20").then(function (r) {
+        var items = (r && r.reviews) || [];
+        if (!items.length || !box.isConnected) return;
+        box._rx.real = items.map(rxReal); box._rx.summary = (r && r.summary) || null;
+        rxDraw(box);
+        // The rating under the product name, from published customer reviews only.
+        var s = rxSummary(box._rx), count = s.n + " review" + (s.n === 1 ? "" : "s"), html = starsOf(Math.round(s.avg)) + "<span>" + count + "</span>";
+        var link = document.querySelector("#main .p2-buy-rating"), h1 = document.querySelector("#main .p2-buy h1");
+        if (link) link.innerHTML = html; else if (h1) h1.insertAdjacentHTML("beforebegin", '<a class="p2-buy-rating" href="#p2-reviews">' + html + "</a>");
       }).catch(function () {});
     });
   }
+  function rxBox(el) { var b = el.closest("[data-cf-rv]"); return b && b._rx ? b : null; }
+  function rxLight(photos, i, opener) {
+    var d = document.getElementById("cf-rx-dlg");
+    if (!d) { d = document.createElement("dialog"); d.id = "cf-rx-dlg"; d.className = "cf-rx-dlg"; d.setAttribute("aria-label", "Customer photo"); document.body.appendChild(d);
+      d.addEventListener("click", function (e) { if (e.target === d || e.target.closest("[data-cf-rx-close]")) d.close(); });
+      d.addEventListener("close", function () { if (d._opener) d._opener.focus(); }); }
+    var x = photos[i];
+    d._opener = opener;
+    d.innerHTML = '<div class="cf-rx-dlg-in"><button type="button" class="cf-rx-dlg-x" data-cf-rx-close aria-label="Close">×</button><img src="/api/review-media/' + esc(x.m.id) + '" alt="Customer photo from ' + esc(x.r.name) + '">' +
+      '<div class="cf-rx-dlg-t">' + rxStars(x.r.rating) + (x.r.title ? "<b>" + esc(x.r.title) + "</b>" : "") + "<p>" + esc(x.r.text) + "</p><small>" + esc(x.r.name) + (x.r.when ? " · " + esc(x.r.when) : "") + "</small></div></div>";
+    if (!d.open) d.showModal();
+  }
+  document.addEventListener("click", function (e) {
+    if (!focus() || !e.target.closest) return;
+    var t = e.target.closest("[data-cf-rx-star], [data-cf-rx-topic], [data-cf-rx-clear], [data-cf-rx-more], [data-cf-rx-photo], [data-cf-rx-rphoto], [data-cf-rx-scroll]"); if (!t) return;
+    var box = rxBox(t); if (!box) return; var st = box._rx;
+    if (t.hasAttribute("data-cf-rx-star")) { var k = +t.dataset.cfRxStar; st.star = st.star === k ? 0 : k; st.limit = 5; rxDraw(box, "list"); }
+    else if (t.hasAttribute("data-cf-rx-topic")) { var k2 = t.dataset.cfRxTopic; st.topic = st.topic === k2 ? "" : k2; st.limit = 5; rxDraw(box, "list"); }
+    else if (t.hasAttribute("data-cf-rx-clear")) { st.star = 0; st.topic = ""; rxDraw(box, "list"); var h = box.querySelector("#cf-rx-list-t"); if (h) { h.tabIndex = -1; h.focus(); } }
+    else if (t.hasAttribute("data-cf-rx-more")) { st.limit += 5; rxDraw(box, "list"); }
+    else if (t.hasAttribute("data-cf-rx-scroll")) { var strip = box.querySelector("[data-cf-rx-strip]"); if (strip) strip.scrollBy({ left: +t.dataset.cfRxScroll * strip.clientWidth * .8, behavior: "smooth" }); }
+    else {
+      var ph = []; st.real.forEach(function (r) { r.media.forEach(function (m) { ph.push({ m: m, r: r }); }); });
+      var i = t.hasAttribute("data-cf-rx-photo") ? +t.dataset.cfRxPhoto : ph.findIndex(function (x) { return x.r.key === t.dataset.cfRxRphoto && x.r.media.indexOf(x.m) === +t.dataset.i; });
+      if (ph[i]) rxLight(ph, i, t);
+    }
+  });
+  document.addEventListener("change", function (e) {
+    var s = focus() && e.target.closest && e.target.closest("[data-cf-rx-sort]"); if (!s) return;
+    var box = rxBox(s); if (!box) return; box._rx.sort = s.value; box._rx.limit = 5; rxDraw(box, "list");
+    var again = box.querySelector("[data-cf-rx-sort]"); if (again) again.focus();
+  });
   function rvMessage(panel, text, link) {
     panel.innerHTML = '<p class="cf-rv-msg" role="status">' + esc(text) + (link ? ' <a class="p2-link" href="' + esc(link[1]) + '">' + esc(link[0]) + "</a>" + (link[2] || "") : "") + "</p>";
   }
@@ -834,9 +995,12 @@
     btn.setAttribute("aria-expanded", String(open)); panel.hidden = !open;
     if (!open) return;
     panel.innerHTML = '<p class="cf-rv-msg" role="status">Checking…</p>';
+    // The panel sits at the top of the reviews column, which is usually above the screen by the time the button is reached.
+    var at = panel.getBoundingClientRect();
+    if (at.top < 90 || at.top > innerHeight - 120) panel.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     A().api("/reviews/eligibility?product=" + encodeURIComponent(id)).then(function (r) {
       var st = r && r.state;
-      if (st === "eligible") { rvForm(panel, id, r.order_id); var first = panel.querySelector("input[name=rating]"); if (first) first.focus(); }
+      if (st === "eligible") { rvForm(panel, id, r.order_id); var first = panel.querySelector("input[name=rating]"); if (first) first.focus({ preventScroll: true }); }
       else if (st === "sign_in") rvMessage(panel, RV.sign_in[0], [RV.sign_in[1], "/account?next=" + encodeURIComponent(location.pathname + location.search)]);
       else if (st === "already_reviewed") { if (r.review_state === "rejected") rvMessage(panel, RV.rejected[0], [RV.rejected[1], "/contact", "."]); else rvMessage(panel, r.review_state === "published" ? RV.published : RV.pending_moderation); }
       else rvMessage(panel, RV[st] || RV.no_purchase);
@@ -865,7 +1029,7 @@
 
   /* The visual product page (17 Nov 2026, owner's note). Content Focus only, and only for the products listed in VIS:
      Omega-3 Fish Oil first, then the other six (18 Nov 2026). Same content and positions as before, shown as graphics where a
-     graphic says it faster: the buy card's amounts as three figures, the product's own figures under the description headline,
+     graphic says it faster: the product's own figures under the description headline,
      the four questions as cards, the label claim as tiles, the directions as a dose strip, and the cautions as lists. The word
      "MRP" is not shown. A product with no entry here keeps the page it had.
      Every number is the label's (web/label-records.json) or the Version E workbook's (PRODUCTS / USE above). The description
@@ -898,60 +1062,56 @@
   function icon(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (ICON[k] || "") + "</svg>"; }
   // Shorter notes, the same on every visual page. The pack note becomes the pack size (from the catalogue).
   var VIS_SWAP = [
-    ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "One report per production batch. Reports appear as they are published."],
+    ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "One report per production batch."],
+    ["Demonstration only. Try", "Demo: try"], [", or open", ", or see"],
     REVIEW_NOTE,
-    ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "We deliver across India. If we can’t reach you, we say so before you pay. Dates are estimates."]
+    ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "All-India delivery. We confirm your pincode before you pay."]
   ];
   var PACK_NOTE = "2 bottles save 5%, 3 save 10%. The saving is applied in your bag.";
   /* says: the figures say the support sentence in full, so it is kept for screen readers only (unless the admin rewrote it). */
   var VIS = {
     "omega-3-fish-oil": {
-      stats: [["800 mg", "omega-3"], ["400 mg", "EPA"], ["300 mg", "DHA"]], statsNote: "Per softgel, as triglycerides",
       // The owner's graphic (17 Nov 2026): three regular softgels against one of ours.
-      versus: [[3, "266.7 × 3 mg*", "3 regular softgels"], [1, "800 mg*", "1 Body Café Co. softgel"], "* mg of omega-3"],
+      versus: [[3, "266.7 mg each", "3 regular softgels"], [1, "800 mg", "1 Body Café Co. softgel"], "For 800 mg of omega-3"],
       // The label's numbers: 1,000 mg of oil, 800 mg omega-3, 400 mg EPA, 300 mg DHA. [name, mg], then the omega-3 total.
-      inside: ["Inside one softgel", 1000, [["EPA", 400], ["DHA", 300], ["Other omega-3", 100]], "800 mg omega-3", "1,000 mg anchovy fish oil concentrate", "Rest of the oil"],
+      inside: ["Inside one softgel", [["Anchovy fish oil", 1000, 0], ["Omega-3", 800, 1], ["EPA", 400, 2], ["DHA", 300, 2]], "Omega-3 is part of the oil. EPA and DHA are part of the omega-3."],
       says: true,
       supports: [["heart", "Heart health"], ["brain", "Brain health"], ["joint", "Joint health"]],
       dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]]
     },
     "vitamin-d3-k2": {
-      stats: [["600 IU", "vitamin D3"], ["55 mcg", "K2 as MK-7"], ["200 mg", "omega-3"]], statsNote: "Per softgel, in anchovy fish oil",
       // Label: D3 600 IU and K2 55 mcg, each 100% RDA (ICMR 2020, men moderate work); 250 mg oil with 200 mg omega-3, EPA 100 mg, DHA 75 mg.
       rda: ["Inside one softgel", [["Vitamin D3", "600 IU", 100], ["Vitamin K2 as MK-7", "55 mcg", 100]], "RDA as per ICMR guidelines 2020 (men, moderate work)."],
-      inside: ["Dissolved in anchovy fish oil", 250, [["EPA", 100], ["DHA", 75], ["Other omega-3", 25]], "200 mg omega-3", "250 mg anchovy fish oil concentrate", "Rest of the oil"],
+      inside: ["The oil it’s dissolved in", [["Anchovy fish oil", 250, 0], ["Omega-3", 200, 1], ["EPA", 100, 2], ["DHA", 75, 2]], "Omega-3 is part of the oil. EPA and DHA are part of the omega-3."],
       says: true,
       supports: [["joint", "Bone health"], ["muscle", "Muscle health"], ["heart", "Heart health"]],
       dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]]
     },
     "creatine-chews": {
-      stats: [["3,000 mg", "creatine"], ["2", "chews"], ["3.6 g", "sugar"]], statsNote: "Per serving, as creatine monohydrate. No powder to mix.",
       supports: [["muscle", "Strength"], ["gauge", "Performance"]],
       dose: [["chew", "Chew 2 tablets"], ["clock", "Once a day, same time"], ["food", "With or without food"]]
     },
     "iron-bisglycinate": {
-      stats: [["29 mg", "iron"], ["100%", "ICMR RDA"], ["1", "capsule"]], statsNote: "Per capsule, as Ferrochel® ferrous bisglycinate chelate",
       // Label directions: on an empty stomach; no milk for 2 hours before or after (the workbook's decision adds chai).
       win: ["Around your capsule", "2 hours before", "2 hours after", "No milk or chai", "1 capsule, empty stomach"],
       rda: ["Against the ICMR RDA", [["Elemental iron", "29 mg", 100]], "RDA as per ICMR guidelines 2020 (women, moderate work)."],
+      says: true,
       supports: [["drop", "Hemoglobin formation"], ["bolt", "Energy metabolism"]],
       dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["plate", "On an empty stomach"]]
     },
     "l-theanine": {
-      stats: [["200 mg", "L-theanine"], ["1", "capsule"], ["1", "active ingredient"]], statsNote: "Per capsule. The amino acid naturally found in green tea.",
       supports: [["leaf", "Calm mind"], ["target", "Clear focus"]],
       dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["food", "With or without food"]]
     },
     "myo-d-chiro-inositol": {
-      stats: [["2,000 mg", "myo-inositol"], ["50 mg", "D-chiro-inositol"], ["40:1", "ratio"]], statsNote: "Per serving of three capsules",
-      ratio: [[40, "2,000 mg", "Myo-inositol"], [1, "50 mg", "D-chiro-inositol"], "40 : 1, in every serving of three capsules"],
+      ratio: [[40, "2,000 mg", "Myo-inositol"], [1, "50 mg", "D-chiro-inositol"], "40 parts myo to 1 part D-chiro, in every serving"],
+      says: true,
       supports: [["scale", "Hormonal balance"], ["cycle", "Metabolic balance"]],
       dose: [["capsule", "3 capsules"], ["sun", "In the morning"], ["food", "With food"]]
     },
     "psyllium-husk": {
-      stats: [["2,000 mg", "psyllium husk"], ["1,578 mg", "dietary fibre"], ["1,362 mg", "soluble fibre"]], statsNote: "Per serving of five capsules",
       // Label: 2,000 mg husk giving 1,578 mg dietary fibre, 1,362 mg of it soluble. The other two parts are the differences.
-      inside: ["Inside one serving: five capsules", 2000, [["Soluble fibre", 1362], ["Other fibre", 216]], "1,578 mg dietary fibre", "2,000 mg psyllium husk (isabgol)", "Rest of the husk"],
+      inside: ["Inside one serving (5 capsules)", [["Psyllium husk (isabgol)", 2000, 0], ["Dietary fibre", 1578, 1], ["Soluble fibre", 1362, 2]], "Fibre is part of the husk. Soluble fibre is part of the fibre."],
       says: true,
       supports: [["gut", "Digestive health"], ["calendar", "Regularity"]],
       dose: [["capsule", "5 capsules"], ["moon", "Once a day, at night"], ["glass", "With food and a full glass of water"]]
@@ -968,7 +1128,7 @@
     var side = function (x, cls) { return '<div class="cf-vs-side' + cls + '">' + pills(x[0]) + "<b>" + esc(x[1]) + "</b><span>" + esc(x[2]) + "</span></div>"; };
     if (v.versus) {
       var a = v.versus;
-      out.push('<figure class="cf-vs">' + side(a[0], "") + '<div class="cf-vs-mid" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36M30 4l10 8-10 8"/></svg><em>vs</em></div>' + side(a[1], " is-us") + "<figcaption>" + esc(a[2]) + "</figcaption></figure>");
+      out.push('<figure class="cf-vs is-versus"><figcaption>' + esc(a[2]) + "</figcaption>" + side(a[0], "") + '<div class="cf-vs-mid" aria-hidden="true"><em>or</em></div>' + side(a[1], " is-us") + "</figure>");
     }
     if (v.ratio) {
       var r = v.ratio;
@@ -987,12 +1147,11 @@
         '</ul><p class="cf-rda-note">' + esc(d[2]) + "</p></div>");
     }
     if (v.inside) {
-      var ins = v.inside, used = ins[2].reduce(function (t, x) { return t + x[1]; }, 0);
-      out.push('<div class="cf-in"><p class="cf-in-k">' + esc(ins[0]) + '</p><div class="cf-in-bar"' + img(ins[2].map(function (x) { return x[0] + " " + num(x[1]) + " mg"; }).join(", ") + ", in " + ins[4]) + ">" +
-        ins[2].map(function (x, i) { return '<span class="s' + i + '" style="flex-basis:' + (x[1] / ins[1] * 100) + '%">' + (x[1] / ins[1] >= .2 ? "<b>" + num(x[1]) + " mg</b><small>" + esc(x[0]) + "</small>" : "") + "</span>"; }).join("") + '<span class="rest"></span></div>' +
-        '<div class="cf-in-scale" aria-hidden="true"><span style="flex-basis:' + (used / ins[1] * 100) + '%">' + esc(ins[3]) + "</span></div>" +
-        '<p class="cf-in-total" aria-hidden="true">' + esc(ins[4]) + "</p>" +
-        '<ul class="cf-in-key">' + ins[2].concat([[ins[5], ins[1] - used]]).map(function (x, i) { return '<li><i class="' + (i < ins[2].length ? "s" + i : "rest") + '"></i>' + esc(x[0]) + " <b>" + num(x[1]) + " mg</b></li>"; }).join("") + "</ul></div>");
+      // One serving, row by row: each indented row is part of the row above it; the bars share one scale (the first row).
+      var ins = v.inside, all = ins[1][0][1];
+      out.push('<div class="cf-in cf-bd"' + img(ins[0] + ": " + ins[1].map(function (x) { return x[0] + " " + num(x[1]) + " mg"; }).join(", ") + ". " + ins[2]) + '><p class="cf-in-k">' + esc(ins[0]) + "</p><ul>" +
+        ins[1].map(function (x) { return '<li class="d' + x[2] + '"><span class="cf-rda-n">' + esc(x[0]) + "</span><b>" + num(x[1]) + ' mg</b><span class="cf-rda-m"><i style="width:' + (x[1] / all * 100).toFixed(1) + '%"></i></span></li>'; }).join("") +
+        '</ul><p class="cf-rda-note">' + esc(ins[2]) + "</p></div>");
     }
     return out.join("");
   }
@@ -1016,10 +1175,11 @@
     var chips = root.querySelector(".p2-buy-chips"), rating = root.querySelector(".p2-buy > .p2-buy-rating");
     if (chips && rating) chips.appendChild(rating);
     [].forEach.call(root.querySelectorAll(".pk-flag, .p2-buy .cf-qty, .p2-buy-chips .p2-chip"), function (n) { n.remove(); });
-    // Buy card: the amounts as three figures. A line the admin rewrote stays as the admin wrote it.
+    // Buy card (owner, 19 Nov 2026): the name is the first thing read, so under it is only the claim, as a plain line, and the
+    // amounts line goes (the description figures and the label facts give the amounts). A line the admin rewrote stays.
     var forK = root.querySelector(".p2-buy .cf-for-k"); if (forK) forK.remove();
     var how = root.querySelector(".p2-buy .cf-for-how");
-    if (how && how.textContent.trim() === BASE.U[id][3]) how.outerHTML = '<dl class="cf-stats">' + v.stats.map(function (x) { return "<div><dd>" + esc(x[0]) + "</dd><dt>" + esc(x[1]) + "</dt></div>"; }).join("") + '</dl><p class="cf-stats-note">' + esc(v.statsNote) + "</p>";
+    if (how && how.textContent.trim() === BASE.U[id][3]) how.remove();
     // Description: the product's figures under the headline, then the four questions as cards.
     var h = root.querySelector(".p2-pdp-accs .p2-acc-h"), body = h && h.parentNode;
     if (body) {
