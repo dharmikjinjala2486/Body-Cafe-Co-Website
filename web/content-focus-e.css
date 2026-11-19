@@ -409,3 +409,16 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-rda + .cf-supp
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-zone b { font-size: 13px; }
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-win-dose i { width: 44px; height: 44px; }
 }
+
+/* Social media icons (owner, 19 Nov 2026), Content Focus only: in the footer's brand column and in Contact's
+   "Call or WhatsApp" card. Round outlines in the text colour around them; a link (once it has an address) shades on hover. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-social { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-social li { margin: 0; padding: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-social-i { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1.5px solid currentColor; border-radius: 50%; color: inherit; text-decoration: none; transition: background-color .15s, color .15s; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-social-i svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-social-i .cf-social-dot,
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-social-i .cf-social-fill { fill: currentColor; stroke: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] a.cf-social-i:hover { background: rgb(128 128 128 / .16); }
+body[data-variant-e-part="2"][data-content-focus="1"] a.cf-social-i:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-social-foot { margin-top: 22px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-social-contact { margin-bottom: 24px; }

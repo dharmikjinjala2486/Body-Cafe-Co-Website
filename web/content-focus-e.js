@@ -14,38 +14,49 @@
     lede: "Seven supplements. Every ingredient, form and amount chosen by a formulation scientist, for a reason you can read.", // 3
     link: "See the reasoning" // 5
   };
+  // The review note under the home and product page reviews (fewer words, owner, 19 Nov 2026).
+  var REVIEW_NOTE = ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Low ratings are published too. Samples show until real reviews arrive."];
   var TEXT = {
     home: [ // 6, 9, 20, 21, 24
+      REVIEW_NOTE,
       ["Third-party tested", "Independent testing from batch one"],
       ["Seven. Each in its own colour.", "Seven formulas. Nothing along for the ride."],
       ["Four rules we never bend.", "Every formula is four decisions."], ["Right form", "Form first"], ["Exact dose, stated", "Amounts that mean something"], ["Every lot tested", "Checked, not assumed"],
       ["Every bottle carries a lot number.", "Your bottle has a paper trail."],
-      ["Choose your product by its cap, type the number from the pack, and see the record for that batch.", "Every pack carries a Batch No. Choose your product by its cap, type the number, and see the record for that batch."],
-      ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the pack says so clearly, right on the front."]
+      ["Choose your product by its cap, type the number from the pack, and see the record for that batch.", "Every pack has a Batch No. Pick your product, type the number and see its record."],
+      ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the pack says so clearly, right on the front."],
+      // Fewer words (owner, 19 Nov 2026): no paragraph past three lines on a phone. These are the home FAQ answers.
+      ["Follow the directions on your pack. Each product page shows the timing, serving size and whether to take it with food.", "Follow your pack. Each product page shows when, how many, and whether with food."],
+      ["It is printed on the pack, separate from the barcode. Choose your product, enter the lot number, and see the record for that batch.", "It’s on the label, beside the barcode. Enter it on the batch page to see that batch’s record."]
+      // The returns answer is the Help library's own, shortened in SHORT_DATA below.
     ],
     shop: [ // 28 (owner, 17 Nov 2026: every row as the workbook has it); the two Barista prompts are the shop refinements (16 Nov)
       ["Seven supplements, each made to one uncompromising standard.", "Five single-ingredient formulas. Two deliberate combinations. Every amount printed."],
       ["Ask about any of the seven.", "Not sure which one fits? Ask about any of the seven."],
-      ["Not sure where to start?", "Ask Barista"]
+      ["Not sure where to start?", "Ask Barista"],
+      ["Barista answers from our labels and help pages. For your own health, ask your doctor.", "Answers from our labels. Not medical advice."]
     ],
-    standards: [ // 31–38
+    standards: [ // 31–38; fewer words (owner, 19 Nov 2026): each paragraph cut to three lines on a phone
       ["One uncompromising standard.", "Every formula is four decisions."],
-      ["Seven supplements. Four rules we never bend. This is what they look like on every bottle.", "Which ingredient. Which form. How much. And what, if anything, it belongs with. Here are our answers, bottle by bottle."],
+      ["Seven supplements. Four rules we never bend. This is what they look like on every bottle.", "Which ingredient. Which form. How much. What it belongs with. Our answers, bottle by bottle."],
       ["Right form", "Form first"],
-      ["We choose the form of each ingredient first, then name it on the label. Form decides what you are actually taking, so you should never have to guess it.", "The same nutrient comes in different forms, and the form decides what you are actually taking. We choose it first, then name it on the label: iron as Ferrochel® bisglycinate, K2 as MK-7, omega-3 as triglycerides."],
+      ["We choose the form of each ingredient first, then name it on the label. Form decides what you are actually taking, so you should never have to guess it.", "The form decides what you actually take. So we choose it first, and name it on the label."],
       ["Exact dose, stated", "Amounts that mean something"],
-      ["The amount in every serving is printed on the label and on this site. Where two ingredients work together, you see both numbers.", "We print the amount you actually get: 29 mg of elemental iron, not the weight of the compound; the omega-3, not just the oil. Where two ingredients share a product, there is a reason, and you see both numbers."],
+      ["The amount in every serving is printed on the label and on this site. Where two ingredients work together, you see both numbers.", "We print what you actually get: the iron, not the compound; the omega-3, not just the oil."],
       ["Every lot tested", "Checked, not assumed"],
-      ["Every product is made in GMP-certified facilities and third-party tested. Every lot carries its own number, so a record can be traced to the batch in your hand.", "Every product is made in GMP-certified facilities against a written specification. From our first production batch, independent laboratories test each batch, and its Batch No. links the result to the bottle in your hand."]
+      ["Every product is made in GMP-certified facilities and third-party tested. Every lot carries its own number, so a record can be traced to the batch in your hand.", "GMP-certified facilities. From our first production batch, independent laboratories test each batch."],
+      ["Full ingredients, nutrition information, directions, storage and cautions for every product, on the pack and on its page here. No proprietary blends.", "Every ingredient, direction and caution, on the pack and on this site. No proprietary blends."]
     ],
     story: [ // 44–49, 51
       ["You should always know what you’re being served.", "The questions come before the capsule."],
       ["A good café shows you the menu. So do we.", "Meet Dr. Nayan Solanki, our Scientific Founder & Formulation Lead, and the decisions behind our seven."],
       ["The front of the label shouts. The back whispers.", "A longer list isn’t a better formula."],
-      ["Most supplement labels lead with promises and leave the facts in small print: which form the ingredient is in, how much you actually get, and when to take it. We turned that around.", "Supplements are often judged by how many ingredients they contain. But a list can’t tell you why each ingredient was chosen, whether the amount means anything, or whether the ingredients work well together. Sometimes one ingredient is right. Sometimes a combination is justified. The reason is what matters."],
+      ["Most supplement labels lead with promises and leave the facts in small print: which form the ingredient is in, how much you actually get, and when to take it. We turned that around.", "A list can’t say why each ingredient is there. Sometimes one is right, sometimes two. The reason is what matters."],
       ["Seven, and only seven.", "Trained where every milligram must be justified."],
-      ["We make seven supplements. Each one is an everyday essential, and each one is made the same way. A small range lets us hold every product to the same standard, and say exactly what is in it.", "Dr. Nayan Solanki holds a PhD in Industrial Pharmacy. His career has been in pharmaceutical development: formulating medicines, preparing the chemistry, manufacturing and controls (CMC) work that regulators review, validating processes and scaling products up for manufacture. In that work, every ingredient, dose and form is a decision you must be able to explain. He brought the same discipline to Body Café Co., personally selecting the ingredient, form, dose and combination in each of our seven products."],
-      ["How we work.", "Four questions, asked of every formula."]
+      // Rows 47 and 49 cut to three lines on a phone (fewer words, owner, 19 Nov 2026).
+      ["We make seven supplements. Each one is an everyday essential, and each one is made the same way. A small range lets us hold every product to the same standard, and say exactly what is in it.", "A PhD in Industrial Pharmacy, and a career developing medicines. Dr. Solanki chose our seven the same way."],
+      ["How we work.", "Four questions, asked of every formula."],
+      ["Every product has its own cap colour, so you can tell them apart at a glance on a shelf, in a bag, or half-awake in the morning.", "Each has its own cap colour, so you can tell them apart at a glance, even half-awake."]
     ],
     learn: [ // 59, 60, 62, 64
       ["Read the label. Know the form.", "Ask what’s in it. Then ask why."],
@@ -72,19 +83,19 @@
   var PRODUCTS = {
     "iron-bisglycinate": {
       "headline": "Iron first. Chai later.",
-      "support": "29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.",
-      "ingredient": "Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg.",
-      "form": "Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.",
-      "amount": "29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in.",
-      "decision": "Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away."
+      "support": "29 mg of elemental iron per capsule, as Ferrochel® bisglycinate. Taken alone, on an empty stomach, away from milk.",
+      "ingredient": "Many Indian women fall short of iron. The ICMR daily requirement for adult women is 29 mg.",
+      "form": "Iron bound to glycine, an amino acid. We use Ferrochel® and name it on the front.",
+      "amount": "29 mg of elemental iron: 100% of the ICMR RDA. The iron you get, not the compound’s weight.",
+      "decision": "Iron stands alone. Calcium can reduce how much iron is absorbed, so milk and chai wait two hours."
     },
     "vitamin-d3-k2": {
       "headline": "Two fat-soluble vitamins. One oil. On purpose.",
       "support": "600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel.",
-      "ingredient": "Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.",
-      "form": "D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.",
-      "amount": "600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose.",
-      "decision": "A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal."
+      "ingredient": "Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins in bone.",
+      "form": "D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so they sit in oil, not a dry tablet.",
+      "amount": "600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA. The reference level, not a megadose.",
+      "decision": "A deliberate pair. Both dissolve in fat, so one softgel of oil carries both. Take it with a meal."
     },
     "omega-3-fish-oil": {
       "headline": "Count the omega-3, not the oil.",
@@ -97,33 +108,33 @@
     "l-theanine": {
       "headline": "One amino acid. 200 mg. Nothing else active.",
       "support": "200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule.",
-      "ingredient": "L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient.",
-      "form": "Free-form L-theanine, on its own, so the amount you take is the amount on the label.",
+      "ingredient": "The amino acid tea is known for. A simple, well-characterised single ingredient.",
+      "form": "Free-form L-theanine, on its own. The amount on the label is the amount you take.",
       "amount": "200 mg, an amount used in published studies.",
       "decision": "One ingredient, one number, one capsule. No blend to divide the dose."
     },
     "myo-d-chiro-inositol": {
       "headline": "Two inositols. One ratio. 40:1, on the front.",
       "support": "2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front.",
-      "ingredient": "Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.",
-      "form": "Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.",
-      "amount": "2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1.",
-      "decision": "A deliberate combination where the ratio is the formula, so the ratio goes on the front."
+      "ingredient": "Two forms of inositol that the body uses side by side.",
+      "form": "Research has looked at the two together, in a set ratio, not either one alone.",
+      "amount": "2,000 mg + 50 mg per three capsules: 40:1, a ratio used in research. Each batch stays within 36:1–44:1.",
+      "decision": "A deliberate pair. The ratio is the formula, so it goes on the front."
     },
     "creatine-chews": {
       "headline": "3 grams of creatine. Two chews. Your time.",
       "support": "3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker.",
-      "ingredient": "Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day.",
-      "form": "Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing.",
+      "ingredient": "One of the most researched sports-nutrition ingredients. It only helps if you take it daily.",
+      "form": "Creatine monohydrate, the most studied form. A chew, so there’s nothing to mix.",
       "amount": "3 g per serving, within the 3–5 g daily intake commonly used in research.",
-      "decision": "We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving."
+      "decision": "A chew keeps the habit easy. We print the sugar it needs: 3.6 g per serving."
     },
     "psyllium-husk": {
       "headline": "The isabgol you know, measured in capsules.",
       "support": "2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble.",
-      "ingredient": "Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes.",
+      "ingredient": "Isabgol: a familiar source of soluble fibre in most Indian homes.",
       "form": "Whole psyllium husk in capsules: the same ingredient, with nothing to stir.",
-      "amount": "2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers.",
+      "amount": "2,000 mg of husk per serving. We print the fibre too, because husk and fibre are different numbers.",
       "decision": "Isabgol, measured. Always with a full glass of water."
     }
   };
@@ -131,13 +142,13 @@
      A stored admin field that still holds one of these exactly was saved from that default, not written on purpose, so it
      gives way to the workbook text above (stale()). A key may list several, the 16 Nov holdbacks with copy review 01's line. */
   var PREV = {
-    "iron-bisglycinate": {"cf_support":"One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule."],"cf_form":"Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in."]},
-    "vitamin-d3-k2": {"cf_support":"Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","cf_ingredient":"Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","cf_form":"D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","cf_decision":"One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal."},
+    "iron-bisglycinate": {"cf_support":["One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk."],"cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule.","Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg."],"cf_form":["Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside."],"cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in."],"cf_decision":"Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away."},
+    "vitamin-d3-k2": {"cf_support":"Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","cf_ingredient":["Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health."],"cf_form":["D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3."],"cf_decision":["One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal.","A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal."],"cf_amount":"600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose."},
     "omega-3-fish-oil": {"cf_support":["Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.","1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA."],"cf_ingredient":["EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.","EPA and DHA are the omega-3s people look for in fish oil. The body makes very little, so they come mainly from fish.","EPA and DHA: the omega-3s your body barely makes. They come mainly from fish."],"cf_form":["Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.","Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","Concentrated anchovy oil. The omega-3 stays as triglycerides, the form found in fish."],"cf_amount":["800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA. The omega-3 is the number that matters, so we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA."],"cf_decision":["Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it. EPA and DHA are shown separately."]},
-    "l-theanine": {"cf_headline":"The green-tea amino acid. 200 mg, on its own.","cf_support":"One capsule in the morning, with or without food. One active ingredient, with its amount printed.","cf_ingredient":"L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.","cf_form":"Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.","cf_amount":"200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.","cf_decision":"One ingredient, one number, one capsule. No blend sharing the dose."},
-    "myo-d-chiro-inositol": {"cf_headline":"The ratio is the formula. 40:1.","cf_support":"40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","cf_form":"Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","cf_decision":"One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point."},
-    "creatine-chews": {"cf_support":"Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day."],"cf_amount":"3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","cf_decision":"Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print."},
-    "psyllium-husk": {"cf_support":"Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.","cf_form":"Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.","cf_amount":"2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.","cf_decision":"Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass."}
+    "l-theanine": {"cf_headline":"The green-tea amino acid. 200 mg, on its own.","cf_support":"One capsule in the morning, with or without food. One active ingredient, with its amount printed.","cf_ingredient":["L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.","L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient."],"cf_form":["Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.","Free-form L-theanine, on its own, so the amount you take is the amount on the label."],"cf_amount":"200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.","cf_decision":"One ingredient, one number, one capsule. No blend sharing the dose."},
+    "myo-d-chiro-inositol": {"cf_headline":"The ratio is the formula. 40:1.","cf_support":"40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","cf_form":["Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","Both forms are included because research has looked at them together, in a defined ratio, rather than either alone."],"cf_decision":["One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point.","A deliberate combination where the ratio is the formula, so the ratio goes on the front."],"cf_ingredient":"Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.","cf_amount":"2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1."},
+    "creatine-chews": {"cf_support":"Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day.","Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day."],"cf_amount":"3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","cf_decision":["Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print.","We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving."],"cf_form":"Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing."},
+    "psyllium-husk": {"cf_support":"Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.","cf_form":"Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.","cf_amount":["2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.","2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers."],"cf_decision":"Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass.","cf_ingredient":"Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes."}
   };
 
 
@@ -224,7 +235,8 @@
      the product presentation ("Take what you need. Skip what you don't."). */
   var HOME = {
     range: "Five single-ingredient formulas. Two deliberate combinations. Take what you need. Skip what you don’t.",
-    intro: "A long ingredient list can look impressive. It can’t tell you why each ingredient was chosen, whether each amount means anything, or whether a combination makes sense. Every formula answers four questions first.",
+    // Fewer words (owner, 19 Nov 2026): the intro, the founder paragraph and the testing note, each cut to three lines on a phone.
+    intro: "A long list can look impressive. It can’t tell you why. Every formula answers four questions first.",
     // The four decisions, each with a real example from the seven: [product whose cap colours it, label, heading, example].
     decisions: [
       ["iron-bisglycinate", "Ingredient", "The right ingredient", "Iron stands alone, as Ferrochel® bisglycinate."],
@@ -234,10 +246,10 @@
     ],
     /* The founder band (workbook, Founder sheet, home founder intro; owner, 17 Nov 2026), word for word. */
     founder: ["Formulated by a pharmaceutical scientist", "The questions come before the capsule.",
-      "Dr. Nayan Solanki, our Scientific Founder & Formulation Lead, holds a PhD in Industrial Pharmacy and has spent his career developing medicines. He personally chose the ingredient, form, dose and combination in each of our seven products, with the same questions he asks of a medicine.",
+      "Dr. Nayan Solanki (PhD, Industrial Pharmacy) has spent his career developing medicines. He chose every ingredient, form and dose in our seven.",
       "Meet the scientist"],
     // Testing moves here from the standard band: it starts with the first production batch (claim C6).
-    testing: "From our first production batch, independent laboratories test each batch, and its record appears here."
+    testing: "From our first production batch, independent laboratories test each batch. Records appear here."
   };
   function idOf(a) { var m = a && /\/products\/([^/?#]+)/.exec(a.getAttribute("href") || ""); return m ? m[1] : ""; }
 
@@ -259,7 +271,7 @@
     next[name] = function () {
       if (!focus()) return base.apply(this, arguments);
       var ctx0 = arguments[0] || {}; fromAdmin(ctx0.catalog || ctx0.published);
-      headlines();
+      headlines(); shortenData();
       var html = base.apply(this, arguments);
       if (typeof html !== "string") return html;
       var t = document.createElement("template"); t.innerHTML = html;
@@ -323,7 +335,7 @@
     decisions: [["ingredient", "The right ingredient"], ["form", "The right form"], ["dose", "The right amount"], ["combine", "A reason to combine"]],
     // The intro is the Version E workbook's own sentence (Text Replacements, row 15). The amount section keeps its paragraph.
     // Rows 33–35 (owner, 17 Nov 2026: the workbook's headings and paragraph, not the 16 Nov ones).
-    pick: ["Form first", "The same nutrient comes in different forms, and the form decides what you are actually taking. We choose it first, then name it on the label: iron as Ferrochel® bisglycinate, K2 as MK-7, omega-3 as triglycerides."],
+    pick: ["Form first", "The form decides what you actually take. So we choose it first, and name it on the label."],
     amount: ["Amounts that mean something", ""],
     amounts: {
       "omega-3-fish-oil": ["800 mg omega-3", "400 mg EPA + 300 mg DHA, from 1,000 mg of oil"],
@@ -392,11 +404,11 @@
   /* Story (16 Nov 2026, owner-approved). Since 17 Nov (owner) the founder's title and his career paragraph are the Version E
      workbook's exactly (rows 45 and 49); the paragraph is marked data-maker-ok so the manufacturer-name filter keeps it. The
      seven bottles get their own chapter back, as the Super Sevens. */
-  var SEVENS = ["The Super Sevens.", "We launch with seven. Five single-ingredient formulas and two deliberate combinations. A small range lets us ask the same four questions of every product, and say exactly what is in it. Take what you need. Skip what you don’t."];
+  var SEVENS = ["The Super Sevens.", "Five single ingredients. Two deliberate pairs. Every amount on the front. Take what you need. Skip what you don’t."];
   function story(root) {
     swap(root, TEXT.story);
-    // Row 49 speaks of manufacturing as his career, so the manufacturer-name filter (scrub in web/part2-e.js) leaves it whole.
-    [].forEach.call(root.querySelectorAll("p"), function (p) { if (p.textContent.trim() === "Dr. Nayan Solanki holds a PhD in Industrial Pharmacy. His career has been in pharmaceutical development: formulating medicines, preparing the chemistry, manufacturing and controls (CMC) work that regulators review, validating processes and scaling products up for manufacture. In that work, every ingredient, dose and form is a decision you must be able to explain. He brought the same discipline to Body Café Co., personally selecting the ingredient, form, dose and combination in each of our seven products.") p.setAttribute("data-maker-ok", ""); });
+    /* Row 49 used to speak of manufacturing as his career and was marked data-maker-ok for the manufacturer-name filter (scrub
+       in web/part2-e.js). Its short version (19 Nov 2026) avoids the word, so it needs no mark. */
     var seven = root.querySelector(".p2p-chap-seven"), founder = seven && seven.querySelector(".p2p-chap-copy"), lineup = seven && seven.querySelector(".p2p-lineup");
     if (founder && lineup) {
       var sec = document.createElement("section"); sec.className = "p2p-chap cf-founder";
@@ -413,15 +425,16 @@
   /* Help (16 Nov 2026, owner-approved). "Before you order" held old preview answers that contradicted the published policies.
      These come from the Help articles, the policies (web/support-content.js) and the labels. The contact band gains WhatsApp
      and the opening hours, both from the business details in the same file. */
+  // Fewer words (owner, 19 Nov 2026): each answer fits three lines on a phone.
   var HELP_FAQS = [
-    ["Should I take all seven?", "No. Each of the seven is made for its own purpose. Choose only what you need and follow its label. If you’re pregnant, breastfeeding, under medical care or unsure, ask a healthcare professional first."],
-    ["Are they vegetarian?", "Five are vegetarian. Omega-3 Fish Oil and Vitamin D3 + K2 are softgels made with fish oil and gelatin, so they are non-vegetarian."],
-    ["When should I take a product?", "Each label says when. Six are best in the morning; Psyllium Husk is best at night. Iron is taken on an empty stomach, and the product page shows whether each of the others goes with food."],
+    ["Should I take all seven?", "No. Take only what you need, and follow its label. Pregnant, breastfeeding or under medical care? Ask a doctor first."],
+    ["Are they vegetarian?", "Five are. Omega-3 Fish Oil and Vitamin D3 + K2 are non-vegetarian: fish oil in gelatin softgels."],
+    ["When should I take a product?", "Each label says when. Six are best in the morning, Psyllium Husk at night. Iron goes on an empty stomach."],
     ["What do the prices include?", "Prices are shown as MRP, inclusive of all taxes."],
     ["How much is delivery?", "Delivery is ₹75, free when the subtotal after discount is ₹1,499 or more."],
-    ["How can I pay?", "Pay online by UPI, card, wallet or net banking, through our payment partner Razorpay. Cash on delivery isn’t available."],
-    ["Can I return a product?", "We don’t accept change-of-mind returns. If something arrives damaged, wrong, missing, faulty or expired, tell us within 7 days of delivery and we’ll arrange a refund or replacement."],
-    ["Where do I find my batch report?", "Choose your product on the batch reports page and enter the Batch No. printed on the pack. Records appear as reports are published."]
+    ["How can I pay?", "UPI, card, wallet or net banking, through Razorpay. No cash on delivery."],
+    ["Can I return a product?", "No change-of-mind returns. Damaged, wrong, missing, faulty or expired? Tell us within 7 days for a refund or replacement."],
+    ["Where do I find my batch report?", "Pick your product on the batch reports page and enter the Batch No. from the pack."]
   ];
   page("help", function (root) {
     var accs = root.querySelector(".p2p-help .p2p-faq .p2-accs");
@@ -437,6 +450,35 @@
     var h2 = band && band.querySelector("h2");
     if (h2 && B.hours) h2.insertAdjacentHTML("afterend", '<p class="cf-hours">' + esc(B.hours) + "</p>");
   });
+  /* Contact (fewer words, owner, 19 Nov 2026): the two safety notes, the same meaning in fewer words. The first is drawn after
+     the page renders (web/super-sevens.js), so it is swapped from the observer at the end, like the bag. */
+  var CONTACT = [
+    ["We can explain our products, but we can't give medical advice. For questions about your health, please speak with a doctor.", "We can explain our products, not give medical advice. For your health, please ask a doctor."],
+    ["If someone needs urgent medical care, contact a doctor or emergency services first. Stop using the product and keep the pack.", "Urgent medical need? Contact a doctor or emergency services first. Stop using the product and keep the pack."]
+  ];
+  page("contact", function (root) { swap(root, CONTACT); });
+  function dressContact() {
+    if (!focus()) return;
+    var n = document.querySelector("#main .ss-switch-note"); if (n && n.textContent.trim() === CONTACT[0][0]) n.textContent = CONTACT[0][1];
+    // The social icons sit under the WhatsApp and email pills in the "Call or WhatsApp" card.
+    var alt = document.querySelector("#main .ss-switch-alt");
+    if (alt && !alt.parentNode.querySelector(".cf-social")) alt.insertAdjacentHTML("afterend", social("cf-social-contact"));
+  }
+  /* Social media (owner, 19 Nov 2026), Content Focus only: Instagram, Facebook and X, in the footer and on Contact. "For now
+     add icons only": with no address the icon is shown but isn't a link. Put each profile's full https:// address in its
+     third slot and it becomes a link that opens in a new tab, in both places. */
+  var SOCIAL = [
+    ["instagram", "Instagram", "", '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="cf-social-dot"/>'],
+    ["facebook", "Facebook", "", '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'],
+    ["x", "X", "", '<path class="cf-social-fill" transform="translate(3 3) scale(.75)" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>']
+  ];
+  function social(cls) {
+    return '<ul class="cf-social ' + cls + '" aria-label="Body Café Co. on social media">' + SOCIAL.map(function (s) {
+      var svg = '<svg viewBox="0 0 24 24" aria-hidden="true">' + s[3] + "</svg>";
+      return "<li>" + (s[2] ? '<a class="cf-social-i is-' + s[0] + '" href="' + esc(s[2]) + '" target="_blank" rel="noopener" aria-label="' + s[1] + ' (opens in a new tab)">' + svg + "</a>"
+        : '<span class="cf-social-i is-' + s[0] + '" role="img" aria-label="' + s[1] + '">' + svg + "</span>") + "</li>";
+    }).join("") + "</ul>";
+  }
   /* Learn (16 Nov 2026, owner-approved). Each product card shows the question its guide answers (the guides' own questions,
      from web/living-e-pages.js); the two general guides and the glossary that were written but not linked get their cards. */
   var LEARN = {
@@ -520,7 +562,7 @@
       if (!focus() || typeof html !== "string") return html;
       var B = (window.BCCSupportContent || {}).BUSINESS || {}, wa = B.channels && B.channels.whatsapp, hours = String(B.hours || "").replace(/\s*\(.*\)\s*$/, "");
       var extra = (wa && wa.live && wa.href ? '<a href="' + esc(wa.href) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") + (hours ? '<span class="cf-foot-hours">' + esc(hours) + "</span>" : "");
-      return html.replace("<br>One uncompromising standard.</p>", "<br>" + esc(FOOTER) + "</p>")
+      return html.replace("<br>One uncompromising standard.</p>", "<br>" + esc(FOOTER) + "</p>" + social("cf-social-foot"))
         .replace(/(<footer class="p2-foot">[\s\S]*?<a href="tel:[^"]*">[^<]*<\/a>)/, function (m) { return m + extra; });
     };
     S.themes.e = withFooter;
@@ -534,7 +576,7 @@
   var BAG = {
     empty: "Take what you need. Skip what you don’t.",
     account: ["No account needed. Prices are MRP, inclusive of all taxes.", "No account needed."],
-    notes: ["Ships in 3–4 days.", "Supplements can’t be returned for a change of mind. If something arrives damaged, wrong, missing, faulty or expired, tell us within 7 days."],
+    notes: ["Ships in 3–4 days.", "No change-of-mind returns. Damaged, wrong, missing, faulty or expired? Tell us within 7 days."],
     labels: "Each product has its own directions. Follow every label."
   };
   function dressBag() {
@@ -562,8 +604,9 @@
      wording changes are put on as they appear, like the bag's. */
   var REPORTS = {
     // "Mfg. Date", as the label prints it: the site's manufacturer-name filter drops any sentence with the full word.
-    where: ["Where to find it.", "The Batch No. is printed on the label beside the barcode, above the Mfg. Date and Exp. Date. It isn’t the barcode number or your order number."],
-    status: "Reports are published batch by batch, starting with our first production batch. A batch that isn’t listed yet hasn’t had its report published.",
+    // Fewer words (owner, 19 Nov 2026).
+    where: ["Where to find it.", "On the label, beside the barcode. Not your order number."],
+    status: "Reports are published batch by batch, from our first production batch. Not listed yet? It isn’t published yet.",
     notFound: "Reports are published batch by batch, so a newer batch may not be listed yet.",
     pack: ["This pack", "A batch record covers the whole batch. It doesn’t verify one bottle."],
     guide: "How to read a batch record"
@@ -856,7 +899,7 @@
   // Shorter notes, the same on every visual page. The pack note becomes the pack size (from the catalogue).
   var VIS_SWAP = [
     ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "One report per production batch. Reports appear as they are published."],
-    ["Only customers whose order was delivered can review. Every rating is published, low ones too. Sample reviews fill this preview until real reviews arrive.", "Only delivered orders can review. Every rating is published, low ones too. Sample reviews show until real ones arrive."],
+    REVIEW_NOTE,
     ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "We deliver across India. If we can’t reach you, we say so before you pay. Dates are estimates."]
   ];
   var PACK_NOTE = "2 bottles save 5%, 3 save 10%. The saving is applied in your bag.";
@@ -1005,6 +1048,152 @@
   });
 
 
+  /* Fewer words in the Learn guides and the Help library (owner, 19 Nov 2026: no paragraph past three lines on a phone).
+     Their text is shared data (web/learn-content.js, web/site.js, web/support-content.js) with glossary links written
+     inside it, so it is shortened in the data itself, once, the first time a Content Focus page renders. The design is fixed
+     for a page load (web/app.js), so Part 2, the other designs and Barista's knowledge (built from the files) keep the long
+     text. Each entry is [where, how the original starts, the short text]; an entry whose original no longer starts that way
+     is skipped, so an edited source line is never covered by a stale one. Where: P.<product>… (Learn product guides),
+     G.<guide>… (the five foundation guides), A.<help article>… (the Help library), L.<key> (the Learn content itself).
+     Facts are unchanged. Label wording, legal statements, source lists and the safety meaning of every caution stay. */
+  var SHORT_DATA = [
+    // The care note in every product guide.
+    ["L.CARE", "If you have a health condition", "Health condition, pregnancy or medication? Ask a health professional first. Not personal advice."],
+    // The "fictional example" tags on the worked examples.
+    ["G.reading-a-label.example.note", "Fictional example for reading", "Made-up example for practice. Not a Body Café Co. product."],
+    ["G.ingredient-forms.example.note", "Fictional example for reading", "Made-up example for practice. Not our products or amounts."],
+    ["G.serving-sizes.example.note", "Fictional example for reading", "Made-up example for practice. Not a Body Café Co. product."],
+    ["G.understanding-reports.example.note", "Fictional example for reading", "Made-up example for practice. Not a Body Café Co. result."],
+    ["G.understanding-evidence.example.note", "General guide for reading claims", "A guide to reading claims. Not about any Body Café Co. product."],
+    // Reading a label
+    ["G.reading-a-label.opening", "A supplement label is a short", "A label tells you what you’re taking, how much, and what to watch for. This works for any label, not only ours."],
+    ["G.reading-a-label.sections.0.html", "<p>Every amount on a label refers", "<p>Every amount refers to a serving, and a serving can be more than one unit. Compare like with like.</p><p>The serving comes from the label’s directions, not the front of the pack.</p>"],
+    ["G.reading-a-label.sections.1.html", "<p>The headline on the front", "<p>The ingredient list names each form, which changes how much active ingredient a weight holds. See <a href=\"/learn/ingredient-forms\">ingredient forms</a>.</p><p>Shells, softgel materials and sweeteners should be listed too.</p>"],
+    ["G.reading-a-label.sections.2.html", "<p>In India, health supplements", "<p>FSSAI regulates health supplements in India. The label must carry, among other things:</p><ul><li>the words <strong>“HEALTH SUPPLEMENT”</strong>;</li><li>the amount of each nutrient or substance with a nutritional or physiological effect;</li><li>the advisory <strong>“NOT FOR MEDICINAL USE”</strong>, displayed prominently;</li><li>where applicable, % of the ICMR daily allowance, with “Not to exceed the recommended daily usage”;</li><li>a statement that the product isn’t a substitute for a varied diet;</li><li>warnings, precautions, side effects, contraindications and interactions, as applicable;</li><li>a statement to store it out of the reach of children.</li></ul><p>A supplement can’t claim to prevent, treat or cure a disease. If one does, treat it as a warning sign.</p><p class=\"bcc-aside\">A reading aid, not a legal assessment. Check the current regulations for anything you rely on.</p>"],
+    ["G.reading-a-label.sections.3.html", "<p>Directions tell you how much", "<p>Directions: how much and how often. Warnings: who should take care. Allergens: what it contains. Read all three first.</p><p>Health condition, pregnancy, breastfeeding or medication? Ask a health professional first.</p>"],
+    ["G.reading-a-label.sections.4.html", "<p>Your pack's lot number", "<p>The Batch No. links your pack to its production batch. It isn’t the barcode or your order number. Use it to <a href=\"/reports\">look up a batch record</a>.</p>"],
+    ["G.reading-a-label.example.reading", "Here the 20 mg refers", "The 20 mg is for two capsules, so one holds 10 mg. The compound is named, so you can check what the 20 mg means."],
+    // Ingredient forms
+    ["G.ingredient-forms.opening", "Two labels can name the same", "The same ingredient can come in different forms. The form changes what the number means."],
+    ["G.ingredient-forms.sections.0.html", "<p>Minerals and some other", "<p>Minerals come bound to something else, so the compound’s weight isn’t the mineral’s weight.</p><p>NIH figures: ferrous fumarate is 33% iron, ferrous sulfate 20%, ferrous gluconate 12%. Creatine monohydrate is 88% creatine.</p>"],
+    ["G.ingredient-forms.sections.1.html", "<p>Vitamin D can be stated", "<p>Vitamin D is given in mcg or IU. Per the NIH, 1 mcg equals 40 IU. Convert before you compare.</p>"],
+    ["G.ingredient-forms.sections.2.html", "<p>Some vitamins come in several", "<p>Vitamin D comes as D2 or D3. Vitamin K comes as K1 or K2 (such as MK-4 or MK-7). A label should say which.</p>"],
+    ["G.ingredient-forms.sections.3.html", "<p>For fish oil, the amount", "<p>Oil and omega-3 are different numbers. A typical 1,000 mg fish oil has about 180 mg EPA and 120 mg DHA (NIH).</p><p>Omega-3 comes as triglycerides, ethyl esters and other forms. Look for EPA and DHA, stated separately.</p>"],
+    ["G.ingredient-forms.sections.4.html", "<p>For a formula with several", "<p>With several ingredients, compare each one: form, amount, unit, serving. Missing one? No fair comparison.</p>"],
+    ["G.ingredient-forms.example.reading", "These numbers can't be compared", "These can’t be compared yet: A gives the compound’s weight, B the elemental amount, and the servings differ."],
+    // Serving sizes
+    ["G.serving-sizes.opening", "Three numbers do most", "Three numbers do the work: serving size, amount per serving and unit. Read them together."],
+    ["G.serving-sizes.sections.0.html", "<p>Every amount on a label is an", "<p>Every amount is an {{amount-per-serving|amount per serving}}. If the {{serving-size|serving size}} is two capsules, one capsule holds half.</p><p>The serving comes from the directions, not the front of the pack.</p>"],
+    ["G.serving-sizes.sections.1.html", "<p>Amounts are usually in grams", "<p>1 g is 1,000 mg; 1 mg is 1,000 mcg. So 0.5 mg and 500 mcg are the same.</p><p>For vitamin D, 1 mcg equals 40 {{iu|IU}} (NIH). Convert before comparing.</p>"],
+    ["G.serving-sizes.sections.2.html", "<p>The pack count tells you", "<p>Units in the pack ÷ units per serving = {{servings-per-pack|servings per pack}}. 60 capsules at two a serving make 30 servings.</p><p>That’s arithmetic, not a recommendation. Follow the directions.</p>"],
+    ["G.serving-sizes.sections.3.html", "<p>Under FSSAI's health supplement", "<p>A label may give a % of the ICMR daily allowance. Read it next to the amount and serving it refers to.</p>"],
+    ["G.serving-sizes.sections.4.html", "<p>Format changes what a unit is", "<p>A serving can be several chews, softgels or capsules. For chews, check the sugar too.</p>"],
+    // Understanding evidence
+    ["G.understanding-evidence.opening", "“Backed by research”", "“Backed by research”, “tested”, “certified”: each is a different kind of evidence. Here’s which is which."],
+    ["G.understanding-evidence.sections.0.html", "<p>Ingredient research, finished", "<ul><li><strong>Research</strong> studies an ingredient.</li><li><strong>Testing</strong> checks a product.</li><li>{{certification|Certification}} checks against a standard.</li><li>A <strong>batch report</strong> covers one batch.</li></ul>"],
+    ["G.understanding-evidence.sections.1.html", "<p>An {{observational", "<ul><li>An {{observational|observational study}} shows links, not cause.</li><li>A {{rct|randomised controlled trial}} tests cause and effect.</li><li>A {{systematic-review|systematic review}} weighs all the trials on a question.</li></ul><p>Results hold for the people, form and amount studied, not beyond.</p>"],
+    ["G.understanding-evidence.sections.2.html", "<p>Research on an ingredient tells", "<p>Ingredient research describes that ingredient, not a finished product. So we don’t turn research into promises.</p>"],
+    ["G.understanding-evidence.sections.3.html", "<p>Testing a finished product", "<p>Testing checks what’s in a product, not what it does in your body. Read any certification’s scope, issuer and date.</p><p>Body Café Co. doesn’t claim any certification.</p>"],
+    ["G.understanding-evidence.sections.4.html", "<p>Under FSSAI's health supplement", "<p>A supplement can’t claim to prevent, treat or cure a disease. Treat that promise as a warning sign.</p>"],
+    // Batch reports
+    ["G.understanding-reports.opening", "“Tested” can mean almost", "A good batch report is specific: which batch, which sample, which tests, which limits. Here’s how to read one."],
+    ["G.understanding-reports.sections.0.html", "<p>A product is a recipe", "<p>Product: the recipe. Batch: one production run. Sample: the part tested. A report should name all three.</p>"],
+    ["G.understanding-reports.sections.2.html", "<p>A number on its own", "<p>Read each result with its unit and limit. “Not detected” means little without the detection level.</p>"],
+    ["G.understanding-reports.sections.3.html", "<p>A lot report describes", "<p>A report covers one sample at one time. It doesn’t predict results for you or prove a pack is genuine.</p>"],
+    ["G.understanding-reports.sections.4.html", "<p>When you look up a lot", "<ul><li><strong>Batch found</strong>: it belongs to your product.</li><li><strong>No matching batch</strong>: usually a typo or the wrong product.</li><li><strong>Not published yet</strong>: not ready to view. No pass or fail.</li><li><strong>Withdrawn</strong>: off sale. Follow the steps shown.</li></ul>"],
+    ["G.understanding-reports.example.reading", "“Not detected” is only", "“Not detected” means something only with the detection level. The limit says what the result is judged against."],
+    // Product guides
+    ["P.iron-bisglycinate.minute", "Iron bisglycinate is iron bound", "Iron bound to glycine. On any iron label, find the elemental iron. Ours: 29 mg per capsule, as Ferrochel®."],
+    ["P.iron-bisglycinate.what", "<p>Iron is a mineral.", "<p>Iron is part of hemoglobin, which carries oxygen (NIH). In supplements it’s bound, here as a {{chelate|chelate}}.</p>"],
+    ["P.iron-bisglycinate.name", "<p><strong>“Bis-”</strong>", "<p><strong>“Bis-”</strong> means two; <strong>“glycinate”</strong> is glycine, an {{amino-acid|amino acid}}. Iron bound to two glycines.</p><p>So the compound’s weight isn’t the iron’s. Look for the {{elemental|elemental}} iron.</p>"],
+    ["P.iron-bisglycinate.label.3.1", "Iron products carry warnings", "Read the warnings and storage in full on the label, including keeping it away from children."],
+    ["P.iron-bisglycinate.caution", "The NIH Office of Dietary Supplements notes that accidental", "Iron overdose is a leading cause of fatal poisoning in children under 6 (NIH). Keep it out of their reach."],
+    ["P.iron-bisglycinate.faq.0.1", "No. Iron bisglycinate is a compound", "No. Only part of the compound’s weight is iron. Look for the elemental iron."],
+    ["P.iron-bisglycinate.faq.1.1", "Our label states 29 mg", "29 mg elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. One capsule is a serving."],
+    ["P.l-theanine.minute", "L-theanine is an amino acid", "An amino acid found in the tea plant. Look for the amount per serving. Ours: 200 mg per capsule."],
+    ["P.l-theanine.what", "<p>L-theanine is a non-protein", "<p>A non-protein {{amino-acid|amino acid}}, found in the tea plant, <em>Camellia sinensis</em>. It adds to tea’s taste.</p>"],
+    ["P.l-theanine.name", "<p>The “theanine” part", "<p>“Theanine” comes from tea (<em>thea</em>). The {{l-form|“L-”}} marks one of two mirror-image forms. You may see just “theanine”.</p>"],
+    ["P.l-theanine.faq.0.1", "No. Both occur in tea", "No. Both are in tea, but they’re different compounds."],
+    ["P.vitamin-d3-k2.minute", "This formula has three named parts", "Three parts, read one by one. Ours per softgel: 600 IU D3, 55 mcg K2 (MK-7), 200 mg omega-3."],
+    ["P.vitamin-d3-k2.what", "<p>Vitamin D and vitamin K are", "<p>Three distinct ingredients: vitamin D3, vitamin K2 and omega-3 in {{triglyceride|triglyceride form}}. Read each on its own.</p>"],
+    ["P.vitamin-d3-k2.name", "<p><strong>Vitamin D3</strong>", "<p><strong>D3</strong> is {{cholecalciferol|cholecalciferol}}; the other form is D2.</p><p><strong>K2</strong> is a family of {{menaquinone|menaquinones}}. A label should name one, such as MK-7.</p><p>Vitamin D is in mcg or {{iu|IU}} (1 mcg = 40 IU). Vitamin K is in mcg.</p>"],
+    ["P.vitamin-d3-k2.caution", "The NIH Office of Dietary Supplements advises", "Taking warfarin or a similar anticoagulant? Ask your doctor first: vitamin K intake needs to stay steady (NIH)."],
+    ["P.vitamin-d3-k2.faq.0.1", "Both contain omega-3s", "Both have omega-3, but the formulas differ. Ours: 250 mg anchovy oil per softgel, giving 200 mg omega-3."],
+    ["P.omega-3-fish-oil.minute", "With fish oil, the amount", "Oil and omega-3 are different numbers. Ours: 800 mg omega-3 in 1,000 mg of oil."],
+    ["P.omega-3-fish-oil.what", "<p>Fish oil is an oil", "<p>Fish oil carries omega-3s. The main ones are ALA, EPA and DHA (NIH); EPA and DHA are the ones in fish oil.</p>"],
+    ["P.omega-3-fish-oil.name", "<p>{{epa-dha|EPA and DHA}}", "<p>{{epa-dha|EPA and DHA}} are named for their structure. A typical 1,000 mg fish oil has 180 mg EPA and 120 mg DHA (NIH).</p><p>So “1,000 mg fish oil” alone doesn’t tell you the omega-3.</p>"],
+    ["P.omega-3-fish-oil.allergen", "Omega-3 Fish Oil comes from fish", "From anchovy (Engraulis ringens). Contains gelatin, fish oil and soy."],
+    ["P.myo-d-chiro-inositol.minute", "Myo-inositol and D-chiro-inositol are two", "Two forms of inositol, each with its own amount. Ours: 2,000 mg myo and 50 mg D-chiro per 3 capsules: 40:1."],
+    ["P.myo-d-chiro-inositol.what", "<p>Inositol is a carbocyclic", "<p>Inositol is a sugar alcohol. Myo- and D-chiro-inositol are two of its forms, stored in organs such as the liver.</p>"],
+    ["P.myo-d-chiro-inositol.name", "<p>Inositol's hydroxyl groups", "<p>Inositol has nine {{stereoisomer|stereoisomers}}; “myo-” and “D-chiro-” are two. Compare both amounts, not just the total.</p><p>A <strong>ratio</strong> like 40:1 should match the two amounts.</p>"],
+    ["P.myo-d-chiro-inositol.faq.0.1", "Our label states myo-inositol", "2,000 mg myo-inositol and 50 mg D-chiro-inositol per 3 capsules. 2,000 ÷ 50 = 40:1."],
+    ["P.creatine-chews.minute", "Creatine is a compound", "Check the form, amount per serving and what else is in a chew. Ours: 3,000 mg per 2 chews."],
+    ["P.creatine-chews.what", "<p>Creatine is made in the body", "<p>The body makes creatine in the liver and kidneys and stores most of it in muscle (NIH). Diet adds a little.</p>"],
+    ["P.creatine-chews.name", "<p>Creatine comes in several forms", "<p>{{creatine-monohydrate|Creatine monohydrate}} is the most studied form, 88% creatine by weight.</p><p>If a {{serving-size|serving}} is two chews, each chew holds half.</p>"],
+    ["P.psyllium-husk.minute", "Psyllium husk is the seed coat", "The seed coat of Plantago ovata, a source of fibre. Check the serving, the fibre per serving and the directions."],
+    ["P.psyllium-husk.what", "<p>{{husk|Psyllium husk}}", "<p>{{husk|Psyllium husk}}, or ispaghula husk, is the seed coat of <em>Plantago ovata</em> (European Medicines Agency).</p>"],
+    ["P.psyllium-husk.name", "<p>“Psyllium” and “ispaghula”", "<p>Psyllium and ispaghula are the same plant material: the seed coat of <em>Plantago ovata</em>.</p><p>On a fibre product, read the husk and the fibre it gives as two numbers.</p>"],
+    ["P.psyllium-husk.caution", "Fibre products usually come", "Follow the label’s water directions exactly. Ours: 5 capsules at night, with food and a full glass of water."],
+    ["P.psyllium-husk.faq.1.1", "Read the directions and cautions", "Read the directions on the product page and your pack. Ours: with food and a full glass of water."],
+    // The Help library (answer = the line under the question; body.n = the paragraphs after it)
+    ["A.track-order.body.0", "Every order has a page", "Your order page shows each step: created, paid, shipped, delivered. Once shipped, the tracking number appears there."],
+    ["A.track-order.body.1", "Ordered as a guest?", "Ordered as a guest? Sign in with your checkout mobile number, and orders from that browser join your account."],
+    ["A.guest-order.answer", "In the same browser", "It’s under Account in the same browser. Sign in with your checkout mobile number to keep it."],
+    ["A.guest-order.body.0", "Signing in uses a one-time code", "Sign-in uses a one-time code sent to your mobile. Orders with that number join your account."],
+    ["A.cancel-order.answer", "You can cancel from the order page", "Cancel from the order page until it’s dispatched. You’ll see what happens to your payment first."],
+    ["A.cancel-order.body.0", "Open the order and choose Cancel", "Open the order, choose Cancel order. Paid? Full refund. Payment still confirming? Check its status first."],
+    ["A.cancel-order.body.1", "Once an order has been dispatched", "Once dispatched, it can’t be cancelled. Contact us, or see Returns & Refunds when it arrives."],
+    ["A.change-order.answer", "Orders can’t be edited", "Orders can’t be edited. Before dispatch, cancel and reorder, or contact us to change the address."],
+    ["A.delivery-areas.answer", "We deliver across India", "Across India, through our courier partners. Check your pincode in your bag or at checkout."],
+    ["A.delivery-areas.body.0", "If our courier partners", "Can’t reach your pincode? We tell you before you pay. Delivery dates are estimates."],
+    ["A.parcel-problem.answer", "Tell us from the order page", "Tell us from the order page or contact form, with your order reference. A photo helps but isn’t required."],
+    ["A.parcel-problem.body.0", "Late or lost:", "Late or lost: we check with the courier. Damaged, wrong or late: you’re entitled to a refund or replacement."],
+    ["A.change-address.answer", "Before dispatch, contact us", "Before dispatch, contact us with the order reference and new address. It changes once we confirm."],
+    ["A.change-address.body.0", "After dispatch the courier", "After dispatch, the courier decides. We’ll ask them and tell you on your case."],
+    ["A.something-wrong.answer", "Start a request from the order page", "Start from the order page: pick the item, what went wrong, and refund or replacement."],
+    ["A.something-wrong.body.0", "Damaged, wrong, missing", "We always look at damaged, wrong, missing, faulty or expired items. A photo helps, but isn’t required."],
+    ["A.something-wrong.body.1", "If you think a product", "Think a product made someone unwell? Report it as a safety concern, so it’s handled first."],
+    ["A.change-of-mind.answer", "We don’t accept change-of-mind", "No change-of-mind returns. Damaged, wrong, missing, faulty or expired? Tell us within 7 days."],
+    ["A.refund-status.body.0", "Refunds go back to the original", "Refunds go to your original payment method. UPI takes a few days; cards and net banking up to 7 business days more."],
+    ["A.payment-methods.answer", "Pay online by UPI", "UPI, card, wallet or net banking, through Razorpay. No cash on delivery."],
+    ["A.payment-unclear.answer", "Don’t pay again yet.", "Don’t pay again yet. Open the order and choose Check payment status."],
+    ["A.payment-unclear.body.0", "If money left your account", "Charged but the order shows unpaid? Contact us with the order reference. Never send card or bank details."],
+    ["A.gst-invoice.answer", "Yes. Every order comes with a tax invoice", "Yes, a tax invoice comes with every order. Add your GSTIN at checkout to have it on the invoice."],
+    ["A.all-seven.body.0", "If you’re pregnant, breastfeeding", "Pregnant, breastfeeding, under medical care or unsure? Ask a healthcare professional first."],
+    ["A.vegetarian.answer", "Five are vegetarian.", "Five are. Omega-3 Fish Oil and Vitamin D3 + K2 are non-vegetarian: fish oil in gelatin softgels."],
+    ["A.vegetarian.body.0", "Creatine Chews, Iron Bisglycinate", "The other five carry the green vegetarian mark. Their labels say they may contain nuts."],
+    ["A.when-to-take.answer", "Each label says when.", "Each label says when. Six are best in the morning, Psyllium Husk at night. Follow your pack."],
+    ["A.when-to-take.body.2", "Creatine Chews: chew 2 tablets", "Creatine Chews: chew 2 tablets once a day, at one time you keep to. Don’t swallow them whole."],
+    ["A.check-first.answer", "All seven are for adults only.", "All seven are for adults only. Pregnant, breastfeeding or under medical care? Ask a healthcare professional first."],
+    ["A.product-question.answer", "Ask on the product page", "Ask on the product page or contact us. For your own health, please ask a doctor."],
+    ["A.safety.answer", "Stop using it and report", "Stop using it and report a safety concern. Urgent? Contact a doctor or emergency services first."],
+    ["A.your-data.answer", "Yes. Signed-in customers can download", "Yes. Download your data and make privacy requests from Profile & security."],
+    ["A.lot-not-found.answer", "Check for letters that look", "Check look-alikes (O and 0, I and 1). Still not found? Ask us from the result page."]
+  ];
+  function shortenData() {
+    if (shortenData.done) return; shortenData.done = true;
+    var L = window.BCCLearnContent || {}, C = window.BCCSupportContent || {};
+    SHORT_DATA.forEach(function (x) {
+      var parts = x[0].split("."), root = parts.shift(), o = null, key;
+      if (root === "L") o = L;
+      else if (root === "P") o = L.PRODUCTS;
+      else if (root === "G") { key = parts.shift(); var g = L.foundation && L.foundation(key); o = g && g === L.foundation(key) ? g : S.guides && S.guides[key]; } // a new guide, or the site.js one it copies
+      else if (root === "A") { key = parts.shift(); o = (C.ARTICLES || []).filter(function (a) { return a.id === key; })[0]; }
+      for (var i = 0; o && i < parts.length - 1; i++) o = o[parts[i]];
+      var k = parts[parts.length - 1];
+      if (o && typeof o[k] === "string" && o[k].indexOf(x[1]) === 0) o[k] = x[2];
+      else if (window.console) console.warn("Content Focus: no short text for", x[0]);
+    });
+  }
+  // Lines the Learn pages write themselves: two on every product guide (web/learn.js), one under the iron-forms chart (web/living-e-pages.js).
+  page("learn", function (root) {
+    swap(root, [
+      ["Percentages from the NIH Office of Dietary Supplements iron fact sheet, cited in the iron guide. The same 100 mg of compound gives different amounts of iron, so compare the elemental amount.", "NIH figures. The same 100 mg of compound gives different amounts of iron, so compare the elemental amount."],
+      ["Research summaries on this site are published only after specialist review, so this guide doesn't yet summarise findings or outcomes.", "Published only after specialist review."],
+      ["Research on an ingredient describes that ingredient, in the form, amount and people studied. It isn't evidence about our finished product.", "Ingredient research isn’t evidence about our finished product."]
+    ]);
+  });
+
   var app = document.getElementById("app");
-  if (app && "MutationObserver" in window) new MutationObserver(function () { dressBag(); dressReport(); dressSearch(); mountReviews(); }).observe(app, { childList: true, subtree: true });
+  if (app && "MutationObserver" in window) new MutationObserver(function () { dressBag(); dressReport(); dressSearch(); dressContact(); mountReviews(); }).observe(app, { childList: true, subtree: true });
 })();

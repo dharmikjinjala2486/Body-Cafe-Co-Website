@@ -1,6 +1,6 @@
 /* Tester feedback (17 Nov 2026): a Feedback button on every page of Part 2 and Content Focus, for people testing the site.
-   It shows only after the site is opened once with ?test=1 (remembered on that device; ?test=0 turns it off), so
-   customers never see it. Each page has its own form: the page's name, and a text field for the part of the page the note is about.
+   It shows only after the site is opened once with ?test=1 (remembered on that device; ?test=0 turns it off), or on the
+   local preview, so customers never see it. Each page has its own form: the page's name, and a text field for the part of the page the note is about.
    The panel shows the newest few notes still open on this page; "See all feedback" opens the full table for this page
    only (18 Nov 2026, owner: a page shows its own notes, never another page's), filtered by status (Open, In progress,
    Resolved), where anyone testing can move a note along like a bug. Every page's notes together are in the admin page.
@@ -12,8 +12,11 @@
   var get = function (k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
   var set = function (k, v) { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
   var asked = new URLSearchParams(location.search).get("test");
-  if (asked === "1") set(KEY, "1"); else if (asked === "0") set(KEY, "");
-  if (get(KEY) !== "1" || location.pathname.indexOf("/ops") === 0) return;
+  if (asked === "1") set(KEY, "1"); else if (asked === "0") set(KEY, "0");
+  /* The local preview (owner, 19 Nov 2026) shows it without ?test=1: only people working on the site open it on this
+     computer. ?test=0 still turns it off there. Customers never reach a local address. */
+  var local = /^(localhost|127\.0\.0\.1|\[::1\])$|\.localhost$/.test(location.hostname);
+  if (!(get(KEY) === "1" || (local && get(KEY) !== "0")) || location.pathname.indexOf("/ops") === 0) return;
 
   var STATUS = [["open", "Open"], ["in_progress", "In progress"], ["resolved", "Resolved"]], RECENT = 3;
   var el = function (tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
