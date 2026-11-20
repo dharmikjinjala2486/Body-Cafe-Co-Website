@@ -67,7 +67,8 @@
     product: [ // 68, 69, 70, 24
       // The workbook, rows 68–70. Row 67 keeps the buy box and the batch report as they are. Nothing suggests taking more than one.
       ["Frequently bought with", "Build your routine"],
-      ["Nothing is ticked. Add one only if you need it.", "Each one has its own timing. Follow every label."],
+      // Copy review 02 (20 Nov 2026): the same rule, softer ("Follow every label" read as a warning).
+      ["Nothing is ticked. Add one only if you need it.", "Each has its own time of day. Follow each label."],
       ["Recommended for you", "Also in the range"],
       ["The rest of the seven.", "Each one, for its own reason."],
       ["The softgel contains fish oil and gelatin, and the pack says so clearly. Other brands hid that in small print.", "The softgel contains fish oil and gelatin, and the pack says so clearly, right on the front."]
@@ -84,71 +85,71 @@
     "iron-bisglycinate": {
       "headline": "Iron first. Chai later.",
       "support": "29 mg iron as Ferrochel®. Empty stomach, away from milk.",
-      "ingredient": "Many Indian women fall short. ICMR sets 29 mg a day for women.",
-      "form": "Iron bound to glycine. Ferrochel®, named on the front.",
-      "amount": "29 mg elemental iron: 100% of the ICMR RDA.",
-      "decision": "Iron goes alone. Calcium can lower iron uptake, so no milk or chai for 2 hours."
+      "ingredient": "Many Indian women don’t get enough iron from food. ICMR sets 29 mg a day for women.",
+      "form": "Ferrochel®: iron bound to glycine, an amino acid. A named form, so you know exactly what’s inside.",
+      "amount": "29 mg of the iron itself, not the compound’s weight. A full day’s ICMR amount.",
+      "decision": "Iron comes alone because calcium can lower how much you absorb. So no milk or chai for 2 hours."
     },
     "vitamin-d3-k2": {
-      "headline": "Two fat-soluble vitamins. One oil. On purpose.",
+      "headline": "D3 and K2, in the oil they need.",
       "support": "600 IU D3 and 55 mcg K2 (MK-7), in anchovy fish oil.",
-      "ingredient": "D helps the body absorb calcium. K is needed for proteins in bone.",
-      "form": "D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so: oil.",
-      "amount": "Each 100% of the ICMR RDA. Not a megadose.",
-      "decision": "D3 and K2 both need fat, so one softgel of oil carries both. Take it with a meal."
+      "ingredient": "Vitamin D helps your body absorb calcium. Vitamin K2 is needed for proteins in bone.",
+      "form": "Both dissolve in fat, so they come in fish oil, not a dry tablet. K2 is MK-7, named on the front.",
+      "amount": "A full day’s ICMR amount of each. Enough, not a megadose.",
+      "decision": "Same need for fat, so one softgel carries both, plus 200 mg omega-3 from the oil. Take it with a meal."
     },
     "omega-3-fish-oil": {
-      "headline": "Count the omega-3, not the oil.",
+      "headline": "One softgel. The omega-3 of three regular ones.",
       "support": "800 mg omega-3 in every 1,000 mg softgel: 400 mg EPA, 300 mg DHA.",
-      "ingredient": "EPA and DHA. Your body makes little, so they come from fish.",
-      "form": "Triglycerides, as found in fish. From anchovy oil.",
-      "amount": "800 mg omega-3 per softgel, printed on the front.",
-      "decision": "We print the omega-3, not just the oil, so you know what you get."
+      "ingredient": "EPA and DHA: omega-3s your body makes very little of, so they have to come from food, mostly fish.",
+      "form": "Concentrated anchovy oil, kept as triglycerides: the same form as in the fish.",
+      "amount": "800 mg omega-3 in one softgel, so you swallow one, not three.",
+      "decision": "We concentrated the oil so one softgel is enough, and print the omega-3 so you can check."
     },
     "l-theanine": {
-      "headline": "One amino acid. 200 mg. Nothing else active.",
-      "support": "200 mg L-theanine, the green-tea amino acid, in one capsule.",
+      "headline": "Green tea’s amino acid. 200 mg. No blend.",
+      "support": "200 mg L-theanine in one capsule, morning, with or without food.",
       "ingredient": "The amino acid tea is known for. One simple ingredient.",
-      "form": "Free-form, on its own. What the label says is what you take.",
-      "amount": "200 mg, as used in published studies.",
-      "decision": "Only L-theanine, no blend, so all 200 mg is the one ingredient."
+      "form": "Free-form L-theanine, not mixed into a blend, so all 200 mg is L-theanine.",
+      "amount": "200 mg in one capsule, an amount used in published studies. Nothing to split.",
+      "decision": "We left out blends and add-ons, so you know exactly what you’re taking."
     },
     "myo-d-chiro-inositol": {
-      "headline": "Two inositols. One ratio. 40:1, on the front.",
+      "headline": "40 parts myo to 1 part D-chiro. In every batch.",
       "support": "2,000 mg myo and 50 mg D-chiro per serving: 40:1.",
-      "ingredient": "Two forms of inositol the body uses together.",
-      "form": "Research studies them together, in a set ratio.",
-      "amount": "40:1 in three capsules. Each batch stays within 36:1–44:1.",
-      "decision": "Both inositols at 40:1, checked in every batch and printed on the front."
+      "ingredient": "Myo- and D-chiro-inositol: two forms of inositol your body uses side by side.",
+      "form": "Research looks at the two together at 40:1, so that is how we make it.",
+      "amount": "2,000 mg + 50 mg in three capsules. We check every batch stays between 36:1 and 44:1.",
+      "decision": "The ratio is the product, so we test it in every batch and print it on the front."
     },
     "creatine-chews": {
-      "headline": "3 grams of creatine. Two chews. Your time.",
-      "support": "3,000 mg creatine monohydrate in two orange chews. No powder.",
-      "ingredient": "One of the most researched sports ingredients. Take it daily.",
-      "form": "Monohydrate, the most studied form. Nothing to mix.",
+      "headline": "3 g creatine. Two chews. No shaker.",
+      "support": "3,000 mg creatine monohydrate in two orange chews, once a day.",
+      "ingredient": "One of the most researched sports ingredients. It’s taken every day, training day or not.",
+      "form": "Monohydrate, the most studied form, as a chew: nothing to mix, easy to carry.",
       "amount": "3 g a day, within the 3–5 g used in research.",
-      "decision": "Chews, so you don’t skip a day. They need 3.6 g sugar, and we say so."
+      "decision": "A chew is easy to keep up daily. It needs 3.6 g sugar per serving, and we print it."
     },
     "psyllium-husk": {
       "headline": "The isabgol you know, measured in capsules.",
       "support": "2,000 mg husk in five capsules: 1,578 mg fibre, 1,362 mg soluble.",
       "ingredient": "Isabgol: the soluble fibre most Indian homes know.",
       "form": "Whole husk in capsules. Nothing to stir.",
-      "amount": "2,000 mg husk per serving. Fibre printed too: a different number.",
-      "decision": "Isabgol without the stirring. Always take it with a full glass of water."
+      "amount": "2,000 mg husk gives 1,578 mg fibre. We print both, so you know the fibre you get.",
+      "decision": "Capsules give the same measured amount every night. Take them with a full glass of water."
     }
   };
   /* Copy review 01's lines (17 Nov 2026), replaced the same day by the Version E workbook's own text (owner: "Workbook wins").
      A stored admin field that still holds one of these exactly was saved from that default, not written on purpose, so it
      gives way to the workbook text above (stale()). A key may list several, the 16 Nov holdbacks with copy review 01's line. */
   var PREV = {
-    "iron-bisglycinate": {"cf_support":["One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.","29 mg of elemental iron per capsule, as Ferrochel® bisglycinate. Taken alone, on an empty stomach, away from milk."],"cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule.","Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg.","Many Indian women fall short of iron. The ICMR daily requirement for adult women is 29 mg."],"cf_form":["Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.","Iron bound to glycine, an amino acid. We use Ferrochel® and name it on the front."],"cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. The iron you get, not the compound’s weight."],"cf_decision":["Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away.","Iron stands alone. Calcium can reduce how much iron is absorbed, so milk and chai wait two hours.","Calcium can cut iron absorption. Milk and chai wait 2 hours."]},
-    "vitamin-d3-k2": {"cf_support":["Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel."],"cf_ingredient":["Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.","Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins in bone."],"cf_form":["D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.","D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so they sit in oil, not a dry tablet."],"cf_decision":["One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal.","A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal.","A deliberate pair. Both dissolve in fat, so one softgel of oil carries both. Take it with a meal.","One softgel carries both. Take it with a meal."],"cf_amount":["600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose.","600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA. The reference level, not a megadose."]},
-    "omega-3-fish-oil": {"cf_support":["Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.","1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA.","1,000 mg of anchovy fish oil concentrate per softgel. 800 mg of it is omega-3: 400 mg EPA and 300 mg DHA."],"cf_ingredient":["EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.","EPA and DHA are the omega-3s people look for in fish oil. The body makes very little, so they come mainly from fish.","EPA and DHA: the omega-3s your body barely makes. They come mainly from fish.","EPA and DHA: the omega-3s people look for in fish oil. Your body barely makes them, so they come mainly from fish."],"cf_form":["Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.","Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","Concentrated anchovy oil. The omega-3 stays as triglycerides, the form found in fish.","Triglycerides, the form found in fish. From concentrated anchovy oil."],"cf_amount":["800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA. The omega-3 is the number that matters, so we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA.","800 mg of omega-3 per softgel. The omega-3 is the number that matters, so we print it."],"cf_decision":["Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it. EPA and DHA are shown separately.","Two numbers on the label: the oil and the omega-3 in it. EPA and DHA shown separately.","Oil and omega-3, both printed. EPA and DHA too."]},
-    "l-theanine": {"cf_headline":"The green-tea amino acid. 200 mg, on its own.","cf_support":["One capsule in the morning, with or without food. One active ingredient, with its amount printed.","200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule."],"cf_ingredient":["L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.","L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient.","The amino acid tea is known for. A simple, well-characterised single ingredient."],"cf_form":["Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.","Free-form L-theanine, on its own, so the amount you take is the amount on the label.","Free-form L-theanine, on its own. The amount on the label is the amount you take."],"cf_amount":["200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.","200 mg, an amount used in published studies."],"cf_decision":["One ingredient, one number, one capsule. No blend sharing the dose.","One ingredient, one number, one capsule. No blend to divide the dose.","One ingredient, one number. No blend."]},
-    "myo-d-chiro-inositol": {"cf_headline":"The ratio is the formula. 40:1.","cf_support":["40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front."],"cf_form":["Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.","Research has looked at the two together, in a set ratio, not either one alone."],"cf_decision":["One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point.","A deliberate combination where the ratio is the formula, so the ratio goes on the front.","A deliberate pair. The ratio is the formula, so it goes on the front.","The ratio is the formula, so it’s on the front."],"cf_ingredient":["Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.","Two forms of inositol that the body uses side by side."],"cf_amount":["2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1.","2,000 mg + 50 mg per three capsules: 40:1, a ratio used in research. Each batch stays within 36:1–44:1."]},
-    "creatine-chews": {"cf_support":["Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker."],"cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day.","Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day.","One of the most researched sports-nutrition ingredients. It only helps if you take it daily."],"cf_amount":["3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","3 g per serving, within the 3–5 g daily intake commonly used in research."],"cf_decision":["Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print.","We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving.","A chew keeps the habit easy. We print the sugar it needs: 3.6 g per serving.","Chews keep the habit easy. Sugar printed: 3.6 g."],"cf_form":["Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing.","Creatine monohydrate, the most studied form. A chew, so there’s nothing to mix."]},
-    "psyllium-husk": {"cf_support":["Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.","2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble."],"cf_form":["Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.","Whole psyllium husk in capsules: the same ingredient, with nothing to stir."],"cf_amount":["2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.","2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers.","2,000 mg of husk per serving. We print the fibre too, because husk and fibre are different numbers."],"cf_decision":["Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass.","Isabgol, measured. Always with a full glass of water."],"cf_ingredient":["Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes.","Isabgol: a familiar source of soluble fibre in most Indian homes."]}
+    "iron-bisglycinate": {"cf_support":["One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.","29 mg of elemental iron per capsule, as Ferrochel® bisglycinate. Taken alone, on an empty stomach, away from milk."],"cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule.","Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg.","Many Indian women fall short of iron. The ICMR daily requirement for adult women is 29 mg.","Many Indian women fall short. ICMR sets 29 mg a day for women."],"cf_form":["Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.","Iron bound to glycine, an amino acid. We use Ferrochel® and name it on the front.","Iron bound to glycine. Ferrochel®, named on the front."],"cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. The iron you get, not the compound’s weight.","29 mg elemental iron: 100% of the ICMR RDA."],"cf_decision":["Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away.","Iron stands alone. Calcium can reduce how much iron is absorbed, so milk and chai wait two hours.","Calcium can cut iron absorption. Milk and chai wait 2 hours.","Iron goes alone. Calcium can lower iron uptake, so no milk or chai for 2 hours."]},
+    "vitamin-d3-k2": {"cf_support":["Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel."],"cf_ingredient":["Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.","Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins in bone.","D helps the body absorb calcium. K is needed for proteins in bone."],"cf_form":["D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.","D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so they sit in oil, not a dry tablet.","D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so: oil."],"cf_decision":["One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal.","A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal.","A deliberate pair. Both dissolve in fat, so one softgel of oil carries both. Take it with a meal.","One softgel carries both. Take it with a meal.","D3 and K2 both need fat, so one softgel of oil carries both. Take it with a meal."],"cf_amount":["600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose.","600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA. The reference level, not a megadose.","Each 100% of the ICMR RDA. Not a megadose."],"cf_headline":["Two fat-soluble vitamins. One oil. On purpose."]},
+    "omega-3-fish-oil": {"cf_support":["Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.","1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA.","1,000 mg of anchovy fish oil concentrate per softgel. 800 mg of it is omega-3: 400 mg EPA and 300 mg DHA."],"cf_ingredient":["EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.","EPA and DHA are the omega-3s people look for in fish oil. The body makes very little, so they come mainly from fish.","EPA and DHA: the omega-3s your body barely makes. They come mainly from fish.","EPA and DHA: the omega-3s people look for in fish oil. Your body barely makes them, so they come mainly from fish.","EPA and DHA. Your body makes little, so they come from fish."],"cf_form":["Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.","Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","Concentrated anchovy oil. The omega-3 stays as triglycerides, the form found in fish.","Triglycerides, the form found in fish. From concentrated anchovy oil.","Triglycerides, as found in fish. From anchovy oil."],"cf_amount":["800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA. The omega-3 is the number that matters, so we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA.","800 mg of omega-3 per softgel. The omega-3 is the number that matters, so we print it.","800 mg omega-3 per softgel, printed on the front."],"cf_decision":["Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it. EPA and DHA are shown separately.","Two numbers on the label: the oil and the omega-3 in it. EPA and DHA shown separately.","Oil and omega-3, both printed. EPA and DHA too.","We print the omega-3, not just the oil, so you know what you get."],"cf_headline":["Count the omega-3, not the oil."]},
+    "l-theanine": {"cf_headline":["The green-tea amino acid. 200 mg, on its own.","One amino acid. 200 mg. Nothing else active."],"cf_support":["One capsule in the morning, with or without food. One active ingredient, with its amount printed.","200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule.","200 mg L-theanine, the green-tea amino acid, in one capsule."],"cf_ingredient":["L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.","L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient.","The amino acid tea is known for. A simple, well-characterised single ingredient."],"cf_form":["Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.","Free-form L-theanine, on its own, so the amount you take is the amount on the label.","Free-form L-theanine, on its own. The amount on the label is the amount you take.","Free-form, on its own. What the label says is what you take."],"cf_amount":["200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.","200 mg, an amount used in published studies.","200 mg, as used in published studies."],"cf_decision":["One ingredient, one number, one capsule. No blend sharing the dose.","One ingredient, one number, one capsule. No blend to divide the dose.","One ingredient, one number. No blend.","Only L-theanine, no blend, so all 200 mg is the one ingredient."]},
+    "myo-d-chiro-inositol": {"cf_headline":["The ratio is the formula. 40:1.","Two inositols. One ratio. 40:1, on the front."],"cf_support":["40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front."],"cf_form":["Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.","Research has looked at the two together, in a set ratio, not either one alone.","Research studies them together, in a set ratio."],"cf_decision":["One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point.","A deliberate combination where the ratio is the formula, so the ratio goes on the front.","A deliberate pair. The ratio is the formula, so it goes on the front.","The ratio is the formula, so it’s on the front.","Both inositols at 40:1, checked in every batch and printed on the front."],"cf_ingredient":["Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.","Two forms of inositol that the body uses side by side.","Two forms of inositol the body uses together."],"cf_amount":["2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1.","2,000 mg + 50 mg per three capsules: 40:1, a ratio used in research. Each batch stays within 36:1–44:1.","40:1 in three capsules. Each batch stays within 36:1–44:1."]},
+    "creatine-chews": {"cf_support":["Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker.","3,000 mg creatine monohydrate in two orange chews. No powder."],"cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day.","Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day.","One of the most researched sports-nutrition ingredients. It only helps if you take it daily.","One of the most researched sports ingredients. Take it daily."],"cf_amount":["3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","3 g per serving, within the 3–5 g daily intake commonly used in research."],"cf_decision":["Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print.","We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving.","A chew keeps the habit easy. We print the sugar it needs: 3.6 g per serving.","Chews keep the habit easy. Sugar printed: 3.6 g.","Chews, so you don’t skip a day. They need 3.6 g sugar, and we say so."],"cf_form":["Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing.","Creatine monohydrate, the most studied form. A chew, so there’s nothing to mix.","Monohydrate, the most studied form. Nothing to mix."],"cf_headline":["3 grams of creatine. Two chews. Your time."]},
+    "psyllium-husk": {"cf_support":["Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.","2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble."],"cf_form":["Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.","Whole psyllium husk in capsules: the same ingredient, with nothing to stir."],"cf_amount":["2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.","2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers.","2,000 mg of husk per serving. We print the fibre too, because husk and fibre are different numbers.","2,000 mg husk per serving. Fibre printed too: a different number."],"cf_decision":["Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass.","Isabgol, measured. Always with a full glass of water.","Isabgol without the stirring. Always take it with a full glass of water."],"cf_ingredient":["Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes.","Isabgol: a familiar source of soluble fibre in most Indian homes."]}
   };
 
 
@@ -210,17 +211,26 @@
     "psyllium-husk": ["Psyllium Husk (Isabgol) · 2,000 mg husk", "Isabgol in capsules: 2,000 mg psyllium husk with 1,578 mg dietary fibre per serving. Five capsules at night with a full glass of water. 30 servings."]
   };
   function oldPoints(id) { var pts = ((window.BCCPart2E || {}).PDP || {})[id]; return ((pts && pts.points) || []).join("\n"); }
+  /* Copy review 02 (20 Nov 2026, owner: "Yes, apply those"): Content Focus's own "Key benefits" lines where they differ from
+     Part 2's (Part 2 keeps BCCPart2E.PDP). An admin field still holding Part 2's points was saved from the old default. */
+  var POINTS = {
+    "omega-3-fish-oil": ["800 mg omega-3 in one softgel", "400 mg EPA and 300 mg DHA", "From anchovy, as triglycerides"],
+    "iron-bisglycinate": ["29 mg elemental iron per capsule", "Ferrochel® bisglycinate: iron bound to glycine", "Vegetarian capsule"],
+    "l-theanine": ["200 mg L-Theanine per capsule", "Naturally found in green tea", "Vegetarian capsule"],
+    "creatine-chews": ["3,000 mg creatine monohydrate per serving", "Orange-flavoured chewable tablets", "Not sugar-free: 3.6 g sugar per serving"]
+  };
+  function points(id) { return POINTS[id] ? POINTS[id].join("\n") : oldPoints(id); }
   window.BCCContentFocusCopy = {
     defaults: function (id) {
       var c = BASE.P[id], u = BASE.U[id]; if (!c || !u) return {};
       return { cf_claim: u[2], cf_facts: u[3], cf_headline: c.headline, cf_support: c.support, cf_ingredient: c.ingredient, cf_form: c.form,
-        cf_amount: c.amount, cf_decision: c.decision, cf_points: oldPoints(id) };
+        cf_amount: c.amount, cf_decision: c.decision, cf_points: points(id) };
     },
     // True when a stored admin field is a copy of a replaced default (web/label-content.js then shows the new default).
     stale: function (id, key, value) {
       if (typeof value !== "string" || !value.trim()) return false;
       var v = value.trim();
-      if (key === "cf_points") return !!PREV_POINTS[id] && v === PREV_POINTS[id].join("\n");
+      if (key === "cf_points") return (!!PREV_POINTS[id] && v === PREV_POINTS[id].join("\n")) || (!!POINTS[id] && v === oldPoints(id));
       if (key === "cf_claim" && PREV_CLAIM[id] === v) return true;
       var old = PREV[id] && PREV[id][key];
       return Array.isArray(old) ? old.indexOf(v) > -1 : old === v;
@@ -250,6 +260,22 @@
       "Meet the scientist"],
     // Testing moves here from the standard band: it starts with the first production batch (claim C6).
     testing: "From our first production batch, independent laboratories test each batch. Records appear here."
+  };
+  /* The product page's Questions (copy review 02, 20 Nov 2026, owner: "Yes, apply those"). Every answer is the label's:
+     its caution, its directions, its diet mark and allergens, and (Iron) the decision. No advice, no promise of results. */
+  var QA_WHO = ["Who is it for?", "Adults. Pregnant, breastfeeding or under medical care? Ask your doctor first."];
+  var QA_NONVEG = ["Is it vegetarian?", "No. It contains fish oil and gelatin, and also soy."];
+  var QA_VEG = ["Is it vegetarian?", "Yes, a vegetarian capsule. It may contain nuts."];
+  var QA = {
+    "omega-3-fish-oil": [["How do I take it?", "One softgel each morning, with food."], QA_NONVEG],
+    "vitamin-d3-k2": [["How do I take it?", "One softgel each morning, with food."], QA_NONVEG],
+    "iron-bisglycinate": [["How do I take it?", "One capsule each morning on an empty stomach. No milk or chai for 2 hours before or after."], QA_VEG,
+      ["Can I take it with my other supplements?", "Take it on its own. Calcium can lower how much iron you absorb."]],
+    "l-theanine": [["How do I take it?", "One capsule each morning, with or without food."], QA_VEG],
+    "myo-d-chiro-inositol": [["How do I take it?", "Three capsules in the morning, with food."], QA_VEG],
+    "creatine-chews": [["How do I take it?", "Chew two tablets once a day, at the same time each day. Don’t swallow them whole."],
+      ["Is it vegetarian?", "Yes. It isn’t sugar-free: 3.6 g sugar per serving. It may contain nuts."]],
+    "psyllium-husk": [["How do I take it?", "Five capsules once a day at night, with food and a full glass of water."], QA_VEG]
   };
   function idOf(a) { var m = a && /\/products\/([^/?#]+)/.exec(a.getAttribute("href") || ""); return m ? m[1] : ""; }
 
@@ -550,6 +576,10 @@
     // Supplement facts: the label's own footnotes (whose RDA it is, and what the asterisk means).
     var notes = (p.supplement_facts && p.supplement_facts.notes) || [], table = root.querySelector(".p2-pdp-accs .p2-table"), foot = table && table.nextElementSibling;
     if (notes.length && foot && foot.classList.contains("p2-small")) foot.innerHTML = notes.map(function (n) { return esc(line(n).replace(/^#(?=%)/, "# ")); }).join("<br>");
+    // Questions, the last section (copy review 02, 20 Nov 2026): the buyer's own questions, answered from the label only.
+    var qa = QA[p.id], accs = root.querySelector(".p2-pdp-accs");
+    if (qa && accs && !accs.querySelector(".cf-qa")) accs.insertAdjacentHTML("beforeend", '<details class="p2-acc cf-qa"><summary><span>Questions</span><i aria-hidden="true"></i></summary><div class="p2-acc-body">' +
+      [QA_WHO].concat(qa).map(function (x) { return '<h4 class="cf-q">' + esc(x[0]) + "</h4><p>" + esc(x[1]) + "</p>"; }).join("") + "</div></details>");
   });
 
   // The chrome carries the whole page, so the footer is changed in place: its line, and (16 Nov 2026, owner-approved) a
@@ -789,8 +819,8 @@
     title: "What people say.", eyebrow: "Customer reviews",
     none: "No ratings yet.", outOf: " out of 5",
     how: ["How reviews work", "Delivered orders only, once per product. Low ratings are published too. Reviews tagged Sample are ours."],
-    reviewThis: ["Review this product", "Tell others what you think."],
-    topics: ["What reviews mention", "Select a topic to see those reviews."],
+    reviewThis: ["Bought this?", "Your review helps the next person decide."],
+    topics: ["What reviews mention", "Tap a topic to read those reviews."],
     photos: ["Customer photos", "No customer photos yet."],
     list: "Top reviews", more: "See more reviews", clear: "Clear filters", empty: "No reviews match these filters.",
     sort: [["top", "Top reviews"], ["recent", "Most recent"], ["low", "Lowest rating first"]]
@@ -1061,35 +1091,40 @@
   };
   function icon(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (ICON[k] || "") + "</svg>"; }
   // Shorter notes, the same on every visual page. The pack note becomes the pack size (from the catalogue).
+  /* Copy review 02 (20 Nov 2026, owner: "Yes, apply those"): the batch block says what it proves and what the reader does
+     (Part 2's words are still "lot" here; the lot→batch swap runs later), and the figures share one explainer line. */
   var VIS_SWAP = [
-    ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "One report per production batch."],
+    ["Check the lot printed on your pack.", "Tested, batch by batch."],
+    ["A lot report describes what was tested from one production lot. Records appear as reports are published.", "Type the Batch No. from your bottle to see its lab report."],
     ["Demonstration only. Try", "Demo: try"], [", or open", ", or see"],
     REVIEW_NOTE,
     ["We deliver across India. If we can’t reach your pincode, we tell you before you pay. Delivery dates are estimates.", "All-India delivery. We confirm your pincode before you pay."]
   ];
   var PACK_NOTE = "2 bottles save 5%, 3 save 10%. The saving is applied in your bag.";
-  /* says: the figures say the support sentence in full, so it is kept for screen readers only (unless the admin rewrote it). */
+  var ROW = "Each row is part of the row above it.";
+  /* says: the figures say the support sentence in full, so it is kept for screen readers only (unless the admin rewrote it).
+     daily: how many a day, from the label's directions, for the pack note ("60 softgels a bottle, 1 a day."). */
   var VIS = {
     "omega-3-fish-oil": {
       // The owner's graphic (17 Nov 2026): three regular softgels against one of ours.
       versus: [[3, "266.7 mg each", "3 regular softgels"], [1, "800 mg", "1 Body Café Co. softgel"], "For 800 mg of omega-3"],
       // The label's numbers: 1,000 mg of oil, 800 mg omega-3, 400 mg EPA, 300 mg DHA. [name, mg], then the omega-3 total.
-      inside: ["Inside one softgel", [["Anchovy fish oil", 1000, 0], ["Omega-3", 800, 1], ["EPA", 400, 2], ["DHA", 300, 2]], "Omega-3 is part of the oil. EPA and DHA are part of the omega-3."],
+      inside: ["Inside one softgel", [["Anchovy fish oil", 1000, 0], ["Omega-3", 800, 1], ["EPA", 400, 2], ["DHA", 300, 2]], ROW],
       says: true,
       supports: [["heart", "Heart health"], ["brain", "Brain health"], ["joint", "Joint health"]],
-      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]]
+      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]], daily: "1 a day"
     },
     "vitamin-d3-k2": {
       // Label: D3 600 IU and K2 55 mcg, each 100% RDA (ICMR 2020, men moderate work); 250 mg oil with 200 mg omega-3, EPA 100 mg, DHA 75 mg.
       rda: ["Inside one softgel", [["Vitamin D3", "600 IU", 100], ["Vitamin K2 as MK-7", "55 mcg", 100]], "RDA as per ICMR guidelines 2020 (men, moderate work)."],
-      inside: ["The oil it’s dissolved in", [["Anchovy fish oil", 250, 0], ["Omega-3", 200, 1], ["EPA", 100, 2], ["DHA", 75, 2]], "Omega-3 is part of the oil. EPA and DHA are part of the omega-3."],
+      inside: ["The oil it’s dissolved in", [["Anchovy fish oil", 250, 0], ["Omega-3", 200, 1], ["EPA", 100, 2], ["DHA", 75, 2]], ROW],
       says: true,
       supports: [["joint", "Bone health"], ["muscle", "Muscle health"], ["heart", "Heart health"]],
-      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]]
+      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]], daily: "1 a day"
     },
     "creatine-chews": {
       supports: [["muscle", "Strength"], ["gauge", "Performance"]],
-      dose: [["chew", "Chew 2 tablets"], ["clock", "Once a day, same time"], ["food", "With or without food"]]
+      dose: [["chew", "Chew 2 tablets"], ["clock", "Once a day, same time"], ["food", "With or without food"]], daily: "2 a day"
     },
     "iron-bisglycinate": {
       // Label directions: on an empty stomach; no milk for 2 hours before or after (the workbook's decision adds chai).
@@ -1097,24 +1132,24 @@
       rda: ["Against the ICMR RDA", [["Elemental iron", "29 mg", 100]], "RDA as per ICMR guidelines 2020 (women, moderate work)."],
       says: true,
       supports: [["drop", "Hemoglobin formation"], ["bolt", "Energy metabolism"]],
-      dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["plate", "On an empty stomach"]]
+      dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["plate", "On an empty stomach"]], daily: "1 a day"
     },
     "l-theanine": {
       supports: [["leaf", "Calm mind"], ["target", "Clear focus"]],
-      dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["food", "With or without food"]]
+      dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["food", "With or without food"]], daily: "1 a day"
     },
     "myo-d-chiro-inositol": {
       ratio: [[40, "2,000 mg", "Myo-inositol"], [1, "50 mg", "D-chiro-inositol"], "40 parts myo to 1 part D-chiro, in every serving"],
       says: true,
       supports: [["scale", "Hormonal balance"], ["cycle", "Metabolic balance"]],
-      dose: [["capsule", "3 capsules"], ["sun", "In the morning"], ["food", "With food"]]
+      dose: [["capsule", "3 capsules"], ["sun", "In the morning"], ["food", "With food"]], daily: "3 a day"
     },
     "psyllium-husk": {
       // Label: 2,000 mg husk giving 1,578 mg dietary fibre, 1,362 mg of it soluble. The other two parts are the differences.
-      inside: ["Inside one serving (5 capsules)", [["Psyllium husk (isabgol)", 2000, 0], ["Dietary fibre", 1578, 1], ["Soluble fibre", 1362, 2]], "Fibre is part of the husk. Soluble fibre is part of the fibre."],
+      inside: ["Inside one serving (5 capsules)", [["Psyllium husk (isabgol)", 2000, 0], ["Dietary fibre", 1578, 1], ["Soluble fibre", 1362, 2]], ROW],
       says: true,
       supports: [["gut", "Digestive health"], ["calendar", "Regularity"]],
-      dose: [["capsule", "5 capsules"], ["moon", "Once a day, at night"], ["glass", "With food and a full glass of water"]]
+      dose: [["capsule", "5 capsules"], ["moon", "Once a day, at night"], ["glass", "With food and a full glass of water"]], daily: "5 a night"
     }
   };
   function num(n) { return Number(n).toLocaleString("en-IN"); }
@@ -1160,7 +1195,7 @@
     if (!v || !grid) return;
     grid.classList.add("cf-vis");
     var pack = String(args[1].pack_size || "").trim();
-    swap(root, VIS_SWAP.concat(pack ? [[PACK_NOTE, pack + " a bottle."]] : []));
+    swap(root, VIS_SWAP.concat(pack ? [[PACK_NOTE, pack + " a bottle" + (v.daily ? ", " + v.daily : "") + "."]] : []));
     // "MRP" goes; the space it held stays, so the three pack cards keep their lines level.
     [].forEach.call(root.querySelectorAll(".pk-save.is-mrp"), function (n) { n.innerHTML = "&nbsp;"; n.setAttribute("aria-hidden", "true"); });
     // Owner, 18 Nov 2026: each pack card gives its servings (60, 120, 180 for a 60-serving bottle) where it said 1, 2 or 3 bottles.
