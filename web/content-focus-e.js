@@ -85,7 +85,7 @@
     "iron-bisglycinate": {
       "headline": "Iron first. Chai later.",
       "support": "29 mg iron as Ferrochel®. Empty stomach, away from milk.",
-      "ingredient": "Many Indian women don’t get enough iron from food. ICMR sets 29 mg a day for women.",
+      "ingredient": "Many Indian women fall short. ICMR sets 29 mg a day for women.",
       "form": "Ferrochel®: iron bound to glycine, an amino acid. A named form, so you know exactly what’s inside.",
       "amount": "29 mg of the iron itself, not the compound’s weight. A full day’s ICMR amount.",
       "decision": "Iron comes alone because calcium can lower how much you absorb. So no milk or chai for 2 hours."
@@ -93,7 +93,7 @@
     "vitamin-d3-k2": {
       "headline": "D3 and K2, in the oil they need.",
       "support": "600 IU D3 and 55 mcg K2 (MK-7), in anchovy fish oil.",
-      "ingredient": "Vitamin D helps your body absorb calcium. Vitamin K2 is needed for proteins in bone.",
+      "ingredient": "D helps the body absorb calcium. K is needed for proteins in bone.",
       "form": "Both dissolve in fat, so they come in fish oil, not a dry tablet. K2 is MK-7, named on the front.",
       "amount": "A full day’s ICMR amount of each. Enough, not a megadose.",
       "decision": "Same need for fat, so one softgel carries both, plus 200 mg omega-3 from the oil. Take it with a meal."
@@ -101,7 +101,7 @@
     "omega-3-fish-oil": {
       "headline": "One softgel. The omega-3 of three regular ones.",
       "support": "800 mg omega-3 in every 1,000 mg softgel: 400 mg EPA, 300 mg DHA.",
-      "ingredient": "EPA and DHA: omega-3s your body makes very little of, so they have to come from food, mostly fish.",
+      "ingredient": "EPA and DHA. Your body makes little, so they come from fish.",
       "form": "Concentrated anchovy oil, kept as triglycerides: the same form as in the fish.",
       "amount": "800 mg omega-3 in one softgel, so you swallow one, not three.",
       "decision": "We concentrated the oil so one softgel is enough, and print the omega-3 so you can check."
@@ -117,7 +117,7 @@
     "myo-d-chiro-inositol": {
       "headline": "40 parts myo to 1 part D-chiro. In every batch.",
       "support": "2,000 mg myo and 50 mg D-chiro per serving: 40:1.",
-      "ingredient": "Myo- and D-chiro-inositol: two forms of inositol your body uses side by side.",
+      "ingredient": "Two forms of inositol the body uses together.",
       "form": "Research looks at the two together at 40:1, so that is how we make it.",
       "amount": "2,000 mg + 50 mg in three capsules. We check every batch stays between 36:1 and 44:1.",
       "decision": "The ratio is the product, so we test it in every batch and print it on the front."
@@ -125,7 +125,7 @@
     "creatine-chews": {
       "headline": "3 g creatine. Two chews. No shaker.",
       "support": "3,000 mg creatine monohydrate in two orange chews, once a day.",
-      "ingredient": "One of the most researched sports ingredients. It’s taken every day, training day or not.",
+      "ingredient": "One of the most researched sports ingredients. Take it daily.",
       "form": "Monohydrate, the most studied form, as a chew: nothing to mix, easy to carry.",
       "amount": "3 g a day, within the 3–5 g used in research.",
       "decision": "A chew is easy to keep up daily. It needs 3.6 g sugar per serving, and we print it."
@@ -143,12 +143,12 @@
      A stored admin field that still holds one of these exactly was saved from that default, not written on purpose, so it
      gives way to the workbook text above (stale()). A key may list several, the 16 Nov holdbacks with copy review 01's line. */
   var PREV = {
-    "iron-bisglycinate": {"cf_support":["One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.","29 mg of elemental iron per capsule, as Ferrochel® bisglycinate. Taken alone, on an empty stomach, away from milk."],"cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule.","Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg.","Many Indian women fall short of iron. The ICMR daily requirement for adult women is 29 mg.","Many Indian women fall short. ICMR sets 29 mg a day for women."],"cf_form":["Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.","Iron bound to glycine, an amino acid. We use Ferrochel® and name it on the front.","Iron bound to glycine. Ferrochel®, named on the front."],"cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. The iron you get, not the compound’s weight.","29 mg elemental iron: 100% of the ICMR RDA."],"cf_decision":["Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away.","Iron stands alone. Calcium can reduce how much iron is absorbed, so milk and chai wait two hours.","Calcium can cut iron absorption. Milk and chai wait 2 hours.","Iron goes alone. Calcium can lower iron uptake, so no milk or chai for 2 hours."]},
-    "vitamin-d3-k2": {"cf_support":["Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel."],"cf_ingredient":["Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.","Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins in bone.","D helps the body absorb calcium. K is needed for proteins in bone."],"cf_form":["D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.","D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so they sit in oil, not a dry tablet.","D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so: oil."],"cf_decision":["One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal.","A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal.","A deliberate pair. Both dissolve in fat, so one softgel of oil carries both. Take it with a meal.","One softgel carries both. Take it with a meal.","D3 and K2 both need fat, so one softgel of oil carries both. Take it with a meal."],"cf_amount":["600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose.","600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA. The reference level, not a megadose.","Each 100% of the ICMR RDA. Not a megadose."],"cf_headline":["Two fat-soluble vitamins. One oil. On purpose."]},
-    "omega-3-fish-oil": {"cf_support":["Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.","1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA.","1,000 mg of anchovy fish oil concentrate per softgel. 800 mg of it is omega-3: 400 mg EPA and 300 mg DHA."],"cf_ingredient":["EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.","EPA and DHA are the omega-3s people look for in fish oil. The body makes very little, so they come mainly from fish.","EPA and DHA: the omega-3s your body barely makes. They come mainly from fish.","EPA and DHA: the omega-3s people look for in fish oil. Your body barely makes them, so they come mainly from fish.","EPA and DHA. Your body makes little, so they come from fish."],"cf_form":["Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.","Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","Concentrated anchovy oil. The omega-3 stays as triglycerides, the form found in fish.","Triglycerides, the form found in fish. From concentrated anchovy oil.","Triglycerides, as found in fish. From anchovy oil."],"cf_amount":["800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA. The omega-3 is the number that matters, so we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA.","800 mg of omega-3 per softgel. The omega-3 is the number that matters, so we print it.","800 mg omega-3 per softgel, printed on the front."],"cf_decision":["Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it. EPA and DHA are shown separately.","Two numbers on the label: the oil and the omega-3 in it. EPA and DHA shown separately.","Oil and omega-3, both printed. EPA and DHA too.","We print the omega-3, not just the oil, so you know what you get."],"cf_headline":["Count the omega-3, not the oil."]},
+    "iron-bisglycinate": {"cf_support":["One capsule in the morning, on an empty stomach. Milk and chai wait two hours, before and after.","29 mg of elemental iron per capsule, as Ferrochel® ferrous bisglycinate chelate. Taken alone, on an empty stomach, away from milk.","29 mg of elemental iron per capsule, as Ferrochel® bisglycinate. Taken alone, on an empty stomach, away from milk."],"cf_ingredient":["Iron is an essential mineral. The body can’t make it, so it has to come from your diet. That’s why the amount is the first number we print.","Iron is an essential mineral. The ICMR daily requirement for adult women is 29 mg, the amount in one capsule.","Iron is a nutrient many Indian women fall short of, and its ICMR daily requirement for adult women is 29 mg.","Many Indian women fall short of iron. The ICMR daily requirement for adult women is 29 mg.","Many Indian women don’t get enough iron from food. ICMR sets 29 mg a day for women."],"cf_form":["Iron bound to glycine, an amino acid: ferrous bisglycinate chelate. We use Ferrochel®, a named source of this form, and print its name on the front, so you never have to guess.","Ferrous bisglycinate chelate is iron bound to glycine, an amino acid. We use Ferrochel®, a named branded source of this form, and print the brand name on the front so you know exactly which form is inside.","Iron bound to glycine, an amino acid. We use Ferrochel® and name it on the front.","Iron bound to glycine. Ferrochel®, named on the front."],"cf_amount":["29 mg of elemental iron: 100% of the ICMR RDA for adult women. “Elemental” means the iron itself, not the weight of the compound around it, and that’s the number we print.","29 mg of elemental iron: 100% of the ICMR RDA for adult women. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. We print the iron you actually get, not the weight of the compound it comes in.","29 mg of elemental iron: 100% of the ICMR RDA. The iron you get, not the compound’s weight.","29 mg elemental iron: 100% of the ICMR RDA."],"cf_decision":["Iron stands alone. Calcium in the same meal can reduce how much iron is absorbed, so the directions keep milk and chai two hours away.","Iron stands alone. Calcium can reduce how much iron is absorbed, so milk and chai wait two hours.","Calcium can cut iron absorption. Milk and chai wait 2 hours.","Iron goes alone. Calcium can lower iron uptake, so no milk or chai for 2 hours."]},
+    "vitamin-d3-k2": {"cf_support":["Both vitamins dissolve in fat, so they’re carried in anchovy fish oil, which adds 200 mg of omega-3. One softgel in the morning, with food.","600 IU vitamin D3 and 55 mcg vitamin K2 as MK-7, dissolved in anchovy fish oil in one softgel."],"cf_ingredient":["Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins involved in bone. Both have roles in bone health, which is why they’re paired.","Vitamin D helps the body absorb calcium, and vitamin K is needed for proteins involved in bone. They are paired because both have roles in bone health.","Vitamin D helps the body absorb calcium. Vitamin K is needed for proteins in bone.","Vitamin D helps your body absorb calcium. Vitamin K2 is needed for proteins in bone."],"cf_form":["D3 as cholecalciferol, the form the body makes in sunlight. K2 as MK-7, named on the front. Both sit in oil, not in a dry tablet, because both dissolve in fat.","D3 as cholecalciferol and K2 as MK-7, both fat-soluble, so they are carried in oil rather than pressed into a dry tablet. The oil also adds 200 mg of omega-3.","D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so they sit in oil, not a dry tablet.","D3 as cholecalciferol, K2 as MK-7. Both dissolve in fat, so: oil."],"cf_decision":["One of our two deliberate pairs. D3 and K2 have related roles and the same need for fat, so one softgel carries both, taken with a meal.","A deliberate combination. Both vitamins dissolve in fat, so one softgel of oil carries both. Take it with a meal.","A deliberate pair. Both dissolve in fat, so one softgel of oil carries both. Take it with a meal.","One softgel carries both. Take it with a meal.","D3 and K2 both need fat, so one softgel of oil carries both. Take it with a meal."],"cf_amount":["600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA: a daily amount at the reference level, not a megadose.","600 IU of D3 and 55 mcg of K2, each 100% of the ICMR RDA. The reference level, not a megadose.","Each 100% of the ICMR RDA. Not a megadose."],"cf_headline":["Two fat-soluble vitamins. One oil. On purpose."]},
+    "omega-3-fish-oil": {"cf_support":["Every softgel holds 1,000 mg of anchovy oil. 800 mg of it is omega-3, and that’s the number on the front.","1,000 mg of anchovy fish oil concentrate per softgel, carrying 800 mg of omega-3: 400 mg EPA and 300 mg DHA.","1,000 mg of anchovy fish oil concentrate per softgel. 800 mg of it is omega-3: 400 mg EPA and 300 mg DHA."],"cf_ingredient":["EPA and DHA are the omega-3 fatty acids people look for in fish oil. The body makes very little of them, so they come mainly from fish.","EPA and DHA are the omega-3s people look for in fish oil. The body makes very little, so they come mainly from fish.","EPA and DHA: the omega-3s your body barely makes. They come mainly from fish.","EPA and DHA: the omega-3s people look for in fish oil. Your body barely makes them, so they come mainly from fish.","EPA and DHA: omega-3s your body makes very little of, so they have to come from food, mostly fish."],"cf_form":["Concentrated anchovy oil, with the omega-3 kept as triglycerides, the form it takes in the fish itself.","Concentrated anchovy oil, with the omega-3 kept in triglyceride form, the form found in fish.","Concentrated anchovy oil. The omega-3 stays as triglycerides, the form found in fish.","Triglycerides, the form found in fish. From concentrated anchovy oil.","Triglycerides, as found in fish. From anchovy oil."],"cf_amount":["800 mg of omega-3 per softgel. A typical 1,000 mg fish oil contains about 300 mg of EPA and DHA, so the number that matters is the omega-3, and we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA. The omega-3 is the number that matters, so we print it.","800 mg of omega-3 per softgel. A typical 1,000 mg fish oil has about 300 mg of EPA and DHA.","800 mg of omega-3 per softgel. The omega-3 is the number that matters, so we print it.","800 mg omega-3 per softgel, printed on the front."],"cf_decision":["Fish oil needs no partner. It needs clear numbers: the oil, the omega-3 inside it, and EPA and DHA, each shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it, with EPA and DHA shown separately.","One softgel, two numbers on the label: the oil and the omega-3 inside it. EPA and DHA are shown separately.","Two numbers on the label: the oil and the omega-3 in it. EPA and DHA shown separately.","Oil and omega-3, both printed. EPA and DHA too.","We print the omega-3, not just the oil, so you know what you get."],"cf_headline":["Count the omega-3, not the oil."]},
     "l-theanine": {"cf_headline":["The green-tea amino acid. 200 mg, on its own.","One amino acid. 200 mg. Nothing else active."],"cf_support":["One capsule in the morning, with or without food. One active ingredient, with its amount printed.","200 mg of L-theanine, the amino acid naturally found in green tea, in one vegetarian capsule.","200 mg L-theanine, the green-tea amino acid, in one capsule."],"cf_ingredient":["L-theanine is an amino acid found naturally in green tea. It’s a simple, well-characterised ingredient that makes sense on its own.","L-theanine is the amino acid that tea is known for. It is a simple, well-characterised single ingredient.","The amino acid tea is known for. A simple, well-characterised single ingredient."],"cf_form":["Free-form L-theanine, on its own rather than in a blend, so the 200 mg on the label is 200 mg of L-theanine.","Free-form L-theanine, on its own, so the amount you take is the amount on the label.","Free-form L-theanine, on its own. The amount on the label is the amount you take.","Free-form, on its own. What the label says is what you take."],"cf_amount":["200 mg per capsule, an amount used in published studies. One capsule is one serving, so there’s nothing to divide.","200 mg, an amount used in published studies.","200 mg, as used in published studies."],"cf_decision":["One ingredient, one number, one capsule. No blend sharing the dose.","One ingredient, one number, one capsule. No blend to divide the dose.","One ingredient, one number. No blend.","Only L-theanine, no blend, so all 200 mg is the one ingredient."]},
-    "myo-d-chiro-inositol": {"cf_headline":["The ratio is the formula. 40:1.","Two inositols. One ratio. 40:1, on the front."],"cf_support":["40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front."],"cf_form":["Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.","Research has looked at the two together, in a set ratio, not either one alone.","Research studies them together, in a set ratio."],"cf_decision":["One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point.","A deliberate combination where the ratio is the formula, so the ratio goes on the front.","A deliberate pair. The ratio is the formula, so it goes on the front.","The ratio is the formula, so it’s on the front.","Both inositols at 40:1, checked in every batch and printed on the front."],"cf_ingredient":["Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.","Two forms of inositol that the body uses side by side.","Two forms of inositol the body uses together."],"cf_amount":["2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1.","2,000 mg + 50 mg per three capsules: 40:1, a ratio used in research. Each batch stays within 36:1–44:1.","40:1 in three capsules. Each batch stays within 36:1–44:1."]},
-    "creatine-chews": {"cf_support":["Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker.","3,000 mg creatine monohydrate in two orange chews. No powder."],"cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day.","Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day.","One of the most researched sports-nutrition ingredients. It only helps if you take it daily.","One of the most researched sports ingredients. Take it daily."],"cf_amount":["3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","3 g per serving, within the 3–5 g daily intake commonly used in research."],"cf_decision":["Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print.","We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving.","A chew keeps the habit easy. We print the sugar it needs: 3.6 g per serving.","Chews keep the habit easy. Sugar printed: 3.6 g.","Chews, so you don’t skip a day. They need 3.6 g sugar, and we say so."],"cf_form":["Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing.","Creatine monohydrate, the most studied form. A chew, so there’s nothing to mix.","Monohydrate, the most studied form. Nothing to mix."],"cf_headline":["3 grams of creatine. Two chews. Your time."]},
+    "myo-d-chiro-inositol": {"cf_headline":["The ratio is the formula. 40:1.","Two inositols. One ratio. 40:1, on the front."],"cf_support":["40 parts myo-inositol to 1 part D-chiro-inositol, printed on the front and checked in every batch. Three capsules in the morning, with food.","2,000 mg myo-inositol and 50 mg D-chiro-inositol per serving: a 40:1 ratio, printed on the front."],"cf_form":["Both forms are included because research has looked at them together, in a set ratio, rather than either one alone.","Both forms are included because research has looked at them together, in a defined ratio, rather than either alone.","Research has looked at the two together, in a set ratio, not either one alone.","Research studies them together, in a set ratio."],"cf_decision":["One of our two deliberate pairs. Either inositol alone would be a different product; the 40:1 balance between them is the point.","A deliberate combination where the ratio is the formula, so the ratio goes on the front.","A deliberate pair. The ratio is the formula, so it goes on the front.","The ratio is the formula, so it’s on the front.","Both inositols at 40:1, checked in every batch and printed on the front."],"cf_ingredient":["Myo-inositol and D-chiro-inositol are two forms of inositol that the body uses side by side.","Two forms of inositol that the body uses side by side.","Myo- and D-chiro-inositol: two forms of inositol your body uses side by side."],"cf_amount":["2,000 mg + 50 mg per three capsules: 40:1, a ratio used in published research. Our specification checks that each batch stays between 36:1 and 44:1.","2,000 mg + 50 mg per three capsules: 40:1, a ratio used in research. Each batch stays within 36:1–44:1.","40:1 in three capsules. Each batch stays within 36:1–44:1."]},
+    "creatine-chews": {"cf_support":["Pick one time of day, morning, noon or night, and keep to it. Chew both tablets; don’t swallow them whole.","3,000 mg of creatine monohydrate in two orange chewable tablets. No powder, no shaker.","3,000 mg creatine monohydrate in two orange chews. No powder."],"cf_ingredient":["Creatine is one of the most studied ingredients in sports nutrition, and it’s taken once a day, every day, not only on training days.","Creatine is one of the most researched sports-nutrition ingredients, and it is meant to be taken every day.","Creatine is one of the most researched sports-nutrition ingredients, and it only helps if you take it every day.","One of the most researched sports-nutrition ingredients. It only helps if you take it daily.","One of the most researched sports ingredients. It’s taken every day, training day or not."],"cf_amount":["3,000 mg (3 g) per serving, within the 3–5 g a day commonly used in research.","3 g per serving, within the 3–5 g daily intake commonly used in research."],"cf_decision":["Creatine needs no partner, so the chew holds creatine and what makes it a chew: orange flavour and 3.6 g of sugar per serving, which we print.","We chose a chewable format for consistency, and we print the sugar it needs: 3.6 g per serving.","A chew keeps the habit easy. We print the sugar it needs: 3.6 g per serving.","Chews keep the habit easy. Sugar printed: 3.6 g.","Chews, so you don’t skip a day. They need 3.6 g sugar, and we say so."],"cf_form":["Creatine monohydrate, the most studied form. It comes as a chew because a daily habit is easier when nothing needs mixing.","Creatine monohydrate, the most studied form. A chew, so there’s nothing to mix.","Monohydrate, the most studied form. Nothing to mix."],"cf_headline":["3 grams of creatine. Two chews. Your time."]},
     "psyllium-husk": {"cf_support":["Five capsules at night, with food and a full glass of water. The same isabgol, with nothing to stir.","2,000 mg of psyllium husk in five capsules, giving 1,578 mg of dietary fibre, 1,362 mg of it soluble."],"cf_form":["Whole psyllium husk, filled into vegetarian capsules: the same ingredient as the isabgol at home, in a measured amount.","Whole psyllium husk in capsules: the same ingredient, with nothing to stir."],"cf_amount":["2,000 mg of husk per serving, giving 1,578 mg of fibre, 1,362 mg of it soluble. We print both, because husk weight and fibre aren’t the same number.","2,000 mg per serving, a measured daily top-up of fibre. We print both the husk weight and the fibre it gives, because they are different numbers.","2,000 mg of husk per serving. We print the fibre too, because husk and fibre are different numbers.","2,000 mg husk per serving. Fibre printed too: a different number."],"cf_decision":["Isabgol needs nothing added. What it does need is water, so every serving comes with a full glass.","Isabgol, measured. Always with a full glass of water.","Isabgol without the stirring. Always take it with a full glass of water."],"cf_ingredient":["Psyllium (isabgol) is a familiar source of soluble fibre in most Indian homes.","Isabgol: a familiar source of soluble fibre in most Indian homes."]}
   };
 
@@ -314,6 +314,9 @@
       h1.innerHTML = "<b>" + esc(HERO.lines[0]) + "</b> <span><b>" + esc(HERO.lines[1]) + "</b></span>";
       h1.insertAdjacentHTML("afterend", '<p class="p2-lede cf-hero-lede">' + esc(HERO.lede) + "</p>");
     }
+    // Tester note (21 Nov 2026): a row of the seven cap colours on the landing page, above "The Super Sevens".
+    var eyebrow = root.querySelector(".p2-hc-copy .p2-eyebrow"), seven = (ctx.catalog || []).slice(0, 7);
+    if (eyebrow && seven.length) eyebrow.insertAdjacentHTML("beforebegin", '<p class="cf-dots" aria-hidden="true">' + seven.map(function (p) { return '<i style="--cap:' + esc(p.color) + '"></i>'; }).join("") + "</p>");
     var link = root.querySelector(".p2-hc-copy .p2-link"); if (link) link.textContent = HERO.link;
     swap(root, TEXT.home);
     // The range: what each product is for, under its name, open or closed.
@@ -573,9 +576,18 @@
       slot.insertAdjacentHTML("afterend", '<dl class="cf-care">' + care.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>");
       if (old) old.remove();
     }
-    // Supplement facts: the label's own footnotes (whose RDA it is, and what the asterisk means).
-    var notes = (p.supplement_facts && p.supplement_facts.notes) || [], table = root.querySelector(".p2-pdp-accs .p2-table"), foot = table && table.nextElementSibling;
-    if (notes.length && foot && foot.classList.contains("p2-small")) foot.innerHTML = notes.map(function (n) { return esc(line(n).replace(/^#(?=%)/, "# ")); }).join("<br>");
+    // Supplement facts: the table stays (the label's mandatory facts); its footnote goes (tester note, owner-approved 27 Nov 2026).
+    var table = root.querySelector(".p2-pdp-accs .p2-table"), foot = table && table.nextElementSibling;
+    if (foot && foot.classList.contains("p2-small")) foot.remove();
+    /* Owner, 27 Nov 2026: the energy and macronutrient rows go too; the table lists the ingredients. With the footnote gone,
+       a % RDA column holding only "#" (not established) says nothing, so it goes as well. */
+    if (table) {
+      var NUTR = /^(energy|protein|carbohydrate|total sugars?|added sugars?|total fat|sodium)$/i;
+      [].forEach.call(table.querySelectorAll("tbody tr"), function (r) { var th = r.querySelector("th"); if (th && NUTR.test(th.textContent.trim())) r.remove(); });
+      var rows = [].slice.call(table.querySelectorAll("tbody tr"));
+      if (rows.length && rows.every(function (r) { var c = r.cells[r.cells.length - 1]; return r.cells.length > 2 && /^#?$/.test(c.textContent.trim()); }))
+        [].forEach.call(table.querySelectorAll("tr"), function (r) { if (r.cells.length > 2) r.deleteCell(r.cells.length - 1); });
+    }
     // Questions, the last section (copy review 02, 20 Nov 2026): the buyer's own questions, answered from the label only.
     var qa = QA[p.id], accs = root.querySelector(".p2-pdp-accs");
     if (qa && accs && !accs.querySelector(".cf-qa")) accs.insertAdjacentHTML("beforeend", '<details class="p2-acc cf-qa"><summary><span>Questions</span><i aria-hidden="true"></i></summary><div class="p2-acc-body">' +
@@ -1072,6 +1084,7 @@
     muscle: '<path d="M6 7v10M18 7v10M3 9.5v5M21 9.5v5M6 12h12"/>',
     gauge: '<path d="M12 14l4-4M3.3 19a10 10 0 1 1 17.4 0"/>',
     drop: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    fish: '<path d="M3 12c3-5 9-6.5 14-2.5L21 6v12l-4-3.5C12 18.5 6 17 3 12z"/><circle cx="8" cy="11" r=".8"/>',
     bolt: '<path d="M13 2 4 14h8l-1 8 9-12h-8z"/>',
     leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>',
     target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
@@ -1107,48 +1120,58 @@
   var VIS = {
     "omega-3-fish-oil": {
       // The owner's graphic (17 Nov 2026): three regular softgels against one of ours.
-      versus: [[3, "266.7 mg each", "3 regular softgels"], [1, "800 mg", "1 Body Café Co. softgel"], "For 800 mg of omega-3"],
+      versus: [[3, "266.7 mg each", "3 regular softgels"], [1, "800 mg", "1 Body Café Co. softgel"], "For 800 mg of omega-3"], side: "versus",
       // The label's numbers: 1,000 mg of oil, 800 mg omega-3, 400 mg EPA, 300 mg DHA. [name, mg], then the omega-3 total.
-      inside: ["Inside one softgel", [["Anchovy fish oil", 1000, 0], ["Omega-3", 800, 1], ["EPA", 400, 2], ["DHA", 300, 2]], ROW],
+      // Tester note (21 Nov 2026), "other omegas": the label's 800 mg total omega-3 includes EPA and DHA, so 100 mg is other omega-3s.
+      inside: ["Inside one softgel", [["Anchovy fish oil", 1000, 0], ["Omega-3", 800, 1], ["EPA", 400, 2], ["DHA", 300, 2], ["Other omega-3s", 100, 2]], ROW],
       says: true,
       supports: [["heart", "Heart health"], ["brain", "Brain health"], ["joint", "Joint health"]],
+      facts: [["drop", "Triglyceride form, as in fish"], ["fish", "From anchovy oil"]],
       dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]], daily: "1 a day"
     },
     "vitamin-d3-k2": {
       // Label: D3 600 IU and K2 55 mcg, each 100% RDA (ICMR 2020, men moderate work); 250 mg oil with 200 mg omega-3, EPA 100 mg, DHA 75 mg.
-      rda: ["Inside one softgel", [["Vitamin D3", "600 IU", 100], ["Vitamin K2 as MK-7", "55 mcg", 100]], "RDA as per ICMR guidelines 2020 (men, moderate work)."],
-      inside: ["The oil it’s dissolved in", [["Anchovy fish oil", 250, 0], ["Omega-3", 200, 1], ["EPA", 100, 2], ["DHA", 75, 2]], ROW],
+      rda: ["Inside one softgel", [["Vitamin D3", "600 IU", 100], ["Vitamin K2 as MK-7", "55 mcg", 100]], "RDA as per ICMR guidelines 2020 (men, moderate work)."], side: "rda",
+      inside: ["The oil it’s dissolved in", [["Anchovy fish oil", 250, 0], ["Omega-3", 200, 1], ["EPA", 100, 2], ["DHA", 75, 2], ["Other omega-3s", 25, 2]], ROW],
       says: true,
       supports: [["joint", "Bone health"], ["muscle", "Muscle health"], ["heart", "Heart health"]],
+      facts: [["target", "100% of the ICMR RDA of D3 and K2"], ["drop", "With 200 mg omega-3"]],
       dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]], daily: "1 a day"
     },
     "creatine-chews": {
+      serving: [2, "3,000 mg", "Creatine monohydrate in 2 chews", "In one serving", "chew"], side: "serving",
       supports: [["muscle", "Strength"], ["gauge", "Performance"]],
+      facts: [["bolt", "3 g creatine monohydrate"], ["chew", "No powder to mix"], ["calendar", "Once a day"]],
       dose: [["chew", "Chew 2 tablets"], ["clock", "Once a day, same time"], ["food", "With or without food"]], daily: "2 a day"
     },
     "iron-bisglycinate": {
       // Label directions: on an empty stomach; no milk for 2 hours before or after (the workbook's decision adds chai).
       win: ["Around your capsule", "2 hours before", "2 hours after", "No milk or chai", "1 capsule, empty stomach"],
-      rda: ["Against the ICMR RDA", [["Elemental iron", "29 mg", 100]], "RDA as per ICMR guidelines 2020 (women, moderate work)."],
+      rda: ["Against the ICMR RDA", [["Elemental iron", "29 mg", 100]], "RDA as per ICMR guidelines 2020 (women, moderate work)."], side: "rda",
       says: true,
       supports: [["drop", "Hemoglobin formation"], ["bolt", "Energy metabolism"]],
+      facts: [["target", "100% of the ICMR RDA"], ["capsule", "Ferrochel® bisglycinate"], ["leaf", "Vegetarian capsule"]],
       dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["plate", "On an empty stomach"]], daily: "1 a day"
     },
     "l-theanine": {
+      serving: [1, "200 mg", "L-Theanine in 1 capsule", "In one serving"], side: "serving",
       supports: [["leaf", "Calm mind"], ["target", "Clear focus"]],
+      facts: [["leaf", "Naturally found in green tea"], ["capsule", "200 mg, no blend"], ["leaf", "Vegetarian capsule"]],
       dose: [["capsule", "1 capsule"], ["sun", "Daily, in the morning"], ["food", "With or without food"]], daily: "1 a day"
     },
     "myo-d-chiro-inositol": {
-      ratio: [[40, "2,000 mg", "Myo-inositol"], [1, "50 mg", "D-chiro-inositol"], "40 parts myo to 1 part D-chiro, in every serving"],
+      ratio: [[40, "2,000 mg", "Myo-inositol"], [1, "50 mg", "D-chiro-inositol"], "40 parts myo to 1 part D-chiro, in every serving"], side: "ratio",
       says: true,
       supports: [["scale", "Hormonal balance"], ["cycle", "Metabolic balance"]],
+      facts: [["target", "40:1 ratio, printed on the front"], ["calendar", "Ratio checked every batch"], ["leaf", "Vegetarian capsules"]],
       dose: [["capsule", "3 capsules"], ["sun", "In the morning"], ["food", "With food"]], daily: "3 a day"
     },
     "psyllium-husk": {
       // Label: 2,000 mg husk giving 1,578 mg dietary fibre, 1,362 mg of it soluble. The other two parts are the differences.
-      inside: ["Inside one serving (5 capsules)", [["Psyllium husk (isabgol)", 2000, 0], ["Dietary fibre", 1578, 1], ["Soluble fibre", 1362, 2]], ROW],
+      inside: ["Inside one serving (5 capsules)", [["Psyllium husk (isabgol)", 2000, 0], ["Dietary fibre", 1578, 1], ["Soluble fibre", 1362, 2]], ROW], side: "inside",
       says: true,
       supports: [["gut", "Digestive health"], ["calendar", "Regularity"]],
+      facts: [["drop", "1,578 mg dietary fibre"], ["glass", "1,362 mg soluble fibre"], ["leaf", "Vegetarian capsules"]],
       dose: [["capsule", "5 capsules"], ["moon", "Once a day, at night"], ["glass", "With food and a full glass of water"]], daily: "5 a night"
     }
   };
@@ -1156,32 +1179,55 @@
   function tiles(list, label) {
     return '<ul class="cf-tiles" style="--n:' + list.length + '"' + (label ? ' aria-label="' + esc(label) + '"' : "") + ">" + list.map(function (t) { return "<li><i>" + icon(t[0]) + "</i><span>" + esc(t[1]) + "</span></li>"; }).join("") + "</ul>";
   }
-  // The description figures, in order; each is a picture of facts the page also gives in words, hidden from screen readers when `says`.
-  function figures(v, hide) {
+  /* The buy box is sticky on wide screens; with the comparison under it, it can be taller than the window. Then it sticks by
+     its bottom edge instead (a negative top), so the whole box is always reachable. Measured again when the box or window changes. */
+  var buyBox = null, buyWatch = window.ResizeObserver ? new ResizeObserver(function () { fitBuy(); }) : null;
+  window.addEventListener("resize", function () { fitBuy(); });
+  function fitBuy() {
+    // The page is drawn as text and put on the screen afterwards, so the box is looked up on the live page each time.
+    var a = document.querySelector("#main .cf-vis .p2-buy");
+    if (a !== buyBox) { if (buyWatch) { buyWatch.disconnect(); if (a) buyWatch.observe(a); } buyBox = a; }
+    if (!a) return;
+    a.style.top = "";
+    var cs = getComputedStyle(a); if (cs.position !== "sticky") return;
+    var top = parseFloat(cs.top) || 0, room = window.innerHeight - a.offsetHeight - 16;
+    if (room < top) a.style.top = room + "px";
+  }
+  function pills(n) { return '<span class="cf-vs-pills" aria-hidden="true">' + new Array(n + 1).join("<i></i>") + "</span>"; }
+  function side(x, cls) { return '<div class="cf-vs-side' + cls + '">' + pills(x[0]) + "<b>" + esc(x[1]) + "</b><span>" + esc(x[2]) + "</span></div>"; }
+  // The owner's Omega-3 comparison. Tester notes (21 Nov 2026): it sits in the right column, under the buy box, which stays on top.
+  function versus(v) {
+    var a = v.versus;
+    return a ? '<figure class="cf-vs is-versus"><figcaption>' + esc(a[2]) + "</figcaption>" + side(a[0], "") + '<div class="cf-vs-mid" aria-hidden="true"><em>or</em></div>' + side(a[1], " is-us") + "</figure>" : "";
+  }
+  /* The figures, in order; each is a picture of facts the page also gives in words, hidden from screen readers when `says`.
+     `only` picks one kind (the card under the buy box, `side` in VIS); `skip` leaves one out (the description's figures). */
+  function figures(v, hide, only, skip) {
     var out = [], img = function (label) { return hide ? ' aria-hidden="true"' : ' role="img" aria-label="' + esc(label) + '"'; };
-    var pills = function (n) { return '<span class="cf-vs-pills" aria-hidden="true">' + new Array(n + 1).join("<i></i>") + "</span>"; };
-    var side = function (x, cls) { return '<div class="cf-vs-side' + cls + '">' + pills(x[0]) + "<b>" + esc(x[1]) + "</b><span>" + esc(x[2]) + "</span></div>"; };
-    if (v.versus) {
-      var a = v.versus;
-      out.push('<figure class="cf-vs is-versus"><figcaption>' + esc(a[2]) + "</figcaption>" + side(a[0], "") + '<div class="cf-vs-mid" aria-hidden="true"><em>or</em></div>' + side(a[1], " is-us") + "</figure>");
+    var want = function (k) { return !!v[k] && (!only || only === k) && skip !== k; };
+    if (want("versus")) out.push(versus(v));
+    if (want("serving")) {
+      // One serving, for a product with no other figure: [how many, amount, what, heading].
+      var sv = v.serving;
+      out.push('<figure class="cf-vs is-serving"' + img(sv[3] + ": " + sv[1] + " " + sv[2]) + "><figcaption>" + esc(sv[3]) + "</figcaption>" + side([sv[0], sv[1], sv[2]], " is-us" + (sv[4] ? " is-" + sv[4] : "")) + "</figure>");
     }
-    if (v.ratio) {
+    if (want("ratio")) {
       var r = v.ratio;
       out.push('<figure class="cf-vs is-ratio"' + img(r[0][0] + " parts " + r[0][2] + " to " + r[1][0] + " part " + r[1][2] + ": " + r[0][1] + " and " + r[1][1]) + ">" + side(r[0], " is-us") + '<div class="cf-vs-mid" aria-hidden="true"><em>:</em></div>' + side(r[1], " is-two") + "<figcaption>" + esc(r[2]) + "</figcaption></figure>");
     }
-    if (v.win) {
+    if (want("win")) {
       var w = v.win;
       out.push('<figure class="cf-win"' + img(w[4] + ". " + w[3] + ", " + w[1] + " and " + w[2] + ".") + '><p class="cf-in-k">' + esc(w[0]) + "</p>" +
         '<div class="cf-win-track"><span class="cf-win-zone"><b>' + esc(w[3]) + "</b><small>" + esc(w[1]) + '</small></span><span class="cf-win-dose"><i>' + icon("capsule") + "</i></span>" +
         '<span class="cf-win-zone"><b>' + esc(w[3]) + "</b><small>" + esc(w[2]) + '</small></span></div><p class="cf-win-mid">' + esc(w[4]) + "</p></figure>");
     }
-    if (v.rda) {
+    if (want("rda")) {
       var d = v.rda;
       out.push('<div class="cf-rda"' + img(d[1].map(function (x) { return x[0] + " " + x[1] + ", " + x[2] + "% of the RDA"; }).join("; ") + ". " + d[2]) + '><p class="cf-in-k">' + esc(d[0]) + "</p><ul>" +
         d[1].map(function (x) { return '<li><span class="cf-rda-n">' + esc(x[0]) + "</span><b>" + esc(x[1]) + '</b><span class="cf-rda-m"><i style="width:' + Math.min(100, x[2]) + '%"></i></span><small>' + x[2] + "% RDA</small></li>"; }).join("") +
         '</ul><p class="cf-rda-note">' + esc(d[2]) + "</p></div>");
     }
-    if (v.inside) {
+    if (want("inside")) {
       // One serving, row by row: each indented row is part of the row above it; the bars share one scale (the first row).
       var ins = v.inside, all = ins[1][0][1];
       out.push('<div class="cf-in cf-bd"' + img(ins[0] + ": " + ins[1].map(function (x) { return x[0] + " " + num(x[1]) + " mg"; }).join(", ") + ". " + ins[2]) + '><p class="cf-in-k">' + esc(ins[0]) + "</p><ul>" +
@@ -1220,18 +1266,34 @@
     if (body) {
       var sup = body.querySelector(".cf-support");
       // When the figures say the support line in full, the sentence is kept for screen readers only, unless the admin rewrote it.
-      var hide = !!(v.says && sup && sup.textContent.trim() === BASE.P[id].support);
-      if (hide) sup.classList.add("sr-only");
-      h.insertAdjacentHTML("afterend", figures(v, hide));
+      var hide = !!(v.says && sup && sup.textContent.trim() === BASE.P[id].support), desc = figures(v, true, null, v.side);
+      if (hide && desc) sup.classList.add("sr-only");
+      h.insertAdjacentHTML("afterend", figures(v, hide, null, v.side));
       var qs = [].slice.call(body.querySelectorAll(".cf-q"));
       if (qs.length) {
         var wrap = document.createElement("div"); wrap.className = "cf-why"; body.insertBefore(wrap, qs[0]);
         qs.forEach(function (q) { var c = document.createElement("div"), p = q.nextElementSibling; wrap.appendChild(c); c.appendChild(q); if (p && p.tagName === "P") c.appendChild(p); });
       }
     }
-    // Key benefits: the label claim as tiles (only while the claim is the label's own line).
-    var claim = root.querySelector(".p2-pdp-accs .p2-claim");
-    if (claim && claim.textContent.trim().toLowerCase() === BASE.U[id][0].toLowerCase()) claim.outerHTML = '<p class="cf-tiles-k">Supports</p>' + tiles(v.supports, claim.textContent.trim());
+    /* Under the buy box (after its delivery notes), so the right column has the buy box on top: Omega-3's comparison
+       (tester notes, 21 Nov 2026), and on the other six their key figure (owner, 27 Nov 2026), as one highlighted card. */
+    var notes = root.querySelector(".p2-buy .p2-buy-notes"), card = v.side && figures(v, false, v.side);
+    if (card && notes) { notes.insertAdjacentHTML("afterend", '<div class="cf-side cf-side-' + v.side + '">' + card + "</div>"); setTimeout(fitBuy, 60); }
+    /* Key benefits (tester notes, 21 Nov 2026): the first section, open; five tiles, the label claim's two or three
+       ("Supports …", only while the claim is the label's own line) then facts the label states (`facts`), no new claims;
+       the list of amounts under them goes, since the description and the pack note already give them. */
+    var accs = root.querySelector(".p2-pdp-accs"), kb = accs && [].filter.call(accs.children, function (d) {
+      var s = d.querySelector("summary span"); return s && s.textContent.trim() === "Key benefits";
+    })[0];
+    if (kb) {
+      accs.insertBefore(kb, accs.firstElementChild); kb.open = true;
+      var ticks = kb.querySelector(".p2-ticks"); if (ticks) ticks.remove();
+      var claim = kb.querySelector(".p2-claim"), facts = v.facts || [];
+      var lower = function (t) { return t.charAt(0).toLowerCase() + t.slice(1); };
+      if (claim && claim.textContent.trim().toLowerCase() === BASE.U[id][0].toLowerCase())
+        claim.outerHTML = tiles(v.supports.map(function (t) { return [t[0], "Supports " + lower(t[1])]; }).concat(facts).slice(0, 5), "Key benefits");
+      else if (facts.length) (claim || kb.querySelector(".p2-acc-body").lastElementChild || kb).insertAdjacentHTML(claim ? "afterend" : "beforeend", tiles(facts));
+    }
     // Directions: the dose as a strip in place of the food tag; the label's sentence stays under it.
     var use = root.querySelector(".p2-use"), food = root.querySelector(".cf-food");
     if (use) { if (food) food.remove(); use.insertAdjacentHTML("beforebegin", tiles(v.dose, "How to take it")); }

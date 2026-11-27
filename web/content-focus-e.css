@@ -516,3 +516,40 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx :is(.cf-rx-topics b
   .cf-rx-dlg-in { grid-template-columns: 1fr; }
   .cf-rx-dlg-in img { max-height: 60vh; }
 }
+/* Tester notes (21 Nov 2026), the visual product page. Key benefits: up to five tiles, three to a row on a phone. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles[style*="--n:5"] li,
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles[style*="--n:4"] li { padding: 14px 6px 12px; font-size: 13.5px; }
+@media (max-width: 760px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles[style*="--n:5"],
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles[style*="--n:4"] { display: flex; flex-wrap: wrap; justify-content: center; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles[style*="--n:5"] li,
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles[style*="--n:4"] li { flex: 0 0 calc((100% - 16px) / 3); align-content: start; }
+}
+/* The Omega-3 comparison under the buy box: a bordered card on the white box. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-vs { margin: 18px 0 0; padding: 16px 12px 14px; border: 1px solid var(--p2-line); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-vs-side b { font-size: clamp(17px, 1.8vw, 24px); }
+/* Tester note (21 Nov 2026): the seven cap colours as a row of dots on the landing page. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-dots { display: flex; gap: 10px; margin: 0 0 18px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--cap); }
+/* Owner, 27 Nov 2026: in the Omega-3 comparison our softgel is the big one and its side is highlighted; the three regular ones
+   are smaller and quieter. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side { align-self: stretch; align-content: end; padding: 12px 6px 10px; border-radius: 14px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side:not(.is-us) .cf-vs-pills i { width: 13px; height: 28px; border-width: 1.25px; border-color: color-mix(in srgb, var(--p2-ink) 45%, transparent); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side:not(.is-us) b { font-size: clamp(15px, 1.5vw, 19px); font-weight: 600; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side.is-us { background: color-mix(in srgb, var(--cap) 24%, #fff); box-shadow: inset 0 0 0 2px var(--cap); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side.is-us .cf-vs-pills i { width: 28px; height: 58px; border-width: 2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side.is-us b { font-size: clamp(22px, 2.2vw, 30px); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side.is-us span:last-child { font-weight: 700; color: var(--p2-ink); }
+/* Owner, 27 Nov 2026: every visual product page has a card under the buy box, like Omega-3's comparison: the product's key
+   figure (D3 + K2 and Iron: the RDA; Myo: the ratio; Psyllium: the fibre rows; Creatine and L-Theanine: one serving),
+   highlighted in the cap colour. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-side:not(.cf-side-versus) { margin: 18px 0 0; padding: 16px 16px 14px; border-radius: 18px; background: color-mix(in srgb, var(--cap) 16%, #fff); box-shadow: inset 0 0 0 2px var(--cap); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-side:not(.cf-side-versus) > * { margin: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-side:not(.cf-side-versus) .cf-vs { padding: 0; border: 0; background: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-side .cf-rda-note { margin-bottom: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-serving { grid-template-columns: minmax(0, 1fr); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-serving figcaption { order: -1; margin: 0 0 4px; font: 600 15px/1.3 "Aileron", sans-serif; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-serving .cf-vs-pills i { width: 28px; height: 58px; border-width: 2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-serving .is-chew .cf-vs-pills i { width: 44px; height: 44px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-serving .cf-vs-side b { font-size: clamp(22px, 2.2vw, 30px); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-serving .cf-vs-side span:last-child { font-weight: 700; color: var(--p2-ink); }
