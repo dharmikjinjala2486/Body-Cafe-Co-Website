@@ -553,6 +553,7 @@
       var q = function (t, x) { return x ? '<h4 class="cf-q">' + t + "</h4><p>" + esc(x) + "</p>" : ""; };
       h.parentNode.innerHTML = '<h3 class="p2-acc-h">' + esc(c.headline || (args[1] && args[1].name) || "") + "</h3>" + (c.support ? '<p class="cf-support">' + esc(c.support) + "</p>" : "") +
         q("Why this ingredient?", c.ingredient) + q("Why this form?", c.form) + q("Why this amount?", c.amount) + q("The decision", c.decision);
+      keepWhole(root.querySelector(".p2-acc-h"));
     }
     /* Product page refinements (16 Nov 2026, owner-approved). Everything below is the label's own text, from the catalogue. */
     var p = args[1] || {}, line = function (t) { return String(t || "").trim(); };
@@ -752,6 +753,7 @@
       if (!h3 || !price || !add || t.querySelector(".cf-tile-head")) return;
       var head = document.createElement("div"); head.className = "cf-tile-head";
       h3.parentNode.insertBefore(head, h3); head.appendChild(h3); head.appendChild(price);
+      keepWhole(h3);
       if (add.disabled) return;
       var name = (add.getAttribute("aria-label") || "").replace(/^Add /, "").replace(/ to bag$/, "");
       add.insertAdjacentHTML("beforebegin", '<div class="cf-pick" role="group" aria-label="How many ' + esc(name) + ' to add" data-cf-pick>' +
@@ -761,6 +763,35 @@
       add.insertAdjacentHTML("afterend", '<span class="sr-only" role="status" data-cf-pick-status></span>');
     });
   });
+  /* Phone polish (owner, 27 Nov 2026). A word with a hyphen in it ("Omega-3", "D-Chiro") never breaks at the hyphen. */
+  function keepWhole(el) {
+    if (!el) return;
+    var walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nodes = [], n;
+    while ((n = walk.nextNode())) if (/\S-\S/.test(n.nodeValue) && !(n.parentNode.classList && n.parentNode.classList.contains("cf-nw"))) nodes.push(n);
+    nodes.forEach(function (t) {
+      // One wrapper for the whole run, so a flex parent (the card's name link) still sees a single piece of text.
+      var f = document.createElement("span");
+      t.nodeValue.split(/(\S+-\S+)/).forEach(function (part, i) {
+        if (!part) return;
+        if (i % 2) { var s = document.createElement("span"); s.className = "cf-nw"; s.textContent = part; f.appendChild(s); } else f.appendChild(document.createTextNode(part));
+      });
+      t.parentNode.replaceChild(f, t);
+    });
+  }
+  /* While the page scrolls, Barista fades out on phones (it sat over numbers and text at the right edge), and the sticky
+     "Add to bag" bar steps aside while the routine's own "Add to your bag" button is on screen. */
+  var cfScrollT = 0, cfTick = false;
+  window.addEventListener("scroll", function () {
+    if (!focus()) return;
+    document.body.classList.add("cf-scrolling");
+    clearTimeout(cfScrollT); cfScrollT = setTimeout(function () { document.body.classList.remove("cf-scrolling"); }, 500);
+    if (cfTick) return; cfTick = true;
+    requestAnimationFrame(function () {
+      cfTick = false;
+      var b = document.querySelector("#main [data-p2-fbt-add]"), r = b && b.getBoundingClientRect();
+      document.body.classList.toggle("cf-hide-sticky", !!(r && r.bottom > 0 && r.top < window.innerHeight));
+    });
+  }, { passive: true });
   var PICK_MAX = 10; // the bag's limit per product (web/app.js); stock is checked again when adding
   function pickShow(box, q) {
     box.querySelector("output").textContent = String(q);
@@ -1287,6 +1318,8 @@
     })[0];
     if (kb) {
       accs.insertBefore(kb, accs.firstElementChild); kb.open = true;
+      // Owner, 27 Nov 2026: only Key benefits opens with the page; every other section starts closed.
+      [].forEach.call(accs.children, function (d) { if (d !== kb && d.tagName === "DETAILS") d.removeAttribute("open"); });
       var ticks = kb.querySelector(".p2-ticks"); if (ticks) ticks.remove();
       var claim = kb.querySelector(".p2-claim"), facts = v.facts || [];
       var lower = function (t) { return t.charAt(0).toLowerCase() + t.slice(1); };
