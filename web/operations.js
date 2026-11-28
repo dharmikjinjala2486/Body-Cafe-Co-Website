@@ -26,7 +26,7 @@
     ['', [['overview', 'Overview', '◉']]],
     ['Sell', [['orders', 'Orders', '▤'], ['sales', 'Sales', '↗']]],
     ['Catalogue', [['products', 'Products', '◇'], ['inventory', 'Inventory', '▦'], ['lots', 'Lot reports', '▧']]],
-    ['Customers', [['cases', 'Support & safety', '♡'], ['reviews', 'Reviews & questions', '☆'], ['testers', 'Tester feedback', '✎']]],
+    ['Customers', [['cases', 'Support & safety', '♡'], ['reviews', 'Reviews & questions', '☆'], ['testers', 'Tester feedback', '✎'], ['events', 'Page events', '◔']]],
     ['Settings', [['channels', 'Channels', '⇄'], ['flags', 'Feature flags', '⚑']]],
   ];
   const TABS = NAV.flatMap(g => g[1]);
@@ -473,6 +473,32 @@
           h(n.name || 'No name') + `<br><small>${h([n.design, n.screen].filter(Boolean).join(' · '))}</small>`]), { pageKey: 'p' + i }) + '</section>';
     }).join('');
   }
+  /* Page events (28 Nov 2026): the last 30 days of analytics events, from visitors who turned analytics on. The storefront
+     sends them from the Content Focus Omega-3 page (web/content-focus-e.js, track()); the older site-wide events have no page. */
+  function events(o) {
+    const rows = o.events || [], pct = (a, b) => b ? Math.round(a / b * 100) + '%' : '–';
+    if (!rows.length) return empty('No page events yet', 'Events are recorded only from visitors who turn analytics on in Preferences, as the privacy policy says. They come from the Omega-3 page in Content Focus.');
+    const sum = (list, name) => list.filter(r => r.name === name).reduce((a, r) => a + r.count, 0);
+    const pages = [...new Set(rows.filter(r => r.page && r.name.startsWith('pdp_')).map(r => r.page))];
+    const LABEL = { pdp_section: 'Sections opened', pdp_scroll: 'How far down they read', pdp_pack: 'Packs chosen', pdp_add: 'Added to bag', pdp_gallery: 'Gallery', pdp_link: 'Links tapped' };
+    const out = pages.map((p, i) => {
+      const mine = rows.filter(r => r.page === p), views = sum(mine, 'pdp_view'), adds = sum(mine, 'pdp_add');
+      const half = mine.filter(r => r.name === 'pdp_scroll' && r.detail === '50').reduce((a, r) => a + r.count, 0);
+      const head = `<section class="op-card"><h2>${h(p)} <small>· last 30 days</small></h2>` +
+        `<div class="op-grid3"><div><p class="op-muted">Visits</p><h2>${views}</h2></div><div><p class="op-muted">Added to bag</p><h2>${adds} <small>(${pct(adds, views)} of visits)</small></h2></div><div><p class="op-muted">Read half the page</p><h2>${pct(half, views)}</h2></div></div>`;
+      const parts = Object.keys(LABEL).map(n => {
+        const list = mine.filter(r => r.name === n).sort((a, b) => b.count - a.count);
+        return list.length ? `<h3>${LABEL[n]}</h3>` + table(['What', 'Times', 'Of visits'], list.map(r => [h(n === 'pdp_scroll' ? (r.detail || '?') + '% of the page' : r.detail || '—'), String(r.count), pct(r.count, views)]), { pageKey: 'e' + i + n }) : '';
+      }).join('');
+      return head + parts + '</section>';
+    });
+    const site = rows.filter(r => !r.name.startsWith('pdp_'));
+    if (site.length) {
+      const by = {}; site.forEach(r => { by[r.name] = (by[r.name] || 0) + r.count; });
+      out.push(`<section class="op-card"><h2>Across the site <small>· last 30 days</small></h2>` + table(['Event', 'Times'], Object.entries(by).sort((a, b) => b[1] - a[1]).map(([n, c]) => [h(n.replace(/_/g, ' ')), String(c)]), { pageKey: 'site' }) + '</section>');
+    }
+    return notice('Only visitors who turned analytics on are counted, so these are a sample, not every visit.') + out.join('');
+  }
   function cases(o) {
     return tools({ statuses: ['open', 'investigating', 'escalated', 'resolved'], placeholder: 'Search case, customer or order' }) + (filtered(o.cases).map(c => `<details class="op-card op-case"><summary><span class="op-case-title"><strong>${h(c.subject || c.kind)}</strong><small>${h(c.id)} · ${when(c.created)}</small></span><span>${tag(c.state)}${c.kind === 'safety' ? tag('Safety priority', 'danger') : ''}</span></summary><p class="op-case-message">${lines(c.message)}</p><dl class="op-dl"><div><dt>Queue</dt><dd>${h(c.queue || 'General')}</dd></div><div><dt>Order / lot</dt><dd>${c.order_id ? `<a href="/ops/orders?order=${encodeURIComponent(c.order_id)}">${h(c.order_id)}</a>` : '—'} ${h(c.lot || '')}</dd></div><div><dt>Contact</dt><dd>${h([c.contact?.name, c.contact?.email, c.contact?.mobile].filter(Boolean).join(' · ') || '—')}</dd></div></dl>${(c.history || []).length ? `<ol class="op-timeline">${c.history.map(x => `<li>${tag(x.state)}<span>${when(x.at)}</span>${x.note || x.message ? `<p>${h(x.note || x.message)}</p>` : ''}</li>`).join('')}</ol>` : ''}${(c.internal || []).map(n => `<p class="op-note"><strong>Internal:</strong> ${h(n.text)}<small>${when(n.at)}</small></p>`).join('')}${(c.media || []).map((m, i) => link('Attachment ' + (i + 1) + ' ↗', '/api/review-media/' + m, 'op-small', 'target="_blank" rel="noopener"')).join('')}<form data-op-form="case" data-id="${h(c.id)}"><div class="op-form-grid">${select({ name: 'state', label: 'Status', items: ['open', 'investigating', 'escalated', 'resolved'].map(s => [s, s[0].toUpperCase() + s.slice(1)]), value: c.state })}<span></span>${area({ name: 'internal_note', label: 'Internal note (admins only)', rows: 2, attrs: 'maxlength="2000"' })}${area({ name: 'note', label: 'Reply to the customer', rows: 3, attrs: 'maxlength="2000"' })}</div>${formEnd('Save & reply')}</form></details>`).join('') || empty('No cases', 'Support and safety submissions will appear here.'));
   }
@@ -492,7 +518,7 @@
     const titles = { products: pid ? 'Edit product' : 'Products', orders: q().get('order') || 'Orders', account: 'Account', analytics: 'Sales' };
     let content;
     try {
-      content = ({ overview, products, inventory, orders, sales, cases, testers, channels, flags, account })[tab]?.(o)
+      content = ({ overview, products, inventory, orders, sales, cases, testers, events, channels, flags, account })[tab]?.(o)
         ?? (tab === 'reviews' ? reviewsRenderer(o, false)
           : tab === 'lots' ? window.BCCLotsOps.render(o, false)
           : tab === 'analytics' ? empty('Analytics has moved', 'Sales now shows period totals, products and refunds.', link('Open Sales', '/ops/sales', 'op-primary'))

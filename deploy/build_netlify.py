@@ -4,6 +4,7 @@ import json
 import os
 from urllib.parse import urlparse
 import hashlib
+from html import escape
 import re
 import shutil
 import sys
@@ -42,6 +43,41 @@ def release_target(release, site_url):
     if parsed.scheme != 'https' or not parsed.hostname or parsed.path not in ('', '/') or parsed.query or parsed.fragment:
         raise ValueError('Set BCC_SITE_URL to the production https:// origin before a production release.')
     return site_url.rstrip('/')
+
+
+# Share previews (owner, 28 Nov 2026). WhatsApp, Instagram and other link previews read the page as it is served and never
+# run its scripts, so a product URL that should preview well gets its own copy of the page with the tags written in.
+# Each route also needs a rewrite in vercel.json (written to _redirects here). Words: the Content Focus SEO lines.
+SHARE = {
+    '/omega3-fishoil': {
+        'title': 'Omega-3 Fish Oil · 800 mg omega-3 — Body Café Co.',
+        'description': '800 mg omega-3 per softgel as triglycerides, with 400 mg EPA and 300 mg DHA, from 1,000 mg anchovy oil. One softgel each morning with food.',
+        'image': '/web/media/og/omega-3-fish-oil.jpg', 'width': 1200, 'height': 1200,
+        'alt': 'Omega-3 Fish Oil bottle, 60 softgels',
+    },
+}
+
+
+def share_page(html, origin, route, s):
+    e = lambda t: escape(str(t), quote=True)
+    url = origin + route
+    tags = ''.join([
+        '<meta property="og:type" content="product">\n',
+        '<meta property="og:site_name" content="Body Café Co.">\n',
+        '<meta property="og:title" content="' + e(s['title']) + '">\n',
+        '<meta property="og:description" content="' + e(s['description']) + '">\n',
+        '<meta property="og:url" content="' + e(url) + '">\n',
+        '<meta property="og:image" content="' + e(origin + s['image']) + '">\n',
+        '<meta property="og:image:width" content="' + str(s['width']) + '">\n',
+        '<meta property="og:image:height" content="' + str(s['height']) + '">\n',
+        '<meta property="og:image:alt" content="' + e(s['alt']) + '">\n',
+        '<meta name="twitter:card" content="summary_large_image">\n',
+    ])
+    page = re.sub(r'<title>[^<]*</title>', lambda m: '<title>' + e(s['title']) + '</title>\n' + tags.rstrip('\n'), html, count=1)
+    page = re.sub(r'<meta name="description" content="[^"]*">', lambda m: '<meta name="description" content="' + e(s['description']) + '">', page, count=1)
+    if page.count('og:title') != 1:
+        raise ValueError('Share tags for ' + route + ' could not be placed.')
+    return page
 
 
 STYLE = re.compile(r'<link rel="stylesheet" href="/web/([\w.-]+\.css)">')
@@ -131,6 +167,10 @@ def build():
     html = bundle(html, out)
     (out / 'index.html').write_text(html, encoding='utf-8')
     (out / 'web/index.html').write_text(html, encoding='utf-8')
+    origin = site or os.getenv('BCC_PUBLIC_ORIGIN', 'https://bodycafeco.com').rstrip('/')
+    for route, s in SHARE.items():
+        (out / route.strip('/')).mkdir(parents=True, exist_ok=True)
+        (out / route.strip('/') / 'index.html').write_text(share_page(html, origin, route, s), encoding='utf-8')
     feedback = (ROOT / 'web/feedback.html').read_text(encoding='utf-8')
     feedback = feedback.replace('id="theme-feedback"', 'id="theme-feedback" data-submission-mode="netlify"')
     (out / 'feedback').mkdir()
@@ -138,7 +178,9 @@ def build():
     # Keep only one form definition for Netlify's static HTML detection.
     (out / 'web/feedback.html').unlink()
     redirects = ('/api/* ' + target + '/api/:splat 200!\n') if target else ''
-    redirects += '/feedback /feedback/index.html 200\n/feedback/ /feedback/index.html 200\n/* /index.html 200\n'
+    redirects += '/feedback /feedback/index.html 200\n/feedback/ /feedback/index.html 200\n'
+    redirects += ''.join(r + ' ' + r + '/index.html 200\n' for r in SHARE)
+    redirects += '/* /index.html 200\n'
     (out / '_redirects').write_text(redirects, encoding='utf-8')
     (out / '_headers').write_text('/web/b/*\n  Cache-Control: public, max-age=31536000, immutable\n/api/*\n  Cache-Control: no-store\n/ops*\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: same-origin\n  X-Frame-Options: DENY\n  Content-Security-Policy: frame-ancestors \'none\'; base-uri \'self\'; object-src \'none\'\n  Strict-Transport-Security: max-age=31536000\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(self)\n', encoding='utf-8')
     if site:

@@ -75,6 +75,10 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
             CREATE TABLE IF NOT EXISTS tester_notes(id TEXT PRIMARY KEY, session TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL);
             CREATE TABLE IF NOT EXISTS review_reports(id INTEGER PRIMARY KEY, review_id TEXT, user_id TEXT, reason TEXT, note TEXT, state TEXT, created INTEGER, UNIQUE(review_id,user_id));
             ''')
+            # Page events (28 Nov 2026): which page, and one short detail (a section, a pack, a scroll depth).
+            have = {r[1] for r in c.execute('PRAGMA table_info(events)')}
+            for col in ('page', 'detail', 'session'):
+                if col not in have: c.execute('ALTER TABLE events ADD COLUMN ' + col + ' TEXT')
             self.lots_init(c)
             self.account_init(c)
             self.support_init(c)
@@ -336,7 +340,7 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
                 for t in ['batches','payments']:result[t]=[decode(r) for r in rows(t)]
                 result['review_media']=[dict(r) for r in c.execute('SELECT * FROM review_media ORDER BY created DESC')]
                 result['review_reports']=[dict(r) for r in c.execute('SELECT * FROM review_reports ORDER BY created DESC')]
-                result['events']=[dict(r) for r in c.execute('SELECT name,COUNT(*) AS count FROM events GROUP BY name')]
+                result['events']=[dict(r) for r in c.execute('SELECT name,page,detail,COUNT(*) AS count FROM events WHERE created>? GROUP BY name,page,detail ORDER BY count DESC LIMIT 1000',(int(time.time())-30*86400,))]  # the last 30 days
                 result.update(self.lot_snapshot(c))
                 result['help_feedback']=self.help_feedback_summary(c)
                 result['learn_feedback']=[dict(r) for r in c.execute('SELECT page,SUM(clear) AS clear,SUM(1-clear) AS unclear,COUNT(*) AS total FROM learn_feedback GROUP BY page ORDER BY page')]
@@ -388,6 +392,24 @@ class Store(msg91.Msg91Mixin, razorpay.RazorpayMixin, shipping.ShippingMixin, co
             # Stable IDs make network retries safe without dropping another person's response.
             c.execute('INSERT OR IGNORE INTO theme_feedback VALUES(?,?,?)', (response_id, json.dumps(payload), int(time.time())))
         return {'ok': True, 'id': response_id}
+
+    # Analytics events, sent only when the visitor has turned analytics on (web/app.js event(), web/content-focus-e.js
+    # track()). The privacy policy allows "page and action names": a name from this list, the page's path and one short
+    # detail (a section's title, a pack, a scroll depth). Same rules as `/events` in supabase/functions/operations/core.js.
+    EVENTS = ('product_view', 'report_lookup', 'cart_add', 'checkout_start', 'consent_updated', 'review_start', 'question_start',
+              'pdp_view', 'pdp_section', 'pdp_scroll', 'pdp_gallery', 'pdp_pack', 'pdp_add', 'pdp_link')
+
+    def event(self, s, data):
+        name = data.get('name'); page = str(data.get('page', '') or '').split('?')[0]; detail = str(data.get('detail', '') or '').strip()
+        if name not in self.EVENTS: raise Error('Unknown event.')
+        if page and not re.fullmatch(r'/(?!/)[A-Za-z0-9/_.~%+-]{0,200}', page): raise Error('That page reference is not valid.')
+        if not re.fullmatch(r"[A-Za-z0-9 ?'&.:/_-]{0,60}", detail): raise Error('That event detail is not valid.')
+        with self.db() as c:
+            if c.execute('SELECT COUNT(*) FROM events WHERE session=? AND created>?', (s['id'], int(time.time()) - 3600)).fetchone()[0] >= 300:
+                raise Error('Too many events. Please try again later.', 429)
+            c.execute('INSERT INTO events(user_id,name,created,page,detail,session) VALUES(?,?,?,?,?,?)',
+                      (s['user_id'], name, int(time.time()), page or None, detail or None, s['id']))
+        return {'ok': True}
 
     def tester_note(self, s, data):
         """A tester's note about the page they are on (17 Nov 2026). Shown to the admin under Tester feedback."""
@@ -997,10 +1019,7 @@ class Handler(BaseHTTPRequestHandler):
                 elif re.fullmatch(r'/api/review-media/IMG-[0-9a-f]{16}/delete',path):result=self.store.delete_media(s,path.split('/')[3])
                 elif path=='/api/questions':result=self.store.question(s,data)
                 elif path.startswith('/api/admin/'):result=self.store.admin(s,path.rsplit('/',1)[1],data)
-                elif path=='/api/events':
-                    if data.get('name') not in ['product_view','report_lookup','cart_add','checkout_start','consent_updated','review_start','question_start']:raise Error('Unknown event.')
-                    with self.store.db() as c:c.execute('INSERT INTO events(user_id,name,created) VALUES(?,?,?)',(s['user_id'],data['name'],int(time.time())))
-                    result={'ok':True}
+                elif path=='/api/events':result=self.store.event(s,data)
                 else:raise Error('Endpoint not found.',404)
             self.json(200,result,cookie)
             self.store.notices_flush_later()  # order messages queued by this request (app/msg91.py)

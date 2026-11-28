@@ -57,8 +57,17 @@
         scope.querySelectorAll("[data-pk-total]").forEach(function (n) { n.textContent = money(packPrice(price, q)); });
         scope.querySelectorAll("[data-pk-was]").forEach(function (n) { var s = saving(price, q); n.textContent = s ? money(price * q) : ""; n.hidden = !s; });
         scope.querySelectorAll("[data-pk-count]").forEach(function (n) { n.textContent = q + " bottle" + (q > 1 ? "s" : ""); });
-        // Sticky bars sit outside the buy box; they show the chosen pack's price too.
-        root.querySelectorAll("[data-pk-total-page]").forEach(function (n) { n.textContent = money(packPrice(price, q)) + (q > 1 ? " · " + q + " bottles" : ""); });
+        // A page may show the chosen card's cost a day beside the price (Content Focus Omega-3); nothing else carries this.
+        var per = card.querySelector(".pk-per");
+        scope.querySelectorAll("[data-pk-day]").forEach(function (n) { n.textContent = per ? per.textContent : ""; n.hidden = !per; });
+        // …and what the pack saves, in rupees (Content Focus Omega-3). Hidden for one bottle.
+        scope.querySelectorAll("[data-pk-save]").forEach(function (n) { var s = saving(price, q); n.textContent = s ? "You save " + money(s) : ""; n.hidden = !s; });
+        // Sticky bars sit outside the buy box; they show the chosen pack's price too. With data-pk-name they name the pack
+        // as its card does ("4 months") instead of counting bottles.
+        var nm = card.querySelector(".pk-n");
+        root.querySelectorAll("[data-pk-total-page]").forEach(function (n) {
+          n.textContent = money(packPrice(price, q)) + (n.hasAttribute("data-pk-name") && nm ? " · " + nm.textContent.trim() : q > 1 ? " · " + q + " bottles" : "");
+        });
       }
       box.addEventListener("click", function (e) { var c = e.target.closest("[data-pk-q]"); if (c) choose(c); }, { signal: signal });
       box.addEventListener("keydown", function (e) {
@@ -67,7 +76,8 @@
         e.preventDefault();
         for (var k = 1; k <= cards.length; k++) { var n = cards[(i + step * k + cards.length * k) % cards.length]; if (!n.disabled) { choose(n, true); break; } }
       }, { signal: signal });
-      choose(cards[0]);
+      // The first card unless the page names another (data-pk-start, Content Focus Omega-3).
+      choose(cards.filter(function (c) { return c.dataset.pkQ === box.dataset.pkStart && !c.disabled; })[0] || cards[0]);
     });
   }
 

@@ -40,7 +40,7 @@ const fn=createHandler({url:'https://test.supabase.co',serviceKey:'test-service-
  else if(name==='bcc_lot_reports')result=fixtureReports;
  else if(name==='bcc_products')result=u.searchParams.has('id')&&u.searchParams.get('id')!=='eq.test-product'?[]:[{id:'test-product',data:product,draft:null,version:1}];
  else if(name==='bcc_batches')result=[{id:'LOT',product:'test-product',available:3,expiry:Math.floor(Date.now()/1000)+86400,state:'released',proof:true,meta:{damaged:1}}];
- else if(name==='bcc_feedback'){const tg=(u.searchParams.get('target')||'').slice(3);if(opts.method==='POST')testerRows.unshift(JSON.parse(opts.body));if(opts.method==='PATCH'){Object.assign(testerRows.find(r=>r.target===tg),JSON.parse(opts.body));result=null;}else result=tg?testerRows.filter(r=>r.target===tg):testerRows;}
+ else if(name==='bcc_feedback'){const tg=(u.searchParams.get('target')||'').slice(3);if(opts.method==='POST')testerRows.unshift(JSON.parse(opts.body));if(opts.method==='PATCH'){Object.assign(testerRows.find(r=>r.target===tg),JSON.parse(opts.body));result=null;}else{const kd=(u.searchParams.get('kind')||'').slice(3);result=(tg?testerRows.filter(r=>r.target===tg):testerRows).filter(r=>!kd||r.kind===kd);}}
  else if(name==='bcc_reservations')result=[];
  else if(name==='bcc_settings')result=[{id:'flags',data:{checkout_enabled:false}}];
  else if(name==='bcc_expire_holds')result=null;
@@ -55,6 +55,11 @@ let response=await request('/admin');assert.equal(response.status,403);checks++;
 response=await request('/admin',{headers:{Cookie:'bcc_admin=pretend-admin'}});assert.equal(response.status,403);checks++;
 response=await request('/admin',{headers:{Cookie:adminCookie}});assert.equal(response.status,200);let snap=await response.json();assert.equal(snap.inventory_summary.on_hand,4);assert.equal(snap.inventory_summary.available,3);assert.ok(!('approvals'in snap));assert.ok(!('audit'in snap));checks++;
 testerRows=[{user_id:'guest-x',kind:'tester',target:'abcd',data:{note:'Seen by the admin',name:'Asha',page:'/shop'},created:5}];response=await request('/admin',{headers:{Cookie:adminCookie}});snap=await response.json();assert.deepEqual(snap.tester_notes,[{status:'open',note:'Seen by the admin',name:'Asha',page:'/shop',id:'abcd',created:5}]);testerRows=[];checks++;
+// Page events (28 Nov 2026): the admin gets the last 30 days counted by name, page and detail; tester notes stay apart.
+{const ev=(name,page,detail,created=Math.floor(Date.now()/1000))=>({user_id:'guest-x',kind:'event',target:Math.random().toString(16).slice(2,18),data:{name,page,detail},created});
+const keep=testerRows;testerRows=[ev('pdp_section','/omega3-fishoil','Description: Why this amount?'),ev('pdp_section','/omega3-fishoil','Description: Why this amount?'),ev('pdp_view','/omega3-fishoil',''),...keep];
+response=await request('/admin',{headers:{Cookie:adminCookie}});const es=await response.json();
+assert.deepEqual(es.events,[{name:'pdp_section',page:'/omega3-fishoil',detail:'Description: Why this amount?',count:2},{name:'pdp_view',page:'/omega3-fishoil',detail:null,count:1}]);assert.equal(es.tester_notes.length,keep.length);testerRows=keep;checks++;}
 response=await request('/catalog');let catalog=await response.json();assert.equal(catalog.products[0].stock,3);assert.equal(catalog.flags.checkout_enabled,false);checks++;
 response=await request('/admin/session');let session=await response.json();assert.equal(session.user.role,'customer');assert.equal(session.configured,true);assert.equal(session.csrf.length,32);checks++;
 const cookies=response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
@@ -160,5 +165,14 @@ response=await request('/tester-feedback?page=/shop',{headers:{Cookie:guestCooki
 for(const pin of ['top left',[],{sel:'h2',x:2,y:0},{sel:'h2',x:'0.5',y:0},{sel:'h2',y:0},{sel:'a[href="x"]',x:0,y:0},{sel:'h2,script',x:0,y:0},{sel:'h'.repeat(401),x:0,y:0},{sel:'h2',x:0,y:0,text:'t'.repeat(201)},{sel:'',x:0,y:0,text:''}]){response=await cpost('/tester-feedback',{note:'Fine note',page:'/',pin});assert.equal(response.status,400);checks++;}
 assert.equal(testerRows.length,2);testerRows.shift();
 for(let i=0;i<29;i++)testerRows.push({...testerRows[0]});response=await cpost('/tester-feedback',{note:'One too many',page:'/'});assert.equal(response.status,429);checks++;
+// Page events (28 Nov 2026): kept in bcc_feedback as kind 'event' with the page (no query) and a short detail; counted for the admin.
+testerRows.length=0;
+response=await cpost('/events',{name:'pdp_view',page:'/omega3-fishoil?design=e&part=5'});assert.equal(response.status,200);
+assert.deepEqual([testerRows[0].kind,testerRows[0].data],['event',{name:'pdp_view',page:'/omega3-fishoil',detail:''}]);checks++;
+response=await cpost('/events',{name:'pdp_section',page:'/omega3-fishoil',detail:'Description: Why this amount?'});assert.equal(response.status,200);
+response=await cpost('/events',{name:'pdp_section',page:'/omega3-fishoil',detail:'Description: Why this amount?'});assert.equal(response.status,200);
+for(const bad of [{name:'pdp_unknown'},{name:'pdp_view',page:'//evil.example'},{name:'pdp_view',page:'https://x.test/'},{name:'pdp_section',detail:'<script>'},{name:'pdp_section',detail:'x'.repeat(61)}]){response=await cpost('/events',bad);assert.equal(response.status,400);checks++;}
+for(let i=0;i<297;i++)testerRows.push({...testerRows[0]});response=await cpost('/events',{name:'pdp_view',page:'/'});assert.equal(response.status,429);checks++;
+testerRows.length=0;
 assert.ok(calls.every(c=>!JSON.stringify(c.opts.body||'').includes('test-service-secret')));checks++;
 console.log(`${checks} hosted API, authorization, sales and image checks passed.`);

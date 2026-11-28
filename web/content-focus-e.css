@@ -580,3 +580,372 @@ body[data-variant-e-part="2"][data-content-focus="1"] .p2-tiles-shop .p2-add { m
   body[data-variant-e-part="2"][data-content-focus="1"] .p2-sticky-add { transition: opacity .2s, transform .2s; }
   body[data-variant-e-part="2"][data-content-focus="1"].cf-hide-sticky .p2-sticky-add { opacity: 0; transform: translateY(24px); pointer-events: none; }
 }
+/* ---------- Visual polish, the visual product page (28 Nov 2026) ---------- */
+/* The buy box carries the product's cap colour along its top edge (wide screens, where the box is a white card). */
+@media (min-width: 901px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy { box-shadow: inset 0 5px 0 var(--cap); }
+}
+/* The chosen pack reads at a glance: an ink outline and a cap-colour wash, whatever the cap's colour. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .pk-card[aria-checked="true"] { border-color: var(--p2-ink); background: color-mix(in srgb, var(--cap) 14%, #fff); box-shadow: 0 0 0 1px var(--p2-ink) inset; }
+/* Delivery notes: a small line icon for each in place of the dot (the order is fixed in part2-e.js: stock, shipping, free
+   delivery, batch lookup). */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes { gap: 10px; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li::before { flex: none; width: 18px; height: 18px; border-radius: 0; background: var(--p2-ink); -webkit-mask: var(--cf-ni) center / contain no-repeat; mask: var(--cf-ni) center / contain no-repeat; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li:nth-child(1) { --cf-ni: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8 12 3 3 8v8l9 5 9-5z'/%3E%3Cpath d='m3 8 9 5 9-5M12 13v8'/%3E%3C/svg%3E"); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li:nth-child(2) { --cf-ni: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 6h12v10H2zM14 9h4l4 4v3h-8'/%3E%3Ccircle cx='6' cy='18' r='2'/%3E%3Ccircle cx='17' cy='18' r='2'/%3E%3C/svg%3E"); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li:nth-child(3) { --cf-ni: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z'/%3E%3Ccircle cx='8' cy='8' r='1.5'/%3E%3C/svg%3E"); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li:nth-child(4) { --cf-ni: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7 15h10'/%3E%3C/svg%3E"); }
+/* The Omega-3 comparison: softgels drawn as softgels (a soft shine on ours, a pale fill on the regular ones), and "or" as a
+   round chip in the ink colour instead of orange. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side:not(.is-us) .cf-vs-pills i { background: linear-gradient(160deg, #fff 0, color-mix(in srgb, var(--cap) 14%, #fff) 100%); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side.is-us .cf-vs-pills i { border-color: color-mix(in srgb, var(--cap) 55%, var(--p2-ink)); background: radial-gradient(ellipse 30% 22% at 36% 26%, rgb(255 255 255 / .85), transparent 100%), linear-gradient(90deg, color-mix(in srgb, var(--cap) 80%, #fff), var(--cap) 55%, color-mix(in srgb, var(--cap) 70%, var(--p2-ink))); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-mid em { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--p2-line); border-radius: 50%; background: #fff; font: 600 12px/1 "Aileron", sans-serif; letter-spacing: .04em; text-transform: uppercase; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-vs.is-versus { background: var(--p2-plate); border-color: transparent; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus .cf-vs-side.is-us { background: #fff; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-vs.is-versus figcaption { font-size: 16px; }
+/* Key benefits: white tiles on the page colour, no outline. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles li { border-color: transparent; background: #fff; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-tiles i { background: color-mix(in srgb, var(--cap) 26%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-pdp-accs > .p2-acc:first-child .cf-tiles { margin-bottom: 0; }
+/* On a phone, Key benefits sits two to a row with the icon beside the words, and an odd last tile across the row (it was
+   three, then two centred, which left uneven gaps). Key benefits is always the first section on this page. */
+@media (max-width: 760px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-pdp-accs > .p2-acc:first-child .cf-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-pdp-accs > .p2-acc:first-child .cf-tiles li, body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-pdp-accs > .p2-acc:first-child .cf-tiles[style*="--n:5"] li, body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-pdp-accs > .p2-acc:first-child .cf-tiles[style*="--n:4"] li { flex: none; grid-template-columns: auto minmax(0, 1fr); align-items: center; justify-items: start; gap: 10px; padding: 10px 12px 10px 10px; font-size: 13.5px; text-align: left; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-pdp-accs > .p2-acc:first-child .cf-tiles li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-pdp-accs > .p2-acc:first-child .cf-tiles i { width: 36px; height: 36px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-pdp-accs > .p2-acc:first-child .cf-tiles svg { width: 19px; height: 19px; }
+}
+/* ---------- Description and Directions, less cluttered (owner, 28 Nov 2026), the visual product page ---------- */
+/* Description: the "inside one serving" rows in one quiet card, thinner bars, indents without rules. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd { margin: 18px 0 0; padding: 16px 16px 14px; border-radius: 16px; background: #fff; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd .cf-in-k { margin-bottom: 12px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd ul { gap: 9px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd li { gap: 4px 12px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd li.d1 { margin-left: 0; padding-left: 14px; border-left: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd li.d2 { margin-left: 0; padding-left: 28px; border-left: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd li > b,
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd li.d2 > b { font-size: 15px; font-weight: 600; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd li.d0 > b { font-weight: 700; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd .cf-rda-n { font-size: 14px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd .cf-rda-m { height: 6px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-in.cf-bd .cf-rda-note { margin-top: 10px; }
+/* The four questions: a plain list split by hairlines, no boxes; the question in plain bold, not spaced capitals. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why { gap: 0 32px; margin-top: 20px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why > div { padding: 14px 0; border: 0; border-top: 1px solid var(--p2-line); border-radius: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why .cf-q { margin: 0 0 4px; font: 600 14.5px/1.3 "Aileron", sans-serif; letter-spacing: 0; text-transform: none; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why p { font-size: 14.5px; line-height: 1.5; color: var(--p2-text); }
+/* Directions: the time slots and the dose as two short rows. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .p2-slots { gap: 8px; margin: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .p2-slots li { gap: 2px; padding: 10px 12px; border-radius: 12px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .p2-slots span { font-size: 10px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .p2-slots b { font: 500 15px/1.2 "Aileron", sans-serif; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-tiles[aria-label="How to take it"] { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-tiles[aria-label="How to take it"] li { display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px 5px 5px; border: 0; border-radius: 999px; background: #fff; font: 500 14px/1.2 "Aileron", sans-serif; text-align: left; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-tiles[aria-label="How to take it"] i { width: 28px; height: 28px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-tiles[aria-label="How to take it"] svg { width: 16px; height: 16px; }
+/* The label's sentence: a quiet line under them. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-acc-body > .cf-tiles + .p2-use { margin: 12px 0 0; font-size: 14px; line-height: 1.5; color: var(--p2-text); }
+/* Allergens in view; Caution and Storage each a closed row. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-care { margin: 18px 0 0; padding: 14px 0 0; border-top: 1px solid var(--p2-line); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-care dt { font: 600 14.5px/1.3 "Aileron", sans-serif; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-care dd { margin: 2px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-fold { border-top: 1px solid var(--p2-line); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-care + .cf-fold { margin-top: 14px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-fold summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; list-style: none; cursor: pointer; font: 600 14.5px/1.3 "Aileron", sans-serif; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-fold summary::-webkit-details-marker { display: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-fold summary::after { content: ""; flex: none; width: 8px; height: 8px; margin-right: 4px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-fold[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-fold summary:focus-visible { outline: 2px solid var(--p2-ink); outline-offset: 2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-fold-body { padding: 0 0 12px; font-size: 14px; line-height: 1.5; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-fold-body ul { display: grid; gap: 4px; margin: 0; padding: 0 0 0 16px; }
+/* Description (owner, 28 Nov 2026): the four questions are closed rows, one under another; the answer opens under its question. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why { display: block; margin-top: 18px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why .cf-fold summary .cf-q { margin: 0; font: inherit; color: inherit; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why .cf-fold-body p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-why .cf-fold:last-child { border-bottom: 1px solid var(--p2-line); }
+/* ---------- Omega-3 product page, more effective (owner, 28 Nov 2026, "do all"; data-cf-id="omega-3-fish-oil" only) ---------- */
+/* The comparison as its own card (owner, 28 Nov 2026): under the delivery notes, outside the buy box. On wide screens the
+   buy box's white moves to an inner card (.cf-buy-card) and the comparison is a second white card under it. */
+@media (min-width: 901px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .p2-pdp3 .cf-vis .p2-buy.has-own { padding: 0; border-radius: 0; background: none; box-shadow: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy.has-own > .cf-buy-card { padding: 28px; border-radius: 24px; background: #fff; box-shadow: inset 0 5px 0 var(--cap); }
+}
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy > .cf-side.is-own { margin: 16px 0 0; padding: 18px 16px 16px; border-radius: 24px; background: #fff; box-shadow: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy > .cf-side.is-own .cf-vs.is-versus { margin: 0; padding: 0; border: 0; background: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy > .cf-side.is-own .cf-vs.is-versus .cf-vs-side.is-us { background: color-mix(in srgb, var(--cap) 18%, #fff); box-shadow: inset 0 0 0 2px var(--cap); }
+@media (max-width: 900px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy > .cf-side.is-own { margin-top: 20px; border-radius: 20px; }
+}
+/* The chosen pack's cost a day, beside the price. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-price .cf-perday { display: block; margin: 2px 0 0; font: 600 14px/1.3 "Aileron", sans-serif; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-price .cf-perday[hidden] { display: none; }
+/* Independent testing, under Add to bag: one line with a flask, the whole line a link to the batch lookup. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-trust { display: flex; align-items: flex-start; gap: 10px; margin: 14px 0 0; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--cap) 12%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cap) 40%, transparent); font-size: 13.5px; line-height: 1.45; color: var(--p2-text); text-decoration: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-trust b { display: block; font-weight: 600; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-trust span { text-decoration: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-trust:hover span { text-decoration: underline; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-trust:focus-visible { outline: 2px solid var(--p2-ink); outline-offset: 2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-trust i { flex: none; width: 20px; height: 20px; margin-top: 1px; background: var(--p2-ink); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7 15h10'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7 15h10'/%3E%3C/svg%3E") center / contain no-repeat; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .cf-trust + .pc { margin-top: 16px; }
+/* Phone: the name, claim and price reach the first screen. The breadcrumb goes, the photo is a shorter frame (the
+   picture is still shown whole) and the thumbnails are smaller. */
+@media (max-width: 900px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] #main:has(.cf-vis[data-cf-id="omega-3-fish-oil"]) .p2-crumbs { display: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-id="omega-3-fish-oil"] .p2-gallery-main { width: 100%; aspect-ratio: 4 / 3; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-id="omega-3-fish-oil"] .p2-shot img { object-fit: contain; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-id="omega-3-fish-oil"] .p2-thumbs { gap: 6px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-id="omega-3-fish-oil"] .p2-thumbs > * { width: 44px; height: 44px; flex: none; }
+}
+/* ---------- Omega-3, second round (owner, 28 Nov 2026; pages with `more` in VIS: [data-cf-more]) ---------- */
+/* Gallery: round arrows at the picture's sides and a "view larger" button in its corner. */
+body[data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main { position: relative; touch-action: pan-y; }
+body[data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main [data-p2-shot] img { cursor: zoom-in; }
+body[data-content-focus="1"] .cf-gal-nav,
+body[data-content-focus="1"] .cf-gal-zoom { position: absolute; z-index: 2; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid var(--p2-line, #e4dfd5); border-radius: 50%; background: rgb(255 255 255 / .92); color: var(--p2-ink, #1c1b1a); cursor: pointer; box-shadow: 0 2px 10px rgb(0 0 0 / .08); }
+body[data-content-focus="1"] .cf-gal-nav { top: 50%; transform: translateY(-50%); }
+body[data-content-focus="1"] .cf-gal-nav.is-prev { left: 12px; }
+body[data-content-focus="1"] .cf-gal-nav.is-next { right: 12px; }
+body[data-content-focus="1"] .cf-gal-nav.is-next svg { transform: scaleX(-1); }
+body[data-content-focus="1"] .cf-gal-zoom { right: 12px; bottom: 12px; width: 36px; height: 36px; }
+body[data-content-focus="1"] :is(.cf-gal-nav, .cf-gal-zoom) svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+body[data-content-focus="1"] :is(.cf-gal-nav, .cf-gal-zoom):hover { background: #fff; }
+body[data-content-focus="1"] :is(.cf-gal-nav, .cf-gal-zoom):focus-visible { outline: 2px solid var(--p2-ink, #1c1b1a); outline-offset: 2px; }
+@media (hover: hover) and (min-width: 901px) {
+  body[data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main .cf-gal-nav { opacity: 0; transition: opacity .2s; }
+  body[data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main:hover .cf-gal-nav,
+  body[data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main .cf-gal-nav:focus-visible { opacity: 1; }
+}
+@media (max-width: 900px) {
+  body[data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main .cf-gal-nav { width: 34px; height: 34px; }
+  body[data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main .cf-gal-nav.is-prev { left: 8px; }
+  body[data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main .cf-gal-nav.is-next { right: 8px; }
+}
+/* The full-screen viewer. */
+.cf-lb { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; padding: 0; border: 0; background: #fff; color: #1c1b1a; }
+.cf-lb::backdrop { background: rgb(20 20 20 / .6); }
+.cf-lb[open] { display: grid; place-items: center; }
+.cf-lb img { width: min(100vw, calc(100dvh - 90px)); height: auto; max-height: calc(100dvh - 90px); object-fit: contain; touch-action: pan-y pinch-zoom; }
+.cf-lb-n { position: absolute; left: 0; right: 0; bottom: 18px; margin: 0; font: 500 14px/1 "Aileron", sans-serif; text-align: center; color: #4a5563; }
+.cf-lb-x { position: absolute; top: 12px; right: 12px; z-index: 2; width: 44px; height: 44px; border: 1px solid #e4dfd5; border-radius: 50%; background: #fff; font-size: 26px; line-height: 1; color: #1c1b1a; cursor: pointer; }
+.cf-lb .cf-gal-nav { position: absolute; z-index: 2; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid #e4dfd5; border-radius: 50%; background: rgb(255 255 255 / .94); color: #1c1b1a; cursor: pointer; }
+.cf-lb .cf-gal-nav.is-prev { left: 12px; }
+.cf-lb .cf-gal-nav.is-next { right: 12px; }
+.cf-lb .cf-gal-nav.is-next svg { transform: scaleX(-1); }
+.cf-lb .cf-gal-nav svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.cf-lb :is(.cf-gal-nav, .cf-lb-x):focus-visible { outline: 2px solid #1c1b1a; outline-offset: 2px; }
+/* Payment, returns and WhatsApp lines: icons like the delivery notes above them. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li.cf-n-pay { --cf-ni: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2'/%3E%3Cpath d='M3 10h18M7 15h4'/%3E%3C/svg%3E"); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li.cf-n-ret { --cf-ni: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 14 4 9l5-5'/%3E%3Cpath d='M4 9h10.5a5.5 5.5 0 0 1 0 11H11'/%3E%3C/svg%3E"); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li.cf-n-wa { --cf-ni: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 20.5l1.3-4A8.5 8.5 0 1 1 8 19.3z'/%3E%3Cpath d='M9 9.5c.3 2.3 2.2 4.2 4.5 4.5l1.2-1.2 2 .9c-.3 1.2-1.3 1.8-2.5 1.8A6.2 6.2 0 0 1 8 9.3c0-1.2.6-2.2 1.8-2.5l.9 2z'/%3E%3C/svg%3E"); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li a { color: var(--p2-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--p2-ink) 35%, transparent); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes li a:hover { text-decoration-color: currentColor; }
+/* "Added to your bag": a panel above the sticky bar on a phone, under the header on a wide screen. The store's own
+   message stays for screen readers but isn't drawn while the panel shows. */
+body.cf-added-on #toast { opacity: 0 !important; }
+.cf-added { position: fixed; z-index: 60; right: 16px; top: 88px; width: min(360px, calc(100vw - 32px)); padding: 16px; border-radius: 18px; background: #fff; color: #1c1b1a; box-shadow: 0 12px 40px rgb(0 0 0 / .16), 0 0 0 1px rgb(0 0 0 / .05); opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity .2s, transform .2s; }
+.cf-added.is-on { opacity: 1; transform: none; pointer-events: auto; }
+.cf-added-k { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font: 600 14px/1.2 "Aileron", sans-serif; color: #1e5b2c; }
+.cf-added-k i { width: 18px; height: 18px; border-radius: 50%; background: #1e5b2c; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1a11 11 0 1 0 0 22 11 11 0 0 0 0-22zm-1.6 15.6-4.5-4.5 1.4-1.4 3.1 3.1 6.6-6.6 1.4 1.4z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1a11 11 0 1 0 0 22 11 11 0 0 0 0-22zm-1.6 15.6-4.5-4.5 1.4-1.4 3.1 3.1 6.6-6.6 1.4 1.4z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.cf-added-p { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; }
+.cf-added-p img { flex: none; width: 56px; height: 56px; border-radius: 10px; object-fit: contain; background: #f7f4ee; }
+.cf-added-p b { display: block; font: 600 15px/1.3 "Aileron", sans-serif; }
+.cf-added-p span { display: block; margin-top: 2px; font-size: 13.5px; color: #4a5563; }
+.cf-added-a { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cf-added-a a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 12px; border: 1.5px solid #1c1b1a; border-radius: 999px; font: 600 14px/1 "Aileron", sans-serif; text-decoration: none; color: #1c1b1a; background: #fff; }
+.cf-added-a a:last-child { background: #1c1b1a; color: #fff; }
+.cf-added-a a:focus-visible, .cf-added-x:focus-visible { outline: 2px solid #1c1b1a; outline-offset: 2px; }
+.cf-added-x { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: none; font-size: 22px; line-height: 1; color: #4a5563; cursor: pointer; }
+@media (max-width: 900px) {
+  .cf-added { top: auto; right: 16px; bottom: 84px; transform: translateY(8px); }
+  .cf-added.is-on { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .cf-added { transition: none; } }
+/* Trust badges under the name and claim (owner, 28 Nov 2026, Omega-3 `badges`): the first screen says why to trust it. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 20px; padding: 0; list-style: none; border-radius: 16px; background: #f1f6f2; box-shadow: inset 0 0 0 1px #d5e5d9; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges li { min-width: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges li + li { box-shadow: inset 1px 0 0 #d5e5d9; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div) { display: flex; align-items: center; gap: 10px; height: 100%; padding: 12px 12px; color: var(--p2-ink); text-decoration: none; border-radius: 16px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges a:hover b { text-decoration: underline; text-underline-offset: 3px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges a:focus-visible { outline: 2px solid var(--p2-ink); outline-offset: -2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges i { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #fff; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges svg { width: 17px; height: 17px; fill: none; stroke: #1e5b2c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges span { display: grid; gap: 1px; min-width: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b { font: 600 13.5px/1.2 "Aileron", sans-serif; color: #1e5b2c; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges small { font-size: 12px; line-height: 1.3; color: var(--p2-text); }
+/* Icon above the words, each badge centred, at every width (beside the icon, three short lines were cramped). */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div) { flex-direction: column; justify-content: flex-start; gap: 6px; padding: 12px 8px; text-align: center; }
+@media (max-width: 560px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div) { padding: 12px 6px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b { font-size: 13px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges small { font-size: 11.5px; }
+}
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-for:has(+ .cf-badges) { margin-bottom: 14px; }
+/* Key benefits as three short rows (owner, 28 Nov 2026, Omega-3 `keyRows`): Supports · Why this one · Trust, pills of two
+   or three words each. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krows { display: grid; gap: 14px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: center; gap: 8px 14px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow-k { margin: 0; font: 400 10.5px/1.3 "Lemon Milk", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow :is(span, a) { display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px 5px 5px; border-radius: 999px; background: #fff; font: 600 14px/1.2 "Aileron", sans-serif; color: var(--p2-ink); text-decoration: none; white-space: nowrap; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow i { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: color-mix(in srgb, var(--cap) 24%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow svg { width: 15px; height: 15px; fill: none; stroke: var(--p2-ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow:last-child i { background: #e6f0e8; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow:last-child svg { stroke: #1e5b2c; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow a:hover { box-shadow: inset 0 0 0 1.5px var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow a:focus-visible { outline: 2px solid var(--p2-ink); outline-offset: 2px; }
+@media (max-width: 560px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-krow :is(span, a) { font-size: 13.5px; }
+}
+/* ---------- Omega-3, "do all" round three (owner, 28 Nov 2026) ---------- */
+/* Launch: the review section before any customer review is one column: the invitation and Write a review. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty { grid-template-columns: minmax(0, 560px); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-side { position: static; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-n { margin: 6px 0 16px; font-size: 16px; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-write { margin: 0 0 12px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-write .cf-rv-write { width: auto; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-main { gap: 0; }
+/* "You save ₹…" under the price, in the store's green. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-price .cf-save { display: inline-block; margin: 4px 0 2px; padding: 3px 10px; border-radius: 999px; background: #e6f0e8; font: 700 13px/1.3 "Aileron", sans-serif; color: #1e5b2c; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-price .cf-save[hidden] { display: none; }
+/* Delivery notes as a two-column grid of short lines. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes.cf-notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; font-size: 13.5px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes.cf-notes-grid li { align-items: flex-start; gap: 8px; line-height: 1.35; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-notes.cf-notes-grid li::before { width: 16px; height: 16px; margin-top: 1px; }
+/* "Also in the range": a swipe row on a phone instead of six tall cards (Omega-3 page). */
+@media (max-width: 760px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] #main:has(.cf-vis[data-cf-more]) .p2-others .p2-mini { display: flex; gap: 12px; margin-right: -16px; padding: 0 16px 8px 0; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] #main:has(.cf-vis[data-cf-more]) .p2-others .p2-mini::-webkit-scrollbar { display: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] #main:has(.cf-vis[data-cf-more]) .p2-others .p2-mini > li { flex: 0 0 42%; scroll-snap-align: start; }
+}
+/* The comparison plays once (cf-anim is added by the script, so without it everything simply shows). Transitions, not
+   animations: E switches every CSS animation off (home-hero-e.css, "No decorative motion anywhere in E", 2 Nov 2026), and
+   this one is the owner's explicit exception (28 Nov 2026); `play` in VIS turns it off. */
+body[data-content-focus="1"] .cf-side-versus.cf-anim .cf-vs-side:not(.is-us) .cf-vs-pills i { opacity: 0; transform: translateY(10px); transition: opacity .35s ease-out, transform .35s ease-out; }
+body[data-content-focus="1"] .cf-side-versus.cf-anim .cf-vs-mid { opacity: 0; transition: opacity .3s ease-out .32s; }
+body[data-content-focus="1"] .cf-side-versus.cf-anim .cf-vs-side.is-us { opacity: 0; transform: scale(.9); transition: opacity .4s ease-out .42s, transform .5s cubic-bezier(.2, .9, .3, 1.25) .42s; }
+body[data-content-focus="1"] .cf-side-versus.cf-anim.is-play .cf-vs-side:not(.is-us) .cf-vs-pills i { opacity: 1; transform: none; }
+body[data-content-focus="1"] .cf-side-versus.cf-anim.is-play .cf-vs-side:not(.is-us) .cf-vs-pills i:nth-child(2) { transition-delay: .1s; }
+body[data-content-focus="1"] .cf-side-versus.cf-anim.is-play .cf-vs-side:not(.is-us) .cf-vs-pills i:nth-child(3) { transition-delay: .2s; }
+body[data-content-focus="1"] .cf-side-versus.cf-anim.is-play .cf-vs-mid { opacity: 1; }
+body[data-content-focus="1"] .cf-side-versus.cf-anim.is-play .cf-vs-side.is-us { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-content-focus="1"] .cf-side-versus.cf-anim :is(.cf-vs-side, .cf-vs-mid, .cf-vs-pills i) { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+/* ---------- Calmer on a phone (owner, 28 Nov 2026: "in mobile view it's very cluttered"; Omega-3, [data-cf-more]) ---------- */
+/* Price: the price, the saving, then one small line (cost a day · taxes). */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-price .cf-price-sub { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.35; color: var(--p2-text); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-price .cf-price-sub .cf-perday { display: inline; margin: 0; font-size: 13px; }
+/* Pincode: the row to tap shows on a phone only; a wide screen keeps the open form. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-pc-toggle { display: none; }
+@media (max-width: 760px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle { display: flex; align-items: center; gap: 10px; width: 100%; margin: 16px 0 0; padding: 12px 14px; border: 1px solid var(--p2-line); border-radius: 14px; background: #fff; font: 600 14.5px/1.2 "Aileron", sans-serif; color: var(--p2-ink); text-align: left; cursor: pointer; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle::after { content: ""; margin-left: auto; width: 8px; height: 8px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle i { display: grid; place-items: center; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle:focus-visible { outline: 2px solid var(--p2-ink); outline-offset: 2px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] form.pc.cf-pc-fold:not(.is-open) { display: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] form.pc.cf-pc-fold { margin-top: 10px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] form.pc.cf-pc-fold .pc-k { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  /* Photo: swipe instead of arrows, dots instead of the thumbnail strip (the zoom button stays). */
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main .cf-gal-nav { display: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-thumbs { justify-content: center; gap: 2px; margin-top: 8px; overflow: visible; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-thumbs > button { display: grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; background: none; box-shadow: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-thumbs > button > * { display: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-thumbs > button::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: color-mix(in srgb, var(--p2-ink) 25%, transparent); transition: width .2s, background .2s; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-thumbs > button[aria-pressed="true"]::before { width: 18px; border-radius: 999px; background: var(--p2-ink); }
+  /* Trust badges: just the titles, and "from batch one" under Lab-tested. */
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges li:not(:first-child) small { display: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges :is(a, div) { padding: 10px 4px; gap: 4px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges i { width: 28px; height: 28px; }
+  /* The struck-out price and the pack note go (the saving and the cards say it). */
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-was,
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .pk-note { display: none; }
+  /* Delivery notes: a 3 × 2 grid, icon above two or three words. */
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-notes.cf-notes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 6px; margin-top: 18px; font-size: 12.5px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-notes.cf-notes-grid li { flex-direction: column; align-items: center; gap: 6px; text-align: center; line-height: 1.25; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-notes.cf-notes-grid li::before { width: 20px; height: 20px; margin: 0; }
+}
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-price .cf-save { width: fit-content; align-self: flex-start; }
+/* ---------- Three-size pass (owner, 28 Nov 2026: phone, tablet and desktop "smooth and perfect"; Omega-3, [data-cf-more]) ---------- */
+/* A shorter buy box at every width (it was 1,137 px tall on a 768 px-high laptop, Add to bag under the fold): the pincode
+   check is one row to open, the struck-out price and pack note go, and the badges keep one small line. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle { display: flex; align-items: center; gap: 10px; width: 100%; margin: 16px 0 0; padding: 12px 14px; border: 1px solid var(--p2-line); border-radius: 14px; background: #fff; font: 600 14.5px/1.2 "Aileron", sans-serif; color: var(--p2-ink); text-align: left; cursor: pointer; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle:hover { border-color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle::after { content: ""; margin-left: auto; width: 8px; height: 8px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle i { display: grid; place-items: center; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle:focus-visible { outline: 2px solid var(--p2-ink); outline-offset: 2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] form.pc.cf-pc-fold:not(.is-open) { display: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] form.pc.cf-pc-fold { margin-top: 10px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] form.pc.cf-pc-fold .pc-k { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-was,
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .pk-note { display: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges li:not(:first-child) small { display: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges :is(a, div) { padding: 11px 6px; gap: 5px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-notes.cf-notes-grid { margin-top: 18px; }
+/* Links in the delivery notes are easy to hit. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-notes.cf-notes-grid li a { display: inline-block; margin: -8px -6px; padding: 8px 6px; }
+/* Small labels, up to a readable size. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-vs-side span:last-child { font-size: max(10.5px, .78vw); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-acc-body > .p2-slots span { font-size: 10.5px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-krow-k { font-size: 11px; }
+/* Reviews before any customer review: one white card, the invitation on the left and the button on the right. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty { display: block; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-side { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 28px; padding: clamp(22px, 3.5vw, 40px); border-radius: 26px; background: #fff; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-side > * { grid-column: 1; margin-top: 0; margin-bottom: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-side h2 { margin: 2px 0 4px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-side .cf-rx-write { grid-column: 2; grid-row: 1 / span 3; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-how { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--p2-line); grid-column: 1 / -1; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-main:not(:has(.cf-rv-panel:not([hidden]))) { display: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-main { margin-top: 20px; }
+@media (max-width: 640px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-side { grid-template-columns: minmax(0, 1fr); border-radius: 20px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-side .cf-rx-write { grid-column: 1; grid-row: auto; margin-top: 12px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-write .cf-rv-write { width: 100%; justify-content: center; }
+}
+/* Tablet (761 to 900 px): the desktop's two columns instead of the phone's single column stretched wide: gallery and
+   sections on the left, the buy box as a white card that stays in view on the right, and no floating Add to bag bar. */
+@media (min-width: 761px) and (max-width: 900px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .p2-pdp3 .cf-vis[data-cf-more] { grid-template-columns: minmax(0, 1fr) minmax(320px, 1fr); gap: 20px; align-items: start; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .p2-pdp3 .cf-vis[data-cf-more] .p2-pdp-left { display: block; min-width: 0; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .p2-pdp3 .cf-vis[data-cf-more] .p2-gallery { order: 0; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .p2-pdp3 .cf-vis[data-cf-more] .p2-pdp-accs { order: 0; margin-top: 20px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .p2-pdp3 .cf-vis[data-cf-more] .p2-buy { position: sticky; top: 84px; order: 0; align-self: start; padding: 0; background: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy.has-own > .cf-buy-card { padding: 20px; border-radius: 20px; background: #fff; box-shadow: inset 0 5px 0 var(--cap); }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main { aspect-ratio: 1 / 1; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-sticky-add { display: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-krow { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy h1 { font-size: 32px; }
+}
+/* Phone: Add to bag across the full width under the price; the saving sits beside the price. */
+@media (max-width: 560px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-line { flex-direction: column; align-items: stretch; gap: 14px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-price { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-price .cf-save { margin: 0; align-self: center; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-price .cf-price-sub { flex-basis: 100%; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-row { width: 100%; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-add { width: 100%; min-height: 56px; font-size: 16px; }
+}
+/* The smallest phones (up to 350 px). */
+@media (max-width: 350px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-pc-toggle { padding: 12px; gap: 8px; font-size: 13.5px; white-space: nowrap; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-vs.is-versus .cf-vs-side:not(.is-us) b { font-size: 13.5px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy > .cf-side.is-own { padding: 16px 10px 14px; }
+}
+/* Section headings on Content Focus product pages are always visible (owner's screenshot, 28 Nov 2026: "Also in the range"
+   was an empty gap). Part 2's scroll reveal (part2-e.js) starts them at opacity 0 and waits for an observer; when the page
+   redraws or the tab is in the background the observer can miss, and the heading never shows. No fade here: E is a still site. */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2-pdp .p2-reveal { opacity: 1; transform: none; transition: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-how { border-bottom: 0; padding-bottom: 0; }
+/* A short laptop screen (up to 800 px high): a tighter buy card, so Add to bag is on the first screen. */
+@media (min-width: 901px) and (max-height: 800px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy.has-own > .cf-buy-card { padding: 20px 24px 22px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy h1 { margin: 4px 0 6px; font-size: clamp(30px, 3vw, 40px); }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges { margin-bottom: 12px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges :is(a, div) { padding: 8px 6px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .pk-cards { margin-top: 10px; }
+}

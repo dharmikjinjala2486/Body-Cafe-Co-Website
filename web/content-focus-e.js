@@ -267,7 +267,10 @@
   var QA_NONVEG = ["Is it vegetarian?", "No. It contains fish oil and gelatin, and also soy."];
   var QA_VEG = ["Is it vegetarian?", "Yes, a vegetarian capsule. It may contain nuts."];
   var QA = {
-    "omega-3-fish-oil": [["How do I take it?", "One softgel each morning, with food."], QA_NONVEG],
+    // Owner, 28 Nov 2026: two more, from the label (its caution; 60 softgels, one a day).
+    "omega-3-fish-oil": [["How do I take it?", "One softgel each morning, with food."], QA_NONVEG,
+      ["I take medicines. Can I take it?", "Ask your doctor first. The label says anyone under medical care should."],
+      ["How long does a bottle last?", "60 days: 60 softgels, one a day."]],
     "vitamin-d3-k2": [["How do I take it?", "One softgel each morning, with food."], QA_NONVEG],
     "iron-bisglycinate": [["How do I take it?", "One capsule each morning on an empty stomach. No milk or chai for 2 hours before or after."], QA_VEG,
       ["Can I take it with my other supplements?", "Take it on its own. Calcium can lower how much iron you absorb."]],
@@ -290,7 +293,8 @@
     var P = window.BCCPdpE && window.BCCPdpE.P; if (!P) return;
     Object.keys(PRODUCTS).forEach(function (id) { if (P[id]) P[id].headline = PRODUCTS[id].headline; });
   }
-  function page(name, fn) {
+  // `pre`, when given, may change the page's arguments before it is drawn (it gets the arguments object).
+  function page(name, fn, pre) {
     var base = S.themes.e[name];
     if (typeof base !== "function") return;
     var next = Object.assign({}, S.themes.e);
@@ -298,6 +302,7 @@
       if (!focus()) return base.apply(this, arguments);
       var ctx0 = arguments[0] || {}; fromAdmin(ctx0.catalog || ctx0.published);
       headlines(); shortenData();
+      if (pre) { try { pre(arguments); } catch (e) { if (window.console) console.warn("Content Focus pre-render skipped:", e); } }
       var html = base.apply(this, arguments);
       if (typeof html !== "string") return html;
       var t = document.createElement("template"); t.innerHTML = html;
@@ -913,6 +918,11 @@
   }
   function rxSide(st) {
     var s = rxSummary(st), pct = function (k) { return s.n ? Math.round(s.br[k] / s.n * 100) : 0; };
+    // Launch, before any customer review: no empty bars, just the invitation.
+    if (st.launch && !s.n) return '<p class="p2-eyebrow">' + RX.eyebrow + '</p><h2 id="cf-rx-t">' + RX.title + "</h2>" +
+      '<p class="cf-rx-n">No reviews yet. Be the first to review it.</p>' +
+      '<div class="cf-rx-write"><button type="button" class="p2-btn p2-btn-ghost cf-rv-write" data-cf-rv-write aria-expanded="false" aria-controls="cf-rv-panel">' + RV.write + "</button></div>" +
+      '<details class="cf-rx-how"><summary>' + RX.how[0] + "</summary><p>" + RX.how[1] + "</p></details>";
     return '<p class="p2-eyebrow">' + RX.eyebrow + '</p><h2 id="cf-rx-t">' + RX.title + "</h2>" +
       (s.n ? '<div class="cf-rx-avg">' + rxStars(s.avg, "is-big") + "<b>" + s.avg.toFixed(1) + RX.outOf + "</b></div>" +
         '<p class="cf-rx-n">' + s.n + (s.sample ? " sample" : "") + " rating" + (s.n === 1 ? "" : "s") + "</p>" : '<p class="cf-rx-n">' + RX.none + "</p>") +
@@ -940,6 +950,7 @@
   }
   function rxPhotos(st) {
     var ph = []; st.real.forEach(function (r) { r.media.forEach(function (m) { ph.push({ m: m, r: r }); }); });
+    if (st.launch && !ph.length) return ""; // no empty photo strip at launch
     return '<section class="cf-rx-block" aria-labelledby="cf-rx-photos-t"><div class="cf-rx-bh"><h3 id="cf-rx-photos-t">' + RX.photos[0] + "</h3>" +
       (ph.length > 4 ? '<div class="cf-rx-arrows"><button type="button" data-cf-rx-scroll="-1" aria-label="Previous photos">‹</button><button type="button" data-cf-rx-scroll="1" aria-label="Next photos">›</button></div>' : "") + "</div>" +
       (ph.length ? '<ul class="cf-rx-photos" data-cf-rx-strip>' + ph.map(function (x, i) {
@@ -959,6 +970,7 @@
       (r.reply && r.reply.text ? '<div class="cf-rv-reply"><b>' + RV.reply + "</b><p>" + esc(r.reply.text) + "</p></div>" : "") + "</li>";
   }
   function rxList(st) {
+    if (st.launch && !rxAll(st).length) return "";
     var shown = rxShown(st), lim = st.limit || 5, label = RX_TOPICS.filter(function (t) { return t[0] === st.topic; })[0];
     var bits = []; if (st.star) bits.push("rated " + st.star + " star" + (st.star > 1 ? "s" : "")); if (label) bits.push("mentioning " + label[1].toLowerCase());
     return '<section class="cf-rx-block" aria-labelledby="cf-rx-list-t"><div class="cf-rx-bh"><h3 id="cf-rx-list-t">' + RX.list + "</h3>" +
@@ -982,15 +994,18 @@
       rest.innerHTML = rxList(st);
     }
     [].forEach.call(box.querySelectorAll("[data-cf-rx-star]"), function (b) { b.setAttribute("aria-pressed", String(+b.dataset.cfRxStar === st.star)); });
+    box.classList.toggle("is-empty", !!(st.launch && !rxAll(st).length));
   }
-  function rxState(id) { return { id: id, real: [], samples: rxSamples(id), summary: null, star: 0, topic: "", sort: "top", limit: 5 }; }
+  // A page with `launch` in VIS (Omega-3) leaves the samples out: only customers' published reviews are shown.
+  function rxLaunch(id) { return !!(VIS[id] && VIS[id].launch); }
+  function rxState(id) { var off = rxLaunch(id); return { id: id, real: [], samples: off ? [] : rxSamples(id), launch: off, summary: null, star: 0, topic: "", sort: "top", limit: 5 }; }
 
   page("product", function (root, args) {
     var p = args[1] || {}, sec = root.querySelector("#p2-reviews"), wrap = sec && sec.querySelector(".p2-wrap");
     if (!p.id || !wrap || root.querySelector("[data-cf-rv]")) return;
     sec.classList.add("cf-rx-sec"); sec.setAttribute("aria-labelledby", "cf-rx-t");
     var st = rxState(p.id);
-    wrap.outerHTML = '<div class="p2-wrap cf-rx" data-cf-rv="' + esc(p.id) + '" style="--cap:' + esc(p.color || "") + '">' +
+    wrap.outerHTML = '<div class="p2-wrap cf-rx' + (st.launch && !rxAll(st).length ? " is-empty" : "") + '" data-cf-rv="' + esc(p.id) + '" style="--cap:' + esc(p.color || "") + '">' +
       '<div class="cf-rx-side" data-cf-rx-side>' + rxSide(st) + "</div>" +
       '<div class="cf-rx-main" data-cf-rx-main><div class="cf-rv-panel" id="cf-rv-panel" data-cf-rv-panel role="region" aria-label="' + RV.write + '" hidden></div>' +
       '<div data-cf-rx-top>' + rxTopics(st) + rxPhotos(st) + '</div><div data-cf-rx-list>' + rxList(st) + "</div></div></div>";
@@ -1131,7 +1146,11 @@
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>',
     glass: '<path d="M5 3h14l-2 18H7zM6 8h12"/>',
-    food: '<path d="M3 2v7a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6a2 2 0 0 0 2 2h3zm0 0v7"/>'
+    food: '<path d="M3 2v7a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6a2 2 0 0 0 2 2h3zm0 0v7"/>',
+    flask: '<path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7 15h10"/>',
+    doc: '<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/>',
+    truck: '<path d="M2 6h12v10H2zM14 9h4l4 4v3h-8"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>',
+    shield: '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>'
   };
   function icon(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (ICON[k] || "") + "</svg>"; }
   // Shorter notes, the same on every visual page. The pack note becomes the pack size (from the catalogue).
@@ -1158,7 +1177,38 @@
       says: true,
       supports: [["heart", "Heart health"], ["brain", "Brain health"], ["joint", "Joint health"]],
       facts: [["drop", "Triglyceride form, as in fish"], ["fish", "From anchovy oil"]],
-      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]], daily: "1 a day"
+      dose: [["softgel", "1 softgel"], ["sun", "Daily, in the morning"], ["food", "With food"]], daily: "1 a day",
+      /* Owner, 28 Nov 2026 ("do all", Omega-3 only): the comparison is its own card, under the buy box's card (`own`; owner,
+         same day: below the delivery notes, not inside the buy box); the page opens on the
+         4-month pack (`start`); the chosen pack's cost a day sits beside the price (`perDay`); a line on independent testing
+         sits under Add to bag (`trust`); and the routine pairs it with D3 + K2 only, the other morning-with-food softgel
+         (`pair`, in place of the admin's related products, Content Focus only). */
+      own: true, start: 2, perDay: true, pair: ["vitamin-d3-k2"],
+      /* Owner, 28 Nov 2026 ("when I open the product page the user should feel it's trustworthy"): three trust badges
+         under the name and claim, on the first screen (`badges`), in place of the testing line under Add to bag (`trust`,
+         which other pages may still use). Approved facts only: testing by Choksi Laboratories and Eurofins from our first
+         production batch ("from batch one"), the batch report lookup, GMP-certified facilities and the FSSAI licence. */
+      badges: [["flask", "Lab-tested", "Choksi & Eurofins, from batch one", "#p2-lot"], ["doc", "Batch report", "Check yours online", "#p2-lot"], ["shield", "GMP certified", "FSSAI licensed"]],
+      /* Owner, 28 Nov 2026 (second "do all", Omega-3 only, `more`): an "Added to your bag" panel with View bag and Checkout;
+         gallery arrows, swipe and a full-screen viewer; payment, returns and WhatsApp lines under the delivery notes (the
+         store's own facts: prepaid by UPI, card, wallet or net banking; damaged or wrong items reported within 7 days); and
+         Google's product data (no ratings while the reviews are samples). */
+      more: true,
+      /* Owner, 28 Nov 2026 ("show this message in Key benefits, but not that much text"): Key benefits as three short rows
+         of pills: what it supports (the label claim), why this one (label facts) and trust (as in the badges). Only while
+         the claim is the label's own line, like the tiles it replaces. */
+      keyRows: [
+        ["Supports", [["heart", "Heart"], ["brain", "Brain"], ["joint", "Joints"]]],
+        ["Why this one", [["softgel", "800 mg in 1 softgel"], ["drop", "Triglyceride form"], ["fish", "Anchovy oil"]]]
+        // The Trust row went the same day (owner, "do all"): the badges under the name already say it.
+      ],
+      /* Owner, 28 Nov 2026 ("do all"): the launch switch for this page. On: the sample reviews, the sample rating at the top
+         and the demo batch hint are left out (the workbook's register, A18, said to remove the samples before launch); the
+         review section is "No reviews yet" with Write a review until customers' reviews are published, and the empty photo
+         strip and topics wait for real ones. `save` adds "You save ₹…" under the price, `months` names the pack in the
+         sticky bar ("4 months"), `compact` makes the delivery notes a two-column grid of short lines, and `play` animates
+         the softgel comparison once when it scrolls into view. */
+      launch: true, save: true, months: true, compact: true, play: true
     },
     "vitamin-d3-k2": {
       // Label: D3 600 IU and K2 55 mcg, each 100% RDA (ICMR 2020, men moderate work); 250 mg oil with 200 mg omega-3, EPA 100 mg, DHA 75 mg.
@@ -1224,6 +1274,27 @@
     var top = parseFloat(cs.top) || 0, room = window.innerHeight - a.offsetHeight - 16;
     if (room < top) a.style.top = room + "px";
   }
+  /* Owner, 28 Nov 2026: opening or closing a section made the buy box jump. The left column changes height, so the sticky
+     box has a new place to sit and took it in one frame (258 px on Supplement facts). It now glides there: where it was
+     is noted on the click, where it lands is read after the layout, and the difference is played out as a short slide
+     (a transition, not an animation; a plain move for anyone who has asked for less motion). */
+  document.addEventListener("click", function (e) {
+    var sum = e.target.closest && e.target.closest("#main .cf-vis summary"); if (!sum) return;
+    var a = document.querySelector("#main .cf-vis .p2-buy"); if (!a || getComputedStyle(a).position !== "sticky") return;
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var from = a.getBoundingClientRect().top; // with any slide still in flight
+    // The section opens right after this click, in the same task; the next frame's callback runs before that is painted.
+    requestAnimationFrame(function () {
+      if (!a.isConnected) return;
+      a.style.transition = "none"; a.style.transform = "none";
+      var d = from - a.getBoundingClientRect().top;
+      if (Math.abs(d) < 3) { a.style.transition = ""; a.style.transform = ""; return; }
+      a.style.transform = "translateY(" + d + "px)";
+      a.getBoundingClientRect(); // the start position is on screen before the slide begins
+      a.style.transition = "transform .36s cubic-bezier(.2, .7, .2, 1)"; a.style.transform = "translateY(0)";
+      clearTimeout(a._cfGlide); a._cfGlide = setTimeout(function () { a.style.transition = ""; a.style.transform = ""; }, 420);
+    });
+  }, true);
   function pills(n) { return '<span class="cf-vs-pills" aria-hidden="true">' + new Array(n + 1).join("<i></i>") + "</span>"; }
   function side(x, cls) { return '<div class="cf-vs-side' + cls + '">' + pills(x[0]) + "<b>" + esc(x[1]) + "</b><span>" + esc(x[2]) + "</span></div>"; }
   // The owner's Omega-3 comparison. Tester notes (21 Nov 2026): it sits in the right column, under the buy box, which stays on top.
@@ -1292,6 +1363,39 @@
     var forK = root.querySelector(".p2-buy .cf-for-k"); if (forK) forK.remove();
     var how = root.querySelector(".p2-buy .cf-for-how");
     if (how && how.textContent.trim() === BASE.U[id][3]) how.remove();
+    grid.setAttribute("data-cf-id", id);
+    // Owner, 28 Nov 2026 (Omega-3): the page opens on the pack `start` names (packs-e.js reads data-pk-start when it wires
+    // the cards); the markup is set to match, so the first paint already shows that pack.
+    var pk = root.querySelector(".p2-buy [data-pk]"), first = v.start && pk && pk.querySelector('[data-pk-q="' + v.start + '"]');
+    if (first && !first.disabled) {
+      pk.setAttribute("data-pk-start", String(v.start));
+      [].forEach.call(pk.querySelectorAll("[data-pk-q]"), function (c) { var on = c === first; c.setAttribute("aria-checked", String(on)); c.tabIndex = on ? 0 : -1; });
+      var tot = root.querySelector(".p2-buy [data-pk-total]"), fp = first.querySelector(".pk-price"); if (tot && fp) tot.textContent = fp.textContent;
+    }
+    // The chosen pack's cost a day, beside the price (packs-e.js keeps it in step with the cards).
+    var priceBox = root.querySelector(".p2-buy .p2-buy-price strong");
+    if (v.perDay && priceBox && pk) {
+      var on = pk.querySelector('[aria-checked="true"] .pk-per');
+      priceBox.insertAdjacentHTML("afterend", '<span class="cf-perday" data-pk-day>' + esc(on ? on.textContent : "") + "</span>");
+    }
+    // Independent testing, under Add to bag; it links to the batch lookup, so the delivery notes' own link to it goes.
+    var line = root.querySelector(".p2-buy .p2-buy-line");
+    if (v.trust && line) {
+      line.insertAdjacentHTML("afterend", '<a class="cf-trust" href="#p2-lot"><i aria-hidden="true"></i><span><b>' + esc(TESTING[1]) + "</b> From our first production batch. See the reports</span></a>");
+      var lot = root.querySelector('.p2-buy-notes a[href="#p2-lot"]'); if (lot && lot.parentNode.tagName === "LI") lot.parentNode.remove();
+    }
+    // Trust badges under the name and claim (`badges`, Omega-3): the first screen says why to trust it.
+    var forBox = root.querySelector(".p2-buy .cf-for");
+    if (v.badges && forBox && !root.querySelector(".cf-badges")) {
+      forBox.insertAdjacentHTML("afterend", '<ul class="cf-badges" aria-label="Why you can trust it">' + v.badges.map(function (b) {
+        var inner = "<i>" + icon(b[0]) + "</i><span><b>" + esc(b[1]) + "</b><small>" + esc(b[2]) + "</small></span>";
+        return "<li>" + (b[3] ? '<a href="' + esc(b[3]) + '">' + inner + "</a>" : "<div>" + inner + "</div>") + "</li>";
+      }).join("") + "</ul>");
+      // The batch lookup is a badge now, so the delivery notes' own link to it goes.
+      var lot2 = root.querySelector('.p2-buy-notes a[href="#p2-lot"]'); if (lot2 && lot2.parentNode.tagName === "LI") lot2.parentNode.remove();
+    }
+    if (v.more) more(root, grid, args[1] || {}, id);
+    launchBits(root, grid, v);
     // Description: the product's figures under the headline, then the four questions as cards.
     var h = root.querySelector(".p2-pdp-accs .p2-acc-h"), body = h && h.parentNode;
     if (body) {
@@ -1301,15 +1405,30 @@
       if (hide && desc) sup.classList.add("sr-only");
       h.insertAdjacentHTML("afterend", figures(v, hide, null, v.side));
       var qs = [].slice.call(body.querySelectorAll(".cf-q"));
+      /* Owner, 28 Nov 2026 ("public will not read that much"): the description shows its headline and figure; the four
+         questions are closed rows, each answer a tap away. */
       if (qs.length) {
         var wrap = document.createElement("div"); wrap.className = "cf-why"; body.insertBefore(wrap, qs[0]);
-        qs.forEach(function (q) { var c = document.createElement("div"), p = q.nextElementSibling; wrap.appendChild(c); c.appendChild(q); if (p && p.tagName === "P") c.appendChild(p); });
+        qs.forEach(function (q) {
+          var c = document.createElement("details"), s = document.createElement("summary"), a = document.createElement("div"), p = q.nextElementSibling;
+          c.className = "cf-fold"; a.className = "cf-fold-body";
+          wrap.appendChild(c); c.appendChild(s); s.appendChild(q); c.appendChild(a); if (p && p.tagName === "P") a.appendChild(p);
+        });
       }
     }
     /* Under the buy box (after its delivery notes), so the right column has the buy box on top: Omega-3's comparison
        (tester notes, 21 Nov 2026), and on the other six their key figure (owner, 27 Nov 2026), as one highlighted card. */
     var notes = root.querySelector(".p2-buy .p2-buy-notes"), card = v.side && figures(v, false, v.side);
-    if (card && notes) { notes.insertAdjacentHTML("afterend", '<div class="cf-side cf-side-' + v.side + '">' + card + "</div>"); setTimeout(fitBuy, 60); }
+    if (card && notes) { notes.insertAdjacentHTML("afterend", '<div class="cf-side cf-side-' + v.side + (v.own ? " is-own" : "") + '">' + card + "</div>"); setTimeout(fitBuy, 60); }
+    /* Owner, 28 Nov 2026 (`own`, Omega-3): the card is its own card, not part of the buy box. Everything above it (name to
+       delivery notes) goes into one inner card that carries the buy box's white; the column around both still sticks as one. */
+    var buy = root.querySelector(".p2-buy"), own = v.own && buy && buy.querySelector(":scope > .cf-side.is-own");
+    if (own && !buy.querySelector(":scope > .cf-buy-card")) {
+      var inner = document.createElement("div"); inner.className = "cf-buy-card";
+      buy.insertBefore(inner, buy.firstChild);
+      while (inner.nextSibling && inner.nextSibling !== own) inner.appendChild(inner.nextSibling);
+      buy.classList.add("has-own");
+    }
     /* Key benefits (tester notes, 21 Nov 2026): the first section, open; five tiles, the label claim's two or three
        ("Supports …", only while the claim is the label's own line) then facts the label states (`facts`), no new claims;
        the list of amounts under them goes, since the description and the pack note already give them. */
@@ -1323,7 +1442,15 @@
       var ticks = kb.querySelector(".p2-ticks"); if (ticks) ticks.remove();
       var claim = kb.querySelector(".p2-claim"), facts = v.facts || [];
       var lower = function (t) { return t.charAt(0).toLowerCase() + t.slice(1); };
-      if (claim && claim.textContent.trim().toLowerCase() === BASE.U[id][0].toLowerCase())
+      var ownClaim = claim && claim.textContent.trim().toLowerCase() === BASE.U[id][0].toLowerCase();
+      if (ownClaim && v.keyRows)
+        claim.outerHTML = '<div class="cf-krows" role="list" aria-label="Key benefits">' + v.keyRows.map(function (r) {
+          return '<div class="cf-krow" role="listitem"><p class="cf-krow-k">' + esc(r[0]) + "</p><ul>" + r[1].map(function (x) {
+            var inner = "<i>" + icon(x[0]) + "</i>" + esc(x[1]);
+            return "<li>" + (x[2] ? '<a href="' + esc(x[2]) + '">' + inner + "</a>" : "<span>" + inner + "</span>") + "</li>";
+          }).join("") + "</ul></div>";
+        }).join("") + "</div>";
+      else if (ownClaim)
         claim.outerHTML = tiles(v.supports.map(function (t) { return [t[0], "Supports " + lower(t[1])]; }).concat(facts).slice(0, 5), "Key benefits");
       else if (facts.length) (claim || kb.querySelector(".p2-acc-body").lastElementChild || kb).insertAdjacentHTML(claim ? "afterend" : "beforeend", tiles(facts));
     }
@@ -1335,6 +1462,22 @@
       var parts = dd.textContent.trim().split(/\.\s+/).filter(Boolean).map(function (x) { return /\.$/.test(x) ? x : x + "."; });
       if (parts.length > 1) dd.innerHTML = "<ul>" + parts.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>";
     });
+    /* Less clutter (owner, 28 Nov 2026): Allergens stays in view; Caution and Storage each fold into a closed row under the
+       list. Their words are the label's, kept whole. */
+    [].forEach.call(root.querySelectorAll(".cf-vis .cf-care"), function (dl) {
+      var after = dl;
+      [].slice.call(dl.children).forEach(function (row) {
+        var dt = row.querySelector("dt"), dd = row.querySelector("dd"), name = dt && dt.textContent.trim();
+        if (!dd || !/^(Caution|Storage)$/.test(name)) return;
+        after.insertAdjacentHTML("afterend", '<details class="cf-fold"><summary><span>' + esc(name) + '</span></summary><div class="cf-fold-body">' + dd.innerHTML + "</div></details>");
+        after = after.nextElementSibling; row.remove();
+      });
+    });
+  }, function (args) {
+    // Before the page is drawn: a product with `pair` in VIS has its routine drawn with those products, on a copy of the
+    // product, so the catalogue (and Part 2) keep the admin's related products.
+    var p = args[1], v = p && VIS[p.id];
+    if (v && v.pair) args[1] = Object.assign({}, p, { related_product_ids: v.pair.slice() });
   });
 
 
@@ -1483,6 +1626,285 @@
       ["Research on an ingredient describes that ingredient, in the form, amount and people studied. It isn't evidence about our finished product.", "Ingredient research isn’t evidence about our finished product."]
     ]);
   });
+
+  /* ---------- A product page with `more` in VIS (Omega-3, owner, 28 Nov 2026) ---------- */
+  var SVG_ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+  var SVG_EXPAND = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+  function more(root, grid, p, id) {
+    grid.setAttribute("data-cf-more", "");
+    // Gallery: previous / next arrows and a "view larger" button on the picture (behaviour below, delegated).
+    var gm = root.querySelector(".p2-gallery-main"), shots = root.querySelectorAll(".p2-gallery-main [data-p2-shot]");
+    if (gm && shots.length > 1 && !gm.querySelector(".cf-gal-nav")) {
+      gm.insertAdjacentHTML("beforeend",
+        '<button type="button" class="cf-gal-nav is-prev" data-cf-gal="-1" aria-label="Previous image">' + SVG_ARROW + "</button>" +
+        '<button type="button" class="cf-gal-nav is-next" data-cf-gal="1" aria-label="Next image">' + SVG_ARROW + "</button>" +
+        '<button type="button" class="cf-gal-zoom" data-cf-zoom aria-label="View image larger">' + SVG_EXPAND + "</button>");
+    }
+    // Payment, returns and WhatsApp, under the delivery notes: the store's own facts (Help library, Returns policy, Contact).
+    var notes = root.querySelector(".p2-buy .p2-buy-notes");
+    if (notes && !notes.querySelector(".cf-n-pay")) {
+      var B = (window.BCCSupportContent || {}).BUSINESS || {}, wa = B.channels && B.channels.whatsapp;
+      notes.insertAdjacentHTML("beforeend",
+        '<li class="cf-n-pay">Pay online: UPI, card, wallet or net banking</li>' +
+        '<li class="cf-n-ret"><a href="/policies/returns">Damaged or wrong item? Tell us within 7 days of delivery.</a></li>' +
+        (wa && wa.live && wa.href ? '<li class="cf-n-wa"><a href="' + esc(wa.href) + '" target="_blank" rel="noopener">Questions? WhatsApp us</a></li>' : ""));
+    }
+    // Google's product data. No rating while the reviews on the page are samples.
+    if (!root.querySelector("script.cf-ld")) {
+      var abs = function (u) { try { return new URL(u, location.origin).href; } catch (e) { return u; } };
+      var imgs = [].map.call(root.querySelectorAll(".p2-gallery-main [data-p2-shot] img"), function (i) { return abs(i.getAttribute("src")); }).slice(0, 4);
+      var seo = SEO[id] || [], price = +p.price || 0;
+      var ld = { "@context": "https://schema.org", "@type": "Product", name: p.name, description: seo[1] || "", image: imgs,
+        brand: { "@type": "Brand", name: "Body Café Co." } };
+      if (p.sku) ld.sku = String(p.sku);
+      if (price) ld.offers = { "@type": "Offer", price: price.toFixed(2), priceCurrency: "INR", url: location.origin + location.pathname,
+        availability: +p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock", itemCondition: "https://schema.org/NewCondition" };
+      var s = document.createElement("script"); s.type = "application/ld+json"; s.className = "cf-ld";
+      s.textContent = JSON.stringify(ld).replace(/</g, "\\u003c");
+      (root.querySelector(".p2-buy") || root).appendChild(s);
+    }
+  }
+  /* The launch switch and the price, sticky-bar, notes and animation flags of a VIS entry (Omega-3, owner, 28 Nov 2026). */
+  function launchBits(root, grid, v) {
+    if (v.launch) {
+      // The rating at the top counts samples until customers' reviews exist (mountReviews puts it back with real ones).
+      [].forEach.call(root.querySelectorAll(".p2-buy .p2-buy-rating"), function (n) { n.remove(); });
+      // The batch lookup: no demo hint or demo placeholder; the approved status line and the link to every report instead.
+      var demo = root.querySelector("[data-fill-pdp-lot]"), p = demo && demo.closest("p"), all = p && p.querySelector("a");
+      if (p) {
+        var form = p.closest("form"), inp = form && form.querySelector("input[name=lot]");
+        if (inp) inp.setAttribute("placeholder", "As printed on your bottle");
+        p.innerHTML = "Reports are published batch by batch, from our first production batch." + (all ? ' <a href="' + esc(all.getAttribute("href")) + '">See all batch reports</a>.' : "");
+      }
+    }
+    var pk = root.querySelector(".p2-buy [data-pk]"), on = pk && pk.querySelector('.pk-card[aria-checked="true"]');
+    if (v.save && on && !root.querySelector("[data-pk-save]")) {
+      var num = function (n) { return n ? +n.textContent.replace(/[^\d.]/g, "") || 0 : 0; }, s = num(on.querySelector(".pk-was")) - num(on.querySelector(".pk-price"));
+      var at = root.querySelector(".p2-buy [data-pk-day]") || root.querySelector(".p2-buy .p2-buy-price strong");
+      if (at) at.insertAdjacentHTML("afterend", '<span class="cf-save" data-pk-save' + (s > 0 ? ">You save ₹" + s.toLocaleString("en-IN") : " hidden>") + "</span>");
+    }
+    if (v.months && on) {
+      var nm = on.querySelector(".pk-n"), pr = on.querySelector(".pk-price");
+      [].forEach.call(root.querySelectorAll("[data-pk-total-page]"), function (n) { n.setAttribute("data-pk-name", ""); if (nm && pr) n.textContent = pr.textContent.trim() + " · " + nm.textContent.trim(); });
+    }
+    // Delivery notes as a two-column grid of short lines (same facts).
+    var notes = root.querySelector(".p2-buy .p2-buy-notes");
+    if (v.compact && notes) {
+      notes.classList.add("cf-notes-grid");
+      var set = function (sel, t) { var n = notes.querySelector(sel); if (n) { var a = n.querySelector("a"); (a || n).textContent = t; } };
+      // Owner, 28 Nov 2026 ("in mobile view it's very cluttered"): two or three words each, so a phone shows them as a
+      // 3 × 2 grid of icons. Same facts: free delivery from ₹1,499; prepaid by UPI or card; damaged or wrong items taken back.
+      [].forEach.call(notes.children, function (li) { var m = /^Free delivery on orders of (₹[\d,]+) or more$/.exec(li.textContent.trim()); if (m) li.textContent = "Free delivery " + m[1] + "+"; });
+      set(".cf-n-pay", "UPI & cards"); set(".cf-n-ret", "Returns if damaged"); set(".cf-n-wa", "WhatsApp us");
+    }
+    if (v.compact) {
+      // Price: the price, what the pack saves, then one small line with the cost a day and the taxes note.
+      var box = root.querySelector(".p2-buy .p2-buy-price"), dayEl = box && box.querySelector("[data-pk-day]"), saveEl = box && box.querySelector("[data-pk-save]");
+      var incl = box && [].filter.call(box.children, function (n) { return n.tagName === "SPAN" && /^Inclusive of all taxes$/.test(n.textContent.trim()); })[0];
+      if (box && dayEl && incl && !box.querySelector(".cf-price-sub")) {
+        var sub = document.createElement("span"); sub.className = "cf-price-sub";
+        box.appendChild(sub); if (saveEl) box.insertBefore(saveEl, sub);
+        sub.appendChild(dayEl); sub.insertAdjacentHTML("beforeend", '<span class="cf-incl"> · incl. of all taxes</span>');
+        incl.remove();
+      }
+      // Pincode: one row to tap on a phone; the form opens under it. A wide screen shows the form as before.
+      var pc = root.querySelector(".p2-buy form.pc");
+      if (pc && !root.querySelector(".cf-pc-toggle")) {
+        pc.classList.add("cf-pc-fold");
+        pc.insertAdjacentHTML("beforebegin", '<button type="button" class="cf-pc-toggle" aria-expanded="false" aria-controls="' + esc(pc.id || "pincode-form") + '"><i aria-hidden="true">' + icon("truck") + "</i>Check delivery to your pincode</button>");
+      }
+    }
+    if (v.play) grid.setAttribute("data-cf-play", "");
+  }
+  // The comparison plays once when it scrolls into view: the three regular softgels, then "or", then ours with its number
+  // counting up. Not for anyone who has asked for less motion; without the script it is simply shown.
+  var playSeen = window.IntersectionObserver ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return; playSeen.unobserve(e.target);
+      var f = e.target; f.classList.add("is-play");
+      var b = f.querySelector(".cf-vs-side.is-us b"), m = b && /^(\d[\d,]*)(.*)$/.exec(b.textContent.trim());
+      if (!m) return; var to = +m[1].replace(/,/g, ""), t0 = 0;
+      setTimeout(function () {
+        requestAnimationFrame(function step(t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / 700); b.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))).toLocaleString("en-IN") + m[2]; if (k < 1) requestAnimationFrame(step); });
+      }, 450);
+    });
+  }, { threshold: 0.5 }) : null;
+  function armPlay() {
+    if (!playSeen || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+    [].forEach.call(document.querySelectorAll("#main .cf-vis[data-cf-play] .cf-side-versus:not([data-cf-armed])"), function (f) {
+      f.setAttribute("data-cf-armed", ""); f.classList.add("cf-anim"); playSeen.observe(f);
+    });
+  }
+  function moreGrid() { return document.querySelector("#main .cf-vis[data-cf-more]"); }
+  function galStep(gal, d) {
+    var ts = [].slice.call(gal.querySelectorAll("[data-p2-thumb]")), n = ts.length; if (n < 2) return;
+    var i = Math.max(0, ts.findIndex(function (t) { return t.getAttribute("aria-pressed") === "true"; }));
+    var t = ts[(i + d + n) % n]; t.click();
+    if (t.scrollIntoView) t.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }
+  // The full-screen viewer: one <dialog> on the page, holding the gallery's pictures in order.
+  var lb = null;
+  function lightbox(gal) {
+    var imgs = [].map.call(gal.querySelectorAll(".p2-gallery-main [data-p2-shot] img"), function (i) { return { src: i.currentSrc || i.getAttribute("src"), alt: i.getAttribute("alt") || "" }; });
+    if (!imgs.length || typeof HTMLDialogElement === "undefined") return;
+    if (!lb) {
+      lb = document.createElement("dialog"); lb.className = "cf-lb"; lb.setAttribute("aria-label", "Product images");
+      lb.innerHTML = '<img alt=""><p class="cf-lb-n" aria-live="polite"></p>' +
+        '<button type="button" class="cf-lb-x" aria-label="Close">×</button>' +
+        '<button type="button" class="cf-gal-nav is-prev" data-cf-lb="-1" aria-label="Previous image">' + SVG_ARROW + "</button>" +
+        '<button type="button" class="cf-gal-nav is-next" data-cf-lb="1" aria-label="Next image">' + SVG_ARROW + "</button>";
+      document.body.appendChild(lb);
+      lb.addEventListener("click", function (e) {
+        var b = e.target.closest("[data-cf-lb]");
+        if (b) return show(lb.idx + +b.dataset.cfLb);
+        if (e.target.closest(".cf-lb-x") || e.target === lb) lb.close();
+      });
+      lb.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") show(lb.idx + 1); else if (e.key === "ArrowLeft") show(lb.idx - 1); });
+      swipe(lb, function (d) { show(lb.idx + d); });
+    }
+    function show(i) {
+      var n = lb.imgs.length; lb.idx = (i + n) % n;
+      var im = lb.querySelector("img"); im.src = lb.imgs[lb.idx].src; im.alt = lb.imgs[lb.idx].alt;
+      lb.querySelector(".cf-lb-n").textContent = (lb.idx + 1) + " / " + n;
+      var g = moreGrid(), t = g && g.querySelectorAll("[data-p2-thumb]")[lb.idx]; if (t) t.click(); // the page follows
+    }
+    lb.imgs = imgs;
+    var ts = [].slice.call(gal.querySelectorAll("[data-p2-thumb]"));
+    show(Math.max(0, ts.findIndex(function (t) { return t.getAttribute("aria-pressed") === "true"; })));
+    lb.querySelectorAll(".cf-gal-nav").forEach(function (b) { b.hidden = imgs.length < 2; });
+    lb.showModal();
+  }
+  // A horizontal swipe of 40 px or more, mostly sideways, steps one picture.
+  function swipe(el, step) {
+    var x0 = null, y0 = 0;
+    el.addEventListener("touchstart", function (e) { if (e.touches.length === 1) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } }, { passive: true });
+    el.addEventListener("touchend", function (e) {
+      if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+    }, { passive: true });
+  }
+  // The pincode row on a phone opens the form under it (and focuses the box).
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest && e.target.closest(".cf-pc-toggle"); if (!t) return;
+    var f = document.getElementById(t.getAttribute("aria-controls")); if (!f) return;
+    var open = t.getAttribute("aria-expanded") !== "true"; t.setAttribute("aria-expanded", String(open)); f.classList.toggle("is-open", open);
+    if (open) { var i = f.querySelector("input"); if (i) i.focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    var g = moreGrid(); if (!g || !g.contains(e.target)) return;
+    var nav = e.target.closest("[data-cf-gal]");
+    if (nav) { e.preventDefault(); galStep(g.querySelector(".p2-gallery"), +nav.dataset.cfGal); track("pdp_gallery", +nav.dataset.cfGal > 0 ? "next" : "previous"); return; }
+    if (e.target.closest("[data-cf-zoom]") || e.target.closest(".p2-gallery-main [data-p2-shot] img")) { e.preventDefault(); lightbox(g.querySelector(".p2-gallery")); track("pdp_gallery", "view larger"); return; }
+    var pkc = e.target.closest(".pk-card"); if (pkc && !pkc.disabled) { track("pdp_pack", pkc.dataset.pkQ + (pkc.dataset.pkQ === "1" ? " bottle" : " bottles")); return; }
+    var th = e.target.closest("[data-p2-thumb]"); if (th && e.isTrusted) { track("pdp_gallery", "thumbnail " + (+th.dataset.p2Thumb + 1)); return; }
+    var a = e.target.closest("a"); if (!a) return;
+    var what = a.matches(".cf-trust") || a.closest(".cf-badges") ? "lab reports" : a.closest(".cf-n-wa") ? "whatsapp" : a.closest(".cf-n-ret") ? "returns" : a.closest(".p2-fbt") ? "routine " + (a.textContent.trim().split(" · ")[0] || "") : "";
+    if (what) track("pdp_link", what);
+    // A link to a place on this page (the badges' batch lookup) glides there instead of jumping; a jump for reduced motion.
+    var href = a.getAttribute("href") || "", to = href.charAt(0) === "#" && href.length > 1 ? document.getElementById(href.slice(1)) : null;
+    if (to && !e.defaultPrevented && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      to.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" });
+      var box = to.querySelector("input:not([type=hidden])"); if (box) setTimeout(function () { try { box.focus({ preventScroll: true }); } catch (x) {} }, calm ? 0 : 600);
+    }
+  });
+  // Swipe on the page gallery: the listeners are on the document, so a redrawn page needs nothing new.
+  (function () {
+    var x0 = null, y0 = 0, inGal = function (e) { var g = moreGrid(); return g && e.target.closest && e.target.closest(".cf-vis[data-cf-more] .p2-gallery-main"); };
+    document.addEventListener("touchstart", function (e) { if (e.touches.length === 1 && inGal(e)) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } else x0 = null; }, { passive: true });
+    document.addEventListener("touchend", function (e) {
+      if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+      var g = moreGrid(); if (g && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) { galStep(g.querySelector(".p2-gallery"), dx < 0 ? 1 : -1); track("pdp_gallery", "swipe"); }
+    }, { passive: true });
+  })();
+  /* "Added to your bag": the store's own message (#toast, web/app.js) sits below the screen on a phone. On a `more` page a
+     panel shows instead, with the product, the chosen pack, View bag and Checkout. It reacts only to the store's
+     "Added … to your bag." message, so a failed add never shows it. */
+  var addedTimer = null;
+  function added(name) {
+    var g = moreGrid(); if (!g) return false;
+    var panel = document.querySelector(".cf-added");
+    if (!panel) {
+      panel = document.createElement("div"); panel.className = "cf-added"; panel.setAttribute("role", "dialog"); panel.setAttribute("aria-label", "Added to your bag");
+      document.body.appendChild(panel);
+      panel.addEventListener("click", function (e) {
+        var a = e.target.closest("a"); if (a) track("pdp_link", a.getAttribute("href") === "/checkout" ? "checkout" : "view bag");
+        if (e.target.closest(".cf-added-x") || a) closeAdded();
+      });
+      panel.addEventListener("mouseenter", function () { clearTimeout(addedTimer); });
+      panel.addEventListener("focusin", function () { clearTimeout(addedTimer); });
+    }
+    var h1 = g.querySelector(".p2-buy h1"), self = h1 && h1.textContent.trim() === name;
+    var img = self && g.querySelector(".p2-gallery-main [data-p2-shot] img");
+    var card = self && g.querySelector('.pk-card[aria-checked="true"]');
+    var pack = card ? [card.querySelector(".pk-n"), card.querySelector(".pk-price")].filter(Boolean).map(function (n) { return n.textContent.trim(); }).join(" · ") : "";
+    panel.innerHTML = '<p class="cf-added-k"><i aria-hidden="true"></i>Added to your bag</p>' +
+      '<div class="cf-added-p">' + (img ? '<img src="' + esc(img.getAttribute("src")) + '" alt="" width="56" height="56">' : "") +
+      "<div><b>" + esc(name) + "</b>" + (pack ? "<span>" + esc(pack) + "</span>" : "") + "</div></div>" +
+      '<div class="cf-added-a"><a class="p2-btn is-ghost" href="/cart">View bag</a><a class="p2-btn" href="/checkout">Checkout</a></div>' +
+      '<button type="button" class="cf-added-x" aria-label="Close">×</button>';
+    panel.classList.add("is-on"); document.body.classList.add("cf-added-on");
+    clearTimeout(addedTimer); addedTimer = setTimeout(closeAdded, 7000);
+    track("pdp_add", self ? (card ? card.dataset.pkQ + (card.dataset.pkQ === "1" ? " bottle" : " bottles") : "this product") : "routine " + name);
+    return true;
+  }
+  function closeAdded() {
+    clearTimeout(addedTimer);
+    var panel = document.querySelector(".cf-added"); if (panel) panel.classList.remove("is-on");
+    document.body.classList.remove("cf-added-on");
+  }
+  (function () {
+    var toastEl = document.getElementById("toast"); if (!toastEl || !("MutationObserver" in window)) return;
+    new MutationObserver(function () {
+      var m = /^Added (.+) to your bag\.$/.exec(toastEl.textContent.trim());
+      if (m && toastEl.classList.contains("visible") && focus() && moreGrid()) added(m[1]);
+    }).observe(toastEl, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+    // Leaving the page closes it.
+    window.addEventListener("popstate", closeAdded);
+  })();
+
+  /* Analytics on a `more` page (owner, 28 Nov 2026: "Store our own events"). Sent only when the visitor has turned
+     analytics on in Preferences, as the privacy policy says, and only page and action names: an event name, the page's
+     path and one short detail. Stored by POST /api/events (app/server.py locally, core.js on the live site) and counted
+     in the admin under Customers → Page events. Events: pdp_view (once per visit to the page), pdp_scroll (25, 50, 75 or 100: the share of the page reached, in per cent), pdp_section (a section opened by the visitor), pdp_gallery, pdp_pack, pdp_add, pdp_link. */
+  function analyticsOn() { try { return JSON.parse(localStorage.getItem("bcc-preferences") || "{}").analytics === true; } catch (e) { return false; } }
+  function track(name, detail) {
+    if (!analyticsOn() || !moreGrid() || !window.BCCApp || typeof window.BCCApp.api !== "function") return;
+    var d = String(detail == null ? "" : detail).replace(/[^A-Za-z0-9 ?'&.:\/_-]/g, "").replace(/\s+/g, " ").trim().slice(0, 60);
+    try { window.BCCApp.api("/events", { name: name, page: location.pathname, detail: d }).catch(function () {}); } catch (e) {}
+  }
+  (function () {
+    var seen = "", depths = {}, gesture = 0;
+    // A view: once each time the visitor arrives on the page (the page draws itself more than once while it loads).
+    function view() {
+      var g = moreGrid(), key = g ? location.pathname : "";
+      if (key === seen) return; seen = key; depths = {};
+      if (key) track("pdp_view", "");
+    }
+    var appEl = document.getElementById("app");
+    if (appEl && "MutationObserver" in window) new MutationObserver(function () { setTimeout(function () { view(); armPlay(); }, 0); }).observe(appEl, { childList: true, subtree: true });
+    window.addEventListener("popstate", function () { setTimeout(view, 300); });
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false; if (!moreGrid()) return;
+        var h = document.documentElement.scrollHeight, pct = h ? (scrollY + innerHeight) / h * 100 : 0;
+        [25, 50, 75, 100].forEach(function (m) { if (pct >= m - (m === 100 ? 2 : 0) && !depths[m]) { depths[m] = 1; track("pdp_scroll", String(m)); } });
+      });
+    }, { passive: true });
+    // A section the visitor opens (Key benefits opens with the page, which isn't counted).
+    ["pointerdown", "keydown"].forEach(function (t) { document.addEventListener(t, function () { gesture = Date.now(); }, true); });
+    document.addEventListener("toggle", function (e) {
+      var d = e.target, g = moreGrid();
+      if (!g || !d.open || !g.contains(d) || Date.now() - gesture > 1500) return;
+      var s = d.querySelector(":scope > summary"), parent = d.parentNode && d.parentNode.closest && d.parentNode.closest("details.p2-acc");
+      var t = s ? s.textContent.trim() : "";
+      if (parent) { var ps = parent.querySelector(":scope > summary"); t = (ps ? ps.textContent.trim() + ": " : "") + t; }
+      track("pdp_section", t);
+    }, true);
+  })();
 
   var app = document.getElementById("app");
   if (app && "MutationObserver" in window) new MutationObserver(function () { dressBag(); dressReport(); dressSearch(); dressContact(); mountReviews(); }).observe(app, { childList: true, subtree: true });
