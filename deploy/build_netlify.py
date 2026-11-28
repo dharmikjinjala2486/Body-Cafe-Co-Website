@@ -167,7 +167,12 @@ def build():
     html = bundle(html, out)
     (out / 'index.html').write_text(html, encoding='utf-8')
     (out / 'web/index.html').write_text(html, encoding='utf-8')
-    origin = site or os.getenv('BCC_PUBLIC_ORIGIN', 'https://bodycafeco.com').rstrip('/')
+    # The share tags need the address this build is served from: the production URL when one is set, else the site's
+    # own production address on Vercel. (bodycafeco.com serves a different site for now, so it is not the default:
+    # a share picture pointed there would be a 404.)
+    vercel = os.getenv('VERCEL_PROJECT_PRODUCTION_URL', '').strip()
+    origin = (site or os.getenv('BCC_SHARE_ORIGIN') or ('https://' + vercel if re.fullmatch(r'[a-z0-9.-]+', vercel) else '')
+              or 'https://body-cafe-co-website.vercel.app').rstrip('/')
     for route, s in SHARE.items():
         (out / route.strip('/')).mkdir(parents=True, exist_ok=True)
         (out / route.strip('/') / 'index.html').write_text(share_page(html, origin, route, s), encoding='utf-8')
