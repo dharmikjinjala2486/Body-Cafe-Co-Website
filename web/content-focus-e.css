@@ -949,3 +949,12 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-how
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges :is(a, div) { padding: 8px 6px; }
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .pk-cards { margin-top: 10px; }
 }
+/* Hover zoom on the gallery picture (owner, 28 Nov 2026; wide screens with a mouse, Omega-3 [data-cf-more]): a shaded lens
+   on the picture and a magnified view over the buy column. Both are fixed layers that take no clicks. */
+.cf-zoom-lens, .cf-zoom-pane { position: fixed; pointer-events: none; }
+.cf-zoom-lens[hidden], .cf-zoom-pane[hidden] { display: none; }
+.cf-zoom-lens { z-index: 34; border: 1px solid rgb(28 27 26 / .45); border-radius: 6px; background-color: rgb(132 145 155 / .2); background-image: radial-gradient(rgb(28 27 26 / .16) .6px, transparent .7px); background-size: 4px 4px; }
+.cf-zoom-pane { z-index: 35; border-radius: 20px; background-color: #fff; background-repeat: no-repeat; box-shadow: 0 24px 60px rgb(0 0 0 / .22), 0 0 0 1px rgb(0 0 0 / .08); }
+@media (hover: hover) and (pointer: fine) and (min-width: 901px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main [data-p2-shot] img { cursor: crosshair; }
+}

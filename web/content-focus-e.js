@@ -1818,6 +1818,50 @@
       var g = moreGrid(); if (g && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) { galStep(g.querySelector(".p2-gallery"), dx < 0 ? 1 : -1); track("pdp_gallery", "swipe"); }
     }, { passive: true });
   })();
+  /* Hover zoom (owner, 28 Nov 2026, a marketplace listing as the reference): on a wide screen with a mouse, a shaded lens
+     follows the pointer over the gallery picture and a magnified view of that part opens over the buy box beside it. The
+     pictures are 1254 px across and shown at about 700, so the view is twice the size on screen (a little past the file's
+     own detail, never more than 2.5 times). Nothing moves in the page: both pieces are fixed layers that take no clicks,
+     so a click on the picture still opens the full-screen viewer, which is what phones, tablets and keyboards use. */
+  (function () {
+    var lens = null, pane = null, sent = "";
+    var mouse = window.matchMedia ? matchMedia("(hover: hover) and (pointer: fine)") : null;
+    function off() { if (lens) lens.hidden = true; if (pane) pane.hidden = true; }
+    function move(e) {
+      var g = moreGrid(); if (!g || !mouse || !mouse.matches || window.innerWidth < 901) return off();
+      var main = e.target.closest && e.target.closest(".cf-vis[data-cf-more] .p2-gallery-main");
+      if (!main || e.target.closest("button")) return off();
+      var img = main.querySelector("[data-p2-shot]:not([hidden]) img"), buy = g.querySelector(".p2-buy");
+      if (!img || !img.naturalWidth || !buy) return off();
+      // The picture's own box inside its frame (it is shown whole, so it may not fill the frame).
+      var fr = img.getBoundingClientRect(), cover = getComputedStyle(img).objectFit === "cover";
+      var k = (cover ? Math.max : Math.min)(fr.width / img.naturalWidth, fr.height / img.naturalHeight);
+      var w = img.naturalWidth * k, h = img.naturalHeight * k, x0 = fr.left + (fr.width - w) / 2, y0 = fr.top + (fr.height - h) / 2;
+      if (e.clientX < x0 || e.clientX > x0 + w || e.clientY < y0 || e.clientY > y0 + h) return off();
+      // The view sits over the buy column, level with the picture, below the header and inside the window.
+      var br = buy.getBoundingClientRect(), mr = main.getBoundingClientRect(), head = document.querySelector("header.site-header, #app header");
+      var top = Math.max(mr.top, (head ? Math.max(0, head.getBoundingClientRect().bottom) : 0) + 8), bottom = Math.min(mr.bottom, window.innerHeight - 12);
+      var pw = br.width, ph = bottom - top; if (ph < 240 || pw < 240) return off();
+      var z = Math.min(2.5, Math.max(2, img.naturalWidth / w));
+      var lw = Math.min(w, pw / z), lh = Math.min(h, ph / z);
+      var lx = Math.min(Math.max(e.clientX - lw / 2, x0), x0 + w - lw), ly = Math.min(Math.max(e.clientY - lh / 2, y0), y0 + h - lh);
+      if (!lens) {
+        lens = document.createElement("div"); lens.className = "cf-zoom-lens"; lens.setAttribute("aria-hidden", "true");
+        pane = document.createElement("div"); pane.className = "cf-zoom-pane"; pane.setAttribute("aria-hidden", "true");
+        document.body.appendChild(lens); document.body.appendChild(pane);
+      }
+      lens.style.cssText = "left:" + lx + "px;top:" + ly + "px;width:" + lw + "px;height:" + lh + "px";
+      var src = img.currentSrc || img.src;
+      pane.style.cssText = "left:" + br.left + "px;top:" + top + "px;width:" + pw + "px;height:" + ph + "px;background-image:url(\"" + src.replace(/"/g, "%22") + "\");background-size:" + w * z + "px " + h * z + "px;background-position:" + -(lx - x0) * z + "px " + -(ly - y0) * z + "px";
+      lens.hidden = false; pane.hidden = false;
+      if (sent !== location.pathname + src) { sent = location.pathname + src; track("pdp_gallery", "hover zoom"); }
+    }
+    document.addEventListener("mousemove", move, { passive: true });
+    document.addEventListener("mouseleave", off);
+    window.addEventListener("scroll", off, { passive: true });
+    window.addEventListener("blur", off);
+    document.addEventListener("click", off, true);
+  })();
   /* "Added to your bag": the store's own message (#toast, web/app.js) sits below the screen on a phone. On a `more` page a
      panel shows instead, with the product, the chosen pack, View bag and Checkout. It reacts only to the store's
      "Added … to your bag." message, so a failed add never shows it. */
