@@ -1188,7 +1188,8 @@
          under the name and claim, on the first screen (`badges`), in place of the testing line under Add to bag (`trust`,
          which other pages may still use). Approved facts only: testing by Choksi Laboratories and Eurofins from our first
          production batch ("from batch one"), the batch report lookup, GMP-certified facilities and the FSSAI licence. */
-      badges: [["flask", "Lab-tested", "Choksi & Eurofins, from batch one", "#p2-lot"], ["doc", "Batch report", "Check yours online", "#p2-lot"], ["shield", "GMP certified", "FSSAI licensed"]],
+      // [icon, title, subtitle, link or "", subtitle on a phone]
+      badges: [["flask", "Lab-tested", "Choksi & Eurofins, from batch one", "#p2-lot", "From batch one"], ["doc", "Batch report", "Check yours online", "#p2-lot", "Check yours"], ["shield", "GMP certified", "FSSAI licensed", "", "FSSAI licensed"]],
       /* Owner, 28 Nov 2026 (second "do all", Omega-3 only, `more`): an "Added to your bag" panel with View bag and Checkout;
          gallery arrows, swipe and a full-screen viewer; payment, returns and WhatsApp lines under the delivery notes (the
          store's own facts: prepaid by UPI, card, wallet or net banking; damaged or wrong items reported within 7 days); and
@@ -1357,6 +1358,18 @@
     // cards choose 1, 2 or 3 bottles.
     var chips = root.querySelector(".p2-buy-chips"), rating = root.querySelector(".p2-buy > .p2-buy-rating");
     if (chips && rating) chips.appendChild(rating);
+    /* Owner, 28 Nov 2026: the veg / non-veg mark alone says it, so its words go (they stay as the mark's accessible name)
+       and the mark sits in the name's line, at the right edge of the card; the row it had above the name goes. */
+    var diet = chips && chips.querySelector(".p2-diet"), nameH = root.querySelector(".p2-buy h1");
+    if (diet && nameH && !nameH.querySelector(".p2-diet")) {
+      var dietName = diet.textContent.trim();
+      diet.textContent = ""; diet.insertAdjacentHTML("afterbegin", '<i aria-hidden="true"></i>');
+      diet.classList.add("cf-diet-mark"); diet.setAttribute("role", "img"); diet.setAttribute("aria-label", dietName); diet.setAttribute("title", dietName);
+      // Owner, same day: the mark sits at the right edge of the card, level with the name's first line.
+      nameH.innerHTML = '<span class="cf-h1-name">' + esc(nameH.textContent.trim()) + "</span>";
+      nameH.classList.add("cf-h1-mark"); nameH.appendChild(diet);
+      if (!chips.children.length) chips.remove();
+    }
     [].forEach.call(root.querySelectorAll(".pk-flag, .p2-buy .cf-qty, .p2-buy-chips .p2-chip"), function (n) { n.remove(); });
     // Buy card (owner, 19 Nov 2026): the name is the first thing read, so under it is only the claim, as a plain line, and the
     // amounts line goes (the description figures and the label facts give the amounts). A line the admin rewrote stays.
@@ -1388,7 +1401,11 @@
     var forBox = root.querySelector(".p2-buy .cf-for");
     if (v.badges && forBox && !root.querySelector(".cf-badges")) {
       forBox.insertAdjacentHTML("afterend", '<ul class="cf-badges" aria-label="Why you can trust it">' + v.badges.map(function (b) {
-        var inner = "<i>" + icon(b[0]) + "</i><span><b>" + esc(b[1]) + "</b><small>" + esc(b[2]) + "</small></span>";
+        // Owner, 28 Nov 2026 ("make more better visually"): every badge has its subtitle at every width (a shorter one on a
+        // phone), and a linked one shows a small arrow after its title.
+        var sub = b[4] && b[4] !== b[2] ? '<span class="cf-b-long">' + esc(b[2]) + '</span><span class="cf-b-short">' + esc(b[4]) + "</span>" : esc(b[2]);
+        var go = b[3] ? '<svg class="cf-b-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>' : "";
+        var inner = "<i>" + icon(b[0]) + "</i><span><b>" + esc(b[1]) + go + "</b><small>" + sub + "</small></span>";
         return "<li>" + (b[3] ? '<a href="' + esc(b[3]) + '">' + inner + "</a>" : "<div>" + inner + "</div>") + "</li>";
       }).join("") + "</ul>");
       // The batch lookup is a badge now, so the delivery notes' own link to it goes.

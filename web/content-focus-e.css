@@ -761,25 +761,38 @@ body.cf-added-on #toast { opacity: 0 !important; }
   .cf-added.is-on { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) { .cf-added { transition: none; } }
-/* Trust badges under the name and claim (owner, 28 Nov 2026, Omega-3 `badges`): the first screen says why to trust it. */
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 20px; padding: 0; list-style: none; border-radius: 16px; background: #f1f6f2; box-shadow: inset 0 0 0 1px #d5e5d9; }
+/* Trust badges under the name and claim (owner, 28 Nov 2026, Omega-3 `badges`): the first screen says why to trust it.
+   Redrawn the same day (owner: "make more better visually"): three separate tiles in the product's own cap colour (owner, same day: no green), each with a solid seal, its title
+   and a subtitle on all three at every width (shorter words on a phone); a linked one has a small arrow and lifts on hover. */
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges { container: cf-badges / inline-size; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges li { min-width: 0; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges li + li { box-shadow: inset 1px 0 0 #d5e5d9; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div) { display: flex; align-items: center; gap: 10px; height: 100%; padding: 12px 12px; color: var(--p2-ink); text-decoration: none; border-radius: 16px; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges a:hover b { text-decoration: underline; text-underline-offset: 3px; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges a:focus-visible { outline: 2px solid var(--p2-ink); outline-offset: -2px; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges i { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #fff; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges svg { width: 17px; height: 17px; fill: none; stroke: #1e5b2c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges span { display: grid; gap: 1px; min-width: 0; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b { font: 600 13.5px/1.2 "Aileron", sans-serif; color: #1e5b2c; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div) { display: grid; justify-items: center; align-content: start; gap: 7px; height: 100%; padding: 14px 8px 13px; border-radius: 14px; background: color-mix(in srgb, var(--cap) 9%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cap) 32%, #fff); color: var(--p2-ink); text-align: center; text-decoration: none; transition: background .15s, box-shadow .15s, transform .15s; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges a:hover { background: color-mix(in srgb, var(--cap) 16%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cap) 50%, #fff); transform: translateY(-1px); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges a:focus-visible { outline: 2px solid var(--p2-ink); outline-offset: 2px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges i { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: color-mix(in srgb, var(--cap) 72%, var(--p2-ink)); box-shadow: 0 0 0 4px #fff, 0 0 0 5px color-mix(in srgb, var(--cap) 40%, #fff); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges span { display: grid; gap: 2px; min-width: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b { display: inline-flex; align-items: center; justify-content: center; gap: 2px; font: 650 13.5px/1.2 "Aileron", sans-serif; white-space: nowrap; color: var(--p2-ink); }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b .cf-b-go { width: 13px; height: 13px; stroke: color-mix(in srgb, var(--cap) 72%, var(--p2-ink)); stroke-width: 2.2; transition: transform .15s; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges a:hover .cf-b-go { transform: translateX(2px); }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges small { font-size: 12px; line-height: 1.3; color: var(--p2-text); }
-/* Icon above the words, each badge centred, at every width (beside the icon, three short lines were cramped). */
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div) { flex-direction: column; justify-content: flex-start; gap: 6px; padding: 12px 8px; text-align: center; }
-@media (max-width: 560px) {
-  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div) { padding: 12px 6px; }
-  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b { font-size: 13px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges .cf-b-short { display: none; }
+/* A narrow buy card (a phone, or a laptop just past the tablet width): the short subtitles, a smaller seal. */
+@container cf-badges (max-width: 420px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div) { gap: 6px; padding: 12px 3px 11px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges i { width: 32px; height: 32px; box-shadow: 0 0 0 3px #fff, 0 0 0 4px color-mix(in srgb, var(--cap) 40%, #fff); }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges svg { width: 16px; height: 16px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b { font-size: 12.5px; }
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges small { font-size: 11.5px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges .cf-b-long { display: none; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges .cf-b-short { display: inline; }
 }
+@container cf-badges (max-width: 300px) {
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b { font-size: 11.5px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges b .cf-b-go { width: 11px; height: 11px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges small { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) { body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges :is(a, div), body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges .cf-b-go { transition: none; } body[data-variant-e-part="2"][data-content-focus="1"] .cf-badges a:hover { transform: none; } }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy .cf-for:has(+ .cf-badges) { margin-bottom: 14px; }
 /* Key benefits as three short rows (owner, 28 Nov 2026, Omega-3 `keyRows`): Supports · Why this one · Trust, pills of two
    or three words each. */
@@ -856,10 +869,6 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-pc-toggle { display: n
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-thumbs > button > * { display: none; }
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-thumbs > button::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: color-mix(in srgb, var(--p2-ink) 25%, transparent); transition: width .2s, background .2s; }
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-thumbs > button[aria-pressed="true"]::before { width: 18px; border-radius: 999px; background: var(--p2-ink); }
-  /* Trust badges: just the titles, and "from batch one" under Lab-tested. */
-  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges li:not(:first-child) small { display: none; }
-  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges :is(a, div) { padding: 10px 4px; gap: 4px; }
-  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges i { width: 28px; height: 28px; }
   /* The struck-out price and the pack note go (the saving and the cards say it). */
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-was,
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .pk-note { display: none; }
@@ -884,8 +893,6 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] form
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] form.pc.cf-pc-fold .pc-k { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-was,
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .pk-note { display: none; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges li:not(:first-child) small { display: none; }
-body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges :is(a, div) { padding: 11px 6px; gap: 5px; }
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-notes.cf-notes-grid { margin-top: 18px; }
 /* Links in the delivery notes are easy to hit. */
 body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy-notes.cf-notes-grid li a { display: inline-block; margin: -8px -6px; padding: 8px 6px; }
@@ -946,7 +953,8 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-how
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy.has-own > .cf-buy-card { padding: 20px 24px 22px; }
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-buy h1 { margin: 4px 0 6px; font-size: clamp(30px, 3vw, 40px); }
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges { margin-bottom: 12px; }
-  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges :is(a, div) { padding: 8px 6px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges :is(a, div) { gap: 5px; padding: 10px 6px; }
+  body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .cf-badges i { width: 30px; height: 30px; }
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .pk-cards { margin-top: 10px; }
 }
 /* Hover zoom on the gallery picture (owner, 28 Nov 2026; wide screens with a mouse, Omega-3 [data-cf-more]): a shaded lens
@@ -958,3 +966,11 @@ body[data-variant-e-part="2"][data-content-focus="1"] .cf-rx.is-empty .cf-rx-how
 @media (hover: hover) and (pointer: fine) and (min-width: 901px) {
   body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis[data-cf-more] .p2-gallery-main [data-p2-shot] img { cursor: crosshair; }
 }
+
+/* The veg / non-veg mark without its words (owner, 28 Nov 2026), at the right edge of the card, level with the name's first line; its accessible name says it. */
+body[data-variant-e-part="2"][data-content-focus="1"] .p2-buy h1.cf-h1-mark { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+body[data-variant-e-part="2"][data-content-focus="1"] .p2-buy h1 .cf-diet-mark { flex: none; display: block; margin-top: calc((1.04em - 22px) / 2); font-size: inherit; line-height: 0; }
+body[data-variant-e-part="2"][data-content-focus="1"] .p2-buy h1 .cf-diet-mark i { display: block; width: 22px; height: 22px; }
+@media (max-width: 560px) { body[data-variant-e-part="2"][data-content-focus="1"] .p2-buy h1 .cf-diet-mark i { width: 18px; height: 18px; } body[data-variant-e-part="2"][data-content-focus="1"] .p2-buy h1 .cf-diet-mark { margin-top: calc((1.04em - 18px) / 2); } }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-chips:empty { display: none; }
+body[data-variant-e-part="2"][data-content-focus="1"] .cf-vis .p2-buy-chips:not(:has(.p2-diet)) .p2-buy-rating { margin: 0; }
